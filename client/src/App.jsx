@@ -1,36 +1,23 @@
 
 import './App.css'
-import { useState } from 'react'
-import useUserStore from './store/usePlayerStore'
-import Header from './components/layout/Header'
-import Configuration from './components/configuration/config'
-import Navbar from './components/layout/Navbar'
-import SignIn from './components/signin/signin'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './components/layout/Home'
+import Daily from './components/layout/Daily'
 import PushupSkillTree from './components/reactflow/SkillTree'
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const userData = useUserStore((state) => state.userData);
-
-  function handleLogin() {
-    setLoggedIn(true);
-  }
-
-  
+ 
   return (
-    <>
-    {!loggedIn && <SignIn onAction={handleLogin} />}
-    {loggedIn && !userData.isConfigured && (
-        <Configuration />
-    )}
-    {loggedIn && userData.isConfigured && (
         <>
-        <Header />
-        <PushupSkillTree />
-        <Navbar />
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/daily" element={<Daily />} />
+                <Route path="/skill-tree" element={<PushupSkillTree />} />
+                <Route path="/profile" element={<div>Profile</div>} />
+            </Routes>
+        </Router>
         </>
-    )}
-    </>
   )
 }
 

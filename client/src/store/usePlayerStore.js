@@ -2,11 +2,17 @@ import { create } from 'zustand';
 
 const useUserStore = create((set) => ({
   userData: {
+    private: {
+      email: "",
+      gender: "",
+      age: null,
+      weight: null,
+      height: null,
+    },
     username: "",
-    gender: "",
-    age: null,
-    weight: null,
-    height: null,
+    level: null,
+
+
     experienceLevel: {
       pushup: null,
       squat: null,

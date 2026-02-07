@@ -3,7 +3,7 @@ import '@xyflow/react/dist/style.css';
 
 
 
-const PushupNodes = [
+const Nodes = [
     {
         id: "pushup_00", position: { x: 0, y: 0 }, data: { label: "Wall Pushup" }
     },
@@ -24,7 +24,7 @@ const PushupNodes = [
     }
 ];  
 
-const PushupEdges = [
+const Edges = [
     { id: "e0-1", source: "pushup_00", target: "pushup_01" },
     { id: "e1-2", source: "pushup_01", target: "pushup_02" },
     { id: "e2-3", source: "pushup_02", target: "pushup_03" },
@@ -35,7 +35,7 @@ const PushupEdges = [
 function PushupSkillTree() {
     return (
         <div className="skill-tree-container" style={{ width: "100%", height: "500px" }}>
-            <ReactFlow nodes={PushupNodes} edges={PushupEdges}>
+            <ReactFlow nodes={Nodes} edges={Edges}>
                 <BaseEdge />
                 <Background />
             </ReactFlow>
