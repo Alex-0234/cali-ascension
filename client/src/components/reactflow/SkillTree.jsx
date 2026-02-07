@@ -1,5 +1,6 @@
-import { ReactFlow, Controls, Background } from "@xyflow/react";
+import { ReactFlow, Controls, Background, BaseEdge } from "@xyflow/react";
 import '@xyflow/react/dist/style.css';
+
 
 
 const PushupNodes = [
@@ -35,10 +36,11 @@ function PushupSkillTree() {
     return (
         <div className="skill-tree-container" style={{ width: "100%", height: "500px" }}>
             <ReactFlow nodes={PushupNodes} edges={PushupEdges}>
+                <BaseEdge />
                 <Background />
             </ReactFlow>
         </div>
-    );
+    );  
 }
 
 export default PushupSkillTree;
