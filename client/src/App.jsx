@@ -6,6 +6,7 @@ import Header from './components/layout/Header'
 import Configuration from './components/configuration/config'
 import Navbar from './components/layout/Navbar'
 import SignIn from './components/signin/signin'
+import PushupSkillTree from './components/layout/SkillTree'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -22,6 +23,7 @@ function App() {
     {loggedIn && userData.isConfigured && (
         <>
         <Header />
+        <PushupSkillTree />
         <Navbar />
         </>
     )}
