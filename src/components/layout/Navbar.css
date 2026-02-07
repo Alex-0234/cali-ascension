@@ -1,0 +1,29 @@
+.navbar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 5rem;
+    width: 100%;
+    padding: 0;
+    background: #000000;
+    color: #fff;
+}
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0;
+    
+}
+.nav-list li {
+
+}
+button {
+    height: 4rem;
+    width: 4rem;
+    padding: 0;
+    margin: 0.5rem;
+    border: none;
+    font-size: 0.8rem;
+}
