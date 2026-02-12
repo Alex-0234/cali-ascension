@@ -26,6 +26,8 @@ export default function Awakening() {
             // 4. Uložit finální rank do globálního Storu
             setUserData({ 
                 ...userData,
+                rank: result.rank,
+                title: result.title,
                 level: 1,     
                 xp: xp,        
                 isConfigured: true,

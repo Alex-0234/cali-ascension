@@ -2,10 +2,14 @@ import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'; 
 import useUserStore from '../../store/usePlayerStore'
 
+import StatusWindow from './StatusWindow';
+import Navbar from '../../components/layout/Navbar';
+
 export default function Dashboard() {
     const navigate = useNavigate();
     const userData = useUserStore((state) => state.userData);
-    const syncUser = useUserStore((state) => state.syncUser);   
+    const syncUser = useUserStore((state) => state.syncUser);
+    const logout = useUserStore((state) => state.logout);  
 
     const isMounted = useRef(false);
 
@@ -37,10 +41,14 @@ export default function Dashboard() {
     }
 
     return (
+
+        <>
+        <button onClick={logout}>Logout</button>
         <div className='dashboard'>
             <h2>Dashboard</h2>
-            <p>Welcome back, {userData.username || 'Hunter'}</p>
-            {/* Tady si můžeš vypsat Rank, Level, atd. */}
+            <StatusWindow />
         </div>
+        <Navbar />
+        </>
     )
 }

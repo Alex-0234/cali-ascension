@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   const fetchUser = useUserStore((state) => state.fetchUser);
   const userData = useUserStore((state) => state.userData);
-  const setUserData = useUserStore((state) => state.setUserData);
+  /* const setUserData = useUserStore((state) => state.setUserData); */
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
@@ -35,7 +35,6 @@ function App() {
     if (storedUserId && !userData?.isLoggedIn) {
         console.log("App: Restoring user session...");
         fetchUser(storedUserId);
-        setUserData({isLoggedIn: true});
     }
   }, []); 
 
