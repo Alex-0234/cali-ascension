@@ -1,33 +1,41 @@
 import { create } from 'zustand';
 
-const useUserStore = create((set, get) => ({
-  userData: {
-    // Should be kept in DB
-    private: {
-      email: "",
-    },
-
-    isLoggedIn: false, 
+const INITIAL_PLAYER_STATE = {
+  
     userId: "",
     username: "",
+    email: "",
+
     gender: "",
-    age: null,
-    weight: null,
-    height: null,
-    level: null,
+    age: "",
+    height: "",
+    weight: "",
+
+    level: 1,
+    rank: "E-Rank",
+    title: "None",
+    xp: 0,
     stats: {
-      strength: null,
-      agility: null,
-      inteligence: null,
-      //...
+        strength: 10,
+        agility: 10,
+        sense: 10,
+        vitality: 10,
+        intelligence: 10
     },
 
-    userEvaluation: {
-      
-    },
+    userEvaluation: {},
+    skillProgress: {},
+
+    isLoggedIn: false,
     isConfigured: false,
-    skillProgress: {}
-  },
+
+    weightHistory: []
+
+}
+
+
+const useUserStore = create((set, get) => ({
+  userData: INITIAL_PLAYER_STATE,
 
   setUserData: (newData) => 
     set((state) => ({
@@ -41,7 +49,7 @@ const useUserStore = create((set, get) => ({
       console.log('System: User Data Loaded', data);
       
       set((state) => ({ 
-        userData: { ...state.userData, ...data, loggedIn: true } 
+        userData: { ...state.userData, ...data, isLoggedIn: true } 
       }));
     } catch (error) {
       console.error('System Error: Fetch Failed', error);
@@ -63,7 +71,10 @@ const useUserStore = create((set, get) => ({
       console.error('System Error: Sync Failed', error);
     }
   },
-
+  logout: () => {
+        localStorage.removeItem('userId');
+        set({ userData: INITIAL_PLAYER_STATE });
+    }
 }));
 
 export default useUserStore;
