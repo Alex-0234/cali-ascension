@@ -1,23 +1,31 @@
 import { create } from 'zustand';
 
-const useUserStore = create((set) => ({
+const useUserStore = create((set, get) => ({
   userData: {
+    // Should be kept in DB
     private: {
       email: "",
-      gender: "",
-      age: null,
-      weight: null,
-      height: null,
     },
+
+    isLoggedIn: false, 
+    userId: "",
     username: "",
+    gender: "",
+    age: null,
+    weight: null,
+    height: null,
     level: null,
-
-
-    experienceLevel: {
-      pushup: null,
-      squat: null,
-      plank: null,
+    stats: {
+      strength: null,
+      agility: null,
+      inteligence: null,
+      //...
     },
+
+    userEvaluation: {
+      
+    },
+    isConfigured: false,
     skillProgress: {}
   },
 
@@ -25,41 +33,37 @@ const useUserStore = create((set) => ({
     set((state) => ({
       userData: { ...state.userData, ...newData }
     })),
+  
+  fetchUser: async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/user/${userId}`);
+      const data = await response.json();
+      console.log('System: User Data Loaded', data);
+      
+      set((state) => ({ 
+        userData: { ...state.userData, ...data, loggedIn: true } 
+      }));
+    } catch (error) {
+      console.error('System Error: Fetch Failed', error);
+    }
+  },
+  syncUser: async () => {
+    const { userData } = get(); 
+    if (!userData.userId) return;
 
-  setExperience: (exercise, level) =>
-    set((state) => ({
-      userData: {
-        ...state.userData,
-        experienceLevel: {
-          ...state.userData.experienceLevel,
-          [exercise]: level
-        }
-      }
-    })),
+    try {
+      console.log('System: Syncing to Database...');
+      await fetch(`http://localhost:5000/api/user/${userData.userId}`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      console.log('Done');
+    } catch (error) {
+      console.error('System Error: Sync Failed', error);
+    }
+  },
 
-  resetUser: () => set({ userData: {  } }),
-
- setSkillProgress: (skillId, xpGained) =>
-    set((state) => {
-      const currentSkill = state.userData.skillProgress[skillId] || { xp: 0, proficiency: 0, learned: false };
-      const newTotalXp = currentSkill.xp + xpGained;
-        // can later make changes
-      const newProficiency = Math.min(100, Math.floor(newTotalXp / 100));
-
-      return {
-        userData: {
-          ...state.userData,
-          skillProgress: {
-            ...state.userData.skillProgress,
-            [skillId]: {
-              xp: newTotalXp,
-              proficiency: newProficiency,
-              learned: true,
-            },
-          },
-        },
-      };
-    }),
 }));
 
 export default useUserStore;
