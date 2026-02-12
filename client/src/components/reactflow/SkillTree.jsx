@@ -2,7 +2,7 @@ import { ReactFlow, Controls, Background, BaseEdge, StepEdge } from "@xyflow/rea
 import '@xyflow/react/dist/style.css';
 import { useState } from "react";
 import Navbar from "../layout/Navbar";
-import Notification from "../layout/Notification";
+import Notification from "../notification/Notification";
 
 const edgeTypes = {
     squared: StepEdge,
