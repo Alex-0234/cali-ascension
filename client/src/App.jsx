@@ -16,40 +16,51 @@ const ProtectedRoute = ({ children }) => {
   const userData = useUserStore((state) => state.userData);
   
   useEffect(() => {
-      if (!userData?.isLoggedIn && !localStorage.getItem('userId')) {
+      if (!userData.isLoading && !userData.isLoggedIn && !localStorage.getItem('userId')) {
           navigate('/login');
       }
-  }, [userData, navigate]);
+  }, [userData.isLoading, userData.isLoggedIn, navigate]);
 
-  return children;
+  if (userData.isLoading) return <div>System Initializing...</div>;
+
+  return userData.isLoggedIn ? children : null;
 };
 
 function App() {
   const fetchUser = useUserStore((state) => state.fetchUser);
+  const syncUser = useUserStore((state) => state.syncUser);
   const userData = useUserStore((state) => state.userData);
-  /* const setUserData = useUserStore((state) => state.setUserData); */
 
-  useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
+    useEffect(() => {
+      const userId = localStorage.getItem('userId');
+      if (userId && !userData.isLoggedIn) {
+        fetchUser(userId); 
+      }
+    }, [fetchUser, userData.isLoggedIn]);
 
-    if (storedUserId && !userData?.isLoggedIn) {
-        console.log("App: Restoring user session...");
-        fetchUser(storedUserId);
-    }
-  }, []); 
+    useEffect(() => {
+    const timeoutId = setTimeout(() => {
+            if (userData.isLoggedIn) { 
+                console.log("Auto-Syncing...");
+                if (syncUser) syncUser(); 
+            }
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+        
+    }, [userData, syncUser]); 
+  
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={
-           // Dashboard je protected, ale díky useEffectu nahoře už se data načítají
            <ProtectedRoute><Dashboard /></ProtectedRoute>
         } />
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
         <Route path="/evaluation" element={
           <ProtectedRoute><Evaluation /></ProtectedRoute>
         } />

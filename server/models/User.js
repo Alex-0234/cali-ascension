@@ -11,6 +11,8 @@ const UserSchema = new mongoose.Schema({
     weight: Number,
     height: Number,
     
+    rank: { type:String, default: "" },
+    title: { type:String, default: "" },
     level: { type: Number, default: 1 },
     xp: { type: Number, default: 0 }, 
     
@@ -30,7 +32,6 @@ const UserSchema = new mongoose.Schema({
         default: {}
     },
 
-    isLoggedIn: { type: Boolean, default: false },
     isConfigured: { type: Boolean, default: false },
 
     skillProgress: {

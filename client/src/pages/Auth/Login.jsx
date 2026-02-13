@@ -9,9 +9,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [notification, setNotification] = useState({message: '', error: false})
     
-    // Vytáhneme si funkce ze storu
     const setUserData = useUserStore((state) => state.setUserData);
-    const userData = useUserStore((state) => state.userData);
 
     async function handleLogin() {
         try {
@@ -51,14 +49,16 @@ export default function Login() {
     return (
         <>
         <h2>Log In</h2>
-        <div className={styles['login-form']}>
+        <div className={'login-form'}>
             <input 
+                name="username"
                 type="text" 
                 className={styles.input} // Pozor: styles={} vs className={}
                 placeholder="Username" 
                 onChange={(e) => setUsername(e.target.value)}
             />
             <input 
+                name="password"
                 type="password" 
                 className={styles.input} 
                 placeholder="Password" 
@@ -67,8 +67,7 @@ export default function Login() {
             <button onClick={handleLogin}>Log In</button>
         </div>
         
-        <div className='wrapper'>
-            {/* Oprava navigate v onClick */}
+        <div className='signup-redirect'>
             <p>Don't have an account? <a style={{cursor: 'pointer'}} onClick={() => navigate('/register')}>Register</a></p>
         </div>
 

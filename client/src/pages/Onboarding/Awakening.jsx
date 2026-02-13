@@ -31,7 +31,6 @@ export default function Awakening() {
                 level: 1,     
                 xp: xp,        
                 isConfigured: true,
-                awakened: result
             });
 
             setStage('awakening');

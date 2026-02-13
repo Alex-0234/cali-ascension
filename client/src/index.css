@@ -12,20 +12,18 @@ html, body {
 }
 
 #root {
-  /* Fixní pozice uprostřed (pro Desktop) */
   display: flex;
   flex-direction: column;
-  min-height: 100%; /* Musí být min-height, aby mohl růst s obsahem */
+  min-height: 100vh; 
+  min-height: 100dvh; 
   width: 100%;
-  max-width: 480px; /* Limit šířky telefonu */
-  margin: 0 auto;   /* Vycentrování na desktopu */
+  min-width: 100dvw;
+  margin: 0 auto;  
   
-  /* Vzhled telefonu */
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-  
-  /* Izolace od vnějšího světa */
+
   isolation: isolate; 
 }
 
@@ -42,7 +40,6 @@ a {
 a:hover {
   color: #535bf2;
 }
-
 
 h1 {
   font-size: 3.2em;
@@ -66,6 +63,31 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.login-form, .register-form {
+  height: auto;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 1rem;
+}
+
+.login-form button, .register-form button {
+  height: 1.5rem;
+  width: 4rem;
+  border-radius: 0;
+}
+
+.signup-redirect {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  align-self: center;
+  flex-wrap: nowrap;
 }
 
 .inline-b {

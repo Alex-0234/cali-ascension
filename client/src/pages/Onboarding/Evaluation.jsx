@@ -2,14 +2,14 @@ import { useState } from "react";
 import useUserStore from "../../store/usePlayerStore";
 import Hologram from "../../components/ui/Hologram"; // Pozor na velké písmeno v názvu souboru?
 import { useNavigate } from 'react-router-dom';
-import { PUSHUP_TIERS, SQUAT_TIERS } from "../../data/exercises";
+import { PUSHUP_TIERS, SQUAT_TIERS, PULLUP_TIERS } from "../../data/exercises";
 
 const EvaluationScreen = () => {
     const navigate = useNavigate();
     const setUserData = useUserStore((state) => state.setUserData);
     const userData = useUserStore((state) => state.userData);
 
-    const stages = ['pushups', 'squats']; 
+    const stages = ['pushups', 'squats', 'pullups']; 
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
     const [currentTierIndex, setTierIndex] = useState(0); 
     const [mode, setMode] = useState('selection'); // selection | input
@@ -17,7 +17,23 @@ const EvaluationScreen = () => {
 
     const currentStageName = stages[currentStageIndex];
 
-    let currentTiers = currentStageName === 'pushups' ? PUSHUP_TIERS : SQUAT_TIERS;
+    let currentTiers = null;
+
+    switch (currentStageName) {
+        case 'pushups': {
+            currentTiers = PUSHUP_TIERS;
+            break
+        }
+        case 'squats': {
+            currentTiers = SQUAT_TIERS;
+            break
+        }
+        case 'pullups': {
+            currentTiers = PULLUP_TIERS;
+            break
+        }
+    }
+        
     const currentTier = currentTiers[currentTierIndex] || currentTiers[0];
 
     const handleYes = () => {
@@ -30,7 +46,7 @@ const EvaluationScreen = () => {
 
     const handleNo = () => {
         if (currentTierIndex > 0) {
-            setTierIndex(prev => prev - 1); // Vrátíme se o jeden tier níž, ten zvládne
+            setTierIndex(prev => prev - 1); 
         }
         setMode('input');
     };
@@ -45,9 +61,11 @@ const EvaluationScreen = () => {
             }
         };
 
+
         setUserData({
             ...userData,
-            userEvaluation: updatedEvaluation
+            userEvaluation: updatedEvaluation,
+            isConfigured: true,
         });
 
 

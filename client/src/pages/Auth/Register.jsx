@@ -51,15 +51,15 @@ export default function Register() {
     return (
         <>
         <h2>Sign Up</h2>
-        <div className="signup-form">
+        <div className="register-form">
             <input type="text" styles={styles.input} placeholder="Username" onChange={(e)=>setUsername(e.target.value)}/>
             <input type="email" styles={styles.input} placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
             <input type="password" styles={styles.input} placeholder="Password" onChange={(e)=>setPassword(e.target.value)}/>
             <input type="password" styles={styles.input} placeholder="Confirm Password" onChange={(e)=>setConfirmPassword(e.target.value)}/>
             <button onClick={handleRegister}>Sign Up</button>
         </div>
-        <div className='wrapper'>
-            <p>Already have an account? <a onClick={() => navigate("/login")}>Log In</a></p>
+        <div className='signup-redirect'>
+            <p>Already have an account? <a style={{cursor: 'pointer'}} onClick={() => navigate("/login")}>Log In</a></p>
         </div>
         {notification.message && (
             <Notification message={notification.message} error={notification.error} />  

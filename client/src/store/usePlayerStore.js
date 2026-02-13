@@ -26,6 +26,7 @@ const INITIAL_PLAYER_STATE = {
     userEvaluation: {},
     skillProgress: {},
 
+    isLoading: false,
     isLoggedIn: false,
     isConfigured: false,
 
@@ -43,21 +44,41 @@ const useUserStore = create((set, get) => ({
     })),
   
   fetchUser: async (userId) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/user/${userId}`);
-      const data = await response.json();
-      console.log('System: User Data Loaded', data);
-      
-      set((state) => ({ 
-        userData: { ...state.userData, ...data, isLoggedIn: true } 
-      }));
-    } catch (error) {
-      console.error('System Error: Fetch Failed', error);
-    }
+      set({ isLoading: true });
+      try {
+          const response = await fetch(`http://localhost:5000/api/user/${userId}`);
+          const data = await response.json();
+          
+          console.log('System: User Data Loaded', data);
+
+          set((state) => ({
+              userData: { 
+                  ...state.userData, 
+                  ...data, 
+                  isLoggedIn: true, 
+                  isLoading: false, 
+              }
+          }));
+      } catch (error) {
+          console.error('Fetch Failed', error);
+
+          set((state) => ({ 
+              userData: { 
+                ...state.userData,
+                isLoading: false,
+                isLoggedIn: false } 
+          }));
+      }
   },
+
   syncUser: async () => {
     const { userData } = get(); 
     if (!userData.userId) return;
+
+    if (!userData.isLoggedIn) {
+        console.warn("Sync zablokován: Uživatel není přihlášen.");
+        return;
+    }
 
     try {
       console.log('System: Syncing to Database...');

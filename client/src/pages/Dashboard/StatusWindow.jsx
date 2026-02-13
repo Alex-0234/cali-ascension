@@ -1,13 +1,30 @@
 
 import useUserStore from "../../store/usePlayerStore"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 
 export default function StatusWindow() {
-  const userData = useUserStore((state) => state.userData);
+    const navigate = useNavigate()
+    const userData = useUserStore((state) => state.userData);
+    const [loaded, setLoaded] = useState(false);
 
+    useEffect(() => {
+        setLoaded(true);
+    },[userData]);
+
+    if (!loaded) {
+        return <div><p>Initializing user...</p></div>
+    }
 
     return (
         <>
+        {!userData.isConfigured && (
+                <div>
+                    <button onClick={() => navigate('/evaluation')}></button>
+                </div>
+        )}
+        {userData.isConfigured && (
         <div className="status-window border">
             <div className="d_flex_dir_row">
                 <h3>[ Level  {userData.level} ]</h3>
@@ -63,6 +80,8 @@ export default function StatusWindow() {
                 
             </div>
         </div>
+        )}
+
         </>
     )
 }
