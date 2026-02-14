@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'; // Pozor: raději z 'react-router-dom' než 'react-router'
 import useUserStore from '../../store/usePlayerStore'
 import styles from './signin.module.css';

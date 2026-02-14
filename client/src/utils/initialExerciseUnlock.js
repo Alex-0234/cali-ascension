@@ -1,4 +1,4 @@
-import { EVALUATION_EXERCISES } from "../data/exercise_db";
+import { ALL_EXERCISES } from "../data/exercise_db";
 
 export const initialExerciseUnlock = (evaluationResults) => {
     const unlockedProgress = {};
@@ -7,7 +7,7 @@ export const initialExerciseUnlock = (evaluationResults) => {
         const achievedID = evaluationResults[category].variationID; // např. 'pushup_02'
         const maxReps = evaluationResults[category].maxReps;
 
-        const categoryPath = EVALUATION_EXERCISES[category];
+        const categoryPath = ALL_EXERCISES[category];
 
         const achievedIndex = categoryPath.indexOf(achievedID);
 

@@ -1,11 +1,9 @@
 
 import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
 
 
 export default function StatusWindow() {
-    const navigate = useNavigate()
     const userData = useUserStore((state) => state.userData);
     const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);

@@ -8,7 +8,7 @@ export const EXERCISE_DB = {
         reward: 1, // xp
         xp: 0, // accumulated
         proficiency: 0,
-        prerequisites: [], 
+        prerequisites: [''], 
     },
     "pushup_01": {
         id: "pushup_01",
@@ -140,7 +140,7 @@ export const EXERCISE_DB = {
         reward: 1, // xp
         xp: 0, // accumulated
         proficiency: 0,
-        prerequisites: [], 
+        prerequisites: [''], 
     },
         "squat_01": {
         id: "squat_01",
@@ -150,7 +150,7 @@ export const EXERCISE_DB = {
         reward: 2, // xp
         xp: 0, // accumulated
         proficiency: 0,
-        prerequisites: [], 
+        prerequisites: ['squat_00'], 
     },
         "squat_02": {
         id: "squat_02",
@@ -204,7 +204,7 @@ export const EXERCISE_DB = {
         reward: 1, // xp
         xp: 0, // accumulated
         proficiency: 0,
-        prerequisites: [], 
+        prerequisites: [''], 
     },
         "pullup_01": {
         id: "pullup_01",
@@ -258,8 +258,14 @@ export const EXERCISE_DB = {
     },
 
 }
+export const ALL_EXERCISES = {
+    pushups: ['pushup_00','pushup_01','pushup_02','pushup_03','pushup_04','pushup_05','pushup_06','pushup_07','pushup_08','pushup_09','pushup_10','pushup_11','pushup_12'],
+    squats: ['squat_00','squat_01','squat_02','squat_03','squat_04'],
+    pullups: ['pullup_00','pullup_01','pullup_02','pullup_03','pullup_04','pullup_05'],
+
+}
 export const EVALUATION_EXERCISES = {
-    pushups: ['pushup_00','pushup_01','pushup_02','pushup_04','pushup_06','pushup_08','pushup_09'],
+    pushups: ['pushup_00','pushup_01','pushup_02','pushup_04','pushup_06','pushup_08','pushup_09','pushup_10','pushup_11','pushup_12'],
     squats: ['squat_00','squat_01','squat_02','squat_03','squat_04'],
     pullups: ['pullup_00','pullup_01','pullup_02','pullup_03','pullup_04','pullup_05'],
 }
