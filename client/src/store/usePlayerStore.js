@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import levelUp from '../utils/levelUpSystem';
 
 const INITIAL_PLAYER_STATE = {
   
@@ -95,7 +96,23 @@ const useUserStore = create((set, get) => ({
   logout: () => {
         localStorage.removeItem('userId');
         set({ userData: INITIAL_PLAYER_STATE });
-    }
+  },
+
+  addXP: (amount) => {
+    
+    const currentData = get().userData;
+    const totalXP = currentData.xp + amount;
+
+    const { levelUps, xp } = levelUp(currentData.level, totalXP);
+
+    set((state) => ({
+      userData: { 
+          ...state.userData,
+          level: currentData.level + levelUps,
+          xp: xp
+      }
+    }))
+  }
 }));
 
 export default useUserStore;
