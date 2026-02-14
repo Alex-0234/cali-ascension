@@ -1,39 +1,49 @@
+import { EXERCISE_DB } from "../data/exercise_db";
 
 export const calculatePlayerStats = (userEvaluation) => {
     
 
-    let totalXP = 0;
+    let totalEP = 0;
 
     // 1. PUSHUPS CALCULATION
     if (userEvaluation?.pushups) {
-        const { tierIndex, maxReps } = userEvaluation.pushups;
-        
-        const tierXP = (tierIndex || 0) * 100; 
-        const repXP = (maxReps || 0) * 2; 
-        totalXP += tierXP + repXP;
+        const { variationID, maxReps } = userEvaluation.pushups;
+        const tierIndex = EXERCISE_DB[variationID].tier;
+        const tierEP = (tierIndex || 0) * 100; 
+        const repEP = (maxReps || 0) * 6; 
+        totalEP += tierEP + repEP;
     }
 
     // 2. SQUATS CALCULATION
     if (userEvaluation?.squats) {
-        const { tierIndex, maxReps } = userEvaluation.squats;
-        const tierXP = (tierIndex || 0) * 100;
-        const repXP = (maxReps || 0) * 5; 
-        totalXP += tierXP + repXP;
+        const { variationID, maxReps } = userEvaluation.squats;
+        const tierIndex = EXERCISE_DB[variationID].tier;
+        const tierEP = (tierIndex || 0) * 100;
+        const repEP = (maxReps || 0) * 6; 
+        totalEP += tierEP + repEP;
+    }
+    // 3. PULLUPS CALCULATION
+    if (userEvaluation?.pullups) {
+        const { variationID, maxReps } = userEvaluation.pullups;
+        const tierIndex = EXERCISE_DB[variationID].tier;
+        const tierEP = (tierIndex || 0) * 100;
+        const repEP = (maxReps || 0) * 6; 
+        totalEP += tierEP + repEP;
     }
 
     // 3. PLANK / RUN (Do budoucna)
     // ...
 
-    return totalXP;
+    return totalEP;
 };
 
-export const getRankFromXP = (xp) => {
-    if (xp < 100) return { rank: "E-Rank", title: "Civilian", color: "#808080" }; 
-    if (xp < 300) return { rank: "D-Rank", title: "Novice Hunter", color: "#ffffff" }; 
-    if (xp < 600) return { rank: "C-Rank", title: "Experienced", color: "#2ecc71" }; 
-    if (xp < 1000) return { rank: "B-Rank", title: "Elite", color: "#3498db" }; 
-    if (xp < 1800) return { rank: "A-Rank", title: "Master", color: "#9b59b6" }; 
-    if (xp < 3000) return { rank: "S-Rank", title: "Monarch", color: "#f1c40f" }; 
+export const getRankFromXP = (EP) => {
+    if (EP < 100) return { rank: "E-Rank", title: "Civilian", color: "#808080" }; 
+    if (EP < 300) return { rank: "D-Rank", title: "Novice Hunter", color: "#ffffff" }; 
+    if (EP < 600) return { rank: "C-Rank", title: "Experienced", color: "#2ecc71" }; 
+    if (EP < 1000) return { rank: "B-Rank", title: "Elite", color: "#3498db" }; 
+    if (EP < 1800) return { rank: "A-Rank", title: "Master", color: "#9b59b6" }; 
+    if (EP < 3000) return { rank: "S-Ran k", title: "Monarch", color: "#f1c40f" }; 
     
     return { rank: "National Level", title: "Ruler", color: "#e74c3c" }; 
 };
