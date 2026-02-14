@@ -29,7 +29,6 @@ export default function Login() {
                     userId: data.userId, 
                     username: username, 
                     isLoggedIn: true, 
-                    isConfigured: true
                 });
 
                 // 3. Přesměrování
