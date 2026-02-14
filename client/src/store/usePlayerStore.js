@@ -7,8 +7,9 @@ const INITIAL_PLAYER_STATE = {
     username: "",
     email: "",
 
-    gender: "",
+    shownName: "",
     age: "",
+    gender: "",
     height: "",
     weight: "",
 
@@ -25,7 +26,7 @@ const INITIAL_PLAYER_STATE = {
     },
 
     userEvaluation: {},
-    skillProgress: {},
+    exerciseProgress: {},
 
     isLoading: false,
     isLoggedIn: false,

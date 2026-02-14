@@ -94,7 +94,7 @@ const handleSubmitExercise = () => {
                 ...userData,
                 ...personalInfo, 
                 userEvaluation: newDraft, 
-                userProgress: initialProgress,
+                exerciseProgress: initialProgress,
                 isConfigured: true,
             });
 
