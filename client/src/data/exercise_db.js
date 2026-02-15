@@ -5,19 +5,17 @@ export const EXERCISE_DB = {
         name: "Wall Pushup",
         animation: "/videos/wall_pushup.mp4",
         tier: 0,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
-        prerequisites: [''], 
+        totalReps: 0,
+        maxReps: 0,
+        prerequisites: [], 
     },
     "pushup_01": {
         id: "pushup_01",
         name: "Incline Pushup",
         animation: "/videos/incline_pushup.mp4",
         tier: 1,
-        reward: 2, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_00"],
     },
     "pushup_02": {
@@ -25,9 +23,8 @@ export const EXERCISE_DB = {
         name: "Standard Pushup",
         animation: "/videos/standard_pushup.mp4",
         tier: 2,
-        reward: 5, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_01"],
     },
     "pushup_03": {
@@ -35,9 +32,8 @@ export const EXERCISE_DB = {
         name: "Diamond Pushup",
         animation: "/videos/diamond_pushup.mp4",
         tier: 2,
-        reward: 5, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_02"], // Path A: Tricep/One-Arm focus
     },
     "pushup_04": {
@@ -45,9 +41,8 @@ export const EXERCISE_DB = {
         name: "Pike Pushup",
         animation: "",
         tier: 3,
-        reward: 10, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_02"], 
     },
     "pushup_05": {
@@ -55,9 +50,8 @@ export const EXERCISE_DB = {
         name: "Explosive Clap Pushup",
         animation: "",
         tier: 3,
-        reward: 10, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_02"], // Path C: Power focus
     },
     "pushup_06": {
@@ -65,9 +59,8 @@ export const EXERCISE_DB = {
         name: "Archer Pushup",
         animation: "",
         tier: 4,
-        reward: 100, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_03"], // Requires Diamond
     },
     "pushup_07": {
@@ -75,9 +68,8 @@ export const EXERCISE_DB = {
         name: "Elevated Pike Pushup",
         animation: "",
         tier: 5,
-        reward: 200, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_04"], // Requires Pike
     },
     "pushup_08": {
@@ -85,9 +77,8 @@ export const EXERCISE_DB = {
         name: "Pseudo Planche Pushup",
         animation: "",
         tier: 5,
-        reward: 200, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_03"], // Requires Diamond (Heavy shoulder lean)
     },
     "pushup_09": {
@@ -95,9 +86,8 @@ export const EXERCISE_DB = {
         name: "One-Arm Pushup",
         animation: "",
         tier: 6,
-        reward: 500, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_06"], // Requires Archer
     },
     "pushup_10": {
@@ -105,9 +95,8 @@ export const EXERCISE_DB = {
         name: "Wall Handstand Pushup",
         animation: "",
         tier: 7,
-        reward: 1000, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_07"], // Requires Elevated Pike
     },
     "pushup_11": {
@@ -115,9 +104,8 @@ export const EXERCISE_DB = {
         name: "Freestanding Handstand Pushup",
         animation: "",
         tier: 8,
-        reward: 2000, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_10"], // Requires Wall HSPU
     },
     "pushup_12": {
@@ -125,9 +113,8 @@ export const EXERCISE_DB = {
         name: "Planche Pushup",
         animation: "",
         tier: 9,
-        reward: 5000, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ["pushup_08"], // Requires Pseudo Planche
     },
 
@@ -137,19 +124,17 @@ export const EXERCISE_DB = {
         name: "Chair Squat",
         animation: "",
         tier: 0,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
-        prerequisites: [''], 
+        totalReps: 0,
+        maxReps: 0,
+        prerequisites: [], 
     },
         "squat_01": {
         id: "squat_01",
         name: "Hand Assisted Squat",
         animation: "",
         tier: 0,
-        reward: 2, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['squat_00'], 
     },
         "squat_02": {
@@ -157,9 +142,8 @@ export const EXERCISE_DB = {
         name: "Standard Squat",
         animation: "",
         tier: 1,
-        reward: 5, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['squat_01'], 
     },
         "squat_03": {
@@ -167,9 +151,8 @@ export const EXERCISE_DB = {
         name: "Hand Assisted Pistol Squat",
         animation: "",
         tier: 2,
-        reward: 10, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['squat_02'], 
     },
         "squat_04": {
@@ -177,9 +160,8 @@ export const EXERCISE_DB = {
         name: "Pistol Squat",
         animation: "",
         tier: 3,
-        reward: 20, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['squat_03'], 
     },
 
@@ -201,19 +183,17 @@ export const EXERCISE_DB = {
         name: "Scapular Pullup",
         animation: "",
         tier: 0,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
-        prerequisites: [''], 
+        totalReps: 0,
+        maxReps: 0,
+        prerequisites: [], 
     },
         "pullup_01": {
         id: "pullup_01",
         name: "Negative Pullup",
         animation: "",
         tier: 0,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['pullup_00'], 
     },
         "pullup_02": {
@@ -221,9 +201,8 @@ export const EXERCISE_DB = {
         name: "Band Assisted Pullup",
         animation: "",
         tier: 1,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['pullup_01'], 
     },
         "pullup_03": {
@@ -231,9 +210,8 @@ export const EXERCISE_DB = {
         name: "Standard Pullup",
         animation: "",
         tier: 2,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['pullup_02'], 
     },
         "pullup_04": {
@@ -241,9 +219,8 @@ export const EXERCISE_DB = {
         name: "Archer Pullup",
         animation: "",
         tier: 3,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['pullup_03'], 
     },
         "pullup_05": {
@@ -251,9 +228,8 @@ export const EXERCISE_DB = {
         name: "One-Armed Pullup",
         animation: "",
         tier: 4,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
         prerequisites: ['pullup_04'], 
     },
 
