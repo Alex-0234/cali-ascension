@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     
+    shownName: String,
     age: Number,
     gender: String,
     weight: Number,
@@ -27,14 +28,10 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed, 
         default: {}
     },
-    awakened: {
-        type: mongoose.Schema.Types.Mixed, 
-        default: {}
-    },
 
     isConfigured: { type: Boolean, default: false },
 
-    skillProgress: {
+    exerciseProgress: {
         type: mongoose.Schema.Types.Mixed,
         default: {}
     }

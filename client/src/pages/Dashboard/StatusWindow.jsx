@@ -1,17 +1,17 @@
 
 import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
 
 
 export default function StatusWindow() {
-    const navigate = useNavigate()
     const userData = useUserStore((state) => state.userData);
+    const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         setLoaded(true);
     },[userData]);
+
 
     if (!loaded) {
         return <div><p>Initializing user...</p></div>
@@ -19,12 +19,6 @@ export default function StatusWindow() {
 
     return (
         <>
-        {!userData.isConfigured && (
-                <div>
-                    <button onClick={() => navigate('/evaluation')}></button>
-                </div>
-        )}
-        {userData.isConfigured && (
         <div className="status-window border">
             <div className="d_flex_dir_row">
                 <h3>[ Level  {userData.level} ]</h3>
@@ -34,7 +28,8 @@ export default function StatusWindow() {
 
             <h3> {userData.username} </h3>
             <div className="progress-bar">
-                <p>XP: [◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎☐☐☐☐☐]</p>
+                <p>XP: [☐☐☐☐☐☐☐☐☐☐☐☐☐]</p>
+                <button onClick={() => addXP(1)}>+1xp</button>
             </div>
             <hr/>
             <div className="stats d_grid_2_2" >
@@ -76,11 +71,8 @@ export default function StatusWindow() {
                     <input className="inline-b" type="checkbox" style={{height: 20 + 'px', width: 20 + 'px'} }></input>
                     <p className="inline-b">Pullups:    50/100 </p>
                 </div>
-                
-                
             </div>
         </div>
-        )}
 
         </>
     )

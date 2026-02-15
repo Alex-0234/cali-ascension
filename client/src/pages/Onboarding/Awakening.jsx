@@ -23,13 +23,11 @@ export default function Awakening() {
 
         const timer = setTimeout(() => {
             
-            // 4. Uložit finální rank do globálního Storu
             setUserData({ 
                 ...userData,
                 rank: result.rank,
                 title: result.title,
-                level: 1,     
-                xp: xp,        
+                level: 1,             
                 isConfigured: true,
             });
 
@@ -46,6 +44,7 @@ export default function Awakening() {
 
     return (
         <div className="rank-screen">
+
             {stage === 'calculating' && (
                 <div className="system-loading">
                     <div className="spinner"></div>
