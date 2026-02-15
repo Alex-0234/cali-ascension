@@ -1,29 +1,26 @@
-import { calculateProficiencyCascade } from '../../utils/proficiencySystem';
+
+import { useState } from "react";
+import { saveWorkoutReps } from "../../utils/workoutSystem";
 import useUserStore from "../../store/usePlayerStore";
 import { getHighestUnlockedExercises } from '../../utils/workoutSelector';
-import { getProficiencyLevel, getProficiencyProgress } from '../../utils/proficiencySystem';
+import {getProficiency } from '../../utils/proficiencySystem';
 
 export function WorkoutScreen() {
-    const userData = useUserStore(state => state.userData);
-    const setUserData = useUserStore(state => state.setUserData);
-    const userProgress = useUserStore(state => state.userData.exerciseProgress);
+    const setUserData = useUserStore((state) => state.setUserData);
+    const userData = useUserStore((state) => state.userData);
+    const currentProgress = useUserStore(state => state.userData.exerciseProgress);
+    const [currentValue, setCurrentValue] = useState(0);
 
     const finishWorkout = (exerciseID, repsDone) => {
-        const updatedProgress = calculateProficiencyCascade(
-            userData.userProgress, 
-            exerciseID, 
-            repsDone
-        );
-
+        const newProgress = saveWorkoutReps(currentProgress, exerciseID, repsDone);
         setUserData({
             ...userData,
-            userProgress: updatedProgress
-        });
-        
+            exerciseProgress: newProgress
+        })
         console.log("Workout saved! Cascading proficiency applied.");
     };
 
-   const currentQuests = getHighestUnlockedExercises(userProgress);
+   const currentQuests = getHighestUnlockedExercises(currentProgress);
 
 return (
         <div className="workout-dashboard">
@@ -32,8 +29,8 @@ return (
             <div className="exercise-grid">
                 {Object.entries(currentQuests).map(([category, exerciseData]) => {
                     
-                    const currentLevel = getProficiencyLevel(exerciseData.proficiency);
-                    const progressPercent = getProficiencyProgress(exerciseData.proficiency);
+                    const { currentLevel, currentProgress } = getProficiency(exerciseData.totalReps);
+                    
 
                     return (
                         <div key={category} className="quest-card">
@@ -43,28 +40,30 @@ return (
                             {/* --- NOVÝ PROGRESS BAR --- */}
                             <div className="skill-progress-container">
                                 <div className="skill-header">
-                                    <span className="skill-level">Lv. {currentLevel}</span>
                                     {currentLevel < 10 ? (
                                         <span className="skill-points">
-                                            {(exerciseData.proficiency % 1000)} / 1000
+                                            [ Proficiency: {currentLevel} / 10 ]
                                         </span>
                                     ) : (
                                         <span className="skill-max">MAX LEVEL</span>
                                     )}
                                 </div>
                                 
-                                <div className="mini-xp-bar">
+                                <div className="mini-xp-bar"
+                                    style={{width: 100 + '%', height: 1 + 'rem', margin: '0.5rem 0 0.5rem 0', background: 'gray'}}
+                                    >
                                     <div 
                                         className="mini-xp-fill" 
-                                        style={{ width: `${progressPercent}%` }}
+                                        style={{ width: `${currentProgress}%`, height: 1 + 'rem', margin: '0.5rem 0 0.5rem 0', background: 'lightblue'}}
                                     ></div>
                                 </div>
                             </div>
                             {/* ------------------------- */}
 
-                            <button className="btn-start-workout">
-                                START TRAINING
-                            </button>
+                            
+                                <input className="exercise-input" onChange={(e) => setCurrentValue(e.target.value)}></input>
+                                <button className="exercise-completion" onClick={() => finishWorkout(exerciseData.id, currentValue)}>Finish exercise</button>
+                            <hr></hr>
                         </div>
                     );
                 })}
