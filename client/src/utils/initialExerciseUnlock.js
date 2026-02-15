@@ -17,8 +17,8 @@ export const initialExerciseUnlock = (evaluationResults) => {
 
                 unlockedProgress[exerciseId] = {
                     unlocked: true,
-                    proficiency: i === achievedIndex ? Math.floor(maxReps / 5) : 5, 
-                    accumulatedXp: 0
+                    totalReps: maxReps,
+                    maxReps: maxReps,
                 };
             }
         }
