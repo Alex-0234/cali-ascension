@@ -1,7 +1,6 @@
 import { EXERCISE_DB } from "../data/exercise_db";
 
-export const calculatePlayerStats = (userEvaluation) => {
-    
+export const calculatePlayerEP = (userEvaluation) => {
 
     let totalEP = 0;
 

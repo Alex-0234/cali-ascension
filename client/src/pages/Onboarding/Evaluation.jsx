@@ -4,6 +4,8 @@ import Hologram from "../../components/ui/Hologram";
 import { useNavigate } from 'react-router-dom';
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
+import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
+import { saveWorkoutReps } from "../../utils/workoutSystem";
 
 const PERSONAL_STEPS = [
     { key: 'username', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
@@ -77,7 +79,10 @@ const handleSubmitExercise = () => {
                 variationName: EXERCISE_DB[currentTier].name,
                 maxReps: maxReps
             }
+            
         };
+
+        const initialProgress = initialExerciseUnlock(newDraft);
         
         setEvaluationDraft(newDraft);
 
@@ -88,7 +93,7 @@ const handleSubmitExercise = () => {
             setMaxReps(0); 
         } else {
             
-            const initialProgress = initialExerciseUnlock(newDraft);
+            
 
             setUserData({
                 ...userData,

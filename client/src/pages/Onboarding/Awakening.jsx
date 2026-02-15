@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Přidáno pro odchod
-import { getRankFromXP, calculatePlayerStats } from '../../utils/rankSystem';
+import { getRankFromXP, calculatePlayerEP } from '../../utils/rankSystem';
 import useUserStore from '../../store/usePlayerStore';
 
 export default function Awakening() {
@@ -14,7 +14,7 @@ export default function Awakening() {
 
     useEffect(() => {
 
-        const xp = calculatePlayerStats(userData.userEvaluation);
+        const xp = calculatePlayerEP(userData.userEvaluation);
         const result = getRankFromXP(xp);
 
         console.log("Awakening Results:", { xp, result });
