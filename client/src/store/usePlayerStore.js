@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import levelUp from '../utils/levelUpSystem';
+import { testingLevelUp } from '../utils/levelUpSystem';
 
 const INITIAL_PLAYER_STATE = {
   
@@ -39,13 +39,18 @@ const INITIAL_PLAYER_STATE = {
 const useUserStore = create((set, get) => ({
   userData: INITIAL_PLAYER_STATE,
 
+  hasFetchedInitialData: false,
+
   setUserData: (newData) => 
     set((state) => ({
       userData: { ...state.userData, ...newData }
     })),
   
   fetchUser: async (userId) => {
-      set({ isLoading: true });
+      set((state) => ({ 
+          userData: { ...state.userData, isLoading: true } 
+      }));
+
       try {
           const response = await fetch(`http://localhost:5000/api/user/${userId}`);
           const data = await response.json();
@@ -53,6 +58,7 @@ const useUserStore = create((set, get) => ({
           console.log('System: User Data Loaded', data);
 
           set((state) => ({
+              hasFetchedInitialData: true,
               userData: { 
                   ...state.userData, 
                   ...data, 
@@ -64,6 +70,7 @@ const useUserStore = create((set, get) => ({
           console.error('Fetch Failed', error);
 
           set((state) => ({ 
+              hasFetchedInitialData: true,
               userData: { 
                 ...state.userData,
                 isLoading: false,
@@ -73,14 +80,22 @@ const useUserStore = create((set, get) => ({
   },
 
   syncUser: async () => {
-    const { userData } = get(); 
+    const state = get(); 
+    const { userData } = state;
     if (!userData.userId) return;
 
     if (!userData.isLoggedIn) {
-        console.warn("Sync zablokován: Uživatel není přihlášen.");
+        console.warn("Sync blocked: Waiting for login.");
         return;
     }
-
+    if (userData.isLoading) {
+        console.warn("Sync blocked: Fetching from database.");
+        return;
+    }
+    if (!state.hasFetchedInitialData) {
+        console.warn("Sync blocked: Waiting for initial data fetch from DB!");
+        return;
+    }
     try {
       console.log('System: Syncing to Database...');
       await fetch(`http://localhost:5000/api/user/${userData.userId}`, {
@@ -95,23 +110,24 @@ const useUserStore = create((set, get) => ({
   },
   logout: () => {
         localStorage.removeItem('userId');
-        set({ userData: INITIAL_PLAYER_STATE });
+        set({  hasFetchedInitialData: false, userData: INITIAL_PLAYER_STATE });
+        
   },
 
   addXP: (amount) => {
-    
+    const syncUser = get().syncUser;
     const currentData = get().userData;
-    const totalXP = currentData.xp + amount;
 
-    const { levelUps, xp } = levelUp(currentData.level, totalXP);
+    const { newLevel, leftoverXP } = testingLevelUp(currentData.level, amount, currentData.xp);
 
     set((state) => ({
       userData: { 
           ...state.userData,
-          level: currentData.level + levelUps,
-          xp: xp
+          level: newLevel,
+          xp: leftoverXP
       }
     }))
+    syncUser();
   }
 }));
 

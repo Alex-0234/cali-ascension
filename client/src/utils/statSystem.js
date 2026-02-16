@@ -1,9 +1,9 @@
 import { EXERCISE_DB, ALL_EXERCISES } from "../data/exercise_db";
 
 const EXERCISE_STAT_SCALING = {
-    pushups: { STR: 1.0, VIT: 0.2, AGI: 0.1, DEX: 0.5 },
-    squats:  { STR: 1.0, VIT: 0.2, AGI: 0.7, DEX: 0.5 },
-    pullups: { STR: 1.0, VIT: 0.2, AGI: 0,   DEX: 0.5 },
+    pushups: { STR: 1.0, VIT: 0.5, AGI: 0.2, DEX: 0.5 },
+    squats:  { STR: 1.0, VIT: 0.8, AGI: 1.0, DEX: 0.5 },
+    pullups: { STR: 1.0, VIT: 0.6, AGI: 0.2, DEX: 0.5 },
     // etc.
 };
 
@@ -11,7 +11,6 @@ const STATS_PER_TIER = 12;
 const MAX_REPS_MASTERY = 5;
 
 export function calculatePlayerStats(userProgress) {
-    // 1. Založíme jeden HLAVNÍ objekt pro staty
     const Stats = {
         STR: 10,
         AGI: 10,
