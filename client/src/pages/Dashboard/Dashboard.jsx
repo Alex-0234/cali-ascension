@@ -8,10 +8,16 @@ import { WorkoutScreen } from './workoutScreen';
 export default function Dashboard() {
     const navigate = useNavigate();
     const userData = useUserStore((state) => state.userData);
+    const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
     const logout = useUserStore((state) => state.logout);  
 
-    if (userData.isLoading) {
-        return <div className="dashboard">Loading System...</div>;
+    if (userData.isLoading || !hasFetchedInitialData) {
+        return (
+            <>
+                <h2>[ SYSTEM ]</h2>
+                <p>Synchronizing Hunter Data...</p>
+            </>
+            )
     }
 
     return (

@@ -7,8 +7,23 @@ export function getXpNeededForLevel(lvl) {
     const output = BASE_XP_NEEDED + ((BASE_XP_NEEDED * 1.5) * lvl);
     return output;
 }
+export function testingLevelUp(currentLevel, gainedXP, currentLeftoverXP) {
+    let tempLevel = currentLevel;
+    let levelUps = 0;
+    let currentXP = gainedXP + currentLeftoverXP;
 
-export default function calculateLevelUp(currentLevel, currentLeftoverXP, variationID, totalReps) {
+    while (currentXP >= getXpNeededForLevel(tempLevel)) {
+        currentXP -= getXpNeededForLevel(tempLevel);
+
+        tempLevel += 1;
+        levelUps += 1;
+    }
+    return {
+        newLevel: currentLevel + levelUps,
+        leftoverXP: currentXP
+    }  
+}
+export function calculateLevelUp(currentLevel, currentLeftoverXP, variationID, totalReps) {
 
     const exerciseTier = EXERCISE_DB[variationID].tier;
     const gainedXP = (TIER_XP_REWARDS[exerciseTier] * totalReps);
@@ -26,6 +41,12 @@ export default function calculateLevelUp(currentLevel, currentLeftoverXP, variat
     return {
         newLevel: currentLevel + levelUps,
         leftoverXP: currentXP
-    }
-    
+    }  
+}
+
+export function getLevelProgress(currentXP, userLevel) {
+    const neededXP = getXpNeededForLevel(userLevel);
+    if (currentXP >= neededXP) return 100;
+    const progress = (currentXP/neededXP)*100;
+    return progress;
 }
