@@ -4,6 +4,8 @@ import { saveWorkoutReps } from "../../utils/workoutSystem";
 import useUserStore from "../../store/usePlayerStore";
 import { getHighestUnlockedExercises } from '../../utils/workoutSelector';
 import {getProficiency } from '../../utils/proficiencySystem';
+import calculateLevelUp from "../../utils/levelUpSystem";
+import { calculatePlayerStats } from "../../utils/statSystem";
 
 export function WorkoutScreen() {
     const setUserData = useUserStore((state) => state.setUserData);
@@ -13,8 +15,13 @@ export function WorkoutScreen() {
 
     const finishWorkout = (exerciseID, repsDone) => {
         const newProgress = saveWorkoutReps(currentProgress, exerciseID, repsDone);
+        const { newLevel, leftoverXP } = calculateLevelUp(userData.level, userData.xp, exerciseID, repsDone);
+        const stats = calculatePlayerStats(newProgress);
         setUserData({
             ...userData,
+            level: newLevel,
+            xp: leftoverXP,
+            stats: stats,
             exerciseProgress: newProgress
         })
         console.log("Workout saved! Cascading proficiency applied.");

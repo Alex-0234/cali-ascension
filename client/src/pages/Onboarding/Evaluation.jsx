@@ -6,6 +6,7 @@ import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
 import { saveWorkoutReps } from "../../utils/workoutSystem";
+import { calculatePlayerStats } from "../../utils/statSystem";
 
 const PERSONAL_STEPS = [
     { key: 'username', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
@@ -78,11 +79,8 @@ const handleSubmitExercise = () => {
                 variationID: currentTier,
                 variationName: EXERCISE_DB[currentTier].name,
                 maxReps: maxReps
-            }
-            
+            }          
         };
-
-        const initialProgress = initialExerciseUnlock(newDraft);
         
         setEvaluationDraft(newDraft);
 
@@ -93,11 +91,13 @@ const handleSubmitExercise = () => {
             setMaxReps(0); 
         } else {
             
-            
+            const initialProgress = initialExerciseUnlock(newDraft);
+            const stats = calculatePlayerStats(initialProgress);
 
             setUserData({
                 ...userData,
                 ...personalInfo, 
+                stats: stats,
                 userEvaluation: newDraft, 
                 exerciseProgress: initialProgress,
                 isConfigured: true,
