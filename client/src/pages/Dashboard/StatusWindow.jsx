@@ -35,21 +35,21 @@ export default function StatusWindow() {
             <div className="stats d_grid_2_2" >
                 <div className="stat-wrapper">
                     <h3>[ Strength ]</h3>
-                    <p>{userData.stats.strength}</p>
+                    <p>{userData.stats.STR}</p>
                 </div>
                 
                 <div className="stat-wrapper">
                     <h3>[ Agility ]</h3>
-                    <p>{userData.stats.agility}</p>
+                    <p>{userData.stats.AGI}</p>
                 </div>
                 <div className="stat-wrapper">
-                    <h3>[ Intelligence ]</h3>
-                    <p>{userData.stats.intelligence}</p>
+                    <h3>[ Dexterity ]</h3>
+                    <p>{userData.stats.DEX}</p>
                 </div>
                 
                 <div className="stat-wrapper">
                     <h3>[ Vitality ]</h3>
-                    <p>{userData.stats.vitality}</p>
+                    <p>{userData.stats.VIT}</p>
                 </div>
                 
 

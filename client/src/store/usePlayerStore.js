@@ -18,11 +18,10 @@ const INITIAL_PLAYER_STATE = {
     title: "None",
     xp: 0,
     stats: {
-        strength: 10,
-        agility: 10,
-        sense: 10,
-        vitality: 10,
-        intelligence: 10
+      STR: 10,
+      AGI: 10,
+      VIT: 10,
+      DEX: 10
     },
 
     userEvaluation: {},

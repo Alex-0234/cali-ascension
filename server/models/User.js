@@ -18,10 +18,10 @@ const UserSchema = new mongoose.Schema({
     xp: { type: Number, default: 0 }, 
     
     stats: {
-        strength: { type: Number, default: 10 },
-        agility: { type: Number, default: 10 },
-        intelligence: { type: Number, default: 10 },
-        vitality: { type: Number, default: 10 },
+        STR: { type: Number, default: 10 },
+        AGI: { type: Number, default: 10 },
+        VIT: { type: Number, default: 10 },
+        DEX: { type: Number, default: 10 }
     },
 
     userEvaluation: {
