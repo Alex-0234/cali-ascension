@@ -6,7 +6,7 @@ import useUserStore from './store/usePlayerStore';
 
 import Login from './pages/Auth/Login'; 
 import Register from './pages/Auth/Register';
-import SkillTree from './components/reactflow/SkillTree';
+import SkillTreeScreen from './components/reactflow/SkillTree';
 import Awakening from './pages/Onboarding/Awakening';
 import Evaluation from './pages/Onboarding/Evaluation';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -70,7 +70,7 @@ function App() {
         } />
 
         <Route path="/skill-tree" element={
-          <ProtectedRoute><SkillTree /></ProtectedRoute>
+          <ProtectedRoute><SkillTreeScreen /></ProtectedRoute>
         } />
       </Routes>
     </Router>
