@@ -10,6 +10,7 @@ export default function Login() {
     const [notification, setNotification] = useState({message: '', error: false})
     
     const setUserData = useUserStore((state) => state.setUserData);
+    const fetchUser = useUserStore((state) => state.fetchUser);
 
     async function handleLogin() {
         try {
@@ -30,6 +31,8 @@ export default function Login() {
                     username: username, 
                     isLoggedIn: true, 
                 });
+
+                await fetchUser(data.userId);
 
                 // 3. Přesměrování
                 navigate('/');
