@@ -4,12 +4,10 @@ import Hologram from "../../components/ui/Hologram";
 import { useNavigate } from 'react-router-dom';
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
-import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
-import { saveWorkoutReps } from "../../utils/workoutSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
 
 const PERSONAL_STEPS = [
-    { key: 'username', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
+    { key: 'shownName', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
     { key: 'age', label: 'Enter your age', type: 'number', placeholder: '25' },
     { key: 'gender', label: 'Select your gender', type: 'text', placeholder: 'Male / Female / Solo Leveler' },
     { key: 'height', label: 'Enter your height (cm)', type: 'number', placeholder: '180' },
@@ -21,6 +19,7 @@ const STAGES = ['personal_details', 'pushups', 'squats', 'pullups'];
 const EvaluationScreen = () => {
     const navigate = useNavigate();
     const setUserData = useUserStore((state) => state.setUserData);
+    const syncUser = useUserStore((state) => state.syncUser)
     const userData = useUserStore((state) => state.userData);
 
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
@@ -31,7 +30,7 @@ const EvaluationScreen = () => {
     const [personalStepIndex, setPersonalStepIndex] = useState(0);
     
     const [personalInfo, setPersonalInfo] = useState({
-        username: '', age: '', gender: '', height: '', weight: ''
+        shownName: '', age: '', gender: '', height: '', weight: ''
     });
     const [evaluationDraft, setEvaluationDraft] = useState({});
 
@@ -72,7 +71,7 @@ const EvaluationScreen = () => {
         setMode('input');
     };
 
-const handleSubmitExercise = () => {
+const handleSubmitExercise = async () => {
         const newDraft = {
             ...evaluationDraft, 
             [currentStageName]: {      
@@ -102,6 +101,7 @@ const handleSubmitExercise = () => {
                 exerciseProgress: initialProgress,
                 isConfigured: true,
             });
+            await syncUser();
 
             navigate('/awakening');
         }
