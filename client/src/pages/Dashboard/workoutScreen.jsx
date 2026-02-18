@@ -6,6 +6,7 @@ import { getHighestUnlockedExercises } from '../../utils/workoutSelector';
 import {getProficiency } from '../../utils/proficiencySystem';
 import { calculateLevelUp } from "../../utils/levelUpSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
+import Navbar from "../../components/layout/Navbar";
 
 export function WorkoutScreen() {
     const setUserData = useUserStore((state) => state.setUserData);
@@ -23,7 +24,11 @@ export function WorkoutScreen() {
             level: newLevel,
             xp: leftoverXP,
             stats: stats,
-            exerciseProgress: newProgress
+            exerciseProgress: newProgress,
+            exerciseHistory: [
+            ...(userData.exerciseHistory || []), 
+            { exerciseId: exerciseID, reps: repsDone }
+    ]
         })
         console.log("Workout saved! Cascading proficiency applied.");
         syncUser();
@@ -32,6 +37,7 @@ export function WorkoutScreen() {
    const currentQuests = getHighestUnlockedExercises(currentProgress);
 
 return (
+    <>
         <div className="workout-dashboard">
             <h2>🔥 Daily Quests: Your Current Limits</h2>
             
@@ -78,5 +84,7 @@ return (
                 })}
             </div>
         </div>
+        <Navbar />
+    </>
     );
 };

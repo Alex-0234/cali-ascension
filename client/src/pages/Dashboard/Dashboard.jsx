@@ -12,6 +12,9 @@ export default function Dashboard() {
     const logout = useUserStore((state) => state.logout);  
 
     if (userData.isLoading || !hasFetchedInitialData) {
+        setTimeout(() => {
+            
+        })
         return (
             <>
                 <h2>[ SYSTEM ]</h2>
@@ -31,10 +34,7 @@ export default function Dashboard() {
                 </div>
             )}
             {userData.isConfigured && (
-                <>
                     <StatusWindow />
-                    <WorkoutScreen />
-                </>
             )}
             
         </div>
