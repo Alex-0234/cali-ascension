@@ -19,6 +19,8 @@ html, body {
   width: 100%;
   min-width: 100dvw;
   margin: 0 auto;  
+  text-align: center;
+  padding-bottom: 6rem;
   
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -88,6 +90,9 @@ button:focus-visible {
   display: flex;
   align-self: center;
   flex-wrap: nowrap;
+}
+.status-window {
+  margin: 1rem;
 }
 
 .inline-b {
