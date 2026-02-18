@@ -14,7 +14,7 @@ const INITIAL_PLAYER_STATE = {
     weight: "",
 
     level: 1,
-    rank: "E-Rank",
+    rank: "Unranked",
     title: "None",
     xp: 0,
     stats: {
@@ -31,7 +31,8 @@ const INITIAL_PLAYER_STATE = {
     isLoggedIn: false,
     isConfigured: false,
 
-    weightHistory: []
+    weightHistory: [],
+    workoutHistory: [],
 
 }
 

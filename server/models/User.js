@@ -34,7 +34,16 @@ const UserSchema = new mongoose.Schema({
     exerciseProgress: {
         type: mongoose.Schema.Types.Mixed,
         default: {}
-    }
+    },
+
+    weightHistory: [{ date: { type: Date, default: Date.now },
+                weight: Number,
+                unit: String }],
+                
+    exerciseHistory: [{ date: { type: Date, default: Date.now },
+                exerciseId: String,
+                reps: Number}]
+
 }, { minimize: false }); 
 
 const User = mongoose.model('User', UserSchema);
