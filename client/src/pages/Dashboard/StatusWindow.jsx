@@ -2,6 +2,7 @@
 import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
 import { getLevelProgress } from "../../utils/levelUpSystem";
+import { calculateBMR } from "../../utils/calculateBMI";
 
 
 export default function StatusWindow() {
@@ -9,9 +10,18 @@ export default function StatusWindow() {
     const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);
     const currentProgress = getLevelProgress(userData.xp, userData.level);
+    const [BMR, setBMR] = useState(0);
+    const [BMI, setBMI] = useState(0);
 
     useEffect(() => {
         setLoaded(true);
+        if (userData.isConfigured) {
+            const { currentBMR, currentBMI} = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
+            setBMR(currentBMR);
+            setBMI(currentBMI);
+        }
+        
+
     },[userData]);
 
 
@@ -55,6 +65,11 @@ export default function StatusWindow() {
                     <h3>[ Vitality ]</h3>
                     <p>{userData.stats.VIT}</p>
                 </div>
+            </div>
+            <div className='bmi'>
+                
+                <p>Current BMR: {BMR + 'kcal'} </p>
+                <p>Current BMI: {BMI} - Doesn't take muscles into consideration !!</p>
             </div>
         </div>
         </>
