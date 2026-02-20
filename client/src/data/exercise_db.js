@@ -2,7 +2,7 @@ export const EXERCISE_DB = {
     // --- PUSH-UPS ---
     "pushup_00": {
         id: "pushup_00",
-        name: "Wall Pushup",
+        name: "Wall Push-up",
         animation: "/videos/wall_pushup.mp4",
         tier: 0,
         totalReps: 0,
@@ -11,7 +11,7 @@ export const EXERCISE_DB = {
     },
     "pushup_01": {
         id: "pushup_01",
-        name: "Incline Pushup",
+        name: "Incline Push-up",
         animation: "/videos/incline_pushup.mp4",
         tier: 1,
         totalReps: 0,
@@ -20,8 +20,8 @@ export const EXERCISE_DB = {
     },
     "pushup_02": {
         id: "pushup_02",
-        name: "Standard Pushup",
-        animation: "/videos/standard_pushup.mp4",
+        name: "Knee Push-up",
+        animation: "/videos/knee_pushup.mp4",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
@@ -29,8 +29,8 @@ export const EXERCISE_DB = {
     },
     "pushup_03": {
         id: "pushup_03",
-        name: "Diamond Pushup",
-        animation: "/videos/diamond_pushup.mp4",
+        name: "Standard Push-up",
+        animation: "/videos/standard_pushup.mp4",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
@@ -38,7 +38,7 @@ export const EXERCISE_DB = {
     },
     "pushup_04": {
         id: "pushup_04",
-        name: "Pike Pushup",
+        name: "Wide Pushup",
         animation: "",
         tier: 3,
         totalReps: 0,
@@ -47,7 +47,7 @@ export const EXERCISE_DB = {
     },
     "pushup_05": {
         id: "pushup_05",
-        name: "Explosive Clap Pushup",
+        name: "Narrow Pushup",
         animation: "",
         tier: 3,
         totalReps: 0,
@@ -56,7 +56,7 @@ export const EXERCISE_DB = {
     },
     "pushup_06": {
         id: "pushup_06",
-        name: "Archer Pushup",
+        name: "Diamond Pushup",
         animation: "",
         tier: 4,
         totalReps: 0,
@@ -430,225 +430,129 @@ export const EVALUATION_EXERCISES = {
     squats: ['squat_00','squat_01','squat_02','squat_03','squat_04'],
     pullups: ['pullup_00','pullup_01','pullup_02','pullup_03','pullup_04','pullup_05'],
 }
+export const SPLIT_MODES = {
+    'Push & Pull': ['pushups', 'pullups','squats'],
+    'Legs & Core': ['squats', 'core'],
+    'Full Body': ['pushups', 'pullups', 'squats', 'core']
+};
 
 /* PUSHUPS (Kliky)
-Wall Pushup X
-
-Incline Pushup X
-
-Knee Pushup X 
-
-Standard Pushup X
-
-Wide Pushup 
-
-Narrow / Close-grip Pushup
-
-Diamond Pushup 
-
-Knuckle Pushup
-
-Fingertip Pushup
-
-Decline Pushup ( )
-
-Pike Pushup X
-
-Hindu Pushup
-
-Divebomber Pushup
-
-Spiderman Pushup
-
-Typewriter Pushup
-
-Archer Pushup X
-
+Wall Pushup (X)
+Incline Pushup (X)
+Knee Pushup (X)
+Standard Pushup (X)
+Wide Pushup (X)
+Narrow / Close-grip Pushup (X)
+Diamond Pushup ( )
+Knuckle Pushup ( )
+Fingertip Pushup ( )
+Decline Pushup ( ) 
+Pike Pushup ( )
+Hindu Pushup ( )
+Divebomber Pushup ( )
+Spiderman Pushup ( )
+Typewriter Pushup ( )
+Archer Pushup ( )
 Clapping Pushup
-
 Explosive / Jumping Pushup
-
 Superman Pushup
-
 Aztec Pushup
-
 One-Arm Assisted Pushup X
-
 One-Arm Pushup X
-
 Planche Lean Pushup X
-
 Straddle Planche Pushup ( )
-
 Full Planche Pushup ( )
-
 90-Degree Pushup (Hollowback)
 
 
 
 
 PULLUPS (Shyby a tahy)
-
 Wall Pull (X)
-
 Horizontal Pull / Australian Pullup (X)
-
 Jackknife Pullup (X)
-
 Negative Pullup (X)
-
 Isometric Hold Pullup (X)
-
 Chin-up (X)
-
 Standard Pullup (X)
-
 Wide Grip Pullup (X)
-
 Close Grip Pullup (X)
-
 Commando Pullup (X)
-
 Behind the Neck Pullup (X)
-
 L-Sit Pullup (X)
-
 Archer Pullup (X)
-
 Typewriter Pullup (X)
-
 Explosive / Clapping Pullup (X)
-
 Muscle-up
-
 One-Arm Assisted Pullup / Mantle Pullup (X)
-
 One-Arm Chin-up
-
 One-Arm Pullup
-
 Front Lever Pullup
 
 SQUATS (Dřepy a nohy)
 Assisted Squat
-
 Half Squat
-
 Standard Bodyweight Squat
-
 Narrow Squat
-
 Sumo Squat
-
 Forward Lunge
-
 Reverse Lunge
-
 Side Lunge
-
 Bulgarian Split Squat
-
 Jumping Squat
-
 Box Jump
-
 Cossack Squat
-
 Shrimp Squat
-
 Skater Squat
-
 Assisted Pistol Squat
-
 Pistol Squat
-
 Dragon Pistol Squat
-
 Sissy Squat
-
 Nordic Hamstring Curl
 
 CORE / ABS (Břicho a střed těla)
 Plank
-
 Side Plank
-
 Crunches
-
 Sit-ups
-
 Lying Leg Raises
-
 Flutter Kicks
-
 Russian Twists
-
-Hollow Body Hold
-
+Hollow Body hold
 V-Ups
-
 Jackknife Crunches
-
 Bicycle Crunches
-
 Hanging Knee Raises
-
 Hanging Leg Raises
-
 L-Sit
-
 V-Sit
-
 Windshield Wipers
-
 Dragon Flag
-
 Ab Wheel Rollout
-
 Front Lever Hold
-
 Human Flag (Human Flag)
 
 DIPS (Kliky na bradlech / Triceps)
 Bench Dips
-
 Assisted Parallel Bar Dips
-
 Straight Bar Dips
-
 Parallel Bar Dips
-
 L-Sit Dips
-
 Ring Dips
-
 Bulgarian Ring Dips
-
 Korean Dips
-
 Russian Dips
-
 Impossible Dips
 
 HANDSTAND / SHOULDERS (Stojky a ramena)
 Pike Hold
-
 Wall Walk / Wall Climb
-
 Chest-to-Wall Handstand
-
 Back-to-Wall Handstand
-
 Freestanding Handstand
-
 Frog Stand / Crow Pose
-
 Tuck Planche
-
 Handstand Shoulder Taps
-
 Wall-Assisted Handstand Pushup (HSPU)
-
 Freestanding Handstand Pushup
-
 Tiger Bend Pushup */

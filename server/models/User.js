@@ -36,13 +36,12 @@ const UserSchema = new mongoose.Schema({
         default: {}
     },
 
-    weightHistory: [{ date: { type: Date, default: Date.now },
-                weight: Number,
-                unit: String }],
+    weightHistory: [{date: { type: Date, default: Date.now },
+                    weight: Number }],
                 
-    exerciseHistory: [{ date: { type: Date, default: Date.now },
-                exerciseId: String,
-                reps: Number}]
+    workoutHistory: [{ date: { type: Date, default: Date.now },
+                exerciseId: String, 
+                sets: [{reps: Number, extraWeight: Number}] }]
 
 }, { minimize: false }); 
 

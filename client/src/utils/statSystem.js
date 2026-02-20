@@ -1,9 +1,9 @@
 import { EXERCISE_DB, ALL_EXERCISES } from "../data/exercise_db";
 
 const EXERCISE_STAT_SCALING = {
-    pushups: { STR: 1.0, VIT: 0.5, AGI: 0.2, DEX: 0.5 },
-    squats:  { STR: 1.0, VIT: 0.8, AGI: 1.0, DEX: 0.5 },
-    pullups: { STR: 1.0, VIT: 0.6, AGI: 0.2, DEX: 0.5 },
+    pushups: { STR: 1.0, VIT: 0.8, AGI: 0.8, DEX: 1.0 },
+    squats:  { STR: 1.0, VIT: 0.8, AGI: 1.0, DEX: 0.8 },
+    pullups: { STR: 1.0, VIT: 0.8, AGI: 0.8, DEX: 1.0 },
     // etc.
 };
 

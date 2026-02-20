@@ -35,3 +35,14 @@ export const getHighestUnlockedExercises = (userProgress) => {
 
     return highestExercises;
 };
+
+export function getPrevNextExerciseID(category, exerciseID) {
+    const exercisesInTheCategory = ALL_EXERCISES[category]
+    const index = exercisesInTheCategory.indexOf(exerciseID);
+
+    return {
+        prevID: exercisesInTheCategory[index - 1],
+        nextID: exercisesInTheCategory[index + 1],
+    }
+
+}

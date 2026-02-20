@@ -3,7 +3,6 @@ import useUserStore from '../../store/usePlayerStore'
 import { useNavigate } from 'react-router';
 import StatusWindow from './StatusWindow';
 import Navbar from '../../components/layout/Navbar';
-import { WorkoutScreen } from './workoutScreen';
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -12,9 +11,6 @@ export default function Dashboard() {
     const logout = useUserStore((state) => state.logout);  
 
     if (userData.isLoading || !hasFetchedInitialData) {
-        setTimeout(() => {
-            
-        })
         return (
             <>
                 <h2>[ SYSTEM ]</h2>
