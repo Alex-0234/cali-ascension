@@ -16,7 +16,6 @@ export const initialExerciseUnlock = (evaluationResults) => {
                 const exerciseId = categoryPath[i];
 
                 unlockedProgress[exerciseId] = {
-                    unlocked: true,
                     totalReps: maxReps,
                     personalBest: maxReps,
                 };

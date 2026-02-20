@@ -107,14 +107,16 @@ button:focus-visible {
   align-items: center;
 }
 .prev-exercise  {
-  position: absolute;
+  position: relative;
   left: 0.5rem;
-  width: 3rem;
+  width: 2rem;
+  height: 2rem;
 }
 .next-exercise {
-  position: absolute;
+  position: relative;
   right: 0.5rem;
-  width: 3rem;
+  width: 2rem;
+  height: 2rem;
 }
 .close {
   width: 1.5rem;

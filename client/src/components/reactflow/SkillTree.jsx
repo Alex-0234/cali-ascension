@@ -67,23 +67,12 @@ export default function SkillTree() {
                 {modalVisibility && (
                     <div className='exercise-info' style={{height: '40%', width: '100%', position: 'absolute', bottom: '5rem', background: '#161616', }}>
                         <p>{EXERCISE_DB[exerciseId].name}</p>
-                        {exerciseProgress[exerciseId] && (
                                 <div> 
                                 <div className='close-icon' onClick={() => setModalVisibility(false)}>X</div>
-                                    <p> Status: UNLOCKED </p>
+                                    <p> Status: {exerciseProgress[exerciseId].unlocked ? 'UNLOCKED' : 'LOCKED'} </p>
                                     <p> Current level: {proficiency.level} / 10 </p>
                                     
                                 </div>
-                        )}
-                        {!exerciseProgress[exerciseId] && (
-                             <div> 
-                                <div className='close-icon' onClick={() => setModalVisibility(false)}>X</div>
-                                    <p> Status: LOCKED </p>
-                                    <button> Unlock </button>
-                                    <p> Current level:  0 / 10 </p>
-                                    
-                                </div>
-                        )}
                     </div>
                 )}
             </div>

@@ -8,8 +8,8 @@ export const calculatePlayerEP = (userEvaluation) => {
     if (userEvaluation?.pushups) {
         const { variationID, maxReps } = userEvaluation.pushups;
         const tierIndex = EXERCISE_DB[variationID].tier;
-        const tierEP = (tierIndex || 0) * 250; 
-        const repEP = (maxReps || 0) * 6; 
+        const tierEP = (tierIndex || 0) * 100; 
+        const repEP = (maxReps || 0) * 2; 
         totalEP += tierEP + repEP;
     }
 
@@ -17,16 +17,16 @@ export const calculatePlayerEP = (userEvaluation) => {
     if (userEvaluation?.squats) {
         const { variationID, maxReps } = userEvaluation.squats;
         const tierIndex = EXERCISE_DB[variationID].tier;
-        const tierEP = (tierIndex || 0) * 250;
-        const repEP = (maxReps || 0) * 6; 
+        const tierEP = (tierIndex || 0) * 100;
+        const repEP = (maxReps || 0) * 2; 
         totalEP += tierEP + repEP;
     }
     // 3. PULLUPS CALCULATION
     if (userEvaluation?.pullups) {
         const { variationID, maxReps } = userEvaluation.pullups;
         const tierIndex = EXERCISE_DB[variationID].tier;
-        const tierEP = (tierIndex || 0) * 250;
-        const repEP = (maxReps || 0) * 6; 
+        const tierEP = (tierIndex || 0) * 100;
+        const repEP = (maxReps || 0) * 2; 
         totalEP += tierEP + repEP;
     }
 
@@ -42,7 +42,7 @@ export const getRankFromXP = (EP) => {
     if (EP < 600) return { rank: "C-Rank", title: "Experienced", color: "#2ecc71" }; 
     if (EP < 1000) return { rank: "B-Rank", title: "Elite", color: "#3498db" }; 
     if (EP < 1800) return { rank: "A-Rank", title: "Master", color: "#9b59b6" }; 
-    if (EP < 3000) return { rank: "S-Ran k", title: "Monarch", color: "#f1c40f" }; 
+    if (EP < 3000) return { rank: "S-Rank", title: "Monarch", color: "#f1c40f" }; 
     
     return { rank: "National Level", title: "Ruler", color: "#e74c3c" }; 
 };

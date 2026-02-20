@@ -20,9 +20,11 @@ export const getProficiencyProgress = (totalReps) => {
 export default function getCompleteProficiencyForExercise(exerciseProgress, exerciseID) {
     console.log(exerciseProgress)
     console.log(exerciseID)
-    const totalReps = exerciseProgress[exerciseID].totalReps;
-    const level = getProficiencyLevel(totalReps);
-    const progress = getProficiencyProgress(totalReps);
-
-    return {level, progress}
+    if (exerciseProgress[exerciseID]) {
+        const totalReps = exerciseProgress[exerciseID].totalReps;
+        const level = getProficiencyLevel(totalReps);
+        const progress = getProficiencyProgress(totalReps);
+        return {level, progress}
+    }
+   return {level: 0, progress: 0}
 }
