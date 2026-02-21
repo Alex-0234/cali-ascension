@@ -1,4 +1,3 @@
-// src/components/reactflow/SkillTree.jsx
 
 import React, { useMemo, useState } from 'react';
 import { ReactFlow, Background, Controls } from '@xyflow/react';
@@ -69,7 +68,7 @@ export default function SkillTree() {
                         <p>{EXERCISE_DB[exerciseId].name}</p>
                                 <div> 
                                 <div className='close-icon' onClick={() => setModalVisibility(false)}>X</div>
-                                    <p> Status: {exerciseProgress[exerciseId].unlocked ? 'UNLOCKED' : 'LOCKED'} </p>
+                                    <p> Status: {exerciseProgress[exerciseId] ? 'UNLOCKED' : 'LOCKED'} </p>
                                     <p> Current level: {proficiency.level} / 10 </p>
                                     
                                 </div>

@@ -11,7 +11,7 @@ import { getPrevNextExerciseID } from "../../utils/workoutSelector";
 
 
 
-export function WorkoutScreen() {
+export default function WorkoutScreen() {
     const setUserData = useUserStore((state) => state.setUserData);
     const userData = useUserStore((state) => state.userData);
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
@@ -179,5 +179,3 @@ export function WorkoutScreen() {
         </div>
     );
 }
-
-export default WorkoutScreen

@@ -16,7 +16,7 @@ export const getHighestUnlockedExercises = (userProgress) => {
             const playerStats = userProgress[exerciseID];
             const gameRules = EXERCISE_DB[exerciseID];
 
-            if (playerStats && playerStats.unlocked) {
+            if (playerStats) {
                 if (gameRules.tier > highestTier) {
                     highestTier = gameRules.tier;
                     

@@ -10,7 +10,7 @@ import SkillTreeScreen from './components/reactflow/SkillTree';
 import Awakening from './pages/Onboarding/Awakening';
 import Evaluation from './pages/Onboarding/Evaluation';
 import Dashboard from './pages/Dashboard/Dashboard';
-import { WorkoutScreen } from './pages/Dashboard/workoutScreen';
+import WorkoutScreen from './pages/Dashboard/workoutScreen';
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
