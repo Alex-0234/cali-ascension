@@ -605,3 +605,367 @@ body {
 .progress-bar button:hover {
   background: var(--cyan-glow);
 }
+
+/* =========================================================
+   6. EVALUATION & AWAKENING SCREENS
+   ========================================================= */
+
+/* Sdílený kontejner pro obrazovky */
+.input-screen,
+.selection-screen,
+.rank-screen {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 40px 30px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Nadpisy a zvýrazněný text */
+.input-screen h2,
+.selection-screen h2,
+.rank-screen h2 {
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.highlight-text {
+  color: var(--cyan);
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+
+/* Inputy (věk, váha, max reps...) */
+.input-screen input {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-input);
+  color: var(--text-main);
+  font-size: 1.2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.input-screen input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* --- TLAČÍTKA --- */
+.btn-green,
+.btn-red,
+.btn-enter {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: white;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-green {
+  background: var(--success-bg);
+  border: 1px solid var(--success);
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
+}
+.btn-green:hover:not(:disabled) {
+  background: var(--success);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-red {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger);
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.2);
+}
+.btn-red:hover {
+  background: var(--danger);
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.6);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(100%);
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* --- AWAKENING SCREEN SPECIFICS --- */
+.system-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Kolečko načítání systému */
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--bg-input);
+  border-top: 4px solid var(--cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 20px var(--cyan-glow);
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Blikající výpočty */
+.blinking-text {
+  color: var(--text-muted);
+  animation: blink 1.5s infinite;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; text-shadow: 0 0 5px var(--cyan-glow); color: var(--cyan); }
+}
+
+/* Efekt odhalení (Reveal) */
+.fade-in {
+  animation: fadeInReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes fadeInReveal {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Karta tvé nové hodnosti */
+.rank-card {
+  background: var(--bg-input);
+  border: 2px solid transparent; /* Barva je dodávána z JS přes inline styl! */
+  border-radius: 16px;
+  padding: 50px 30px;
+  margin: 30px 0;
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.rank-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+}
+
+.rank-card h1 {
+  font-size: 5rem;
+  margin: 0;
+  text-shadow: 0 0 25px currentColor; /* Zdílí glow podle barvy ranku */
+  font-family: monospace; /* Aby to působilo jako systémový znak */
+}
+
+.rank-title {
+  display: block;
+  margin-top: 15px;
+  font-size: 1.4rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+.btn-enter {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  font-size: 1.2rem;
+  padding: 15px 30px;
+  box-shadow: 0 0 15px var(--primary-glow);
+  margin-top: 20px;
+}
+
+.btn-enter:hover {
+  background: #2563eb;
+  box-shadow: 0 0 30px var(--primary-glow);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   DASHBOARD & URGENT QUEST STYLES
+   ========================================================= */
+
+/* --- Načítací obrazovka (System Boot) --- */
+.system-boot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  text-align: center;
+}
+
+.system-boot h2 {
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  text-shadow: 0 0 15px var(--cyan-glow);
+  margin: 20px 0;
+}
+
+/* --- Hlavička Dashboardu --- */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* --- Tlačítko Logout --- */
+.btn-logout {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  padding: 8px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: var(--danger-bg);
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
+  transform: translateY(-2px);
+}
+
+/* --- URGENT QUEST (Zóna pro evaluaci) --- */
+.urgent-quest-container {
+  background: rgba(220, 38, 38, 0.05);
+  border: 2px dashed var(--danger);
+  border-radius: 16px;
+  padding: 50px 20px;
+  text-align: center;
+  margin: 20px 0;
+  box-shadow: inset 0 0 30px rgba(220, 38, 38, 0.1);
+}
+
+.quest-warning {
+  color: var(--danger);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+  animation: blink 2s infinite;
+}
+
+/* Červené pulzující tlačítko */
+.btn-urgent {
+  width: auto;
+  background: var(--danger-bg);
+  color: white;
+  border: 2px solid var(--danger);
+  padding: 10px 30px;
+  border-radius: 12px;
+  font-size: clamp(0.6rem, 3vw, 1.5rem);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.4);
+  animation: urgentPulse 2s infinite;
+}
+
+.btn-urgent:hover {
+  background: var(--danger);
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(248, 113, 113, 0.7);
+}
+
+/* --- ANIMACE --- */
+
+/* Pulzování tlačítka */
+@keyframes urgentPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+    border-color: var(--danger);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(248, 113, 113, 0.8);
+    border-color: #ff8080;
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
+    border-color: var(--danger);
+  }
+}
+
+/* Blikání textu */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Načítací kolečko */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--bg-card);
+  border-top: 4px solid var(--cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 15px var(--cyan-glow);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
