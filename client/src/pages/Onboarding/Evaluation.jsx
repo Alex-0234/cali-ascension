@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useUserStore from "../../store/usePlayerStore";
-import Hologram from "../../components/ui/Hologram";
+import Hologram from "../../components/ui/hologram";
 import { useNavigate } from 'react-router-dom';
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
