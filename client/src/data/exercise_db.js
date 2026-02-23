@@ -789,49 +789,52 @@ export const EXERCISE_DB = {
         maxReps: 0,
         branch: 'asymmetry',
         unlocks: [],
-        prerequisites: ['pullup_10A', 'pullup_10C'], 
+        prerequisites: ['pullup_10A'], 
     }
 };
 
 export const ALL_EXERCISES = {
     pushups: [
         'pushup_00', 'pushup_01', 'pushup_02', 'pushup_03',
-        'pushup_04A', 'pushup_05A', 'pushup_06A', 'pushup_07A',
-        'pushup_04B', 'pushup_05B', 'pushup_06B',
-        'pushup_04C', 'pushup_05C', 'pushup_06C', 'pushup_07C',
-        'pushup_04D', 'pushup_05D', 'pushup_06D', 'pushup_07D'
+        'pushup_04A', 'pushup_04B', 'pushup_04C', 'pushup_04D',
+        'pushup_05A', 'pushup_05B', 'pushup_05C', 'pushup_05D',
+        'pushup_06A', 'pushup_06B', 'pushup_06C', 'pushup_06D',
+        'pushup_07A', 'pushup_07C', 'pushup_07D'
     ],
     squats: [
         'squat_00', 'squat_01', 'squat_02',
-        'squat_03A', 'squat_04A', 'squat_05A', 'squat_06A', 'squat_07A',
-        'squat_03B', 'squat_04B',
-        'squat_03C', 'squat_04C', 'squat_05C'
+        'squat_03A', 'squat_03B', 'squat_03C',
+        'squat_04A', 'squat_04B', 'squat_04C',
+        'squat_05A', 'squat_05C',
+        'squat_06A',
+        'squat_07A'
     ],
     core: [
         'core_00', 'core_01', 'core_02',
-        'core_03A', 'core_04A', 'core_05A',
-        'core_03B', 'core_04B', 'core_05B', 'core_06B',
-        'core_03C', 'core_04C', 'core_05C',
-        'core_03D', 'core_04D'
+        'core_03A', 'core_03B', 'core_03C', 'core_03D',
+        'core_04A', 'core_04B', 'core_04C', 'core_04D',
+        'core_05A', 'core_05B', 'core_05C',
+        'core_06B'
     ],
     pullups: [
         'pullup_00', 'pullup_01', 'pullup_02', 'pullup_03', 'pullup_04', 'pullup_05', 'pullup_06',
-        'pullup_07A', 'pullup_08A', 'pullup_09A', 'pullup_10A', 'pullup_11A',
-        'pullup_07B', 'pullup_08B', 'pullup_09B', 'pullup_10B',
-        'pullup_07C1', 'pullup_07C2', 'pullup_08C', 'pullup_09C', 'pullup_10C'
+        'pullup_07A', 'pullup_07B', 'pullup_07C1', 'pullup_07C2',
+        'pullup_08A', 'pullup_08B', 'pullup_08C',
+        'pullup_09A', 'pullup_09B', 'pullup_09C',
+        'pullup_10A', 'pullup_10B', 'pullup_10C',
+        'pullup_11A'
     ]
 };
 
-// Evaluation keeps mostly the linear base progression path to determine starting point easily
 export const EVALUATION_EXERCISES = {
-    pushups: ['pushup_00', 'pushup_01', 'pushup_02', 'pushup_03', 'pushup_04A', 'pushup_05D'],
+    pushups: ['pushup_00', 'pushup_01', 'pushup_02', 'pushup_03', 'pushup_04A', 'pushup_05A','pushup_06A','pushup_07A'],
     squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A', 'squat_05A'],
     core: ['core_00', 'core_01', 'core_02', 'core_04A', 'core_04B'],
-    pullups: ['pullup_00', 'pullup_01', 'pullup_02', 'pullup_04', 'pullup_06', 'pullup_10B']
+    pullups: ['pullup_00', 'pullup_01', 'pullup_02', 'pullup_04', 'pullup_06','pullup_07A','pullup_08A','pullup_09A','pullup_10A','pullup_11A']
 };
 
 export const SPLIT_MODES = {
-    'Push & Pull': ['pushups', 'pullups'],
+    'Push/Pull/Legs': ['pushups', 'pullups','squats'],
     'Legs & Core': ['squats', 'core'],
     'Full Body': ['pushups', 'pullups', 'squats', 'core']
 };
