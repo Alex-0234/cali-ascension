@@ -1,3 +1,4 @@
+import 'dotenv/config'; // 1. ZMĚNA: Přesunuto úplně nahoru!
 import express from 'express';
 import cors from 'cors';
 import connectDB from './db.js';
@@ -6,78 +7,64 @@ import User from './models/User.js';
 connectDB(); 
 
 const app = express();
-const PORT = 5000;
-
-const ValidationError = (message) => {
-    const error = new Error(message);
-    error.name = "ValidationError";
-    return error;
-}
-const AuthenticationError = (message) => {
-    const error = new Error(message);
-    error.name = "AuthenticationError";
-    return error;
-}
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Hunter API is running!');
 });
 
 app.post('/api/register', async (req, res) => {
     try {
+        const { username, email, password } = req.body;
+        const usernameAlreadyExists = await User.findOne({ username: username });
+        const emailAlreadyExists = await User.findOne({ email: email });
 
-    const { username, email, password } = req.body;
-    const usernameAlreadyExists = await User.findOne({ username: username });
-    const emailAlreadyExists = await User.findOne({ email: email });
+        if (!username || !email || !password) {
+            return res.status(400).send({ message: 'All fields are required' });
+        }
+        if (usernameAlreadyExists) {
+            return res.status(400).send({ message: 'Username already exists' });
+        }
+        if (emailAlreadyExists) {
+            return res.status(400).send({ message: 'Email already exists' });
+        }
 
-    if (!username || !email || !password) {
-        return res.status(400).send({ message: 'All fields are required' });
-    }
-    if (usernameAlreadyExists) {
-        return res.status(400).send({ message: 'Username already exists' });
-    }
-    if (emailAlreadyExists) {
-        return res.status(400).send({ message: 'Email already exists' });
-    }
+        const newUser = new User({
+            userId: Date.now(), 
+            username,
+            email,
+            password, // Poznámka: Pro profi appku by se heslo mělo hashovat (např. přes bcrypt), ale pro teď to nechme!
+        });
 
-    const newUser = new User({
-        userId: Date.now(), // Generate a unique userId based on timestamp
-        username,
-        email,
-        password, // Hash the password
+        // 3. ZMĚNA: Přidáno await
+        await newUser.save();
 
-    });
-
-    newUser.save();
-
-    res.status(201).send({ message: 'User registered successfully!', userId: newUser.userId });
+        res.status(201).send({ message: 'User registered successfully!', userId: newUser.userId });
 
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).send({ message: 'Server error during registration' });
     }
 });
+
 app.post('/api/login', async (req, res) => {
     try {
-    const { username, password } = req.body;
-    const exists = await User.findOne({ username, password });
+        const { username, password } = req.body;
+        const exists = await User.findOne({ username, password });
 
+        if (!exists) {
+            return res.status(400).send({ message: 'Invalid username or password' });
+        }
 
-    if (!exists) {
-        return res.status(400).send({ message: 'Invalid username or password' });
-    }
-
-    res.status(200).send({ message: 'User logged in successfully!' , userId: exists.userId});
+        res.status(200).send({ message: 'User logged in successfully!' , userId: exists.userId});
 
     } catch (error) {
         console.error('Error during login:', error);    
         res.status(500).send({ message: 'Server error during login' });
     }
-
 });
 
 app.get('/api/user/:userId', async (req, res) => {
@@ -114,5 +101,4 @@ app.post('/api/user/:userId', async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-}
-);
+});

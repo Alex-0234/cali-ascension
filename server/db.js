@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    // 'my_local_db' can be any name you want for your database
-    const conn = await mongoose.connect('mongodb://127.0.0.1:27017/cali-ascension');
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
