@@ -12,5 +12,5 @@ export function calculateBMR(weight, height, age, gender) {
         currentBMR = 'idk whaat u are'
     }
     
-    return {currentBMR, currentBMI}
+    return {BMR : currentBMR, BMI : currentBMI}
 }

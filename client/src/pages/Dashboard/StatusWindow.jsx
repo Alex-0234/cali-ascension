@@ -7,19 +7,17 @@ import { calculateBMR } from "../../utils/calculateBMI";
 
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
+    const syncUser = useUserStore((state) => state.syncUser);
+
     const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);
     const currentProgress = getLevelProgress(userData.xp, userData.level);
-    const [BMR, setBMR] = useState(0);
-    const [BMI, setBMI] = useState(0);
+    const [isTypingWeight, setIsTypingWeight] = useState(false);
+    const [tempWeight, setTempWeight] = useState(userData.weight);
+    const { BMR, BMI } = calculateBMR(tempWeight, userData.height, userData.age, userData.gender);
 
     useEffect(() => {
         setLoaded(true);
-        if (userData.isConfigured) {
-            const { currentBMR, currentBMI} = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
-            setBMR(currentBMR);
-            setBMI(currentBMI);
-        }
         
 
     },[userData]);
@@ -27,6 +25,10 @@ export default function StatusWindow() {
 
     if (!loaded) {
         return <div><p>Initializing user...</p></div>
+    }
+    const openWeightModal = () => {
+        setIsTypingWeight(true);
+
     }
 
     return (
@@ -38,10 +40,10 @@ export default function StatusWindow() {
             </div>
             <hr/>
 
-            <h3> {userData.shownName} </h3>
+            <h2> {userData.shownName} </h2>
             <div className="progress-bar">
-                <div className='level-bar' style={{width: 90 + '%', height: 1 + 'rem', placeSelf: "center"}}>
-                    <div className='level-progress' style={{width: currentProgress + '%', height: 1 + 'rem', background: 'lightblue', transitionDelay: 0.15 + 's' }}></div>
+                <div className='level-bar' style={{  height: '15px'}}>
+                    <div className='level-progress' style={{ width: `${currentProgress}%` }}></div>
                 </div>
                 <button onClick={() => addXP(100)}>+100xp</button>
             </div>
@@ -68,8 +70,20 @@ export default function StatusWindow() {
             </div>
             <div className='bmi'>
                 
-                <p>Current BMR: {BMR + 'kcal'} </p>
-                <p>Current BMI: {BMI} - Doesn't take muscles into consideration !!</p>
+                <p>[ BMR ]: {BMR} kcal</p>
+                <p>[ BMI ]: {BMI} kcal</p>
+                <p>[ Weight ]: <button onClick={() => openWeightModal()}> + </button></p>
+                {isTypingWeight && (
+                    <div className="weight-modal">
+                        <h3>Enter your weight</h3>
+                        <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
+                        <button onClick={() => {
+                            useUserStore.setState({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
+                            syncUser();
+                            setIsTypingWeight(false);
+                        }}>Save</button>
+                    </div> 
+                )}
             </div>
         </div>
         </>

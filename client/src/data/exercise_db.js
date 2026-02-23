@@ -1,5 +1,8 @@
 export const EXERCISE_DB = {
-    // --- PUSH-UPS ---
+
+    // |||||||   PUSH-UPS   |||||||
+
+    // --- BEGINNER ---
     "pushup_00": {
         id: "pushup_00",
         name: "Wall Push-up",
@@ -7,26 +10,31 @@ export const EXERCISE_DB = {
         tier: 0,
         totalReps: 0,
         maxReps: 0,
+        unlocks: ["pushup_01"],
         prerequisites: [], 
     },
     "pushup_01": {
         id: "pushup_01",
         name: "Incline Push-up",
         animation: "/videos/incline_pushup.mp4",
-        tier: 1,
+        tier: 0.5,
         totalReps: 0,
         maxReps: 0,
+        unlocks: ["pushup_02"],
         prerequisites: ["pushup_00"],
     },
     "pushup_02": {
         id: "pushup_02",
         name: "Knee Push-up",
         animation: "/videos/knee_pushup.mp4",
-        tier: 2,
+        tier: 1,
         totalReps: 0,
         maxReps: 0,
+        unlocks: ["pushup_03"],
         prerequisites: ["pushup_01"],
     },
+
+    // --- INTERMEDIATE ---
     "pushup_03": {
         id: "pushup_03",
         name: "Standard Push-up",
@@ -34,151 +42,517 @@ export const EXERCISE_DB = {
         tier: 2,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_02"], // Path A: Tricep/One-Arm focus
-    },
-    "pushup_04": {
-        id: "pushup_04",
-        name: "Wide Pushup",
-        animation: "",
-        tier: 3,
-        totalReps: 0,
-        maxReps: 0,
+        unlocks: ["pushup_04A", "pushup_04B", "pushup_04C", "pushup_04D"],
         prerequisites: ["pushup_02"], 
     },
-    "pushup_05": {
-        id: "pushup_05",
-        name: "Narrow Pushup",
+
+    // --- ADVANCED BRANCHES ---
+
+    // Path A: Asymmetry / One-Arm
+    "pushup_04A": {
+        id: "pushup_04A",
+        name: "Diamond Push-up",
         animation: "",
-        tier: 3,
+        tier: 2.5,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_02"], // Path C: Power focus
+        branch: "asymmetry",
+        unlocks: ["pushup_05A"],
+        prerequisites: ["pushup_03"], 
     },
-    "pushup_06": {
-        id: "pushup_06",
-        name: "Diamond Pushup",
+    "pushup_05A": {
+        id: "pushup_05A",
+        name: "Archer Push-up",
         animation: "",
-        tier: 4,
+        tier: 3.5,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_03"], // Requires Diamond
+        branch: "asymmetry",
+        unlocks: ["pushup_06A"],
+        prerequisites: ["pushup_04A"], 
     },
-    "pushup_07": {
-        id: "pushup_07",
-        name: "Elevated Pike Pushup",
+    "pushup_06A": {
+        id: "pushup_06A",
+        name: "One-Arm Assisted Push-up",
         animation: "",
-        tier: 5,
+        tier: 4.5,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_04"], // Requires Pike
+        branch: "asymmetry",
+        unlocks: ["pushup_07A"],
+        prerequisites: ["pushup_05A"], 
     },
-    "pushup_08": {
-        id: "pushup_08",
-        name: "Pseudo Planche Pushup",
-        animation: "",
-        tier: 5,
-        totalReps: 0,
-        maxReps: 0,
-        prerequisites: ["pushup_03"], // Requires Diamond (Heavy shoulder lean)
-    },
-    "pushup_09": {
-        id: "pushup_09",
-        name: "One-Arm Pushup",
+    "pushup_07A": {
+        id: "pushup_07A",
+        name: "One-Arm Push-up",
         animation: "",
         tier: 6,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_06"], // Requires Archer
+        branch: "asymmetry",
+        unlocks: [],
+        prerequisites: ["pushup_06A"], 
     },
-    "pushup_10": {
-        id: "pushup_10",
-        name: "Wall Handstand Pushup",
+
+    // Path B: Power / Explosive
+    "pushup_04B": {
+        id: "pushup_04B",
+        name: "Explosive Push-up",
+        animation: "",
+        tier: 3,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "power",
+        unlocks: ["pushup_05B"],
+        prerequisites: ["pushup_03"], 
+    },
+    "pushup_05B": {
+        id: "pushup_05B",
+        name: "Clapping Push-up",
+        animation: "",
+        tier: 3.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "power",
+        unlocks: ["pushup_06B"],
+        prerequisites: ["pushup_04B"], 
+    },
+    "pushup_06B": {
+        id: "pushup_06B",
+        name: "Superman Push-up",
+        animation: "",
+        tier: 5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "power",
+        unlocks: [],
+        prerequisites: ["pushup_05B"], 
+    },
+
+    // Path C: Planche / Core
+    "pushup_04C": {
+        id: "pushup_04C",
+        name: "Pseudo Planche Push-up",
+        animation: "",
+        tier: 3.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "planche",
+        unlocks: ["pushup_05C"],
+        prerequisites: ["pushup_03"], 
+    },
+    "pushup_05C": {
+        id: "pushup_05C",
+        name: "Tuck Planche Push-up",
+        animation: "",
+        tier: 5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "planche",
+        unlocks: ["pushup_06C"],
+        prerequisites: ["pushup_04C"], 
+    },
+    "pushup_06C": {
+        id: "pushup_06C",
+        name: "Straddle Planche Push-up",
         animation: "",
         tier: 7,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_07"], // Requires Elevated Pike
+        branch: "planche",
+        unlocks: ["pushup_07C"],
+        prerequisites: ["pushup_05C"], 
     },
-    "pushup_11": {
-        id: "pushup_11",
-        name: "Freestanding Handstand Pushup",
-        animation: "",
-        tier: 8,
-        totalReps: 0,
-        maxReps: 0,
-        prerequisites: ["pushup_10"], // Requires Wall HSPU
-    },
-    "pushup_12": {
-        id: "pushup_12",
-        name: "Planche Pushup",
+    "pushup_07C": {
+        id: "pushup_07C",
+        name: "Full Planche Push-up",
         animation: "",
         tier: 9,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ["pushup_08"], // Requires Pseudo Planche
+        branch: "planche",
+        unlocks: [],
+        prerequisites: ["pushup_06C"], 
     },
 
-    // --- SQUATS -- 
+    // Path D: Shoulders / Handstand
+    "pushup_04D": {
+        id: "pushup_04D",
+        name: "Pike Push-up",
+        animation: "",
+        tier: 3,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "shoulders",
+        unlocks: ["pushup_05D"],
+        prerequisites: ["pushup_03"], 
+    },
+    "pushup_05D": {
+        id: "pushup_05D",
+        name: "Elevated Pike Push-up",
+        animation: "",
+        tier: 4,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "shoulders",
+        unlocks: ["pushup_06D"],
+        prerequisites: ["pushup_04D"], 
+    },
+    "pushup_06D": {
+        id: "pushup_06D",
+        name: "Wall Handstand Push-up",
+        animation: "",
+        tier: 5.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "shoulders",
+        unlocks: ["pushup_07D"],
+        prerequisites: ["pushup_05D"], 
+    },
+    "pushup_07D": {
+        id: "pushup_07D",
+        name: "Freestanding HSPU",
+        animation: "",
+        tier: 8,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "shoulders",
+        unlocks: [],
+        prerequisites: ["pushup_06D"], 
+    },
+
+    // |||||||   SQUATS   |||||||
+
+    // --- BEGINNER ---
     "squat_00": {
         id: "squat_00",
-        name: "Chair Squat",
+        name: "Assisted Squat",
         animation: "",
         tier: 0,
         totalReps: 0,
         maxReps: 0,
+        unlocks: ["squat_01"],
         prerequisites: [], 
     },
-        "squat_01": {
+    "squat_01": {
         id: "squat_01",
-        name: "Hand Assisted Squat",
+        name: "Half Squat",
         animation: "",
-        tier: 0,
+        tier: 0.5,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ['squat_00'], 
+        unlocks: ["squat_02"],
+        prerequisites: ["squat_00"], 
     },
-        "squat_02": {
+    "squat_02": {
         id: "squat_02",
         name: "Standard Squat",
         animation: "",
         tier: 1,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ['squat_01'], 
+        unlocks: ["squat_03A", "squat_03B", "squat_03C"],
+        prerequisites: ["squat_01"], 
     },
-        "squat_03": {
-        id: "squat_03",
-        name: "Hand Assisted Pistol Squat",
+
+    // --- ADVANCED BRANCHES ---
+
+    // Path A: Unilateral / Pistol
+    "squat_03A": {
+        id: "squat_03A",
+        name: "Forward Lunge",
+        animation: "",
+        tier: 1.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "unilateral",
+        unlocks: ["squat_04A"],
+        prerequisites: ["squat_02"], 
+    },
+    "squat_04A": {
+        id: "squat_04A",
+        name: "Bulgarian Split Squat",
+        animation: "",
+        tier: 2.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "unilateral",
+        unlocks: ["squat_05A"],
+        prerequisites: ["squat_03A"], 
+    },
+    "squat_05A": {
+        id: "squat_05A",
+        name: "Assisted Pistol Squat",
+        animation: "",
+        tier: 3.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "unilateral",
+        unlocks: ["squat_06A"],
+        prerequisites: ["squat_04A"], 
+    },
+    "squat_06A": {
+        id: "squat_06A",
+        name: "Pistol Squat",
+        animation: "",
+        tier: 5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "unilateral",
+        unlocks: ["squat_07A"],
+        prerequisites: ["squat_05A"], 
+    },
+    "squat_07A": {
+        id: "squat_07A",
+        name: "Dragon Pistol Squat",
+        animation: "",
+        tier: 7,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "unilateral",
+        unlocks: [],
+        prerequisites: ["squat_06A"], 
+    },
+
+    // Path B: Power / Explosive
+    "squat_03B": {
+        id: "squat_03B",
+        name: "Jumping Squat",
         animation: "",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ['squat_02'], 
+        branch: "power",
+        unlocks: ["squat_04B"],
+        prerequisites: ["squat_02"], 
     },
-        "squat_04": {
-        id: "squat_04",
-        name: "Pistol Squat",
+    "squat_04B": {
+        id: "squat_04B",
+        name: "Box Jump",
         animation: "",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
-        prerequisites: ['squat_03'], 
+        branch: "power",
+        unlocks: [],
+        prerequisites: ["squat_03B"], 
     },
 
-/*         "squat_00": {
-        id: "squat_00",
-        name: " Squat",
+    // Path C: Mobility
+    "squat_03C": {
+        id: "squat_03C",
+        name: "Side Lunge",
+        animation: "",
+        tier: 1.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "mobility",
+        unlocks: ["squat_04C"],
+        prerequisites: ["squat_02"], 
+    },
+    "squat_04C": {
+        id: "squat_04C",
+        name: "Cossack Squat",
+        animation: "",
+        tier: 2.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "mobility",
+        unlocks: ["squat_05C"],
+        prerequisites: ["squat_03C"], 
+    },
+    "squat_05C": {
+        id: "squat_05C",
+        name: "Skater Squat",
+        animation: "",
+        tier: 4,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "mobility",
+        unlocks: [],
+        prerequisites: ["squat_04C"], 
+    },
+
+    // |||||||   CORE / ABS   |||||||
+
+    // --- BEGINNER ---
+    "core_00": {
+        id: "core_00",
+        name: "Plank",
         animation: "",
         tier: 0,
-        reward: 1, // xp
-        xp: 0, // accumulated
-        proficiency: 0,
+        totalReps: 0,
+        maxReps: 0,
+        unlocks: ["core_01"],
         prerequisites: [], 
-    }, */
+    },
+    "core_01": {
+        id: "core_01",
+        name: "Crunches",
+        animation: "",
+        tier: 0.5,
+        totalReps: 0,
+        maxReps: 0,
+        unlocks: ["core_02"],
+        prerequisites: ["core_00"], 
+    },
+    "core_02": {
+        id: "core_02",
+        name: "Lying Leg Raises",
+        animation: "",
+        tier: 1,
+        totalReps: 0,
+        maxReps: 0,
+        unlocks: ["core_03A", "core_03B", "core_03C", "core_03D"],
+        prerequisites: ["core_01"], 
+    },
+
+    // --- ADVANCED BRANCHES ---
+
+    // Path A: Static / Compression
+    "core_03A": {
+        id: "core_03A",
+        name: "Hollow Body Hold",
+        animation: "",
+        tier: 1.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "static",
+        unlocks: ["core_04A"],
+        prerequisites: ["core_02"], 
+    },
+    "core_04A": {
+        id: "core_04A",
+        name: "L-Sit",
+        animation: "",
+        tier: 3.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "static",
+        unlocks: ["core_05A"],
+        prerequisites: ["core_03A"], 
+    },
+    "core_05A": {
+        id: "core_05A",
+        name: "V-Sit",
+        animation: "",
+        tier: 5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "static",
+        unlocks: [],
+        prerequisites: ["core_04A"], 
+    },
+
+    // Path B: Hanging / Lever
+    "core_03B": {
+        id: "core_03B",
+        name: "Hanging Knee Raises",
+        animation: "",
+        tier: 2,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "hanging",
+        unlocks: ["core_04B"],
+        prerequisites: ["core_02"], 
+    },
+    "core_04B": {
+        id: "core_04B",
+        name: "Hanging Leg Raises",
+        animation: "",
+        tier: 3,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "hanging",
+        unlocks: ["core_05B"],
+        prerequisites: ["core_03B"], 
+    },
+    "core_05B": {
+        id: "core_05B",
+        name: "Toes to Bar",
+        animation: "",
+        tier: 4,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "hanging",
+        unlocks: ["core_06B"],
+        prerequisites: ["core_04B"], 
+    },
+    "core_06B": {
+        id: "core_06B",
+        name: "Front Lever Hold",
+        animation: "",
+        tier: 6.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "hanging",
+        unlocks: [],
+        prerequisites: ["core_05B"], 
+    },
+
+    // Path C: Rotation / Obliques
+    "core_03C": {
+        id: "core_03C",
+        name: "Russian Twists",
+        animation: "",
+        tier: 1.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "rotation",
+        unlocks: ["core_04C"],
+        prerequisites: ["core_02"], 
+    },
+    "core_04C": {
+        id: "core_04C",
+        name: "Windshield Wipers",
+        animation: "",
+        tier: 3.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "rotation",
+        unlocks: ["core_05C"],
+        prerequisites: ["core_03C"], 
+    },
+    "core_05C": {
+        id: "core_05C",
+        name: "Human Flag",
+        animation: "",
+        tier: 7,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "rotation",
+        unlocks: [],
+        prerequisites: ["core_04C"], 
+    },
+
+    // Path D: Extension
+    "core_03D": {
+        id: "core_03D",
+        name: "Ab Wheel Rollout",
+        animation: "",
+        tier: 3,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "extension",
+        unlocks: ["core_04D"],
+        prerequisites: ["core_02"], 
+    },
+    "core_04D": {
+        id: "core_04D",
+        name: "Dragon Flag",
+        animation: "",
+        tier: 5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "extension",
+        unlocks: [],
+        prerequisites: ["core_03D"], 
+    },
+
 
     // |||||||   PULL-UPS   |||||||
 
-    // --- BEGINNER --
+    // --- BEGINNER ---
     "pullup_00": {
         id: "pullup_00",
         name: "Wall Pull",
@@ -200,7 +574,7 @@ export const EXERCISE_DB = {
         prerequisites: ['pullup_00'], 
     },
 
-    // --- INTERMIDIATE --
+    // --- INTERMEDIATE ---
     "pullup_02": {
         id: "pullup_02",
         name: "Jackknife Pull-up",
@@ -232,7 +606,7 @@ export const EXERCISE_DB = {
         prerequisites: ['pullup_03'], 
     },
 
-    // --- ADVANCED --
+    // --- ADVANCED ---
     "pullup_05": {
         id: "pullup_05",
         name: "Chin-up",
@@ -250,7 +624,7 @@ export const EXERCISE_DB = {
         tier: 2.8,
         totalReps: 0,
         maxReps: 0,
-        unlocks: ['pullup_07A','pullup_07B','pullup_07C'],
+        unlocks: ['pullup_07A','pullup_07B','pullup_07C1','pullup_07C2'],
         prerequisites: ['pullup_05'], 
     },
 
@@ -290,7 +664,7 @@ export const EXERCISE_DB = {
     },
     "pullup_07C2": {
         id: "pullup_07C2",
-        name: "Wide Grip Pull-up",
+        name: "Close Grip Pull-up", 
         animation: "",
         tier: 3.5,
         totalReps: 0,
@@ -309,7 +683,7 @@ export const EXERCISE_DB = {
         totalReps: 0,
         maxReps: 0,
         branch: 'asymmetry',
-        unlocks: ['pullup_06'],
+        unlocks: ['pullup_09A'],
         prerequisites: ['pullup_07A'], 
     },
     "pullup_08B": {
@@ -320,7 +694,7 @@ export const EXERCISE_DB = {
         totalReps: 0,
         maxReps: 0,
         branch: 'power',
-        unlocks: ['pullup_06'],
+        unlocks: ['pullup_09B'],
         prerequisites: ['pullup_07B'], 
     },
     "pullup_08C": {
@@ -331,7 +705,7 @@ export const EXERCISE_DB = {
         totalReps: 0,
         maxReps: 0,
         branch: 'core',
-        unlocks: ['pullup_06'],
+        unlocks: ['pullup_09C'],
         prerequisites: ['pullup_07C1','pullup_07C2'], 
     },
 
@@ -379,7 +753,7 @@ export const EXERCISE_DB = {
         totalReps: 0,
         maxReps: 0,
         branch: 'asymmetry',
-        unlocks: ['pushup_11A'],
+        unlocks: ['pullup_11A'],
         prerequisites: ['pullup_09A'], 
     },
     "pullup_10B": {
@@ -401,158 +775,63 @@ export const EXERCISE_DB = {
         totalReps: 0,
         maxReps: 0,
         branch: 'core',
-        unlocks: [],
+        unlocks: ['pullup_11A'],
         prerequisites: ['pullup_09C'], 
     },
 
-    //5.
+    // 5.
     "pullup_11A": {
         id: "pullup_11A",
         name: "One-Arm Pull-up",
         animation: "",
-        tier: 5.5,
+        tier: 6.5,
         totalReps: 0,
         maxReps: 0,
-        branch: 'core',
+        branch: 'asymmetry',
         unlocks: [],
-        prerequisites: ['pullup_10C'], 
-    },
+        prerequisites: ['pullup_10A', 'pullup_10C'], 
+    }
+};
 
-}
 export const ALL_EXERCISES = {
-    pushups: ['pushup_00','pushup_01','pushup_02','pushup_03','pushup_04','pushup_05','pushup_06','pushup_07','pushup_08','pushup_09','pushup_10','pushup_11','pushup_12'],
-    squats: ['squat_00','squat_01','squat_02','squat_03','squat_04'],
-    pullups: ['pullup_00','pullup_01','pullup_02','pullup_03','pullup_04','pullup_05','pullup_06','pullup_07A','pullup_07B','pullup_07C1','pullup_07C2','pullup_08A','pullup_08B','pullup_08C','pullup_09A','pullup_09B','pullup_09C','pullup_10A','pullup_10B','pullup_10C','pullup_11A'],
+    pushups: [
+        'pushup_00', 'pushup_01', 'pushup_02', 'pushup_03',
+        'pushup_04A', 'pushup_05A', 'pushup_06A', 'pushup_07A',
+        'pushup_04B', 'pushup_05B', 'pushup_06B',
+        'pushup_04C', 'pushup_05C', 'pushup_06C', 'pushup_07C',
+        'pushup_04D', 'pushup_05D', 'pushup_06D', 'pushup_07D'
+    ],
+    squats: [
+        'squat_00', 'squat_01', 'squat_02',
+        'squat_03A', 'squat_04A', 'squat_05A', 'squat_06A', 'squat_07A',
+        'squat_03B', 'squat_04B',
+        'squat_03C', 'squat_04C', 'squat_05C'
+    ],
+    core: [
+        'core_00', 'core_01', 'core_02',
+        'core_03A', 'core_04A', 'core_05A',
+        'core_03B', 'core_04B', 'core_05B', 'core_06B',
+        'core_03C', 'core_04C', 'core_05C',
+        'core_03D', 'core_04D'
+    ],
+    pullups: [
+        'pullup_00', 'pullup_01', 'pullup_02', 'pullup_03', 'pullup_04', 'pullup_05', 'pullup_06',
+        'pullup_07A', 'pullup_08A', 'pullup_09A', 'pullup_10A', 'pullup_11A',
+        'pullup_07B', 'pullup_08B', 'pullup_09B', 'pullup_10B',
+        'pullup_07C1', 'pullup_07C2', 'pullup_08C', 'pullup_09C', 'pullup_10C'
+    ]
+};
 
-}
+// Evaluation keeps mostly the linear base progression path to determine starting point easily
 export const EVALUATION_EXERCISES = {
-    pushups: ['pushup_00','pushup_01','pushup_02','pushup_04','pushup_06','pushup_08','pushup_09','pushup_10','pushup_11','pushup_12'],
-    squats: ['squat_00','squat_01','squat_02','squat_03','squat_04'],
-    pullups: ['pullup_00','pullup_01','pullup_02','pullup_03','pullup_04','pullup_05'],
-}
+    pushups: ['pushup_00', 'pushup_01', 'pushup_02', 'pushup_03', 'pushup_04A', 'pushup_05D'],
+    squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A', 'squat_05A'],
+    core: ['core_00', 'core_01', 'core_02', 'core_04A', 'core_04B'],
+    pullups: ['pullup_00', 'pullup_01', 'pullup_02', 'pullup_04', 'pullup_06', 'pullup_10B']
+};
+
 export const SPLIT_MODES = {
-    'Push & Pull': ['pushups', 'pullups','squats'],
+    'Push & Pull': ['pushups', 'pullups'],
     'Legs & Core': ['squats', 'core'],
     'Full Body': ['pushups', 'pullups', 'squats', 'core']
 };
-
-/* PUSHUPS (Kliky)
-Wall Pushup (X)
-Incline Pushup (X)
-Knee Pushup (X)
-Standard Pushup (X)
-Wide Pushup (X)
-Narrow / Close-grip Pushup (X)
-Diamond Pushup ( )
-Knuckle Pushup ( )
-Fingertip Pushup ( )
-Decline Pushup ( ) 
-Pike Pushup ( )
-Hindu Pushup ( )
-Divebomber Pushup ( )
-Spiderman Pushup ( )
-Typewriter Pushup ( )
-Archer Pushup ( )
-Clapping Pushup
-Explosive / Jumping Pushup
-Superman Pushup
-Aztec Pushup
-One-Arm Assisted Pushup X
-One-Arm Pushup X
-Planche Lean Pushup X
-Straddle Planche Pushup ( )
-Full Planche Pushup ( )
-90-Degree Pushup (Hollowback)
-
-
-
-
-PULLUPS (Shyby a tahy)
-Wall Pull (X)
-Horizontal Pull / Australian Pullup (X)
-Jackknife Pullup (X)
-Negative Pullup (X)
-Isometric Hold Pullup (X)
-Chin-up (X)
-Standard Pullup (X)
-Wide Grip Pullup (X)
-Close Grip Pullup (X)
-Commando Pullup (X)
-Behind the Neck Pullup (X)
-L-Sit Pullup (X)
-Archer Pullup (X)
-Typewriter Pullup (X)
-Explosive / Clapping Pullup (X)
-Muscle-up
-One-Arm Assisted Pullup / Mantle Pullup (X)
-One-Arm Chin-up
-One-Arm Pullup
-Front Lever Pullup
-
-SQUATS (Dřepy a nohy)
-Assisted Squat
-Half Squat
-Standard Bodyweight Squat
-Narrow Squat
-Sumo Squat
-Forward Lunge
-Reverse Lunge
-Side Lunge
-Bulgarian Split Squat
-Jumping Squat
-Box Jump
-Cossack Squat
-Shrimp Squat
-Skater Squat
-Assisted Pistol Squat
-Pistol Squat
-Dragon Pistol Squat
-Sissy Squat
-Nordic Hamstring Curl
-
-CORE / ABS (Břicho a střed těla)
-Plank
-Side Plank
-Crunches
-Sit-ups
-Lying Leg Raises
-Flutter Kicks
-Russian Twists
-Hollow Body hold
-V-Ups
-Jackknife Crunches
-Bicycle Crunches
-Hanging Knee Raises
-Hanging Leg Raises
-L-Sit
-V-Sit
-Windshield Wipers
-Dragon Flag
-Ab Wheel Rollout
-Front Lever Hold
-Human Flag (Human Flag)
-
-DIPS (Kliky na bradlech / Triceps)
-Bench Dips
-Assisted Parallel Bar Dips
-Straight Bar Dips
-Parallel Bar Dips
-L-Sit Dips
-Ring Dips
-Bulgarian Ring Dips
-Korean Dips
-Russian Dips
-Impossible Dips
-
-HANDSTAND / SHOULDERS (Stojky a ramena)
-Pike Hold
-Wall Walk / Wall Climb
-Chest-to-Wall Handstand
-Back-to-Wall Handstand
-Freestanding Handstand
-Frog Stand / Crow Pose
-Tuck Planche
-Handstand Shoulder Taps
-Wall-Assisted Handstand Pushup (HSPU)
-Freestanding Handstand Pushup
-Tiger Bend Pushup */

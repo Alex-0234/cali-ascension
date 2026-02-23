@@ -39,6 +39,7 @@ export function calculateLevelUp(currentLevel, currentLeftoverXP, variationID, t
         levelUps += 1;
     }
     return {
+        levelUps: levelUps,
         newLevel: currentLevel + levelUps,
         leftoverXP: currentXP
     }  
