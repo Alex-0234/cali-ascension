@@ -15,7 +15,7 @@ export function WorkoutScreen() {
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
     const syncUser = useUserStore((state) => state.syncUser);
     
-    const [selectedSplit, setSelectedSplit] = useState('Push & Pull');
+    const [selectedSplit, setSelectedSplit] = useState('Push/Pull/Legs');
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     

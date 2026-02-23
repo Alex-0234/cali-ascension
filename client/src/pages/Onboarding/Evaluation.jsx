@@ -14,7 +14,7 @@ const PERSONAL_STEPS = [
     { key: 'weight', label: 'Enter your weight (kg)', type: 'number', placeholder: '75' }
 ];
 
-const STAGES = ['personal_details', 'pushups', 'squats', 'pullups'];
+const STAGES = ['personal_details', 'pushups', 'squats','core','pullups'];
 
 const EvaluationScreen = () => {
     const navigate = useNavigate();
@@ -40,6 +40,7 @@ const EvaluationScreen = () => {
 
         if (currentStageName === 'pushups') currentTiers = EVALUATION_EXERCISES.pushups;
         if (currentStageName === 'squats') currentTiers = EVALUATION_EXERCISES.squats;
+        if (currentStageName === 'core') currentTiers = EVALUATION_EXERCISES.core;
         if (currentStageName === 'pullups') currentTiers = EVALUATION_EXERCISES.pullups;
 
 
