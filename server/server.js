@@ -1,4 +1,4 @@
-import 'dotenv/config'; // 1. ZMĚNA: Přesunuto úplně nahoru!
+import 'dotenv/config'; 
 import express from 'express';
 import cors from 'cors';
 import connectDB from './db.js';
@@ -36,10 +36,9 @@ app.post('/api/register', async (req, res) => {
             userId: Date.now(), 
             username,
             email,
-            password, // Poznámka: Pro profi appku by se heslo mělo hashovat (např. přes bcrypt), ale pro teď to nechme!
+            password, 
         });
 
-        // 3. ZMĚNA: Přidáno await
         await newUser.save();
 
         res.status(201).send({ message: 'User registered successfully!', userId: newUser.userId });
