@@ -828,7 +828,7 @@ export const ALL_EXERCISES = {
 
 export const EVALUATION_EXERCISES = {
     pushups: ['pushup_00', 'pushup_01', 'pushup_02', 'pushup_03', 'pushup_04A', 'pushup_05A','pushup_06A','pushup_07A'],
-    squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A', 'squat_05A'],
+    squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A','squat_04A','squat_05A','squat_06A','squat_07A','squat_08A'],
     core: ['core_00', 'core_01', 'core_02', 'core_04A', 'core_04B'],
     pullups: ['pullup_00', 'pullup_01', 'pullup_02', 'pullup_04', 'pullup_06','pullup_07A','pullup_08A','pullup_09A','pullup_10A','pullup_11A']
 };
