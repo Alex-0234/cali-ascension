@@ -53,7 +53,7 @@ const useUserStore = create((set, get) => ({
       }));
 
       try {
-          const response = await fetch(`http://localhost:5000/api/user/${userId}`);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/${userId}`);
           const data = await response.json();
           
           console.log('System: User Data Loaded', data);
@@ -99,7 +99,7 @@ const useUserStore = create((set, get) => ({
     }
     try {
       console.log('System: Syncing to Database...');
-      await fetch(`http://localhost:5000/api/user/${userData.userId}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/user/${userData.userId}`, {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
