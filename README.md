@@ -14,6 +14,17 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 * **Progression:** Logging reps in advanced exercises cascades down the tree, automatically improving your proficiency score in the prerequisite, easier skills.
 * **Leveling:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
 
-## Project Background
+## To-Do List
+- [ ] Add a meaning to exercising with extra weight.
+- [ ] Introduce some kind of points to unlock exercises in the tree.
+- [ ] Improve the evaluation window.
+- [ ] Completely re-work the core tree.
+- [ ] Introduce settings / profile.
+- [ ] Implement weight history tracking.
+- [ ] Include actual video previews.
+- [ ] Introduce actual workout split selection. (in settings / profile)
+- [ ] Introduce a workout history window.
+
+## Project Background 
 
 This is a personal project and serves as my introduction to React and React Flow. The development process is heavily "vibe-coded," as learning through building and iterating in this hands-on way saves a significant amount of time.
