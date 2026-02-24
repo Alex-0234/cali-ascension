@@ -322,7 +322,7 @@ hr {
   border-radius: 8px;
   font-weight: bold;
   width: auto;
-  font-size: clamp(0.6rem, 3vw, 1.5rem);
+  font-size: clamp(0.6rem, 3vw, 1.2rem);
 }
 
 .btn-add-set:hover { background: var(--border-light); }
@@ -336,7 +336,7 @@ hr {
   font-weight: bold;
   box-shadow: 0 4px 10px var(--primary-glow);
   margin-left: 5px;
-  font-size: clamp(0.6rem, 3vw, 1.5rem);
+  font-size: clamp(0.6rem, 3vw, 1.2rem);
   width: auto;
 }
 
@@ -679,7 +679,6 @@ body {
   cursor: pointer;
   color: white;
   width: 100%;
-  max-width: 300px;
 }
 
 .btn-green {
@@ -994,7 +993,7 @@ button:disabled {
 /* --- HEADERS & TEXT --- */
 .auth-header {
   font-family: monospace;
-  font-size: 1.5rem;
+  font-size: clamp(0.8rem, 3vw, 1.5rem);
   letter-spacing: 2px;
   margin-bottom: 5px;
 }
@@ -1010,7 +1009,7 @@ button:disabled {
 }
 
 .auth-subtitle {
-  font-size: 0.9rem;
+  font-size: clamp(0.5rem, 2vw, 0.9rem);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 30px;
@@ -1030,7 +1029,7 @@ button:disabled {
 }
 
 .system-input {
-  width: 90%;
+  width: 100%;
   margin-right: auto;
   padding: 15px;
   background: var(--bg-input);
@@ -1069,7 +1068,7 @@ button:disabled {
 /* --- REDIRECT LINK --- */
 .auth-redirect {
   margin-top: 25px;
-  font-size: 0.9rem;
+  font-size: clamp(0.5rem, 2vw, 0.9rem);
   color: var(--text-muted);
 }
 
@@ -1088,4 +1087,104 @@ button:disabled {
 
 .auth-redirect span:hover {
   text-shadow: 0 0 10px currentColor;
+}
+
+/* =========================================================
+   SYSTEM ALERT (NOTIFICATION) STYLES
+   ========================================================= */
+
+.system-alert {
+  margin-top: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-family: monospace;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: systemAlertIn 0.3s ease-out forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.system-alert:hover {
+  transform: translateY(-2px);
+}
+
+.alert-header {
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.alert-body {
+  color: #e5e7eb; 
+  font-size: 0.9rem;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+}
+
+.alert-error {
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.1), 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+.alert-error .alert-header {
+  color: #fca5a5;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.alert-error:hover {
+  box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.2), 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.alert-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  box-shadow: inset 0 0 15px rgba(16, 185, 129, 0.1), 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.alert-success .alert-header {
+  color: #6ee7b7;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.alert-success:hover {
+  box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.2), 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+/* --- ANIMACE --- */
+
+@keyframes systemAlertIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.system-alert::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right, 
+    transparent, 
+    rgba(255, 255, 255, 0.05), 
+    transparent
+  );
+  animation: scanLine 2.5s infinite linear;
+  pointer-events: none; /* Aby to neblokovalo klikání */
+}
+
+@keyframes scanLine {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
