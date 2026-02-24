@@ -5,27 +5,42 @@ import Notification from "../../components/layout/Notification"
 
 export default function Login() {
     const navigate = useNavigate();
-    const login = useUserStore((state) => state.login); 
+    const setUserData = useUserStore((state) => state.setUserData); 
     
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [notification, setNotification] = useState({ message: "", error: false });
 
     async function handleLogin() {
         try {
-            if (!email || !password) {
+            if (!username || !password) {
                 setNotification({ message: "System Error: Credentials required", error: true });
                 return;
             }
-            const success = await login(email, password); 
-            
-            if (success) {
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username: username, password: password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                if (data.user) {
+                    setUserData(data.user);
+                }
+
                 setNotification({ message: "Authentication successful...", error: false });
                 setTimeout(() => navigate('/'), 1000);
             } else {
-                setNotification({ message: "Access Denied: Invalid credentials", error: true });
+
+                setNotification({ message: data.message || "Access Denied: Invalid credentials", error: true });
             }
         } catch (error) {
+            console.error("Login error:", error);
             setNotification({ message: "Server connection failed.", error: true });
         }
     }
@@ -38,10 +53,10 @@ export default function Login() {
 
                 <div className="auth-form">
                     <input 
-                        type="email" 
+                        type="text" 
                         className="system-input input-blue" 
-                        placeholder="Email Address" 
-                        onChange={(e)=>setEmail(e.target.value)}
+                        placeholder="Hunter Name" 
+                        onChange={(e)=>setUsername(e.target.value)}
                     />
                     <input 
                         type="password" 
@@ -56,7 +71,7 @@ export default function Login() {
                 </div>
 
                 <div className="auth-redirect">
-                    <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
+                    <p>Unregistered? <span style={{cursor: 'pointer'}} onClick={() => navigate("/register")}>Awaken Here</span></p>
                 </div>
                 
                 {notification.message && (
