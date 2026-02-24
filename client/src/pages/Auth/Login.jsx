@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'; 
 import useUserStore from '../../store/usePlayerStore'
-import Notification from "../../components/layout/Notification"
+import SystemAlert from '../../components/layout/Notification';
 
 export default function Login() {
     const navigate = useNavigate();

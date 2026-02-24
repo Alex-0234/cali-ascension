@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import './Notification.css'
 
-function Notification( { message, error }) {
+export default function SystemAlert({ message, error }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (message) {
-      
       setVisible(true);
 
       const timer = setTimeout(() => {
@@ -22,19 +21,17 @@ function Notification( { message, error }) {
   }
 
   return (
-    <>
-    { error && (
-      <div className="notification error" onClick={() => setVisible(false)}>
-      {message}
+    <div 
+      className={`system-alert ${error ? 'alert-error' : 'alert-success'}`} 
+      onClick={() => setVisible(false)}
+    >
+      <div className="alert-header">
+        {error ? '⚠ [ SYSTEM ERROR ]' : '✓ [ SYSTEM NOTICE ]'}
       </div>
-    )};
-    { !error && (
-      <div className="notification message" onClick={() => setVisible(false)}>
-      {message}
+      
+      <div className="alert-body">
+        {message}
       </div>
-    )}
-      </>
+    </div>
   );
 }
-
-export default Notification;

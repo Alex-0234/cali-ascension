@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router';
-import Notification from "../../components/layout/Notification"
+import SystemAlert from '../../components/layout/Notification';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -83,7 +83,7 @@ export default function Register() {
                 </div>
                 
                 {notification.message && (
-                    <Notification message={notification.message} error={notification.error} />  
+                    <SystemAlert message={notification.message} error={notification.error} />  
                 )}
             </div>
         </div>
