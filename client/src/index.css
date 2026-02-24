@@ -610,7 +610,6 @@ body {
    6. EVALUATION & AWAKENING SCREENS
    ========================================================= */
 
-/* Sdílený kontejner pro obrazovky */
 .input-screen,
 .selection-screen,
 .rank-screen {
@@ -628,7 +627,6 @@ body {
   gap: 20px;
 }
 
-/* Nadpisy a zvýrazněný text */
 .input-screen h2,
 .selection-screen h2,
 .rank-screen h2 {
@@ -647,7 +645,7 @@ body {
   font-size: 1.1rem;
 }
 
-/* Inputy (věk, váha, max reps...) */
+/* Inputs */
 .input-screen input {
   width: 100%;
   max-width: 300px;
@@ -728,7 +726,6 @@ button:disabled {
   gap: 20px;
 }
 
-/* Kolečko načítání systému */
 .spinner {
   width: 60px;
   height: 60px;
@@ -745,7 +742,6 @@ button:disabled {
   100% { transform: rotate(360deg); }
 }
 
-/* Blikající výpočty */
 .blinking-text {
   color: var(--text-muted);
   animation: blink 1.5s infinite;
@@ -760,7 +756,6 @@ button:disabled {
   50% { opacity: 1; text-shadow: 0 0 5px var(--cyan-glow); color: var(--cyan); }
 }
 
-/* Efekt odhalení (Reveal) */
 .fade-in {
   animation: fadeInReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
@@ -770,10 +765,10 @@ button:disabled {
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Karta tvé nové hodnosti */
+
 .rank-card {
   background: var(--bg-input);
-  border: 2px solid transparent; /* Barva je dodávána z JS přes inline styl! */
+  border: 2px solid transparent; 
   border-radius: 16px;
   padding: 50px 30px;
   margin: 30px 0;
@@ -827,7 +822,6 @@ button:disabled {
    DASHBOARD & URGENT QUEST STYLES
    ========================================================= */
 
-/* --- Načítací obrazovka (System Boot) --- */
 .system-boot {
   display: flex;
   flex-direction: column;
@@ -845,7 +839,6 @@ button:disabled {
   margin: 20px 0;
 }
 
-/* --- Hlavička Dashboardu --- */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -864,7 +857,6 @@ button:disabled {
   text-shadow: 0 0 10px var(--primary-glow);
 }
 
-/* --- Tlačítko Logout --- */
 .btn-logout {
   background: transparent;
   color: var(--danger);
@@ -884,7 +876,6 @@ button:disabled {
   transform: translateY(-2px);
 }
 
-/* --- URGENT QUEST (Zóna pro evaluaci) --- */
 .urgent-quest-container {
   background: rgba(220, 38, 38, 0.05);
   border: 2px dashed var(--danger);
@@ -906,7 +897,6 @@ button:disabled {
   animation: blink 2s infinite;
 }
 
-/* Červené pulzující tlačítko */
 .btn-urgent {
   width: auto;
   background: var(--danger-bg);
@@ -932,7 +922,6 @@ button:disabled {
 
 /* --- ANIMACE --- */
 
-/* Pulzování tlačítka */
 @keyframes urgentPulse {
   0% {
     box-shadow: 0 0 10px rgba(248, 113, 113, 0.4);
@@ -948,13 +937,11 @@ button:disabled {
   }
 }
 
-/* Blikání textu */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
 
-/* Načítací kolečko */
 .spinner {
   width: 50px;
   height: 50px;
@@ -968,4 +955,140 @@ button:disabled {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   AUTHENTICATION SCREENS (LOGIN & REGISTER)
+   ========================================================= */
+
+/* Obal pro celou stránku - vycentrování doprostřed */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+/* Společný základ pro oba panely */
+.auth-box {
+  width: 100%;
+  max-width: 450px;
+  background: var(--bg-panel); 
+  border-radius: 16px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- THEMES --- */
+/* Urgent Theme (Registrace - Červená) */
+.auth-box.urgent-theme {
+  border: 2px dashed var(--danger);
+  box-shadow: inset 0 0 30px rgba(220, 38, 38, 0.05), 0 0 20px rgba(220, 38, 38, 0.2);
+}
+
+/* Standard Theme (Login - Modrá/Cyan) */
+.auth-box.standard-theme {
+  border: 1px solid var(--primary);
+  box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.05), 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+/* --- HEADERS & TEXT --- */
+.auth-header {
+  font-family: monospace;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.red-glow {
+  color: var(--danger);
+  text-shadow: 0 0 10px rgba(248, 113, 113, 0.6);
+}
+
+.blue-glow {
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  color: var(--text-muted);
+}
+
+.blinking-red {
+  color: #fca5a5;
+  animation: blink 2s infinite;
+}
+
+/* --- FORM & INPUTS --- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.system-input {
+  width: 100%;
+  padding: 15px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-family: monospace;
+  transition: all 0.3s ease;
+}
+
+.system-input::placeholder {
+  color: #6b7280;
+}
+
+.system-input:focus {
+  outline: none;
+}
+
+.input-red:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.3);
+}
+
+.input-blue:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px var(--cyan-glow);
+}
+
+/* --- BUTTON FIX --- */
+.auth-btn {
+  margin-top: 15px;
+  width: 100%;
+}
+
+/* --- REDIRECT LINK --- */
+.auth-redirect {
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.auth-redirect span {
+  color: var(--cyan);
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.urgent-theme .auth-redirect span {
+  color: var(--danger);
+}
+
+.auth-redirect span:hover {
+  text-shadow: 0 0 10px currentColor;
 }

@@ -1,83 +1,71 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'; // Pozor: raději z 'react-router-dom' než 'react-router'
+import { useNavigate } from 'react-router-dom'; 
 import useUserStore from '../../store/usePlayerStore'
-import styles from './signin.module.css';
 
 export default function Login() {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [notification, setNotification] = useState({message: '', error: false})
+    const login = useUserStore((state) => state.login); 
     
-    const setUserData = useUserStore((state) => state.setUserData);
-    const fetchUser = useUserStore((state) => state.fetchUser);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [notification, setNotification] = useState({ message: "", error: false });
 
     async function handleLogin() {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Login success:", data);
-
-                localStorage.setItem('userId', data.userId);
-
-                setUserData({ 
-                    userId: data.userId, 
-                    username: username, 
-                    isLoggedIn: true, 
-                });
-
-                await fetchUser(data.userId);
-
-                // 3. Přesměrování
-                navigate('/');
-            }
-            else {
-                const errorData = await response.json();
-                setNotification({ message: errorData.message, error: true });
+            if (!email || !password) {
+                setNotification({ message: "System Error: Credentials required", error: true });
+                return;
             }
 
+            // Zde zavoláš svou login logiku (fetch nebo funkci ze storu)
+            // Tohle je placeholder pro ukázku
+            const success = await login(email, password); 
+            
+            if (success) {
+                setNotification({ message: "Authentication successful...", error: false });
+                setTimeout(() => navigate('/'), 1000);
+            } else {
+                setNotification({ message: "Access Denied: Invalid credentials", error: true });
+            }
         } catch (error) {
-            console.error("Error during login:", error);
-            setNotification({ message: "Server unreachable", error: true });
+            setNotification({ message: "Server connection failed.", error: true });
         }
     }
 
     return (
-        <>
-        <h2>Log In</h2>
-        <div className={'login-form'}>
-            <input 
-                name="username"
-                type="text" 
-                className={styles.input} // Pozor: styles={} vs className={}
-                placeholder="Username" 
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input 
-                name="password"
-                type="password" 
-                className={styles.input} 
-                placeholder="Password" 
-                onChange={(e) => setPassword(e.target.value)} 
-            />
-            <button onClick={handleLogin}>Log In</button>
-        </div>
-        
-        <div className='signup-redirect'>
-            <p>Don't have an account? <a style={{cursor: 'pointer'}} onClick={() => navigate('/register')}>Register</a></p>
-        </div>
+        <div className="auth-page">
+            {/* Standardní systémový kontejner pro login */}
+            <div className="auth-box standard-theme">
+                <h2 className="auth-header blue-glow">[ SYSTEM AUTHENTICATION ]</h2>
+                <p className="auth-subtitle">Verify Hunter Credentials</p>
 
-        {notification.message && (
-            <div className={`notification ${notification.error ? 'error' : ''}`}>
-                {notification.message}
+                <div className="auth-form">
+                    <input 
+                        type="email" 
+                        className="system-input input-blue" 
+                        placeholder="Email Address" 
+                        onChange={(e)=>setEmail(e.target.value)}
+                    />
+                    <input 
+                        type="password" 
+                        className="system-input input-blue" 
+                        placeholder="Password" 
+                        onChange={(e)=>setPassword(e.target.value)}
+                    />
+                    
+                    <button className="btn-enter auth-btn" onClick={handleLogin}>
+                        ENTER SYSTEM
+                    </button>
+                </div>
+
+                <div className="auth-redirect">
+                    <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
+                </div>
+                
+                {notification.message && (
+                    <Notification message={notification.message} error={notification.error} />  
+                )}
             </div>
-        )}
-        </>
+        </div>
     )
 }
