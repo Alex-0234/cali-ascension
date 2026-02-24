@@ -8,6 +8,7 @@ import { calculateBMR } from "../../utils/calculateBMI";
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
     const syncUser = useUserStore((state) => state.syncUser);
+    const setUserData = useUserStore((state) => state.setUserData);
 
     const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);
@@ -28,6 +29,7 @@ export default function StatusWindow() {
     }
     const openWeightModal = () => {
         setIsTypingWeight(true);
+
 
     }
 
@@ -78,7 +80,7 @@ export default function StatusWindow() {
                         <h3>Enter your weight</h3>
                         <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
                         <button onClick={() => {
-                            useUserStore.setState({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
+                            setUserData({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
                             syncUser();
                             setIsTypingWeight(false);
                         }}>Save</button>

@@ -62,7 +62,6 @@ export default function SkillTree() {
     return (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 'calc(100dvh - 75px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             
-            {/* Control Panel to switch trees */}
             <div style={{ padding: '15px', background: '#111', color: 'white', display: 'flex', gap: '15px', zIndex: 10, alignItems: 'center', borderBottom: '1px solid #333' }}>
                 <button 
                     onClick={() => setCurrentCategory('pushups')}
@@ -176,7 +175,6 @@ export default function SkillTree() {
                                 </div>
                             )}
 
-                            {/* Tlačítko pro manuální odemčení, pokud bys chtěl cvik začít cvičit i bez splnění prerequisites */}
                             {!isUnlocked && (
                                 <button 
                                     onClick={handleForceUnlock}
