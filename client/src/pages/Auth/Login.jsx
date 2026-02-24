@@ -30,9 +30,10 @@ export default function Login() {
 
             if (response.ok) {
                 setUserData({ userId: data.userId });
-
                 setNotification({ message: "Authentication successful...", error: false });
+                localStorage.setItem('userId', data.userId);
                 setTimeout(() => navigate('/'), 1000);
+
             } else {
 
                 setNotification({ message: data.message || "Access Denied: Invalid credentials", error: true });

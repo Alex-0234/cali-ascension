@@ -9,7 +9,6 @@ export default function Dashboard() {
     const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
     const logout = useUserStore((state) => state.logout);  
 
-    // Nastylovaný načítací stav
     if (userData.isLoading || !hasFetchedInitialData) {
         return (
             <div className="system-boot">
@@ -23,13 +22,11 @@ export default function Dashboard() {
     return (
         <>
         <div className='dashboard'>
-            {/* Hlavička s nadpisem a odhlášením vedle sebe */}
             <div className="dashboard-header">
                 <h2>Dashboard</h2>
                 <button className="btn-logout" onClick={logout}>Logout</button>
             </div>
 
-            {/* Pokud hráč ještě neprošel evaluací (Urgent Quest styl) */}
             {!userData.isConfigured && (
                 <div className="urgent-quest-container">
                     <p className="quest-warning">⚠ System requires initial calibration</p>
@@ -38,8 +35,6 @@ export default function Dashboard() {
                     </button>
                 </div>
             )}
-
-            {/* Hlavní stavové okno (zobrazí se po evaluaci) */}
             {userData.isConfigured && (
                 <StatusWindow />
             )}

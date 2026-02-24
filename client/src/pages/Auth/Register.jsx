@@ -43,7 +43,6 @@ export default function Register() {
 
     return (
         <div className="auth-page">
-            {/* Urgent Quest kontejner pro registraci */}
             <div className="auth-box urgent-theme">
                 <h2 className="auth-header red-glow">[ NEW AWAKENING DETECTED ]</h2>
                 <p className="auth-subtitle blinking-red">Register new Hunter to the System</p>
