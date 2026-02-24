@@ -22,7 +22,7 @@ export default function Register() {
                 return;
             }
 
-            const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/register`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password }),
