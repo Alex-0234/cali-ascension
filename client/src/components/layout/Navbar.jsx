@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 
-// Pro náhled v Canvasu používáme mock, ve VS Code se použije standardní import nahoře
 const MockRouterLink = ({ to, children, className }) => <a href={to} className={className}>{children}</a>;
 const isCanvas = typeof window !== 'undefined' && window.location.pathname.includes('/artifacts/');
 
@@ -8,7 +7,6 @@ export default function Navbar() {
     const location = !isCanvas ? useLocation() : { pathname: '/' };
     const isActive = (path) => location.pathname === path;
 
-    // V Canvasu použijeme mock, u tebe normální Link
     const RouterLink = isCanvas ? MockRouterLink : Link;
 
     return (
