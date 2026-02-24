@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: 'https://cali-ascension.vercel.app' 
+  origin: [process.env.VITE_API_URL, process.env.DOMAIN_URL] 
 }));
 app.use(express.json());
 
