@@ -805,7 +805,7 @@ button:disabled {
 .btn-enter {
   background: var(--primary);
   border: 1px solid var(--primary);
-  font-size: 1.2rem;
+  font-size: 0.7rem;
   padding: 15px 30px;
   box-shadow: 0 0 15px var(--primary-glow);
   margin-top: 20px;
@@ -993,7 +993,7 @@ button:disabled {
 /* --- HEADERS & TEXT --- */
 .auth-header {
   font-family: monospace;
-  font-size: clamp(0.8rem, 3vw, 1.5rem);
+  font-size: clamp(0.7rem, 3vw, 1.5rem);
   letter-spacing: 2px;
   margin-bottom: 5px;
 }
@@ -1009,7 +1009,7 @@ button:disabled {
 }
 
 .auth-subtitle {
-  font-size: clamp(0.5rem, 2vw, 0.9rem);
+  font-size: clamp(0.4rem, 2vw, 0.9rem);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 30px;
@@ -1029,14 +1029,15 @@ button:disabled {
 }
 
 .system-input {
-  width: 100%;
+  width: calc(100% - 8px);
   margin-right: auto;
-  padding: 15px;
+  padding: 12px 0;
+  padding-left: 8px;
   background: var(--bg-input);
   border: 1px solid var(--border-light);
   border-radius: 8px;
   color: white;
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-family: monospace;
   transition: all 0.3s ease;
 }
@@ -1062,7 +1063,7 @@ button:disabled {
 /* --- BUTTON FIX --- */
 .auth-btn {
   margin-top: 15px;
-  width: 100%;
+  width: calc(100% + 2px);
 }
 
 /* --- REDIRECT LINK --- */
@@ -1095,7 +1096,7 @@ button:disabled {
 
 .system-alert {
   margin-top: 20px;
-  padding: 15px 20px;
+  padding: 15px 10px;
   border-radius: 8px;
   text-align: center;
   font-family: monospace;

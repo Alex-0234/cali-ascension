@@ -37,6 +37,7 @@ export default function Register() {
                 setNotification({ message: errorData.message || "Registration failed", error: true });
             }
         } catch (error) {
+            console.error("Registration error:", error);
             setNotification({ message: "Cannot connect to server.", error: true });
         }
     }

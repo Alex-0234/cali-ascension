@@ -74,7 +74,7 @@ export default function Login() {
                 </div>
                 
                 {notification.message && (
-                    <SystemAlert message={notification.message} error={notification.error} />  
+                    <SystemAlert message={notification.message} error={notification.error} onClick={() => setNotification({ message: "", error: false })} />  
                 )}
             </div>
         </div>
