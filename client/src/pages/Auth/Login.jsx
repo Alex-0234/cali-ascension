@@ -5,7 +5,7 @@ import Notification from "../../components/layout/Notification"
 
 export default function Login() {
     const navigate = useNavigate();
-    const setUserData = useUserStore((state) => state.setUserData); 
+    const fetchUser = useUserStore((state) => state.fetchUser); 
     
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -29,13 +29,13 @@ export default function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                setUserData({ userId: data.userId });
+                localStorage.setItem('userId', data.userId);        
+                await fetchUser(data.userId); 
+
                 setNotification({ message: "Authentication successful...", error: false });
-                localStorage.setItem('userId', data.userId);
                 setTimeout(() => navigate('/'), 1000);
 
             } else {
-
                 setNotification({ message: data.message || "Access Denied: Invalid credentials", error: true });
             }
         } catch (error) {
@@ -74,7 +74,7 @@ export default function Login() {
                 </div>
                 
                 {notification.message && (
-                    <Notification message={notification.message} error={notification.error} />  
+                    <SystemAlert message={notification.message} error={notification.error} />  
                 )}
             </div>
         </div>
