@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import './Notification.css'
 
 export default function SystemAlert({ message, error }) {
   const [visible, setVisible] = useState(false);
