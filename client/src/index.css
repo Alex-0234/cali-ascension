@@ -961,7 +961,6 @@ button:disabled {
    AUTHENTICATION SCREENS (LOGIN & REGISTER)
    ========================================================= */
 
-/* Obal pro celou stránku - vycentrování doprostřed */
 .auth-page {
   display: flex;
   justify-content: center;
@@ -970,7 +969,6 @@ button:disabled {
   padding: 20px;
 }
 
-/* Společný základ pro oba panely */
 .auth-box {
   width: 100%;
   max-width: 450px;
@@ -983,13 +981,11 @@ button:disabled {
 }
 
 /* --- THEMES --- */
-/* Urgent Theme (Registrace - Červená) */
 .auth-box.urgent-theme {
   border: 2px dashed var(--danger);
   box-shadow: inset 0 0 30px rgba(220, 38, 38, 0.05), 0 0 20px rgba(220, 38, 38, 0.2);
 }
 
-/* Standard Theme (Login - Modrá/Cyan) */
 .auth-box.standard-theme {
   border: 1px solid var(--primary);
   box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.05), 0 0 20px rgba(59, 130, 246, 0.2);
@@ -1034,7 +1030,8 @@ button:disabled {
 }
 
 .system-input {
-  width: 100%;
+  width: 90%;
+  margin-right: auto;
   padding: 15px;
   background: var(--bg-input);
   border: 1px solid var(--border-light);

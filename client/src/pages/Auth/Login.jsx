@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'; 
 import useUserStore from '../../store/usePlayerStore'
+import Notification from "../../components/layout/Notification"
 
 export default function Login() {
     const navigate = useNavigate();
@@ -16,9 +17,6 @@ export default function Login() {
                 setNotification({ message: "System Error: Credentials required", error: true });
                 return;
             }
-
-            // Zde zavoláš svou login logiku (fetch nebo funkci ze storu)
-            // Tohle je placeholder pro ukázku
             const success = await login(email, password); 
             
             if (success) {
@@ -34,7 +32,6 @@ export default function Login() {
 
     return (
         <div className="auth-page">
-            {/* Standardní systémový kontejner pro login */}
             <div className="auth-box standard-theme">
                 <h2 className="auth-header blue-glow">[ SYSTEM AUTHENTICATION ]</h2>
                 <p className="auth-subtitle">Verify Hunter Credentials</p>
