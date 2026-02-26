@@ -3,7 +3,7 @@ import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
 import { getLevelProgress } from "../../utils/levelUpSystem";
 import { calculateBMR } from "../../utils/calculateBMI";
-import WeightTracker from "../../components/stats/WeightTracker";
+import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
 
