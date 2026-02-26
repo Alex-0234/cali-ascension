@@ -52,7 +52,7 @@ export const EXERCISE_DB = {
     "pushup_04A": {
         id: "pushup_04A",
         name: "Diamond Push-up",
-        animation: "",
+        animation: "/videos/diamond_pushup.mp4",
         tier: 2.5,
         totalReps: 0,
         maxReps: 0,
@@ -63,7 +63,7 @@ export const EXERCISE_DB = {
     "pushup_05A": {
         id: "pushup_05A",
         name: "Archer Push-up",
-        animation: "",
+        animation: "/videos/archer_pushup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -74,7 +74,7 @@ export const EXERCISE_DB = {
     "pushup_06A": {
         id: "pushup_06A",
         name: "One-Arm Assisted Push-up",
-        animation: "",
+        animation: "/videos/onearm_assisted_pushup.mp4",
         tier: 4.5,
         totalReps: 0,
         maxReps: 0,
@@ -85,7 +85,7 @@ export const EXERCISE_DB = {
     "pushup_07A": {
         id: "pushup_07A",
         name: "One-Arm Push-up",
-        animation: "",
+        animation: "/videos/onearm_pushup.mp4",
         tier: 6,
         totalReps: 0,
         maxReps: 0,
@@ -98,7 +98,7 @@ export const EXERCISE_DB = {
     "pushup_04B": {
         id: "pushup_04B",
         name: "Explosive Push-up",
-        animation: "",
+        animation: "/videos/explosive_pushup.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
@@ -109,7 +109,7 @@ export const EXERCISE_DB = {
     "pushup_05B": {
         id: "pushup_05B",
         name: "Clapping Push-up",
-        animation: "",
+        animation: "/videos/clapping_pushup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -120,7 +120,7 @@ export const EXERCISE_DB = {
     "pushup_06B": {
         id: "pushup_06B",
         name: "Superman Push-up",
-        animation: "",
+        animation: "/videos/superman_pushup.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -133,7 +133,7 @@ export const EXERCISE_DB = {
     "pushup_04C": {
         id: "pushup_04C",
         name: "Pseudo Planche Push-up",
-        animation: "",
+        animation: "/videos/pseudo_planche_pushup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -144,7 +144,7 @@ export const EXERCISE_DB = {
     "pushup_05C": {
         id: "pushup_05C",
         name: "Tuck Planche Push-up",
-        animation: "",
+        animation: "/videos/tuck_planche_pushup.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -155,7 +155,7 @@ export const EXERCISE_DB = {
     "pushup_06C": {
         id: "pushup_06C",
         name: "Straddle Planche Push-up",
-        animation: "",
+        animation: "/videos/straddle_planche_pushup.mp4",
         tier: 7,
         totalReps: 0,
         maxReps: 0,
@@ -166,7 +166,7 @@ export const EXERCISE_DB = {
     "pushup_07C": {
         id: "pushup_07C",
         name: "Full Planche Push-up",
-        animation: "",
+        animation: "/videos/full_planche_pushup.mp4",
         tier: 9,
         totalReps: 0,
         maxReps: 0,
@@ -179,7 +179,7 @@ export const EXERCISE_DB = {
     "pushup_04D": {
         id: "pushup_04D",
         name: "Pike Push-up",
-        animation: "",
+        animation: "/videos/pike_pushup.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
@@ -190,7 +190,7 @@ export const EXERCISE_DB = {
     "pushup_05D": {
         id: "pushup_05D",
         name: "Elevated Pike Push-up",
-        animation: "",
+        animation: "/videos/elevated_pike_pushup.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
@@ -201,7 +201,7 @@ export const EXERCISE_DB = {
     "pushup_06D": {
         id: "pushup_06D",
         name: "Wall Handstand Push-up",
-        animation: "",
+        animation: "/videos/wall_handstand_pushup.mp4",
         tier: 5.5,
         totalReps: 0,
         maxReps: 0,
@@ -212,7 +212,7 @@ export const EXERCISE_DB = {
     "pushup_07D": {
         id: "pushup_07D",
         name: "Freestanding HSPU",
-        animation: "",
+        animation: "/videos/freestanding_hspu.mp4",
         tier: 8,
         totalReps: 0,
         maxReps: 0,
@@ -227,7 +227,7 @@ export const EXERCISE_DB = {
     "squat_00": {
         id: "squat_00",
         name: "Assisted Squat",
-        animation: "",
+        animation: "/videos/assisted_squat.mp4",
         tier: 0,
         totalReps: 0,
         maxReps: 0,
@@ -237,7 +237,7 @@ export const EXERCISE_DB = {
     "squat_01": {
         id: "squat_01",
         name: "Half Squat",
-        animation: "",
+        animation: "/videos/half_squat.mp4",
         tier: 0.5,
         totalReps: 0,
         maxReps: 0,
@@ -247,7 +247,7 @@ export const EXERCISE_DB = {
     "squat_02": {
         id: "squat_02",
         name: "Standard Squat",
-        animation: "",
+        animation: "/videos/standard_squat.mp4",
         tier: 1,
         totalReps: 0,
         maxReps: 0,
@@ -261,7 +261,7 @@ export const EXERCISE_DB = {
     "squat_03A": {
         id: "squat_03A",
         name: "Forward Lunge",
-        animation: "",
+        animation: "/videos/forward_lunge.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
@@ -272,7 +272,7 @@ export const EXERCISE_DB = {
     "squat_04A": {
         id: "squat_04A",
         name: "Bulgarian Split Squat",
-        animation: "",
+        animation: "/videos/bulgarian_split_squat.mp4",
         tier: 2.5,
         totalReps: 0,
         maxReps: 0,
@@ -283,7 +283,7 @@ export const EXERCISE_DB = {
     "squat_05A": {
         id: "squat_05A",
         name: "Assisted Pistol Squat",
-        animation: "",
+        animation: "/videos/assisted_pistol_squat.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -294,7 +294,7 @@ export const EXERCISE_DB = {
     "squat_06A": {
         id: "squat_06A",
         name: "Pistol Squat",
-        animation: "",
+        animation: "/videos/pistol_squat.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -305,7 +305,7 @@ export const EXERCISE_DB = {
     "squat_07A": {
         id: "squat_07A",
         name: "Dragon Pistol Squat",
-        animation: "",
+        animation: "/videos/dragon_pistol_squat.mp4",
         tier: 7,
         totalReps: 0,
         maxReps: 0,
@@ -318,7 +318,7 @@ export const EXERCISE_DB = {
     "squat_03B": {
         id: "squat_03B",
         name: "Jumping Squat",
-        animation: "",
+        animation: "/videos/jumping_squat.mp4",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
@@ -329,7 +329,7 @@ export const EXERCISE_DB = {
     "squat_04B": {
         id: "squat_04B",
         name: "Box Jump",
-        animation: "",
+        animation: "/videos/box_jump.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
@@ -342,7 +342,7 @@ export const EXERCISE_DB = {
     "squat_03C": {
         id: "squat_03C",
         name: "Side Lunge",
-        animation: "",
+        animation: "/videos/side_lunge.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
@@ -353,7 +353,7 @@ export const EXERCISE_DB = {
     "squat_04C": {
         id: "squat_04C",
         name: "Cossack Squat",
-        animation: "",
+        animation: "/videos/cossack_squat.mp4",
         tier: 2.5,
         totalReps: 0,
         maxReps: 0,
@@ -364,7 +364,7 @@ export const EXERCISE_DB = {
     "squat_05C": {
         id: "squat_05C",
         name: "Skater Squat",
-        animation: "",
+        animation: "/videos/skater_squat.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
@@ -379,7 +379,7 @@ export const EXERCISE_DB = {
     "core_00": {
         id: "core_00",
         name: "Plank",
-        animation: "",
+        animation: "/videos/plank.mp4",
         tier: 0,
         totalReps: 0,
         maxReps: 0,
@@ -389,7 +389,7 @@ export const EXERCISE_DB = {
     "core_01": {
         id: "core_01",
         name: "Crunches",
-        animation: "",
+        animation: "/videos/crunches.mp4",
         tier: 0.5,
         totalReps: 0,
         maxReps: 0,
@@ -399,7 +399,7 @@ export const EXERCISE_DB = {
     "core_02": {
         id: "core_02",
         name: "Lying Leg Raises",
-        animation: "",
+        animation: "/videos/lying_leg_raises.mp4",
         tier: 1,
         totalReps: 0,
         maxReps: 0,
@@ -413,7 +413,7 @@ export const EXERCISE_DB = {
     "core_03A": {
         id: "core_03A",
         name: "Hollow Body Hold",
-        animation: "",
+        animation: "/videos/hollow_body_hold.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
@@ -424,7 +424,7 @@ export const EXERCISE_DB = {
     "core_04A": {
         id: "core_04A",
         name: "L-Sit",
-        animation: "",
+        animation: "/videos/l_sit.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -435,7 +435,7 @@ export const EXERCISE_DB = {
     "core_05A": {
         id: "core_05A",
         name: "V-Sit",
-        animation: "",
+        animation: "/videos/v_sit.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -448,7 +448,7 @@ export const EXERCISE_DB = {
     "core_03B": {
         id: "core_03B",
         name: "Hanging Knee Raises",
-        animation: "",
+        animation: "/videos/hanging_knee_raises.mp4",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
@@ -459,7 +459,7 @@ export const EXERCISE_DB = {
     "core_04B": {
         id: "core_04B",
         name: "Hanging Leg Raises",
-        animation: "",
+        animation: "/videos/hanging_leg_raises.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
@@ -470,7 +470,7 @@ export const EXERCISE_DB = {
     "core_05B": {
         id: "core_05B",
         name: "Toes to Bar",
-        animation: "",
+        animation: "/videos/toes_to_bar.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
@@ -481,7 +481,7 @@ export const EXERCISE_DB = {
     "core_06B": {
         id: "core_06B",
         name: "Front Lever Hold",
-        animation: "",
+        animation: "/videos/front_lever_hold.mp4",
         tier: 6.5,
         totalReps: 0,
         maxReps: 0,
@@ -494,7 +494,7 @@ export const EXERCISE_DB = {
     "core_03C": {
         id: "core_03C",
         name: "Russian Twists",
-        animation: "",
+        animation: "/videos/russian_twists.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
@@ -505,7 +505,7 @@ export const EXERCISE_DB = {
     "core_04C": {
         id: "core_04C",
         name: "Windshield Wipers",
-        animation: "",
+        animation: "/videos/windshield_wipers.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -516,7 +516,7 @@ export const EXERCISE_DB = {
     "core_05C": {
         id: "core_05C",
         name: "Human Flag",
-        animation: "",
+        animation: "/videos/human_flag.mp4",
         tier: 7,
         totalReps: 0,
         maxReps: 0,
@@ -529,7 +529,7 @@ export const EXERCISE_DB = {
     "core_03D": {
         id: "core_03D",
         name: "Ab Wheel Rollout",
-        animation: "",
+        animation: "/videos/ab_wheel_rollout.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
@@ -540,7 +540,7 @@ export const EXERCISE_DB = {
     "core_04D": {
         id: "core_04D",
         name: "Dragon Flag",
-        animation: "",
+        animation: "/videos/dragon_flag.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -556,7 +556,7 @@ export const EXERCISE_DB = {
     "pullup_00": {
         id: "pullup_00",
         name: "Wall Pull",
-        animation: "",
+        animation: "/videos/wall_pull.mp4",
         tier: 0.2,
         totalReps: 0,
         maxReps: 0,
@@ -566,7 +566,7 @@ export const EXERCISE_DB = {
     "pullup_01": {
         id: "pullup_01",
         name: "Australian Pull-up",
-        animation: "",
+        animation: "/videos/australian_pullup.mp4",
         tier: 0.8,
         totalReps: 0,
         maxReps: 0,
@@ -578,7 +578,7 @@ export const EXERCISE_DB = {
     "pullup_02": {
         id: "pullup_02",
         name: "Jackknife Pull-up",
-        animation: "",
+        animation: "/videos/jackknife_pullup.mp4",
         tier: 1,
         totalReps: 0,
         maxReps: 0,
@@ -588,7 +588,7 @@ export const EXERCISE_DB = {
     "pullup_03": {
         id: "pullup_03",
         name: "Isometric Hold Pull-up",
-        animation: "",
+        animation: "/videos/isometric_hold_pullup.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
@@ -598,7 +598,7 @@ export const EXERCISE_DB = {
     "pullup_04": {
         id: "pullup_04",
         name: "Negative Pull-up",
-        animation: "",
+        animation: "/videos/negative_pullup.mp4",
         tier: 1.8,
         totalReps: 0,
         maxReps: 0,
@@ -610,7 +610,7 @@ export const EXERCISE_DB = {
     "pullup_05": {
         id: "pullup_05",
         name: "Chin-up",
-        animation: "",
+        animation: "/videos/chin_up.mp4",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
@@ -620,7 +620,7 @@ export const EXERCISE_DB = {
     "pullup_06": {
         id: "pullup_06",
         name: "Standard Pull-up",
-        animation: "",
+        animation: "/videos/standard_pullup.mp4",
         tier: 2.8,
         totalReps: 0,
         maxReps: 0,
@@ -632,7 +632,7 @@ export const EXERCISE_DB = {
     "pullup_07A": {
         id: "pullup_07A",
         name: "Archer Pull-up",
-        animation: "",
+        animation: "/videos/archer_pullup.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
@@ -643,7 +643,7 @@ export const EXERCISE_DB = {
     "pullup_07B": {
         id: "pullup_07B",
         name: "Commando Pull-up",
-        animation: "",
+        animation: "/videos/commando_pullup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -654,7 +654,7 @@ export const EXERCISE_DB = {
     "pullup_07C1": {
         id: "pullup_07C1",
         name: "Wide Grip Pull-up",
-        animation: "",
+        animation: "/videos/wide_grip_pullup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -665,7 +665,7 @@ export const EXERCISE_DB = {
     "pullup_07C2": {
         id: "pullup_07C2",
         name: "Close Grip Pull-up", 
-        animation: "",
+        animation: "/videos/close_grip_pullup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -678,7 +678,7 @@ export const EXERCISE_DB = {
     "pullup_08A": {
         id: "pullup_08A",
         name: "Typewriter Pull-up",
-        animation: "",
+        animation: "/videos/typewriter_pullup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -689,7 +689,7 @@ export const EXERCISE_DB = {
     "pullup_08B": {
         id: "pullup_08B",
         name: "Explosive Pull-up",
-        animation: "",
+        animation: "/videos/explosive_pullup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -700,7 +700,7 @@ export const EXERCISE_DB = {
     "pullup_08C": {
         id: "pullup_08C",
         name: "L-Sit Pull-up",
-        animation: "",
+        animation: "/videos/l_sit_pullup.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
@@ -713,7 +713,7 @@ export const EXERCISE_DB = {
     "pullup_09A": {
         id: "pullup_09A",
         name: "One-Arm Assisted Pull-up",
-        animation: "",
+        animation: "/videos/one_arm_assisted_pullup.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
@@ -724,7 +724,7 @@ export const EXERCISE_DB = {
     "pullup_09B": {
         id: "pullup_09B",
         name: "Clapping Pull-up",
-        animation: "",
+        animation: "/videos/clapping_pullup.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
@@ -735,7 +735,7 @@ export const EXERCISE_DB = {
     "pullup_09C": {
         id: "pullup_09C",
         name: "Behind the Neck Pull-up",
-        animation: "",
+        animation: "/videos/behind_neck_pullup.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
@@ -748,7 +748,7 @@ export const EXERCISE_DB = {
     "pullup_10A": {
         id: "pullup_10A",
         name: "One-Arm Chin-up",
-        animation: "",
+        animation: "/videos/one_arm_chinup.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -759,7 +759,7 @@ export const EXERCISE_DB = {
     "pullup_10B": {
         id: "pullup_10B",
         name: "Muscle-up",
-        animation: "",
+        animation: "/videos/muscle_up.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
@@ -770,7 +770,7 @@ export const EXERCISE_DB = {
     "pullup_10C": {
         id: "pullup_10C",
         name: "Front Lever Pull-up",
-        animation: "",
+        animation: "/videos/front_lever_pullup.mp4",
         tier: 5.5,
         totalReps: 0,
         maxReps: 0,
@@ -783,7 +783,7 @@ export const EXERCISE_DB = {
     "pullup_11A": {
         id: "pullup_11A",
         name: "One-Arm Pull-up",
-        animation: "",
+        animation: "/videos/one_arm_pullup.mp4",
         tier: 6.5,
         totalReps: 0,
         maxReps: 0,
@@ -828,7 +828,7 @@ export const ALL_EXERCISES = {
 
 export const EVALUATION_EXERCISES = {
     pushups: ['pushup_00', 'pushup_01', 'pushup_02', 'pushup_03', 'pushup_04A', 'pushup_05A','pushup_06A','pushup_07A'],
-    squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A','squat_04A','squat_05A','squat_06A','squat_07A','squat_08A'],
+    squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A','squat_04A','squat_05A','squat_06A','squat_07A'],
     core: ['core_00', 'core_01', 'core_02', 'core_04A', 'core_04B'],
     pullups: ['pullup_00', 'pullup_01', 'pullup_02', 'pullup_04', 'pullup_06','pullup_07A','pullup_08A','pullup_09A','pullup_10A','pullup_11A']
 };
