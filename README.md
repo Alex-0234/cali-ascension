@@ -6,8 +6,13 @@ The primary goal of this tracker is to ensure that the in-game stats accurately 
 
 ## Live Demo
 
-www.alexliska.dev (Temporary URL) for testing purposes: username: test, password: test
+[Test the App Here](https://www.alexliska.dev) (Temporary URL for testing purposes)
 
+- Username: test
+- Password: test
+
+  **Note**: I am using a free instance type on Render for the backend. It might take a minute or so to inicialize.
+  
 ## Core Mechanics
 
 Unlike traditional RPGs, progression here is strictly tied to real-world calisthenics performance. 
