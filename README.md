@@ -15,12 +15,12 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 * **Leveling:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
 
 ## To-Do List
+- [X] Implement weight history tracking. (Now make it one weight per day)
 - [ ] Add a meaning to exercising with extra weight.
 - [ ] Introduce some kind of points to unlock exercises in the tree.
 - [ ] Improve the evaluation window.
 - [ ] Completely re-work the core tree.
 - [ ] Introduce settings / profile.
-- [ ] Implement weight history tracking.
 - [ ] Include actual video previews.
 - [ ] Introduce actual workout split selection. (in settings / profile)
 - [ ] Introduce a workout history window.
