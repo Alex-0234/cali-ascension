@@ -3,19 +3,18 @@ import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
 import { getLevelProgress } from "../../utils/levelUpSystem";
 import { calculateBMR } from "../../utils/calculateBMI";
+import WeightTracker from "../../components/stats/weightTracker";
+import HealthTracker from "../../components/stats/HealthTracker";
 
 
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
-    const syncUser = useUserStore((state) => state.syncUser);
-    const setUserData = useUserStore((state) => state.setUserData);
+    const weightHistory = useUserStore((state) => state.userData.weightHistory);
 
     const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);
     const currentProgress = getLevelProgress(userData.xp, userData.level);
-    const [isTypingWeight, setIsTypingWeight] = useState(false);
-    const [tempWeight, setTempWeight] = useState(userData.weight);
-    const { BMR, BMI } = calculateBMR(tempWeight, userData.height, userData.age, userData.gender);
+    const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
 
     useEffect(() => {
         setLoaded(true);
@@ -23,15 +22,10 @@ export default function StatusWindow() {
 
     },[userData]);
 
-
     if (!loaded) {
         return <div><p>Initializing user...</p></div>
     }
-    const openWeightModal = () => {
-        setIsTypingWeight(true);
 
-
-    }
 
     return (
         <>
@@ -70,23 +64,10 @@ export default function StatusWindow() {
                     <p>{userData.stats.VIT}</p>
                 </div>
             </div>
-            <div className='bmi'>
-                
-                <p>[ BMR ]: {BMR} kcal</p>
-                <p>[ BMI ]: {BMI} kcal</p>
-                <p>[ Weight ]: <button onClick={() => openWeightModal()}> + </button></p>
-                {isTypingWeight && (
-                    <div className="weight-modal">
-                        <h3>Enter your weight</h3>
-                        <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
-                        <button onClick={() => {
-                            setUserData({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
-                            syncUser();
-                            setIsTypingWeight(false);
-                        }}>Save</button>
-                    </div> 
-                )}
-            </div>
+
+            <WeightTracker weightHistory={weightHistory} />
+            <HealthTracker />
+            
         </div>
         </>
     )
