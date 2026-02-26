@@ -4,6 +4,10 @@ A web-based, RPG-like tracker that combines ranks, leveling up, daily quests, an
 
 The primary goal of this tracker is to ensure that the in-game stats accurately reflect real-world physical progress, provided it receives truthful input from the user.
 
+## Live Demo
+
+www.alexliska.dev (Temporary URL) for testing purposes: username: test, password: test
+
 ## Core Mechanics
 
 Unlike traditional RPGs, progression here is strictly tied to real-world calisthenics performance. 
@@ -24,6 +28,22 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 - [ ] Include actual video previews.
 - [ ] Introduce actual workout split selection. (in settings / profile)
 - [ ] Introduce a workout history window.
+
+## Technologies used
+
+**Frontend**
+- React (vite)
+- Zustand
+- MUI X Charts
+- React Router 
+- React Flow
+
+**Backend**
+- Node.js & Express
+- Bcrypt
+- MongoDB
+- Mongoose
+
 
 ## Project Background 
 
