@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import connectDB from './db.js';
+import bcrypt from 'bcrypt';
 import User from './models/User.js';
 
 connectDB(); 
@@ -31,14 +32,16 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).send({ message: 'Username already exists' });
         }
         if (emailAlreadyExists) {
-            return res.status(400).send({ message: 'Email already exists' });
+            return res.status(400).send({ message: 'There is an account under this e-mail already' });
         }
+
+        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS));
 
         const newUser = new User({
             userId: Date.now(), 
             username,
             email,
-            password, 
+            password: hashedPassword, 
         });
 
         await newUser.save();
@@ -54,13 +57,14 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const exists = await User.findOne({ username, password });
+        const exists = await User.findOne({ username: username });
+        const passwordMatch = exists ? bcrypt.compare(password, exists.password) : false;
 
-        if (!exists) {
+        if (!exists || !passwordMatch) {
             return res.status(400).send({ message: 'Invalid username or password' });
         }
 
-        res.status(200).send({ message: 'User logged in successfully!' , userId: exists.userId});
+        passwordMatch && res.status(200).send({ message: 'User logged in successfully!' , userId: exists.userId});
 
     } catch (error) {
         console.error('Error during login:', error);    
