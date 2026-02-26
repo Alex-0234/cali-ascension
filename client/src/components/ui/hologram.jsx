@@ -3,13 +3,14 @@ const Hologram = ({ videoSrc }) => {
   return (
     <div className="video-container" >
       <video
+        height='auto'
+        width='50%'
         src={videoSrc}
         autoPlay
         loop
         muted
         playsInline
         className="hologram-video"
-        // Přidáme klíč, aby se video restartovalo při změně zdroje
         key={videoSrc} 
       />
     </div>

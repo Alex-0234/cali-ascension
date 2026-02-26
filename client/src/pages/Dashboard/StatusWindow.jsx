@@ -3,8 +3,9 @@ import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
 import { getLevelProgress } from "../../utils/levelUpSystem";
 import { calculateBMR } from "../../utils/calculateBMI";
-import WeightTracker from "../../components/stats/weightTracker";
+import WeightTracker from "../../components/stats/WeightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
+import CurrentProgram from "../../components/stats/CurrentProgram";
 
 
 export default function StatusWindow() {
@@ -64,9 +65,10 @@ export default function StatusWindow() {
                     <p>{userData.stats.VIT}</p>
                 </div>
             </div>
-
+            <CurrentProgram />
             <WeightTracker weightHistory={weightHistory} />
             <HealthTracker />
+            
             
         </div>
         </>

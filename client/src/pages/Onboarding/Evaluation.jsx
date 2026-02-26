@@ -145,6 +145,7 @@ const handleSubmitExercise = async () => {
         return (
             <div className="input-screen">
                 <h2>System Calibration: {currentStageName.toUpperCase()}</h2>
+                
                 {EXERCISE_DB[currentTier].animation && <Hologram videoSrc={currentTier.animation} />}
                 
                 <p className="highlight-text">Technique: {EXERCISE_DB[currentTier].name}</p>
@@ -168,9 +169,10 @@ const handleSubmitExercise = async () => {
         return (
             <div className="selection-screen">
                 <h2>Can you perform at least 1 rep?</h2>
-                {EXERCISE_DB[currentTier].animation && <Hologram videoSrc={currentTier.animation} />}
                 <h3 style={{marginTop: '10px'}}>{EXERCISE_DB[currentTier].name}</h3>
 
+                {EXERCISE_DB[currentTier].animation && <Hologram videoSrc={EXERCISE_DB[currentTier].animation} />}
+                
                 <div className="buttons">
                     <button onClick={handleNo} className="btn-red">No, too hard</button>
                     <button onClick={handleYes} className="btn-green">Yes, easy</button>

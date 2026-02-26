@@ -14,8 +14,8 @@ export default function WeightTracker({ weightHistory = [] }) {
     if (!weightHistory || weightHistory.length === 0) {
         return (
             <div className="weight-tracker-empty">
-                <h4>Váha (Weight)</h4>
-                <p>Zatím žádná data o váze...</p>
+                <h4>Weight</h4>
+                <p>No weight data yet...</p>
             </div>
         );
     }
@@ -41,6 +41,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                 {isTypingWeight && (
                     <div className="weight-modal">
                         <h3>Enter your weight</h3>
+                        <div className="btn-close" onClick={() => setIsTypingWeight(false)}>X</div>
                         <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
                         <button onClick={() => {
                             setUserData({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
