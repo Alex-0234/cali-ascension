@@ -8,6 +8,16 @@ import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
 
 
+const getStatName = (statKey) => {
+    switch (statKey) {
+        case 'STR': return 'Strength';
+        case 'AGI': return 'Agility';
+        case 'DEX': return 'Dexterity';
+        case 'VIT': return 'Vitality';
+        default: return statKey;
+    }
+};
+
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
     const weightHistory = useUserStore((state) => state.userData.weightHistory);
@@ -36,34 +46,24 @@ export default function StatusWindow() {
                 <h3> [ {userData.rank} ] </h3>
             </div>
             <hr/>
-
-            <h2> {userData.shownName} </h2>
-            <div className="progress-bar">
-                <div className='level-bar' style={{  height: '15px'}}>
-                    <div className='level-progress' style={{ width: `${currentProgress}%` }}></div>
+            <div className="generic-border">
+                <h2> {userData.shownName} </h2>
+                <div className="progress-bar">
+                    <div className='level-bar' style={{  height: '15px'}}>
+                        <div className='level-progress' style={{ width: `${currentProgress}%` }}></div>
+                    </div>
+                    <button onClick={() => addXP(100)}>+100xp</button>
                 </div>
-                <button onClick={() => addXP(100)}>+100xp</button>
             </div>
+            
             <hr/>
             <div className="stats d_grid_2_2" >
-                <div className="stat-wrapper">
-                    <h3>[ Strength ]</h3>
-                    <p>{userData.stats.STR}</p>
-                </div>
-                
-                <div className="stat-wrapper">
-                    <h3>[ Agility ]</h3>
-                    <p>{userData.stats.AGI}</p>
-                </div>
-                <div className="stat-wrapper">
-                    <h3>[ Dexterity ]</h3>
-                    <p>{userData.stats.DEX}</p>
-                </div>
-                
-                <div className="stat-wrapper">
-                    <h3>[ Vitality ]</h3>
-                    <p>{userData.stats.VIT}</p>
-                </div>
+                {Object.keys(userData.stats).map(statKey => (
+                    <div key={statKey} className="stat-wrapper">
+                        <h3>[ {getStatName(statKey)} ]</h3>
+                        <p>{userData.stats[statKey]}</p>
+                    </div>
+                ))}
             </div>
             <CurrentProgram />
             <WeightTracker weightHistory={weightHistory} />
