@@ -401,6 +401,10 @@ hr {
 .modal-header h2.locked { color: var(--text-muted); }
 
 .btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
   background: transparent;
   border: none;
   color: var(--danger);
@@ -610,11 +614,15 @@ body {
    6. EVALUATION & AWAKENING SCREENS
    ========================================================= */
 
+.video-container {
+  height: auto;
+  width: 100%;
+}
 .input-screen,
 .selection-screen,
 .rank-screen {
   max-width: 600px;
-  margin: 40px auto;
+  margin:40px 10px;
   padding: 40px 30px;
   background: var(--bg-panel);
   border: 1px solid var(--border);
@@ -624,6 +632,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  place-self: center;
   gap: 20px;
 }
 
@@ -634,8 +643,18 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 10px;
-  font-size: 1.5rem;
+  font-size: clamp(0.6rem, 3vw, 1.5rem);
   text-shadow: 0 0 10px var(--primary-glow);
+}
+.selection-screen h3 {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+.rank-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .highlight-text {
@@ -645,7 +664,6 @@ body {
   font-size: 1.1rem;
 }
 
-/* Inputs */
 .input-screen input {
   width: 100%;
   max-width: 300px;
@@ -665,9 +683,6 @@ body {
   box-shadow: 0 0 15px var(--primary-glow);
 }
 
-/* --- TLAČÍTKA --- */
-.btn-green,
-.btn-red,
 .btn-enter {
   padding: 12px 25px;
   border: none;
@@ -678,7 +693,17 @@ body {
   transition: all 0.3s ease;
   cursor: pointer;
   color: white;
-  width: 100%;
+  width: clamp(8rem, 50%, 12rem);
+}
+.btn-green, .btn-red {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--text-main);
+  font-size: clamp(0.6rem, 3vw, 1rem);
+
 }
 
 .btn-green {
@@ -768,13 +793,13 @@ button:disabled {
 .rank-card {
   background: var(--bg-input);
   border: 2px solid transparent; 
-  border-radius: 16px;
-  padding: 50px 30px;
+  border-radius: 1rem;
+  padding: 3.1rem 3.1rem;
   margin: 30px 0;
   transition: all 0.5s ease;
   position: relative;
   overflow: hidden;
-  width: 100%;
+  width: auto;
 }
 
 .rank-card::before {
@@ -786,7 +811,7 @@ button:disabled {
 }
 
 .rank-card h1 {
-  font-size: 5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   margin: 0;
   text-shadow: 0 0 25px currentColor; /* Zdílí glow podle barvy ranku */
   font-family: monospace; /* Aby to působilo jako systémový znak */
@@ -1200,7 +1225,7 @@ button:disabled {
   justify-content: center;
   text-align: center;
   gap: 5px;
-  background-color: var(--bg-card);
+  background-color: var(--bg-input);
   border: 1px solid var(--border);
   padding: 10px 20px;
   border-radius: 8px;
@@ -1216,10 +1241,14 @@ button:disabled {
 .weight-tracker-empty, .health-tracker {
     margin: 20px 0;
     padding: 20px;
-    background-color: #1a1b26;
+    background-color: var(--bg-input);
     border-radius: 12px;
     color: #9ca3af;
     border: 1px solid #2a2b3d;
+}
+.health-tracker h3 
+{
+  color: var(--text-main);
 }
 
 .weight-tracker-empty h4 {
@@ -1235,7 +1264,7 @@ button:disabled {
 }
 
 .weight-tracker-card {
-    background-color: #1a1b26;
+    background-color: var(--bg-input);
     border: 1px solid #2a2b3d;
     border-radius: 12px;
     padding: 20px 20px 5px 20px;
