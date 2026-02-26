@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { testingLevelUp } from '../utils/levelUpSystem';
+import CurrentProgram from '../components/stats/CurrentProgram';
 
 const INITIAL_PLAYER_STATE = {
   
@@ -12,6 +13,7 @@ const INITIAL_PLAYER_STATE = {
     gender: "",
     height: "",
     weight: "",
+    CurrentProgram: 'none',
 
     level: 1,
     rank: "Unranked",

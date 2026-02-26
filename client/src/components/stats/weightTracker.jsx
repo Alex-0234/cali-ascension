@@ -16,6 +16,7 @@ export default function WeightTracker({ weightHistory = [] }) {
             <div className="weight-tracker-empty">
                 <h4>Weight</h4>
                 <p>No weight data yet...</p>
+                <button className="generic-btn" onClick={() => setIsTypingWeight(true)}>Add Weight</button>
             </div>
         );
     }
@@ -37,13 +38,13 @@ export default function WeightTracker({ weightHistory = [] }) {
             <div className="weight-tracker-header">
                 <h4>Weight</h4>
                 <h2>{currentWeight} kg</h2>
-                {!isTypingWeight && (<button onClick={() => setIsTypingWeight(!isTypingWeight)}>Update</button>)}
+                {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(!isTypingWeight)}>Update</button>)}
                 {isTypingWeight && (
                     <div className="weight-modal">
                         <h3>Enter your weight</h3>
                         <div className="btn-close" onClick={() => setIsTypingWeight(false)}>X</div>
                         <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
-                        <button onClick={() => {
+                        <button className="generic-btn" onClick={() => {
                             setUserData({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
                             syncUser();
                             setIsTypingWeight(false);
