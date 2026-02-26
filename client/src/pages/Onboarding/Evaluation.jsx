@@ -53,6 +53,7 @@ const EvaluationScreen = () => {
             setUserData({
                 ...userData,
                 ...personalInfo, 
+                weightHistory: [{ weight: personalInfo.weight, date: new Date() }],
             });
             setCurrentStageIndex(1); 
             setMode('selection');    

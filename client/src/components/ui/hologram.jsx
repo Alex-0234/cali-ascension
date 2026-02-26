@@ -1,4 +1,3 @@
-import './hologram.css'
 
 const Hologram = ({ videoSrc }) => {
   return (
