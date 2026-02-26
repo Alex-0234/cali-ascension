@@ -57,7 +57,7 @@ export default function SkillTree() {
 
     const exerciseData = EXERCISE_DB[exerciseId];
     const isUnlocked = exerciseProgress[exerciseId] !== undefined;
-    const style = { padding: '8px 16px', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }
+    const style = { background: 'transparent', padding: '10px 20px', color: 'var(--cyan)', border: '1px solid var(--cyan)', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }
 
     return (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 'calc(100dvh - 75px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
@@ -65,19 +65,19 @@ export default function SkillTree() {
             <div style={{ padding: '15px', background: '#111', color: 'white', display: 'flex', gap: '15px', zIndex: 10, alignItems: 'center', borderBottom: '1px solid #333' }}>
                 <button 
                     onClick={() => setCurrentCategory('pushups')}
-                    style={{ ...style, background: currentCategory === 'pushups' ? '#3b82f6' : '#222'}}
+                    style={{ ...style, border: currentCategory === 'pushups' ? '2px solid var(--primary)' : '2px solid var(--cyan)', color: currentCategory === 'pushups' ? 'var(--primary)' : 'var(--cyan)' }}
                 >Push-ups</button>
                 <button 
                     onClick={() => setCurrentCategory('pullups')}
-                    style={{ ...style, background: currentCategory === 'pullups' ? '#3b82f6' : '#222'}}
+                    style={{ ...style, border: currentCategory === 'pullups' ? '2px solid var(--primary)' : '2px solid var(--cyan)', color: currentCategory === 'pullups' ? 'var(--primary)' : 'var(--cyan)' }}
                 >Pull-ups</button>
                 <button 
                     onClick={() => setCurrentCategory('squats')}
-                    style={{ ...style, background: currentCategory === 'squats' ? '#3b82f6' : '#222'}}
+                    style={{ ...style, border: currentCategory === 'squats' ? '2px solid var(--primary)' : '2px solid var(--cyan)', color: currentCategory === 'squats' ? 'var(--primary)' : 'var(--cyan)' }}
                 >Squats</button>
                 <button 
                     onClick={() => setCurrentCategory('core')}
-                    style={{ ...style, background: currentCategory === 'core' ? '#3b82f6' : '#222'}}
+                    style={{ ...style, border: currentCategory === 'core' ? '2px solid var(--primary)' : '2px solid var(--cyan)', color: currentCategory === 'core' ? 'var(--primary)' : 'var(--cyan)' }}
                 >Core</button>
 
                 <span style={{ marginLeft: 'auto', fontWeight: 'bold', color: '#60a5fa' }}>
@@ -85,7 +85,6 @@ export default function SkillTree() {
                 </span>
             </div>
 
-            {/* The React Flow Canvas */}
             <div style={{ flexGrow: 1, backgroundColor: '#0a0a0a', position: 'relative' }}>
                 <ReactFlow 
                     nodes={nodes} 
@@ -95,10 +94,9 @@ export default function SkillTree() {
                     onNodeClick={handleClick}
                 >
                     <Background color="#333" gap={16} />
-                    <Controls />
+                    <Controls/>
                 </ReactFlow>
 
-                {/* Moderní Popup Okno */}
                 {modalVisibility && exerciseData && (
                     <div style={{
                         position: 'absolute', 

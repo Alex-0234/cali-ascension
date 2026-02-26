@@ -55,10 +55,27 @@ button:active {
 /* =========================================================
    1. STATUS WINDOW (Dashboard)
    ========================================================= */
+
 .dashboard {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+}
+.generic-btn {
+  background: var(--bg-card);
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+.generic-border {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--bg-input);
+    border-radius: 12px;
+    color: #9ca3af;
+    border: 1px solid #2a2b3d;
 }
 
 .status-window {
@@ -197,7 +214,7 @@ hr {
 }
 
 .exercise-card {
-  background: var(--bg-card);
+  background: var(--bg-panel);
   border-radius: 12px;
   border: 1px solid var(--border);
   padding: 20px;
@@ -223,6 +240,7 @@ hr {
   text-transform: uppercase;
   letter-spacing: 1px;
   text-align: center;
+  font-size: clamp(0.7rem, 2vw, 1.1rem);
 }
 
 .exercise-header h3.unlocked { color: var(--primary); }
@@ -230,14 +248,14 @@ hr {
 
 .nav-btn {
   padding: 10px 15px;
-  background: var(--border);
-  border: none;
-  color: white;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
   border-radius: 8px;
   font-weight: bold;
 }
 
-.nav-btn:hover { background: var(--border-light); }
+.nav-btn:hover { background: var(--cyan-glow); }
 
 .badge-container {
   text-align: center;
@@ -252,7 +270,7 @@ hr {
   font-weight: bold;
 }
 
-.sys-badge.unlocked { background: var(--success-bg); color: var(--success); }
+.sys-badge.unlocked { background: var(--cyan); color: var(--bg-panel); }
 .sys-badge.locked { background: var(--danger-bg); color: var(--danger); }
 
 /* Input Sets */
@@ -266,18 +284,20 @@ hr {
 .set-row {
   display: flex;
   height: 25px;
+  border: 1px solid var(--border);
   align-items: center;
   justify-content: space-around;
   gap: 15px;
   background: var(--bg-input);
-  padding: 10px;
+  padding:15px 20px;
   border-radius: 8px;
 }
 
 .set-label {
-  color: var(--text-muted);
+  color: var(--text-main);
   font-weight: bold;
-  width: 60px;
+  font-size: clamp(0.6rem, 3vw, 1rem);
+  min-width: 3rem;
 }
 
 .set-input {
@@ -288,6 +308,7 @@ hr {
   border: 1px solid var(--border-light);
   background: var(--bg-card);
   color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .set-input:focus {
@@ -316,9 +337,9 @@ hr {
 
 .btn-add-set {
   padding: 10px 20px;
-  background: var(--border);
-  border: none;
-  color: white;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
   border-radius: 8px;
   font-weight: bold;
   width: auto;
@@ -1326,3 +1347,5 @@ button:disabled {
 .weight-tracker-linechart .MuiChartsTooltip-root {
     font-family: monospace;
 }
+
+

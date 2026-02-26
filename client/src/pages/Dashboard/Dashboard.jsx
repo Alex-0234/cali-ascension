@@ -23,6 +23,8 @@ export default function Dashboard() {
                 <div className="spinner"></div>
                 <h2>[ SYSTEM ]</h2>
                 <p className="blinking-text">Synchronizing Hunter Data...</p>
+
+                <p>Might take a moment for the server to initialize...</p>
             </div>
         )
     }
