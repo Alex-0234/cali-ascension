@@ -11,6 +11,7 @@ import Awakening from './pages/Onboarding/Awakening';
 import Evaluation from './pages/Onboarding/Evaluation';
 import Dashboard from './pages/Dashboard/Dashboard';
 import WorkoutScreen from './pages/Dashboard/workoutScreen';
+import ServerWakeup from './pages/Dashboard/SystemBootScreen';
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
