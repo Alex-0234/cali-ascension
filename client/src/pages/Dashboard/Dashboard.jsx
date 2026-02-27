@@ -10,20 +10,12 @@ export default function Dashboard() {
     const userData = useUserStore((state) => state.userData);
     const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
     const [isReady, setIsReady] = useState(false);
-    const [isServerReady, setIsServerReady] = useState(false);
     const logout = useUserStore((state) => state.logout);  
 
     useEffect(() => {
-
         setIsReady(true);
 
     }, []);
-
-    if (!isServerReady) {
-        return (
-            <ServerWakeup onServerReady={() => setIsServerReady(true)}/>
-        )
-    }
 
     return (
         <>
