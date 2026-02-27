@@ -6,6 +6,7 @@ import { calculateBMR } from "../../utils/calculateBMI";
 import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
+import EditProfileModal from "../../components/stats/EditProfileModal";
 
 
 const getStatName = (statKey) => {
@@ -18,12 +19,14 @@ const getStatName = (statKey) => {
     }
 };
 
+
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
     const weightHistory = useUserStore((state) => state.userData.weightHistory);
 
-    const addXP = useUserStore((state) => state.addXP);
     const [loaded, setLoaded] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
     const currentProgress = getLevelProgress(userData.xp, userData.level);
     const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
 
@@ -37,6 +40,10 @@ export default function StatusWindow() {
         return <div><p>Initializing user...</p></div>
     }
 
+    const onCloseEditModal = () => {
+        setShowEditModal(false);
+    }
+
 
     return (
         <>
@@ -46,13 +53,18 @@ export default function StatusWindow() {
                 <h3> [ {userData.rank} ] </h3>
             </div>
             <hr/>
-            <div className="generic-border">
-                <h2> {userData.shownName} </h2>
+            {showEditModal && <EditProfileModal onClose={onCloseEditModal} />}
+            <div className="user-info">
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <h2> {userData.shownName} </h2>
+                    <button className="generic-btn" onClick={() => setShowEditModal(true)}>Edit Profile</button>
+                </div>
+                
                 <div className="progress-bar">
                     <div className='level-bar' style={{  height: '15px'}}>
                         <div className='level-progress' style={{ width: `${currentProgress}%` }}></div>
                     </div>
-                    <button onClick={() => addXP(100)}>+100xp</button>
+                    <p>XP: {userData.xp}</p>
                 </div>
             </div>
             

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatusWindow from './StatusWindow';
 import Navbar from '../../components/layout/Navbar';
+import ServerWakeup from './SystemBootScreen';
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -19,13 +20,7 @@ export default function Dashboard() {
 
     if (userData.isLoading || !hasFetchedInitialData) {
         return (
-            <div className="system-boot">
-                <div className="spinner"></div>
-                <h2>[ SYSTEM ]</h2>
-                <p className="blinking-text">Synchronizing Hunter Data...</p>
-
-                <p>Might take a moment for the server to initialize...</p>
-            </div>
+            <ServerWakeup />
         )
     }
 
