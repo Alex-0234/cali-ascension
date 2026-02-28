@@ -835,6 +835,9 @@ export const EVALUATION_EXERCISES = {
 
 export const SPLIT_MODES = {
     'Push/Pull/Legs': ['pushups', 'pullups','squats'],
+    'Upper/Lower': ['pushups', 'pullups', 'squats'],
     'Legs & Core': ['squats', 'core'],
-    'Full Body': ['pushups', 'pullups', 'squats', 'core']
+    'Bro Split': ['pushups', 'pullups', 'squats', 'core'],
+    'Full Body': ['pushups', 'pullups', 'squats', 'core'],
+
 };
