@@ -114,7 +114,7 @@ const handleSubmitExercise = async () => {
 
         return (
             <div className='input-screen'>
-                <div className="btn-close" onClick={() => document.querySelector('.input-screen').remove()}>X</div>
+                <div className="btn-close" onClick={() => navigate('/')}>X</div>
                 <h2>System Calibration: PERSONAL DETAILS</h2>
                 <p>{currentField.label}</p>
                 
