@@ -1,5 +1,5 @@
 import { LineChart } from '@mui/x-charts';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useUserStore from '../../store/usePlayerStore';
 
 
@@ -10,16 +10,13 @@ export default function WeightTracker({ weightHistory = [] }) {
 
       const [isTypingWeight, setIsTypingWeight] = useState(false);
       const [tempWeight, setTempWeight] = useState(userData.weight);
+      const [emptyHistory, setEmptyHistory] = useState(true);
 
-    if (!weightHistory || weightHistory.length === 0) {
-        return (
-            <div className="weight-tracker-empty">
-                <h4>Weight</h4>
-                <p>No weight data yet...</p>
-                <button className="generic-btn" onClick={() => setIsTypingWeight(true)}>Add Weight</button>
-            </div>
-        );
-    }
+    useEffect(() => {
+        if (weightHistory && weightHistory.length > 0) {
+            setEmptyHistory(false);
+        }
+    }, [weightHistory]);
 
     const data = weightHistory.map(entry => ({
         weight: entry.weight,
@@ -36,21 +33,31 @@ export default function WeightTracker({ weightHistory = [] }) {
     return (
         <div className="weight-tracker-card">
             <div className="weight-tracker-header">
-                <h4>Weight</h4>
-                <h2>{currentWeight} kg</h2>
-                {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(!isTypingWeight)}>Update</button>)}
-                {isTypingWeight && (
-                    <div className="weight-modal">
-                        <h3>Enter your weight</h3>
-                        <div className="btn-close" onClick={() => setIsTypingWeight(false)}>X</div>
-                        <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
-                        <button className="generic-btn" onClick={() => {
-                            setUserData({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
-                            syncUser();
-                            setIsTypingWeight(false);
-                        }}
-                        >Save</button>
+                {emptyHistory ? (
+                    <div className="weight-tracker-empty">
+                        <h4>Weight</h4>
+                        <p>No weight data yet...</p>
+                        <button className="generic-btn" onClick={() => setIsTypingWeight(true)}>Add Weight</button>
                     </div>
+                ) : (
+                    <>
+                        <h4>Weight</h4>
+                        <h2>{currentWeight} kg</h2>
+                        {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(!isTypingWeight)}>Update</button>)}
+                        {isTypingWeight && (
+                            <div className="weight-modal">
+                                <h3>Enter your weight</h3>
+                                <div className="btn-close" onClick={() => setIsTypingWeight(false)}>X</div>
+                                <input type="number" value={tempWeight} onChange={(e) => setTempWeight(e.target.value)} />
+                                <button className="generic-btn" onClick={() => {
+                                    setUserData({ weight: tempWeight , weightHistory: [...userData.weightHistory, { weight: tempWeight, date: new Date() }] });
+                                    syncUser();
+                                    setIsTypingWeight(false);
+                                }}
+                                >Save</button>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 
