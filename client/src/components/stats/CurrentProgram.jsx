@@ -6,6 +6,8 @@ export default function CurrentProgram() {
     const userData = useUserStore((state) => state.userData);
     const syncUser = useUserStore((state) => state.syncUser);
 
+    const [openHistory, setOpenHistory] = useState(false);
+
     const handleProgramChange = (e) => {
         const newProgram = e.target.value;
         console.log("Selected program:", newProgram);
@@ -29,8 +31,8 @@ export default function CurrentProgram() {
                 <option value="Bro Split">Bro Split</option>
                 <option value="Full Body">Full Body</option>
             </select>
-            <button className="generic-btn">Workout History</button>
-            <WorkoutHistoryBlock />
+            <button className="generic-btn" onClick={() => setOpenHistory(!openHistory)}>Workout History</button>
+            {openHistory && <WorkoutHistoryBlock />}
             <p>Working on this...</p>
         </div>
     );
