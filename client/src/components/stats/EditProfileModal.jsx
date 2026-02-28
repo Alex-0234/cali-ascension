@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import useUserStore from '../../stores/userStore';
+import useUserStore from '../../store/usePlayerStore';
 import EditBtn from '../ui/editBtn';
 
 export default function EditProfileModal({ onClose }) {
@@ -27,7 +27,7 @@ export default function EditProfileModal({ onClose }) {
     return (
         <>
         {isEditing && (
-            <div style={{ zIndex: 1000, height: 'auto', width: '300px'}}>
+            <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute'}}>
                 <h2>Edit {editField}</h2>
                 <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
                 <div className="edit-field generic-border">
