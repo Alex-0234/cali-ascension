@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema({
     },
 
     isConfigured: { type: Boolean, default: false },
+    CurrentProgram: { type: String, default: "none" },
 
     exerciseProgress: {
         type: mongoose.Schema.Types.Mixed,
