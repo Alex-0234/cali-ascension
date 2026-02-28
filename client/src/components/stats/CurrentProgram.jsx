@@ -1,5 +1,6 @@
 
 import useUserStore from "../../store/usePlayerStore";
+import WorkoutHistoryBlock from "../ui/workoutHistoryBlock";
 
 export default function CurrentProgram() {
     const userData = useUserStore((state) => state.userData);
@@ -29,6 +30,7 @@ export default function CurrentProgram() {
                 <option value="Full Body">Full Body</option>
             </select>
             <button className="generic-btn">Workout History</button>
+            <WorkoutHistoryBlock />
             <p>Working on this...</p>
         </div>
     );

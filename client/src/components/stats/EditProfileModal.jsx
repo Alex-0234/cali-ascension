@@ -10,6 +10,7 @@ export default function EditProfileModal({ onClose }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editField, setEditField] = useState(null);
     const [newValue, setNewValue] = useState("");
+    
 
     const handleEdit = (field) => {
         setEditField(field);
@@ -27,7 +28,7 @@ export default function EditProfileModal({ onClose }) {
     return (
         <>
         {isEditing && (
-            <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute'}}>
+            <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}} className="edit-field generic-border">
                 <h2>Edit {editField}</h2>
                 <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
                 <div className="edit-field generic-border">
