@@ -27,18 +27,7 @@ export default function EditProfileModal({ onClose }) {
 
     return (
         <>
-        {isEditing && (
-            <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}} className="edit-field generic-border">
-                <h2>Edit {editField}</h2>
-                <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
-                <div className="edit-field generic-border">
-                    <input type="text" placeholder={`Enter new ${editField}`} onChange={(e) => setNewValue(e.target.value)} />
-                    <button className="save-btn" onClick={() => handleSave()}>Save</button>
-                </div>
-            </div>
-        
-        )}
-            
+
         <div className="edit-profile-modal" style={{ zIndex: 1000}}>
             <h2>Edit Profile</h2>
             <div className='btn-close' onClick={onClose}>X</div>
@@ -56,6 +45,17 @@ export default function EditProfileModal({ onClose }) {
                     <p><strong>Shown Username:</strong> {userData.shownName}</p>
                     <EditBtn onClick={() => handleEdit("shownName")} toChange="shown username" />
                 </div>
+                {isEditing && editField && (
+                    <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}} className="edit-field generic-border">
+                        <h2>Edit {editField}</h2>
+                        <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
+                        <div className="edit-field generic-border">
+                            <input type="text" placeholder={`Enter new ${editField}`} onChange={(e) => setNewValue(e.target.value)} />
+                            <button className="save-btn" onClick={() => handleSave()}>Save</button>
+                        </div>
+                    </div>
+                
+                )}
                 
             </div>
             <p>This feature is currently under development. Please check back later for updates!</p>
