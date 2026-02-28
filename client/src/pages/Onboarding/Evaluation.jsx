@@ -114,6 +114,7 @@ const handleSubmitExercise = async () => {
 
         return (
             <div className='input-screen'>
+                <div className="btn-close" onClick={() => document.querySelector('.input-screen').remove()}>X</div>
                 <h2>System Calibration: PERSONAL DETAILS</h2>
                 <p>{currentField.label}</p>
                 
@@ -144,6 +145,7 @@ const handleSubmitExercise = async () => {
     if (mode === 'input' && currentTier) {
         return (
             <div className="input-screen">
+                <div className="generic-btn" onClick={() => setMode('selection')}>Back to Selection</div>
                 <h2>System Calibration: {currentStageName.toUpperCase()}</h2>
                 
                 {EXERCISE_DB[currentTier].animation && <Hologram videoSrc={currentTier.animation} />}
@@ -168,6 +170,7 @@ const handleSubmitExercise = async () => {
     if (mode === 'selection' && currentTier) {
         return (
             <div className="selection-screen">
+                <div className="generic-btn" onClick={() => setMode('personal')}>Back to Selection</div>
                 <h2>Can you perform at least 1 rep?</h2>
                 <h3 style={{marginTop: '10px'}}>{EXERCISE_DB[currentTier].name}</h3>
 
