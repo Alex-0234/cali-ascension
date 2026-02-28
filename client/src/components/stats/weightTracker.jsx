@@ -34,7 +34,7 @@ export default function WeightTracker({ weightHistory = [] }) {
         <div className="weight-tracker-card">
             <div className="weight-tracker-header">
                 {emptyHistory ? (
-                    <div className="weight-tracker-empty">
+                    <div className="weight-tracker-header">
                         <h4>Weight</h4>
                         <p>No weight data yet...</p>
                         {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(true)}>Update</button>)}

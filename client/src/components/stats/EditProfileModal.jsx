@@ -53,8 +53,8 @@ export default function EditProfileModal({ onClose }) {
                     <EditBtn onClick={() => handleEdit("email")} toChange="email" />
                 </div>
                 <div>
-                    <p><strong>Shown Username:</strong> {userData.shownUsername}</p>
-                    <EditBtn onClick={() => handleEdit("shownUsername")} toChange="shown username" />
+                    <p><strong>Shown Username:</strong> {userData.shownName}</p>
+                    <EditBtn onClick={() => handleEdit("shownName")} toChange="shown username" />
                 </div>
                 
             </div>
