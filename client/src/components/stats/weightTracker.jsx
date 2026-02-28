@@ -43,7 +43,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                     <>
                         <h4>Weight</h4>
                         <h2>{currentWeight} kg</h2>
-                        {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(!isTypingWeight)}>Update</button>)}
+                        {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(true)}>Update</button>)}
                         {isTypingWeight && (
                             <div className="weight-modal">
                                 <h3>Enter your weight</h3>

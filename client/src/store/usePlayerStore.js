@@ -69,6 +69,7 @@ const useUserStore = create((set, get) => ({
               }
           }));
       } catch (error) {
+          console.error('Fetch Failed', error.message);
           console.error('Fetch Failed', error);
 
           set((state) => ({ 
