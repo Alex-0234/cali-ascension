@@ -834,6 +834,7 @@ export const EVALUATION_EXERCISES = {
 };
 
 export const SPLIT_MODES = {
+    'none': ['pushups', 'pullups', 'squats', 'core'],
     'Push/Pull/Legs': ['pushups', 'pullups','squats'],
     'Upper/Lower': ['pushups', 'pullups', 'squats'],
     'Legs & Core': ['squats', 'core'],
