@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";  
@@ -15,11 +15,12 @@ export function WorkoutScreen() {
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
     const syncUser = useUserStore((state) => state.syncUser);
     
-    const [selectedSplit, setSelectedSplit] = useState('Push/Pull/Legs');
+    const [selectedSplit, setSelectedSplit] = useState(userData.currentProgram || 'Full Body');
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     
     const [levelUpData, setLevelUpData] = useState({ show: false, levelUps: 0, newLevel: 0 });
+
 
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
@@ -28,7 +29,6 @@ export function WorkoutScreen() {
 
         Object.keys(SPLIT_MODES).forEach(split => {
             SPLIT_MODES[split].forEach(category => {
-                // Výchozí je nejvyšší odemčený cvik. Pokud není žádný, ukážeme úplně první cvik stromu (tier 0)
                 initialActive[category] = highestUnlocked[category]?.id || ALL_EXERCISES[category][0];
                 initialSets[category] = [{ reps: 0, extraWeight: 0 }];
             });
@@ -118,20 +118,7 @@ export function WorkoutScreen() {
 
     return (
         <div className="workout-screen-container">
-            {/* Split Selector */}
-            <div className="split-selector">
-                {Object.keys(SPLIT_MODES).map(split => (
-                    <button 
-                        key={split}
-                        className={`split-btn ${selectedSplit === split ? 'active' : ''}`}
-                        onClick={() => setSelectedSplit(split)}
-                    >
-                        {split}
-                    </button>
-                ))}
-            </div>
 
-            {/* Level Up Notification */}
             {levelUpData.show && (
                 <div className="level-up-notification">
                     <h2>Level Up!</h2>
@@ -139,7 +126,6 @@ export function WorkoutScreen() {
                 </div>
             )}
 
-            {/* Exercises List */}
             <div>
                 {visibleCategories.map(category => {
                     const currentExId = activeExercises[category];

@@ -27,10 +27,10 @@ export default function CurrentProgram() {
             <h4>Current Program: [ {userData.currentProgram || "None Selected"} ]</h4>
             <select value={userData.currentProgram} onChange={handleProgramChange}>
                 <option value="">Select a program</option>
-                <option value="Push/Pull/Legs">Push/Pull/Legs</option>
-                <option value="Upper/Lower Split">Upper/Lower Split</option>
+                <option value="Push/Pull/Legs">Push/Pull/Legs Split</option>
+                <option value="Upper/Lower">Upper/Lower Split</option>
                 <option value="Bro Split">Bro Split</option>
-                <option value="Full Body">Full Body</option>
+                <option value="Full Body">Full Body Split</option>
             </select>
             <button className="generic-btn" onClick={() => setOpenHistory(!openHistory)}>Workout History</button>
             {openHistory && <WorkoutHistoryBlock />}
