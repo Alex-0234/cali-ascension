@@ -40,10 +40,6 @@ export default function StatusWindow() {
         return <div><p>Initializing user...</p></div>
     }
 
-    const onCloseEditModal = () => {
-        setShowEditModal(false);
-    }
-
 
     return (
         <>
@@ -53,11 +49,11 @@ export default function StatusWindow() {
                 <h3> [ {userData.rank} ] </h3>
             </div>
             <hr/>
-            {showEditModal && <EditProfileModal onClose={onCloseEditModal} />}
+            {showEditModal && <EditProfileModal onClose={() => setShowEditModal(false)} />}
             <div className="user-info">
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <h2> {userData.shownName} </h2>
-                    <button className="generic-btn" onClick={() => setShowEditModal(true)}>Edit Profile</button>
+                    <button className="generic-btn" onClick={() => setShowEditModal(!showEditModal)}>Edit Profile</button>
                 </div>
                 
                 <div className="progress-bar">
