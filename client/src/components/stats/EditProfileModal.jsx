@@ -46,7 +46,7 @@ export default function EditProfileModal({ onClose }) {
                     <EditBtn onClick={() => handleEdit("shownName")} toChange="shown username" />
                 </div>
                 {isEditing && editField && (
-                    <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}} className="edit-field generic-border">
+                    <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}}>
                         <h2>Edit {editField}</h2>
                         <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
                         <div className="edit-field generic-border">
