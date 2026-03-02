@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { testingLevelUp } from '../utils/levelUpSystem';
 
 const INITIAL_PLAYER_STATE = {
   
