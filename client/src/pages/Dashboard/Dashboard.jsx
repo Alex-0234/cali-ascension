@@ -14,7 +14,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         setIsReady(true);
-
+        
     }, []);
 
     return (

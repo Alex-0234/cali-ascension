@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";  
 import {saveWorkoutReps} from '../../utils/workoutSystem'
-import { calculateLevelUp } from "../../utils/levelUpSystem";
+import calculateLevel from "../../utils/levelUpSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
 import Navbar from "../../components/layout/Navbar";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
@@ -85,28 +85,22 @@ export function WorkoutScreen() {
         if (totalReps === 0) return;
 
         const newProgress = saveWorkoutReps(currentProgress, exerciseID, totalReps);
-        
-        const { newLevel, leftoverXP } = calculateLevelUp(userData.level, userData.xp, exerciseID, totalReps);
-        const levelUps = newLevel - userData.level;
 
-        if (levelUps > 0) {
-            setLevelUpData({ show: true, levelUps: levelUps, newLevel: newLevel });
-            setTimeout(() => setLevelUpData({ show: false, levelUps: 0, newLevel: 0 }), 3000);
-        }
         
         const stats = calculatePlayerStats(newProgress);
 
         const workoutRecord = {
-            exerciseID,
+            date: new Date(),
+            exerciseID: exerciseID,
+            totalReps: totalReps,
             sets: [...sets],
         };
 
         setUserData({
-            level: newLevel,
-            xp: leftoverXP,
+            ...userData,
             stats: stats,
             exerciseProgress: newProgress,
-            workoutHistory: [...(userData.workoutHistory || []), workoutRecord]
+            workoutHistory: [...(userData.workoutHistory), workoutRecord]
         });
 
         syncUser();
@@ -129,6 +123,7 @@ export function WorkoutScreen() {
             <div>
                 {visibleCategories.map(category => {
                     const currentExId = activeExercises[category];
+                    console.log('Rendering Exercise Card:', category, 'Current Exercise ID:', currentExId);
                     if (!currentExId) return null;
 
                     const exerciseData = EXERCISE_DB[currentExId];
@@ -177,6 +172,7 @@ export function WorkoutScreen() {
                                                     value={set.reps || ''}
                                                     onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
                                                     className="set-input"
+                                                    required
                                                 />
                                                 <input 
                                                     type="number" 

@@ -1,6 +1,7 @@
 import { LineChart } from '@mui/x-charts';
 import { useState, useEffect } from 'react';
 import useUserStore from '../../store/usePlayerStore';
+import getAvarage from '../../utils/weightTrackerFunctions';
 
 
 export default function WeightTracker({ weightHistory = [] }) {
@@ -11,11 +12,17 @@ export default function WeightTracker({ weightHistory = [] }) {
       const [isTypingWeight, setIsTypingWeight] = useState(false);
       const [tempWeight, setTempWeight] = useState(userData.weight);
       const [emptyHistory, setEmptyHistory] = useState(true);
+      const [avgWeight, setAvgWeight] = useState(0);
+      
+
 
     useEffect(() => {
         if (weightHistory && weightHistory.length > 0) {
             setEmptyHistory(false);
+            const newAvgWeight = getAvarage(weightHistory);
+            setAvgWeight(newAvgWeight)
         }
+
     }, [weightHistory]);
 
     const data = weightHistory.map(entry => ({
@@ -54,8 +61,11 @@ export default function WeightTracker({ weightHistory = [] }) {
                     </div>
                 ) : (
                     <>
+                    <div>
                         <h4>Weight</h4>
                         <h2>{currentWeight} kg</h2>
+                        
+                    </div>
                         {!isTypingWeight && (<button className="generic-btn" onClick={() => setIsTypingWeight(true)}>Update</button>)}
                         {isTypingWeight && (
                             <div className="weight-modal">
@@ -100,6 +110,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                     margin={{ left: 0, right: 10, top: 10, bottom: 25 }} 
                     className="weight-tracker-linechart"
                 />
+                <p style={{position: 'relative', bottom: '0', left: '-6rem', width: 'auto'}}>Week Avarage: {Math.round(avgWeight)} kg</p>
             </div>
         </div>
     );

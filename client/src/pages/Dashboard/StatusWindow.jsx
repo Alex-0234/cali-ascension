@@ -1,7 +1,7 @@
 
 import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
-import { getLevelProgress } from "../../utils/levelUpSystem";
+import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import { calculateBMR } from "../../utils/calculateBMI";
 import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
@@ -22,19 +22,32 @@ const getStatName = (statKey) => {
 
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
+    const setUserData = useUserStore((state) => state.setUserData);
     const weightHistory = useUserStore((state) => state.userData.weightHistory);
 
     const [loaded, setLoaded] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [levelProgress, setLevelProgress] = useState(0);
+    const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
 
-    const currentProgress = getLevelProgress(userData.xp, userData.level);
+    
     const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
 
     useEffect(() => {
         setLoaded(true);
-        
-
+        const currentProgress = getLevelProgress(userData.xp, userData.level);
+        setLevelProgress(currentProgress);
     },[userData]);
+
+    useEffect(() => {
+        const {level, currentLeftoverXP} = calculateLevel(userData);
+
+        setUserData({
+            ...userData,
+            level: level,
+            xp: currentLeftoverXP,
+        })
+    }, []);
 
     if (!loaded) {
         return <div><p>Initializing user...</p></div>
@@ -56,11 +69,11 @@ export default function StatusWindow() {
                     <button className="generic-btn" onClick={() => setShowEditModal(!showEditModal)}>Edit Profile</button>
                 </div>
                 
-                <div className="progress-bar">
-                    <div className='level-bar' style={{  height: '15px'}}>
-                        <div className='level-progress' style={{ width: `${currentProgress}%` }}></div>
+                <div className="progress-bar" style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                    <div className='level-bar' style={{  height: '1rem', width: '100%'}}>
+                        <div className='level-progress' style={{ width: `${levelProgress}%` }}></div>
                     </div>
-                    <p>XP: {userData.xp}</p>
+                <p style={{placeSelf: 'start', margin: '0'}}>XP: {Math.round(displayXP)} </p>
                 </div>
             </div>
             
