@@ -9,6 +9,7 @@ import Navbar from "../../components/layout/Navbar";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
 import { getPrevNextExerciseID } from "../../utils/workoutSelector";
 
+
 export function WorkoutScreen() {
     const setUserData = useUserStore((state) => state.setUserData);
     const userData = useUserStore((state) => state.userData);
@@ -19,9 +20,7 @@ export function WorkoutScreen() {
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     
-    const [tempLevel, setTempLevel] = useState(userData.level);
     const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0})
-
 
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
@@ -87,7 +86,6 @@ export function WorkoutScreen() {
         if (totalReps === 0) return;
 
         const newProgress = saveWorkoutReps(currentProgress, exerciseID, totalReps);
-       
         const stats = calculatePlayerStats(newProgress);
 
         const workoutRecord = {
@@ -97,25 +95,29 @@ export function WorkoutScreen() {
             sets: [...sets],
         };
 
-        setUserData({
+        const newUserData = {
             ...userData,
             stats: stats,
             exerciseProgress: newProgress,
             workoutHistory: [...(userData.workoutHistory), workoutRecord]
-        });
+        };
 
-        syncUser();
+        const { level: newLevel, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);
 
-        // Calculate Level Up / XP Gain
-        const { level, totalXPEarned } = calculateLevel(userData);
-        const levelDifference = level - tempLevel;
-
-        console.log(levelDifference);
+        const levelDifference = newLevel - userData.level;
 
         if (levelDifference > 0) {
             setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});
             setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000);
         }
+
+        setUserData({
+            ...newUserData,
+            level: newLevel,
+            xp: currentLeftoverXP
+        });
+
+        syncUser();
         
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
@@ -123,12 +125,13 @@ export function WorkoutScreen() {
     const visibleCategories = SPLIT_MODES[selectedSplit] || [];
 
     return (
+        <>
         <div className="workout-screen-container">
 
             {levelChange.show && (
                 <div className="level-up-notification">
                     <h2>Level Up *{levelChange.newLevels}!</h2>
-                    <p>Total XP Gained: {levelChange.xpGain}</p>
+                    <p>Total XP Gained: {Math.round(levelChange.xpGain)}</p>
                 </div>
             )}
 
@@ -151,7 +154,7 @@ export function WorkoutScreen() {
                                     onClick={() => handleSwitchExercise(category, 'prev')}
                                 >&lt;</button>
                                 
-                                <h3 className={isUnlocked ? 'unlocked' : 'locked'}>
+                                <h3 className={isUnlocked ? 'unlocked' : 'locked'} style={{ margin: 0 }}>
                                     {exerciseData?.name || currentExId}
                                 </h3>
                                 
@@ -230,6 +233,7 @@ export function WorkoutScreen() {
             </div>
             <Navbar />
         </div>
+        </>
     );
 }
 
