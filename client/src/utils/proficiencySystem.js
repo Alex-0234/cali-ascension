@@ -6,15 +6,15 @@ export const getProficiency = (totalReps) => {
     return {currentLevel: level, currentProgress: progress};
 }
 export const getProficiencyLevel = (totalReps) => {
-    const level = Math.floor(totalReps / 100);
+    const level = Math.floor(totalReps / 1000);
     return Math.min(level, 10); 
 };
 
 export const getProficiencyProgress = (totalReps) => {
-    // 1000 REPS === 10 PROFICIENCY
-    if (totalReps >= 1000) return 100; 
+    // 10000 REPS === 10 PROFICIENCY
+    if (totalReps >= 10000) return 100; 
 
-    return (totalReps / 100) * 10; 
+    return (totalReps / 10000) * 100; 
 };
 
 export default function getCompleteProficiencyForExercise(exerciseProgress, exerciseID) {

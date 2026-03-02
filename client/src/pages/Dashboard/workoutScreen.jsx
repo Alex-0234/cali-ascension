@@ -19,7 +19,8 @@ export function WorkoutScreen() {
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     
-    const [levelUpData, setLevelUpData] = useState({ show: false, levelUps: 0, newLevel: 0 });
+    const [tempLevel, setTempLevel] = useState(userData.level);
+    const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0})
 
 
     useEffect(() => {
@@ -36,6 +37,7 @@ export function WorkoutScreen() {
 
         setActiveExercises(initialActive);
         setWorkoutSets(initialSets);
+
     }, [currentProgress]);
 
     const handleSwitchExercise = (category, direction) => {
@@ -85,8 +87,7 @@ export function WorkoutScreen() {
         if (totalReps === 0) return;
 
         const newProgress = saveWorkoutReps(currentProgress, exerciseID, totalReps);
-
-        
+       
         const stats = calculatePlayerStats(newProgress);
 
         const workoutRecord = {
@@ -105,6 +106,17 @@ export function WorkoutScreen() {
 
         syncUser();
 
+        // Calculate Level Up / XP Gain
+        const { level, totalXPEarned } = calculateLevel(userData);
+        const levelDifference = level - tempLevel;
+
+        console.log(levelDifference);
+
+        if (levelDifference > 0) {
+            setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});
+            setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000);
+        }
+        
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
 
@@ -113,17 +125,16 @@ export function WorkoutScreen() {
     return (
         <div className="workout-screen-container">
 
-            {levelUpData.show && (
+            {levelChange.show && (
                 <div className="level-up-notification">
-                    <h2>Level Up!</h2>
-                    <p>You gained {levelUpData.levelUps} level(s) and are now level {levelUpData.newLevel}!</p>
+                    <h2>Level Up *{levelChange.newLevels}!</h2>
+                    <p>Total XP Gained: {levelChange.xpGain}</p>
                 </div>
             )}
 
             <div>
                 {visibleCategories.map(category => {
                     const currentExId = activeExercises[category];
-                    console.log('Rendering Exercise Card:', category, 'Current Exercise ID:', currentExId);
                     if (!currentExId) return null;
 
                     const exerciseData = EXERCISE_DB[currentExId];
@@ -134,7 +145,6 @@ export function WorkoutScreen() {
                     return (
                         <div key={category} className={`exercise-card ${isUnlocked ? '' : 'locked'}`}>
                             
-                            {/* Exercise Header */}
                             <div className="exercise-header">
                                 <button 
                                     className="nav-btn"
@@ -151,14 +161,12 @@ export function WorkoutScreen() {
                                 >&gt;</button>
                             </div>
 
-                            {/* Badge Label */}
                             <div className="badge-container">
                                 <span className={`sys-badge ${isUnlocked ? 'unlocked' : 'locked'}`}>
                                     {isUnlocked ? '✓ UNLOCKED' : '🔒 LOCKED'}
                                 </span>
                             </div>
 
-                            {/* Content based on Lock Status */}
                             {isUnlocked ? (
                                 <>
                                     <div className="sets-container">

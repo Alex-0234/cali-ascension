@@ -11,7 +11,7 @@ export default function calculateLevel(userData) {
         const exerciseData = EXERCISE_DB[entry.exerciseID];
         if (!exerciseData) return;
         
-        const baseXP = TIER_XP_REWARDS[exerciseData.tier] || 0;
+        const baseXP = TIER_XP_REWARDS[exerciseData.tier];
 
         if (entry.sets && Array.isArray(entry.sets)) {
             entry.sets.forEach(set => {

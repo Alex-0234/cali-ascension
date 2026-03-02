@@ -19,7 +19,6 @@ export default function SkillTree() {
     const [proficiency, setProficiency] = useState({ level: 0, progress: 0 });
     const [showVideo, setShowVideo] = useState(false);
 
-    // Automatically recalculate nodes and edges when the category changes
     const { nodes, edges } = useMemo(() => {
         const exerciseList = ALL_EXERCISES[currentCategory];
         return generateSkillTree(EXERCISE_DB, exerciseList);

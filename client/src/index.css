@@ -200,12 +200,15 @@ hr {
 /* =========================================================
    2. WORKOUT SCREEN
    ========================================================= */
+
+
 .workout-screen-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   min-height: 100vh;
 }
+
 
 .split-selector {
   display: flex;
@@ -1254,113 +1257,106 @@ button:disabled {
    WEIGHT TRACKER WIDGET STYLES
    ========================================================= */
 
-.weight-modal { /* // When updating weight */
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  gap: 5px;
-  background-color: var(--bg-input);
-  border: 1px solid var(--border);
-  padding: 10px 20px;
-  border-radius: 8px;
-  z-index: 100;
-  
-}
-.weight-modal h3 {
-  font-size: 0.6rem;
-}
-.weight-modal input, .weight-modal button {
-  width: auto;
-}
-.weight-tracker-empty, .health-tracker {
-    margin: 20px 0;
-    padding: 20px;
-    background-color: var(--bg-input);
-    border-radius: 12px;
-    color: #9ca3af;
-    border: 1px solid #2a2b3d;
-}
-.health-tracker h3 
-{
-  color: var(--text-main);
-}
-
-.weight-tracker-empty h4 {
-    margin: 0;
-    font-family: monospace;
-    color: #9ca3af;
-    font-size: 0.85rem;
-}
-
-.weight-tracker-empty p {
-    margin-top: 10px;
-    font-family: monospace;
-}
-
 .weight-tracker-card {
-    background-color: var(--bg-input);
-    border: 1px solid #2a2b3d;
-    border-radius: 12px;
-    padding: 20px 20px 5px 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    width: 100%;
-    max-width: calc(100% - 40px);
-    place-self: center;
-}
-
-.weight-tracker-header {
-    width: 30%;
+    background-color: #0f172a;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    gap: 15px; 
+}
+
+
+.weight-main-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    min-height: 160px; 
+}
+
+.weight-info-col {
+    flex: 0 0 auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.weight-title {
+    color: #6b7280;
+    margin: 0;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.weight-value {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #ffffff;
+}
+
+.weight-chart-col {
+    flex: 1 1 auto;
+    min-width: 0; 
+    display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
-    text-align: center;
 }
 
-.weight-tracker-header h4 {
-    min-width: 80px;
+.empty-chart-placeholder {
+    color: #475569;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.weight-bottom-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1e293b; 
+    padding-top: 15px;
+}
+
+.weight-bottom-row p {
     margin: 0;
-    color: #9ca3af;
-    font-size: clamp(1rem, 3vw, 1.5rem);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-family: monospace;
+    color: #94a3b8;
+    font-size: 0.95rem;
 }
 
-.weight-tracker-header h2 {
-    margin: 0 0 1rem 0;
+.weight-bottom-row span {
     color: #ffffff;
-    font-size: clamp(1.2rem, 4vw, 2rem);
-    font-family: monospace;
+    font-weight: bold;
 }
 
-.weight-tracker-chart-wrapper {
-    padding: 0 20px;
-    width: 100%;
-    height: 100%;
+
+.weight-modal {
+    background-color: var(--bg-input);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    z-index: 10;
 }
 
-/* =========================================================
-   WEIGHT TRACKER 
-   ========================================================= */
-
-.weight-tracker-linechart .MuiChartsAxis-line,
-.weight-tracker-linechart .MuiChartsAxis-tick {
-    display: none;
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.weight-tracker-linechart .MuiAreaElement-root {
-    fill-opacity: 0.15;
-}
-
-.weight-tracker-linechart .MuiChartsTooltip-root {
-    font-family: monospace;
+.weight-input {
+    width: 80px;
+    padding: 5px;
+    background: #0f172a;
+    border: 1px solid var(--border-light);
+    border-radius: 0.5rem;
+    color: white;
+    text-align: center;
 }
 
 /* =========================================================
@@ -1495,4 +1491,24 @@ h2.success-text {
 @keyframes scan {
     0% { top: -100%; }
     100% { top: 200%; }
+}
+
+.workout-history-block {
+    position: absolute;
+    top: 80%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: hidden;
+    z-index: 100;
+}
+.current-program {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+.current-program input, .current-program button {
+  width: 50%;
 }

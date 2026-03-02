@@ -44,7 +44,6 @@ const UserSchema = new mongoose.Schema({
         { date: { type: Date, default: Date.now },
         exerciseID: {type: String}, 
         totalReps: {type: Number},
-        totalExtraWeight: {type: Number},
         sets: [{reps: Number, extraWeight: Number}] }]
 
 }, { minimize: false }); 

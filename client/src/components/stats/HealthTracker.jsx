@@ -8,7 +8,7 @@ export default function HealthTracker() {
     const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
 
     return (
-        <div className="health-tracker">
+        <div className="health-tracker generic-border">
             <h3>Health Tracker</h3>
                 <p>[ BMR ]: {BMR} kcal</p>
                 <p>[ BMI ]: {BMI} </p>
