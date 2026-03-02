@@ -26,7 +26,7 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 ## To-Do List
 - [X] Implement weight history tracking.
      - [ ] Make it one weight a day.
-- [ ] Add a meaning to exercising with extra weight.
+- [X] Add a meaning to exercising with extra weight.
 - [ ] Introduce some kind of points to unlock exercises in the tree.
 - [ ] Improve the evaluation window.
 - [ ] Completely re-work the core tree. ( seperate time based from rep based )
@@ -36,7 +36,7 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
      - [ ] Now, make sure it changes muscle group daily ( based on the split )
      - [ ] Add manual selection. ( In case muscles are still sore )
 - [X] Introduce a workout history window.
-     - [ ] Allow deleting workouts ( careful with xp ) 
+     - [ ] Allow deleting workouts ( careful with xp - solved) 
 
 ## Technologies used
 
