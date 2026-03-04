@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { BarChart } from '@mui/x-charts';
 import useUserStore from "../../store/usePlayerStore";
 import WorkoutHistoryBlock from "../ui/workoutHistoryBlock";
 
@@ -8,6 +9,7 @@ export default function CurrentProgram() {
     const syncUser = useUserStore((state) => state.syncUser);
 
     const [openHistory, setOpenHistory] = useState(false);
+    /* const setsPerGroup =  */ // Add for the chart data
 
     const handleProgramChange = (e) => {
         const newProgram = e.target.value;
@@ -33,9 +35,28 @@ export default function CurrentProgram() {
                 <option value="Bro Split">Bro Split</option>
                 <option value="Full Body">Full Body Split</option>
             </select>
-            <button className="generic-btn" onClick={() => setOpenHistory(!openHistory)}>Workout History</button>
+
+            <div className='bar-chart-wrapper'>
+                <BarChart
+                    series={[
+                        { data: [35, 44, 24, 34] },
+                        { data: [51, 6, 49, 30] },
+                        { data: [15, 25, 30, 50] },
+                        { data: [60, 50, 15, 25] },
+                    ]}
+                    height={150}
+                    xAxis={[{ data: ['1. week', '2. week', '3. week', '4. week'], scaleType: 'band', color: 'var(--cyan)' }]}
+                    margin={{ top: 40, bottom: 10, left: 0, right: 10 }}
+                    sx={{
+                            '& .MuiChartsAxis-directionY .MuiChartsAxis-line': { display: 'none' },
+                            '& .MuiChartsAxis-directionY .MuiChartsAxis-tick': { display: 'none' },
+                        }}
+                />
+            </div>
+
             
             <p>Working on this...</p>
+            <button className="generic-btn" onClick={() => setOpenHistory(!openHistory)}>Workout History</button>
         </div>
         {openHistory &&  <WorkoutHistoryBlock onClose={() => setOpenHistory(false)}/> }
         </>

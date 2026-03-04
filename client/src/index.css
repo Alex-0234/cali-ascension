@@ -1497,6 +1497,7 @@ h2.success-text {
     position: absolute;
     top: 80%;
     height: 60%;
+    width: calc(100% - 8rem);
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -1511,4 +1512,12 @@ h2.success-text {
 }
 .current-program input, .current-program button {
   width: 50%;
+}
+
+.bar-chart-wrapper {
+    width: 100%;
+    min-width: 0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
