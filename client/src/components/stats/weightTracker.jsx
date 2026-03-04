@@ -32,16 +32,45 @@ export default function WeightTracker({ weightHistory = [] }) {
     const xData = data.map(d => d.date);
     const yData = data.map(d => d.weight);
 
-    // Ošetření Infinity, pokud je yData prázdné
     const minWeight = emptyHistory ? 0 : Math.min(...yData) - 2;
     const maxWeight = emptyHistory ? 100 : Math.max(...yData) + 2;
     const currentWeight = emptyHistory ? '--' : yData[yData.length - 1];
 
     const handleSaveWeight = () => {
-        setUserData({ 
-            weight: Number(tempWeight), 
-            weightHistory: [...userData.weightHistory, { weight: Number(tempWeight), date: new Date() }] 
-        });
+        const dateNow = Date.now();
+        console.log('dateNow',dateNow)
+
+        let tempDate = 0;
+        let tempId = '';
+        weightHistory.forEach(obj => {
+
+            let objectDate = new Date(obj.date);
+
+            objectDate = objectDate.valueOf()
+            console.log(`${obj._id}`, objectDate);
+
+            if (tempDate < objectDate) {
+                tempDate = objectDate;
+                tempId = obj._id;
+            }
+        })
+
+        if (dateNow - tempDate >= (24*60*60*1000)) {
+            setUserData({ 
+                weight: Number(tempWeight), 
+                weightHistory: [...userData.weightHistory, { weight: Number(tempWeight), date: new Date() }] 
+            });
+        } else {
+            const filteredHistory = weightHistory.filter(obj => obj._id !== tempId);
+            console.log(filteredHistory);
+
+            setUserData({
+                weight: Number(tempWeight),
+                weightHistory: [...filteredHistory, {weight: Number(tempWeight), date: tempDate}]
+            })
+        }
+
+
         syncUser();
         setIsTypingWeight(false);
     };
