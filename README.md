@@ -33,6 +33,8 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 - [ ] Improve the evaluation window.
 - [ ] Completely re-work the core tree. ( seperate time based from rep based )
 - [X] Introduce settings / profile.
+     - [ ] Style it better
+     - [ ] Refine it and add confirmation window
 - [ ] Include actual video previews.
 - [X] Introduce actual workout split selection.
      - [ ] Now, make sure it changes muscle group daily ( based on the split )
