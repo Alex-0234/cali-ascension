@@ -24,8 +24,10 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 * **Leveling:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
 
 ## To-Do List
+- [ ] Introduce a confirmation component (Are you sure?)
 - [X] Implement weight history tracking.
-     - [ ] Make it one weight a day.
+     - [X] Make it one weight a day.
+     - [ ] Make midnight reser the cooldown. ( Right now, it's every 24h which might get annoying )
 - [X] Add a meaning to exercising with extra weight.
 - [ ] Introduce some kind of points to unlock exercises in the tree.
 - [ ] Improve the evaluation window.
@@ -36,7 +38,7 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
      - [ ] Now, make sure it changes muscle group daily ( based on the split )
      - [ ] Add manual selection. ( In case muscles are still sore )
 - [X] Introduce a workout history window.
-     - [ ] Allow deleting workouts ( careful with xp - solved) 
+     - [X] Allow deleting workouts 
 
 ## Technologies used
 
