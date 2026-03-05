@@ -25,8 +25,7 @@ export default function CurrentProgram() {
 
     return (
         <>
-        {!openHistory ? (
-            <div className="current-program generic-border">
+        <div className="current-program generic-border">
             <h3>Workout Window</h3>
             <h4>Current Program: [ {userData.currentProgram || "None Selected"} ]</h4>
             <select value={userData.currentProgram} onChange={handleProgramChange}>
@@ -59,10 +58,12 @@ export default function CurrentProgram() {
             
             <p>Working on this...</p>
             <button className="generic-btn" onClick={() => setOpenHistory(!openHistory)}>Workout History</button>
+
+            <div className='history-container' style={{width: '100%'}}>
+                { openHistory && <WorkoutHistoryBlock onClose={() => setOpenHistory(false)}/> }
+            </div>
         </div>
-        ) : (
-        <WorkoutHistoryBlock onClose={() => setOpenHistory(false)}/>
-        )}
+
         </>
     );
 }
