@@ -88,7 +88,8 @@ export default function SkillTree() {
                 <ReactFlow 
                     nodes={nodes} 
                     edges={edges}
-                    fitView 
+                    defaultViewport={{x: 0, y: 0, zoom: 0.5}}
+                    zoomOnDoubleClick={false}
                     colorMode="dark"
                     onNodeClick={handleClick}
                 >

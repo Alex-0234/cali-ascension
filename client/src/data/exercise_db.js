@@ -2,7 +2,6 @@ export const EXERCISE_DB = {
 
     // |||||||   PUSH-UPS   |||||||
 
-    // --- BEGINNER ---
     "pushup_00": {
         id: "pushup_00",
         name: "Wall Push-up",
@@ -33,8 +32,6 @@ export const EXERCISE_DB = {
         unlocks: ["pushup_03"],
         prerequisites: ["pushup_01"],
     },
-
-    // --- INTERMEDIATE ---
     "pushup_03": {
         id: "pushup_03",
         name: "Standard Push-up",
@@ -45,10 +42,6 @@ export const EXERCISE_DB = {
         unlocks: ["pushup_04A", "pushup_04B", "pushup_04C", "pushup_04D"],
         prerequisites: ["pushup_02"], 
     },
-
-    // --- ADVANCED BRANCHES ---
-
-    // Path A: Asymmetry / One-Arm
     "pushup_04A": {
         id: "pushup_04A",
         name: "Diamond Push-up",
@@ -93,8 +86,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["pushup_06A"], 
     },
-
-    // Path B: Power / Explosive
     "pushup_04B": {
         id: "pushup_04B",
         name: "Explosive Push-up",
@@ -128,8 +119,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["pushup_05B"], 
     },
-
-    // Path C: Planche / Core
     "pushup_04C": {
         id: "pushup_04C",
         name: "Pseudo Planche Push-up",
@@ -174,8 +163,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["pushup_06C"], 
     },
-
-    // Path D: Shoulders / Handstand
     "pushup_04D": {
         id: "pushup_04D",
         name: "Pike Push-up",
@@ -223,7 +210,6 @@ export const EXERCISE_DB = {
 
     // |||||||   SQUATS   |||||||
 
-    // --- BEGINNER ---
     "squat_00": {
         id: "squat_00",
         name: "Assisted Squat",
@@ -254,10 +240,6 @@ export const EXERCISE_DB = {
         unlocks: ["squat_03A", "squat_03B", "squat_03C"],
         prerequisites: ["squat_01"], 
     },
-
-    // --- ADVANCED BRANCHES ---
-
-    // Path A: Unilateral / Pistol
     "squat_03A": {
         id: "squat_03A",
         name: "Forward Lunge",
@@ -313,8 +295,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["squat_06A"], 
     },
-
-    // Path B: Power / Explosive
     "squat_03B": {
         id: "squat_03B",
         name: "Jumping Squat",
@@ -337,8 +317,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["squat_03B"], 
     },
-
-    // Path C: Mobility
     "squat_03C": {
         id: "squat_03C",
         name: "Side Lunge",
@@ -375,7 +353,6 @@ export const EXERCISE_DB = {
 
     // |||||||   CORE / ABS   |||||||
 
-    // --- BEGINNER ---
     "core_00": {
         id: "core_00",
         name: "Plank",
@@ -406,10 +383,6 @@ export const EXERCISE_DB = {
         unlocks: ["core_03A", "core_03B", "core_03C", "core_03D"],
         prerequisites: ["core_01"], 
     },
-
-    // --- ADVANCED BRANCHES ---
-
-    // Path A: Static / Compression
     "core_03A": {
         id: "core_03A",
         name: "Hollow Body Hold",
@@ -443,8 +416,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["core_04A"], 
     },
-
-    // Path B: Hanging / Lever
     "core_03B": {
         id: "core_03B",
         name: "Hanging Knee Raises",
@@ -489,8 +460,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["core_05B"], 
     },
-
-    // Path C: Rotation / Obliques
     "core_03C": {
         id: "core_03C",
         name: "Russian Twists",
@@ -524,8 +493,6 @@ export const EXERCISE_DB = {
         unlocks: [],
         prerequisites: ["core_04C"], 
     },
-
-    // Path D: Extension
     "core_03D": {
         id: "core_03D",
         name: "Ab Wheel Rollout",
@@ -552,7 +519,6 @@ export const EXERCISE_DB = {
 
     // |||||||   PULL-UPS   |||||||
 
-    // --- BEGINNER ---
     "pullup_00": {
         id: "pullup_00",
         name: "Wall Pull",
@@ -573,8 +539,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_02'],
         prerequisites: ['pullup_00'], 
     },
-
-    // --- INTERMEDIATE ---
     "pullup_02": {
         id: "pullup_02",
         name: "Jackknife Pull-up",
@@ -605,8 +569,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_05'],
         prerequisites: ['pullup_03'], 
     },
-
-    // --- ADVANCED ---
     "pullup_05": {
         id: "pullup_05",
         name: "Chin-up",
@@ -627,8 +589,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_07A','pullup_07B','pullup_07C1','pullup_07C2'],
         prerequisites: ['pullup_05'], 
     },
-
-    // 1. START OF BRANCHES 
     "pullup_07A": {
         id: "pullup_07A",
         name: "Archer Pull-up",
@@ -673,8 +633,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_08C'],
         prerequisites: ['pullup_06'], 
     },
-
-    // 2.
     "pullup_08A": {
         id: "pullup_08A",
         name: "Typewriter Pull-up",
@@ -708,8 +666,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_09C'],
         prerequisites: ['pullup_07C1','pullup_07C2'], 
     },
-
-    // 3.
     "pullup_09A": {
         id: "pullup_09A",
         name: "One-Arm Assisted Pull-up",
@@ -743,8 +699,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_10C'],
         prerequisites: ['pullup_08C'], 
     },
-
-    // 4.
     "pullup_10A": {
         id: "pullup_10A",
         name: "One-Arm Chin-up",
@@ -778,8 +732,6 @@ export const EXERCISE_DB = {
         unlocks: ['pullup_11A'],
         prerequisites: ['pullup_09C'], 
     },
-
-    // 5.
     "pullup_11A": {
         id: "pullup_11A",
         name: "One-Arm Pull-up",

@@ -1494,10 +1494,10 @@ h2.success-text {
 }
 
 .workout-history-block {
-    position: absolute;
+  position: relative;
     top: 80%;
-    height: 60%;
-    width: calc(100% - 8rem);
+    height: auto;
+    max-height: 450px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -1505,6 +1505,7 @@ h2.success-text {
     z-index: 100;
 }
 .current-program {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
