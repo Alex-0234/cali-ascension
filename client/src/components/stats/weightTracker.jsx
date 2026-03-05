@@ -2,6 +2,7 @@ import { LineChart } from '@mui/x-charts';
 import { useState, useEffect } from 'react';
 import useUserStore from '../../store/usePlayerStore';
 import getAvarage from '../../utils/weightTrackerFunctions';
+import evaluateReset from '../../utils/evaluateReset';
 
 
 export default function WeightTracker({ weightHistory = [] }) {
@@ -37,37 +38,24 @@ export default function WeightTracker({ weightHistory = [] }) {
     const currentWeight = emptyHistory ? '--' : yData[yData.length - 1];
 
     const handleSaveWeight = () => {
-        const dateNow = Date.now();
-        console.log('dateNow',dateNow)
+        const val = evaluateReset(weightHistory);
+        console.log('val: ',val);
+        if (!val || !val.newDate) return;
 
-        let tempDate = 0;
-        let tempId = '';
-        weightHistory.forEach(obj => {
-
-            let objectDate = new Date(obj.date);
-
-            objectDate = objectDate.valueOf()
-            console.log(`${obj._id}`, objectDate);
-
-            if (tempDate < objectDate) {
-                tempDate = objectDate;
-                tempId = obj._id;
-            }
-        })
-
-        if (dateNow - tempDate >= (24*60*60*1000)) {
+        if (val.reset) {
             setUserData({ 
+                id: Date.now(),
                 weight: Number(tempWeight), 
                 weightHistory: [...userData.weightHistory, { weight: Number(tempWeight), date: new Date() }] 
             });
-        } else {
-            const filteredHistory = weightHistory.filter(obj => obj._id !== tempId);
-            console.log(filteredHistory);
+        } else if (!val.reset) {
+            const filteredHistory = weightHistory.filter(obj => obj.id !== val.lastDateId);
 
             setUserData({
+                id: Date.now(),
                 weight: Number(tempWeight),
-                weightHistory: [...filteredHistory, {weight: Number(tempWeight), date: tempDate}]
-            })
+                weightHistory: [...filteredHistory, {id: Date.now(), weight: Number(tempWeight), date: val.newDate }]
+            });
         }
 
 
