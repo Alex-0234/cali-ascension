@@ -7,6 +7,7 @@ import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
 import EditProfileModal from "../../components/stats/EditProfileModal";
+import WorkoutHistoryBlock from "../../components/ui/workoutHistoryBlock";
 
 
 const getStatName = (statKey) => {
@@ -88,10 +89,10 @@ export default function StatusWindow() {
                     </div>
                 ))}
             </div>
+
             <CurrentProgram />
             <WeightTracker weightHistory={weightHistory} />
             <HealthTracker />
-            
             
         </div>
         </>
