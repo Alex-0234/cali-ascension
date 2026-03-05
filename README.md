@@ -24,14 +24,15 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 * **Leveling:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
 
 ## To-Do List
+- [ ] Make the styling desktop compatible / better.
 - [ ] Introduce a confirmation component (Are you sure?)
 - [X] Implement weight history tracking.
      - [X] Make it one weight a day.
-     - [ ] Make midnight reser the cooldown. ( Right now, it's every 24h which might get annoying )
+     - [X] Make midnight reser the cooldown. (Should work now)
 - [X] Add a meaning to exercising with extra weight.
 - [ ] Introduce some kind of points to unlock exercises in the tree.
 - [ ] Improve the evaluation window.
-- [ ] Completely re-work the core tree. ( seperate time based from rep based )
+- [ ] Completely re-work the core tree. ( currently working on... )
 - [X] Introduce settings / profile.
      - [ ] Style it better
      - [ ] Refine it and add confirmation window
