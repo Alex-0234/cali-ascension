@@ -56,9 +56,12 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/login', async (req, res) => {
     try {
-        const { username, password } = req.body;
-        const exists = await User.findOne({ username: username });
+        const { username, email, password } = req.body;
+        if (!username && !email) return res.status(400).send({ message: 'Invalid username or password' });
+        const exists = await User.findOne({$or: [{username: username}, {email: email}] });
         const passwordMatch = exists ? bcrypt.compare(password, exists.password) : false;
+        console.log(exists);
+        console.log(passwordMatch);
 
         if (!exists || !passwordMatch) {
             return res.status(400).send({ message: 'Invalid username or password' });
