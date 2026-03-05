@@ -1494,15 +1494,20 @@ h2.success-text {
 }
 
 .workout-history-block {
-  position: relative;
-    top: 80%;
     height: auto;
-    max-height: 450px;
+    max-height: 400px;
+    width: calc(100% - 40px);
     display: flex;
     flex-direction: column;
     gap: 1rem;
     overflow: hidden;
     z-index: 100;
+}
+.workout-entry {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .current-program {
   position: relative;
@@ -1521,4 +1526,17 @@ h2.success-text {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.css-1yscjcf-MuiChartsAxis-root-MuiChartsXAxis-root .MuiChartsAxis-tickLabel  { 
+  fill: var(--text-main) !important;
+}
+.css-ra8wgq-MuiChartsAxis-root-MuiChartsYAxis-root .MuiChartsAxis-tickLabel {
+  fill: var(--text-main) !important;
+}
+.css-1yscjcf-MuiChartsAxis-root-MuiChartsXAxis-root .MuiChartsAxis-tick {
+  stroke: var(--text-main) !important;
+}
+.css-1yscjcf-MuiChartsAxis-root-MuiChartsXAxis-root .MuiChartsAxis-line {
+  stroke: var(--text-main) !important;
 }
