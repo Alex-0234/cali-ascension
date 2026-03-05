@@ -32,7 +32,7 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 - [X] Add a meaning to exercising with extra weight.
 - [ ] Introduce some kind of points to unlock exercises in the tree.
 - [ ] Improve the evaluation window.
-- [ ] Completely re-work the core tree. ( currently working on... )
+- [X] Completely re-work the core tree. 
 - [X] Introduce settings / profile.
      - [ ] Style it better
      - [ ] Refine it and add confirmation window
