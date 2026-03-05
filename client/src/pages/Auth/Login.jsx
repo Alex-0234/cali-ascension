@@ -9,22 +9,38 @@ export default function Login() {
     
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("")
+    const [mode, setMode] = useState(true);  // Using bool probably stupid but easier for two states.
     const [notification, setNotification] = useState({ message: "", error: false });
 
     async function handleLogin() {
         try {
-            if (!username || !password) {
+            if (!username && !email || !password) {
                 setNotification({ message: "System Error: Credentials required", error: true });
                 return;
             }
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+            // Add a function that checks the password length, Upper, Lower etc.
+
+            let response;
+            if (mode) {
+                response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ username: username, password: password }),
-            });
+                body: JSON.stringify({ username: username.toLowerCase().trim(), email: null, password: password }),
+                });
+            }
+            else {
+                response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username: null, email: email.trim(), password: password }),
+                });
+            }
 
             const data = await response.json();
 
@@ -51,12 +67,28 @@ export default function Login() {
                 <p className="auth-subtitle">Verify Hunter Credentials</p>
 
                 <div className="auth-form">
-                    <input 
-                        type="text" 
-                        className="system-input input-blue" 
-                        placeholder="Hunter Name" 
-                        onChange={(e)=>setUsername(e.target.value)}
-                    />
+                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                        { mode ? (
+                            <input 
+                            type="text" 
+                            className="system-input input-blue" 
+                            placeholder="Username" 
+                            onChange={(e)=>setUsername(e.target.value)}
+                            />
+                        ) : (
+                            <input 
+                            type="email" 
+                            className="system-input input-blue" 
+                            placeholder="E-mail" 
+                            onChange={(e)=>setEmail(e.target.value)}
+                            />
+                        )}
+                        <button 
+                        className='generic-btn' 
+                        style={{width: '40%', height: 'auto', background: 'transparent', marginLeft: '0.5rem' }} 
+                        onClick={() => setMode(!mode)}>Toggle e-mail</button>
+                    </div>
+   
                     <input 
                         type="password" 
                         className="system-input input-blue" 
