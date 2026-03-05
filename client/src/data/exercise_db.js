@@ -352,160 +352,175 @@ export const EXERCISE_DB = {
     },
 
     // |||||||   CORE / ABS   |||||||
-
-    "core_00": {
-        id: "core_00",
+    
+"core_00A": {
+        id: "core_00A",
         name: "Plank",
         animation: "/videos/plank.mp4",
         tier: 0,
         totalReps: 0,
         maxReps: 0,
-        unlocks: ["core_01"],
+        branch: "isometric",
+        unlocks: ["core_01A"],
         prerequisites: [], 
+        muscleGroups: ["Abs", "Core", "Shoulders"]
     },
-    "core_01": {
-        id: "core_01",
-        name: "Crunches",
-        animation: "/videos/crunches.mp4",
-        tier: 0.5,
-        totalReps: 0,
-        maxReps: 0,
-        unlocks: ["core_02"],
-        prerequisites: ["core_00"], 
-    },
-    "core_02": {
-        id: "core_02",
-        name: "Lying Leg Raises",
-        animation: "/videos/lying_leg_raises.mp4",
-        tier: 1,
-        totalReps: 0,
-        maxReps: 0,
-        unlocks: ["core_03A", "core_03B", "core_03C", "core_03D"],
-        prerequisites: ["core_01"], 
-    },
-    "core_03A": {
-        id: "core_03A",
+    "core_01A": {
+        id: "core_01A", 
         name: "Hollow Body Hold",
         animation: "/videos/hollow_body_hold.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
-        branch: "static",
-        unlocks: ["core_04A"],
-        prerequisites: ["core_02"], 
+        branch: "isometric",
+        unlocks: ["core_02A"],
+        prerequisites: ["core_00A"],
+        muscleGroups: ["Abs", "Core", "Lower Back"]
     },
-    "core_04A": {
-        id: "core_04A",
+    "core_02A": {
+        id: "core_02A", 
         name: "L-Sit",
         animation: "/videos/l_sit.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
-        branch: "static",
-        unlocks: ["core_05A"],
-        prerequisites: ["core_03A"], 
+        branch: "isometric",
+        unlocks: ["core_03A"],
+        prerequisites: ["core_01A"], 
+        muscleGroups: ["Abs", "Hip Flexors", "Triceps", "Shoulders"]
     },
-    "core_05A": {
-        id: "core_05A",
+    "core_03A": {
+        id: "core_03A", 
         name: "V-Sit",
         animation: "/videos/v_sit.mp4",
         tier: 5,
         totalReps: 0,
         maxReps: 0,
-        branch: "static",
+        branch: "isometric",
+        unlocks: ["core_04A"],
+        prerequisites: ["core_02A"], 
+        muscleGroups: ["Abs", "Hip Flexors", "Triceps", "Shoulders"]
+    },
+    "core_04A": {
+        id: "core_04A",
+        name: "Front Lever Hold",
+        animation: "/videos/front_lever_hold.mp4",
+        tier: 6.5,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "isometric",
+        unlocks: ["core_05A"],
+        prerequisites: ["core_03A"], 
+        muscleGroups: ["Lats", "Abs", "Core", "Straight Arm Strength"]
+    },
+    "core_05A": {
+        id: "core_05A",
+        name: "Human Flag",
+        animation: "/videos/human_flag.mp4",
+        tier: 7,
+        totalReps: 0,
+        maxReps: 0,
+        branch: "isometric",
         unlocks: [],
         prerequisites: ["core_04A"], 
+        muscleGroups: ["Obliques", "Lats", "Shoulders", "Core"]
     },
-    "core_03B": {
-        id: "core_03B",
+    "core_00": {
+        id: "core_00", 
+        name: "Crunches",
+        animation: "/videos/crunches.mp4",
+        tier: 0.5,
+        totalReps: 0,
+        maxReps: 0,
+        unlocks: ["core_01"],
+        prerequisites: [], 
+        muscleGroups: ["Abs"]
+    },
+    "core_01": {
+        id: "core_01",
+        name: "Lying Leg Raises",
+        animation: "/videos/lying_leg_raises.mp4",
+        tier: 1,
+        totalReps: 0,
+        maxReps: 0,
+        unlocks: ["core_02B", "core_02C", "core_02D"],
+        prerequisites: ["core_00"], 
+        muscleGroups: ["Abs", "Hip Flexors"]
+    },
+    "core_02B": {
+        id: "core_02B", 
         name: "Hanging Knee Raises",
         animation: "/videos/hanging_knee_raises.mp4",
         tier: 2,
         totalReps: 0,
         maxReps: 0,
         branch: "hanging",
-        unlocks: ["core_04B"],
-        prerequisites: ["core_02"], 
+        unlocks: ["core_03B"],
+        prerequisites: ["core_01"], 
+        muscleGroups: ["Abs", "Hip Flexors", "Forearms"]
     },
-    "core_04B": {
-        id: "core_04B",
+    "core_03B": {
+        id: "core_03B",
         name: "Hanging Leg Raises",
         animation: "/videos/hanging_leg_raises.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
         branch: "hanging",
-        unlocks: ["core_05B"],
-        prerequisites: ["core_03B"], 
+        unlocks: ["core_04B"],
+        prerequisites: ["core_02B"], 
+        muscleGroups: ["Abs", "Hip Flexors", "Forearms", "Lats"]
     },
-    "core_05B": {
-        id: "core_05B",
+    "core_04B": {
+        id: "core_04B",
         name: "Toes to Bar",
         animation: "/videos/toes_to_bar.mp4",
         tier: 4,
         totalReps: 0,
         maxReps: 0,
         branch: "hanging",
-        unlocks: ["core_06B"],
-        prerequisites: ["core_04B"], 
+        unlocks: [], 
+        prerequisites: ["core_03B"], 
+        muscleGroups: ["Abs", "Hip Flexors", "Lats", "Forearms"]
     },
-    "core_06B": {
-        id: "core_06B",
-        name: "Front Lever Hold",
-        animation: "/videos/front_lever_hold.mp4",
-        tier: 6.5,
-        totalReps: 0,
-        maxReps: 0,
-        branch: "hanging",
-        unlocks: [],
-        prerequisites: ["core_05B"], 
-    },
-    "core_03C": {
-        id: "core_03C",
+    "core_02C": {
+        id: "core_02C", 
         name: "Russian Twists",
         animation: "/videos/russian_twists.mp4",
         tier: 1.5,
         totalReps: 0,
         maxReps: 0,
         branch: "rotation",
-        unlocks: ["core_04C"],
-        prerequisites: ["core_02"], 
+        unlocks: ["core_03C"],
+        prerequisites: ["core_01"], 
+        muscleGroups: ["Obliques", "Abs"]
     },
-    "core_04C": {
-        id: "core_04C",
+    "core_03C": {
+        id: "core_03C",
         name: "Windshield Wipers",
         animation: "/videos/windshield_wipers.mp4",
         tier: 3.5,
         totalReps: 0,
         maxReps: 0,
         branch: "rotation",
-        unlocks: ["core_05C"],
-        prerequisites: ["core_03C"], 
-    },
-    "core_05C": {
-        id: "core_05C",
-        name: "Human Flag",
-        animation: "/videos/human_flag.mp4",
-        tier: 7,
-        totalReps: 0,
-        maxReps: 0,
-        branch: "rotation",
         unlocks: [],
-        prerequisites: ["core_04C"], 
+        prerequisites: ["core_02C"], 
+        muscleGroups: ["Obliques", "Abs", "Lats"]
     },
-    "core_03D": {
-        id: "core_03D",
+    "core_02D": {
+        id: "core_02D", 
         name: "Ab Wheel Rollout",
         animation: "/videos/ab_wheel_rollout.mp4",
         tier: 3,
         totalReps: 0,
         maxReps: 0,
         branch: "extension",
-        unlocks: ["core_04D"],
-        prerequisites: ["core_02"], 
+        unlocks: ["core_03D"],
+        prerequisites: ["core_01"], 
+        muscleGroups: ["Abs", "Core", "Lats"]
     },
-    "core_04D": {
-        id: "core_04D",
+    "core_03D": {
+        id: "core_03D",
         name: "Dragon Flag",
         animation: "/videos/dragon_flag.mp4",
         tier: 5,
@@ -513,9 +528,9 @@ export const EXERCISE_DB = {
         maxReps: 0,
         branch: "extension",
         unlocks: [],
-        prerequisites: ["core_03D"], 
+        prerequisites: ["core_02D"], 
+        muscleGroups: ["Abs", "Core", "Lats"]
     },
-
 
     // |||||||   PULL-UPS   |||||||
 
@@ -762,11 +777,11 @@ export const ALL_EXERCISES = {
         'squat_07A'
     ],
     core: [
-        'core_00', 'core_01', 'core_02',
-        'core_03A', 'core_03B', 'core_03C', 'core_03D',
-        'core_04A', 'core_04B', 'core_04C', 'core_04D',
-        'core_05A', 'core_05B', 'core_05C',
-        'core_06B'
+        'core_00A', 'core_01A', 'core_02A', 'core_03A', 'core_04A', 'core_05A',
+        'core_00', 'core_01', 
+        'core_02B', 'core_03B', 'core_04B', 
+        'core_02C', 'core_03C', 
+        'core_02D', 'core_03D'
     ],
     pullups: [
         'pullup_00', 'pullup_01', 'pullup_02', 'pullup_03', 'pullup_04', 'pullup_05', 'pullup_06',
@@ -781,7 +796,7 @@ export const ALL_EXERCISES = {
 export const EVALUATION_EXERCISES = {
     pushups: ['pushup_00', 'pushup_01', 'pushup_02', 'pushup_03', 'pushup_04A', 'pushup_05A','pushup_06A','pushup_07A'],
     squats: ['squat_00', 'squat_01', 'squat_02', 'squat_03A','squat_04A','squat_05A','squat_06A','squat_07A'],
-    core: ['core_00', 'core_01', 'core_02', 'core_04A', 'core_04B'],
+    core: [ 'core_00', 'core_01', 'core_02B', 'core_03B', 'core_04B'],
     pullups: ['pullup_00', 'pullup_01', 'pullup_02', 'pullup_04', 'pullup_06','pullup_07A','pullup_08A','pullup_09A','pullup_10A','pullup_11A']
 };
 

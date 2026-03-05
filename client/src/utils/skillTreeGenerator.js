@@ -74,16 +74,25 @@ export const generateSkillTree = (exerciseDB, exerciseList) => {
             const group = groupsByPrereq[parentId];
             const parentX = parentId === "root" ? 0 : positions[parentId].x;
 
+            // 🌟 ZDE JE TA MAGICKÁ OPRAVA: Dynamické rozestupy 🌟
+            let dynamicXSpacing = X_SPACING;
+
+            if (parentId === "root") {
+                // HLAVNÍ STROMY (Plank vs Crunches) odhodíme OBŘÍ kus od sebe (800px).
+                // Tím zajistíme, že jejich spodní větve do sebe nenarazí.
+                dynamicXSpacing = 600; 
+            } else if (group.length === 2) {
+                // Pokud má cvik jen dvě větve, držíme je trochu víc u sebe
+                dynamicXSpacing = 240; 
+            } else if (group.length >= 3) {
+                // Pokud má cvik 3 a více větví (Crunches -> visení, rotace, extenze)
+                dynamicXSpacing = 280; 
+            }
+
             group.forEach((node, index) => {
-                let dynamicXSpacing = X_SPACING;
-
-                if (group.length === 2) {
-                    dynamicXSpacing = 240; // Adjust this number until it looks perfect
-                }
-
                 // ⚖️ THE MAGIC SPLIT FORMULA ⚖️
                 // If group size is 1 -> offset is 0 (Straight down!)
-                // If group size is 3 -> offsets are -250, 0, 250 (Split evenly!)
+                // If group size is 3 -> offsets are -280, 0, 280 (Split evenly!)
                 const offset = (index - (group.length - 1) / 2) * dynamicXSpacing;
                 const xPos = parentX + offset;
                 const yPos = currentLevel * Y_SPACING; // Perfectly even Y
@@ -92,7 +101,7 @@ export const generateSkillTree = (exerciseDB, exerciseList) => {
 
                 nodes.push({
                     id: node.id,
-                    type: 'default',
+                    type: 'default', // Až budeš mít Custom Node, změníš to tady
                     data: { 
                         label: node.name,
                         branch: node.branch || 'core',
