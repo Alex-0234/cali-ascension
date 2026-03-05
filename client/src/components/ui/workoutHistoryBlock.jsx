@@ -1,7 +1,7 @@
 import useUserStore from "../../store/usePlayerStore";
 import { EXERCISE_DB } from "../../data/exercise_db";
 
-export default function WorkoutHistoryBlock({ onClose }) {
+export default function WorkoutHistoryBlock({ onClose, onDelete }) {
     const userData = useUserStore((state) => state.userData);
     const setUserData = useUserStore((state) => state.setUserData);
     const workoutHistory = userData.workoutHistory || [];
@@ -28,7 +28,7 @@ export default function WorkoutHistoryBlock({ onClose }) {
                     workoutHistory.map((entry, index) => (
 
                         <div key={index} className="workout-entry generic-border" style={{position: 'relative'}}>
-                                <div style={{position: 'absolute', top: '1rem', right: '1rem', color: 'red'}} onClick={() => handleExerciseDelete(entry)}>Delete</div>
+                                <div style={{position: 'absolute', top: '1rem', right: '1rem', color: 'red'}} onClick={() => {handleExerciseDelete(entry) }}>Delete</div>
 
                             <p><strong>Date:</strong> {new Date(entry.date).toLocaleDateString()}</p>
                             <p><strong>Exercise:</strong> {EXERCISE_DB[entry.exerciseID].name}</p>

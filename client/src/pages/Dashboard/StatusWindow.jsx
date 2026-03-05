@@ -24,6 +24,7 @@ export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
     const setUserData = useUserStore((state) => state.setUserData);
     const weightHistory = useUserStore((state) => state.userData.weightHistory);
+    const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
 
     const [loaded, setLoaded] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -35,11 +36,11 @@ export default function StatusWindow() {
 
     useEffect(() => {
         setLoaded(true);
-        const currentProgress = getLevelProgress(userData.xp, userData.level);
-        setLevelProgress(currentProgress);
-    },[userData]);
+    },[])
 
     useEffect(() => {
+        const currentProgress = getLevelProgress(userData.xp, userData.level);
+        setLevelProgress(currentProgress);
         const {level, currentLeftoverXP} = calculateLevel(userData);
 
         setUserData({
@@ -47,7 +48,8 @@ export default function StatusWindow() {
             level: level,
             xp: currentLeftoverXP,
         })
-    }, []);
+
+    },[workoutHistory]);
 
     if (!loaded) {
         return <div><p>Initializing user...</p></div>
