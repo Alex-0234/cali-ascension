@@ -13,7 +13,8 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const userData = useUserStore((state) => state.userData);
     const logout = useUserStore((state) => state.logout);  
-    const isProfileOpen = useUIStore((state) => state.isProfileOpen)
+    const isProfileOpen = useUIStore((state) => state.isProfileOpen);
+    const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
 
     const [isReady, setIsReady] = useState(false);
 
@@ -22,11 +23,23 @@ export default function Dashboard() {
         
     }, []);
 
+    if (!hasFetchedInitialData) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#00e5ff', fontFamily: 'monospace' }}>
+                <div style={{ textAlign: 'center' }}>
+                    <h2 className="blinking-text">[ SYSTEM BOOT SEQUENCE ]</h2>
+                    <p>Synchronizing Hunter Data...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
         { isProfileOpen && (
                 <EditProfileModal />
         )}
+        
         <main className={`${styles.dashboard}`}>
             <div className={`${styles.dashboardHeader}`}>
                 <h2>Dashboard</h2>
