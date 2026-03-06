@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import SystemAlert from '../../components/layout/Notification';
 import validatePassword from '../../utils/validatePassword';
+
+import styles from '../../styles/auth.module.css'
 
 export default function Register() {
     const navigate = useNavigate();
@@ -24,7 +26,6 @@ export default function Register() {
             }
 
             const {isValid, errors} = validatePassword(password);    
-            console.log(errors)
             
             if (isValid) {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
@@ -54,44 +55,44 @@ export default function Register() {
     }
 
     return (
-        <div className="auth-page">
-            <div className="auth-box urgent-theme">
-                <h2 className="auth-header red-glow">[ NEW AWAKENING DETECTED ]</h2>
-                <p className="auth-subtitle blinking-red">Register new Hunter to the System</p>
+        <div className={styles.page}>
+            <div className={`${styles.box} ${styles.themeUrgent}`}>
+                <h2 className={`${styles.header} ${styles.glowRed}`}>[ NEW AWAKENING DETECTED ]</h2>
+                <p className={`${styles.subtitle} ${styles.blinkingRed}`}>Register new Hunter to the System</p>
 
-                <div className="auth-form">
+                <div className={styles.form}>
                     <input 
                         type="text" 
-                        className="system-input input-red" 
+                        className={`${styles.input} ${styles.inputRed}`} 
                         placeholder="Hunter Name" 
                         onChange={(e)=>setUsername(e.target.value)}
                     />
                     <input 
                         type="email" 
-                        className="system-input input-red" 
+                        className={`${styles.input} ${styles.inputRed}`} 
                         placeholder="Email Address" 
                         onChange={(e)=>setEmail(e.target.value)}
                     />
                     <input 
                         type="password" 
-                        className="system-input input-red" 
+                        className={`${styles.input} ${styles.inputRed}`} 
                         placeholder="Password" 
                         onChange={(e)=>setPassword(e.target.value)}
                     />
                     <input 
                         type="password" 
-                        className="system-input input-red" 
+                        className={`${styles.input} ${styles.inputRed}`} 
                         placeholder="Confirm Password" 
                         onChange={(e)=>setConfirmPassword(e.target.value)}
                     />
                     
-                    <button className="btn-urgent auth-btn" onClick={handleRegister}>
+                    <button className={`btn-urgent ${styles.btn}`} onClick={handleRegister}>
                         INITIALIZE HUNTER
                     </button>
                 </div>
 
-                <div className="auth-redirect">
-                    <p>Already awakened? <span onClick={() => navigate("/login")} style={{cursor: 'pointer'}}>Access System</span></p>
+                <div className={styles.redirect}>
+                    <p>Already awakened? <span onClick={() => navigate("/login")}>Access System</span></p>
                 </div>
                 
                 {notification.message && (

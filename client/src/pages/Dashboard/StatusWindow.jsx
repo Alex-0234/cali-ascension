@@ -1,14 +1,14 @@
-
 import useUserStore from "../../store/usePlayerStore"
+import useUIStore from "../../store/useUIStore";
 import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import { calculateBMR } from "../../utils/calculateBMI";
 import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
-import EditProfileModal from "../../components/stats/EditProfileModal";
-import WorkoutHistoryBlock from "../../components/ui/workoutHistoryBlock";
 
+
+import styles from "../../styles/status.module.css";
 
 const getStatName = (statKey) => {
     switch (statKey) {
@@ -20,19 +20,17 @@ const getStatName = (statKey) => {
     }
 };
 
-
 export default function StatusWindow() {
     const userData = useUserStore((state) => state.userData);
     const setUserData = useUserStore((state) => state.setUserData);
     const weightHistory = useUserStore((state) => state.userData.weightHistory);
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
+    const setProfile = useUIStore((state) => state.setProfile)
 
     const [loaded, setLoaded] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
     const [levelProgress, setLevelProgress] = useState(0);
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
 
-    
     const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
 
     useEffect(() => {
@@ -49,41 +47,44 @@ export default function StatusWindow() {
             level: level,
             xp: currentLeftoverXP,
         })
-
     },[workoutHistory]);
 
     if (!loaded) {
         return <div><p>Initializing user...</p></div>
     }
 
-
     return (
         <>
-        <div className="status-window border">
-            <div className="d_flex_dir_row">
+        <div className={`${styles.window} border`}>
+            
+            <div className={styles.flexRow}>
                 <h3>[ Level  {userData.level} ]</h3>
                 <h3> [ {userData.rank} ] </h3>
             </div>
-            <hr/>
-            {showEditModal && <EditProfileModal onClose={() => setShowEditModal(false)} />}
-            <div className="user-info">
+            
+            <hr className={styles.divider}/>
+            
+            <div className={styles.userInfo}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <h2> {userData.shownName} </h2>
-                    <button className="generic-btn" onClick={() => setShowEditModal(!showEditModal)}>Edit Profile</button>
+                    <button className="generic-btn" onClick={() => setProfile(true)}>
+                        Edit Profile
+                    </button>
                 </div>
                 
-                <div className="progress-bar" style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
-                    <div className='level-bar' style={{  height: '1rem', width: '100%'}}>
-                        <div className='level-progress' style={{ width: `${levelProgress}%` }}></div>
+                <div className={styles.progressContainer} style={{flexDirection: 'column', gap: '0.5rem'}}>
+                    <div className={styles.levelBar} style={{ height: '1rem', width: '100%' }}>
+                        <div className={styles.levelProgress} style={{ width: `${levelProgress}%` }}></div>
                     </div>
-                <p style={{placeSelf: 'start', margin: '0'}}>XP: {Math.round(displayXP)} </p>
+                    <p style={{placeSelf: 'start', margin: '0'}}>XP: {Math.round(displayXP)} </p>
                 </div>
             </div>
             
-            <hr/>
-            <div className="stats d_grid_2_2" >
+            <hr className={styles.divider}/>
+            
+            <div className={styles.statsGrid}>
                 {Object.keys(userData.stats).map(statKey => (
-                    <div key={statKey} className="stat-wrapper">
+                    <div key={statKey} className={styles.statBox}>
                         <h3>[ {getStatName(statKey)} ]</h3>
                         <p>{userData.stats[statKey]}</p>
                     </div>

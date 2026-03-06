@@ -1,11 +1,15 @@
+import useUserStore from '../../store/usePlayerStore';
+import useUIStore from '../../store/useUIStore';
 
 import { useState } from 'react';
-import useUserStore from '../../store/usePlayerStore';
 import EditBtn from '../ui/editBtn';
 
-export default function EditProfileModal({ onClose }) {
+import styles from '../../styles/dashboard.module.css'
+
+export default function EditProfileModal() {
     const userData = useUserStore((state) => state.userData);
     const setUserData = useUserStore((state) => state.setUserData);
+    const setProfile = useUIStore((state) => state.setProfile);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editField, setEditField] = useState(null);
@@ -27,12 +31,11 @@ export default function EditProfileModal({ onClose }) {
 
     return (
         <>
-
-        <div className="edit-profile-modal" style={{ zIndex: 1000}}>
+        <div className={`${styles.profileModal}`} >
             <h2>Edit Profile</h2>
-            <div className='btn-close' onClick={onClose}>X</div>
+            <button className='btn-close' onClick={() => setProfile(false)}>X</button>
 
-            <div className="profile-info generic-border">
+            <div className={`${styles.profileInfo} generic-border`}>
                 <div>
                     <p><strong>Username:</strong> {userData.username}</p>
                     <EditBtn onClick={() => handleEdit("username")} toChange="username" />
