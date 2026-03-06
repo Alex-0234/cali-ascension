@@ -1,18 +1,23 @@
-import { create } from 'zustand';
+ import { create } from 'zustand';
 
-const useUIStore = create((set, get) => ({
+const useUIStore = create((set) => ({
     isNotificationOpen: false,
     isProfileOpen: false,
 
-    setNotification: (value) => 
-        set((state) => {
-            state.isNotificationOpen = value;
-        }),
+    toggleNotification: () => set((state) => ({ 
+        isNotificationOpen: !state.isNotificationOpen 
+    })),
     
-    setProfile: (value) => 
-        set((state) => {
-            state.isProfileOpen =  value;
-        })
-}))
+    toggleProfile: () => set((state) => ({ 
+        isProfileOpen: !state.isProfileOpen 
+    })),
 
+    setNotification: (value) => set({ 
+        isNotificationOpen: value 
+    }),
+    
+    setProfile: (value) => set({ 
+        isProfileOpen: value 
+    }),
+}));
 export default useUIStore;
