@@ -145,10 +145,9 @@
   -----------------------*/
 
   .profileModal {
-    height: 50%;
-    width: 100%;
-    position: fixed;
+    position: absolute;
     margin: auto;
+    
 
   }
 
