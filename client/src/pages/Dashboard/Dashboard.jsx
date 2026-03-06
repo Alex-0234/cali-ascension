@@ -40,7 +40,7 @@ export default function Dashboard() {
                 <EditProfileModal />
         )}
         
-        <main className={`${styles.dashboard}`}>
+        <main className={`${styles.dashboard} generic-border`}>
             <div className={`${styles.dashboardHeader}`}>
                 <h2>Dashboard</h2>
                 <button className={`${styles.btnLogout}`} onClick={logout}>Logout</button>
