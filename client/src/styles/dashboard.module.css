@@ -21,7 +21,6 @@
 }
 
 .dashboard {
-
 }
 
 .dashboardHeader {
@@ -146,6 +145,8 @@
   -----------------------*/
 
   .profileModal {
+    height: 50%;
+    width: auto;
     position: fixed;
     top: 50%;
     left: 50%;
