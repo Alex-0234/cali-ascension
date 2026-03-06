@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router';
 import SystemAlert from '../../components/layout/Notification';
+import validatePassword from '../../utils/validatePassword';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -22,20 +23,30 @@ export default function Register() {
                 return;
             }
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username.toLowerCase(), email, password }),
-            });
+            const {isValid, errors} = validatePassword(password);    
+            console.log(errors)
+            
+            if (isValid) {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: username.toLowerCase(), email, password }),
+                });
 
-            if (response.ok) {
-                const data = await response.json();
-                setNotification({ message: "Hunter Registered. Preparing system...", error: false });
-                setTimeout(() => navigate('/login'), 1500);
-            } else {
-                const errorData = await response.json();
-                setNotification({ message: errorData.message || "Registration failed", error: true });
+                if (response.ok) {
+                    const data = await response.json();
+                    setNotification({ message: "Hunter Registered. Preparing system...", error: false });
+                    setTimeout(() => navigate('/login'), 1500);
+                } else {
+                    const errorData = await response.json();
+                    setNotification({ message: errorData.message || "Registration failed", error: true });
+                }
             }
+            else {
+                setNotification({message: errors, error: true});
+            }
+
+            
         } catch (error) {
             console.error("Registration error:", error);
             setNotification({ message: "Cannot connect to server.", error: true });
