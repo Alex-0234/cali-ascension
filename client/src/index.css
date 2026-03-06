@@ -394,7 +394,7 @@ button:active {
    ========================================================= */
 
 body {
-  padding-bottom: 80px; 
+  position: relative;
   padding: 1rem;
 }
 

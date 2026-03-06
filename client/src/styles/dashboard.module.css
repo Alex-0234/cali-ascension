@@ -146,8 +146,9 @@
 
   .profileModal {
     position: absolute;
-    margin: auto;
-    
+    height: auto;
+    width: 100%;
+    z-index: 1000;
 
   }
 
