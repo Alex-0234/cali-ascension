@@ -31,12 +31,15 @@
    GLOBAL STYLES
    ========================================================= */
 body {
+
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Inter', system-ui, sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 1rem;
 }
+
+
 
 button {
   cursor: pointer;
@@ -52,214 +55,6 @@ button:active {
   transform: translateY(1px);
 }
 
-/* =========================================================
-   2. WORKOUT SCREEN
-   ========================================================= */
-
-
-.workout-screen-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
-}
-
-
-.split-selector {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-.split-btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  background: var(--bg-card);
-  color: var(--text-main);
-  font-weight: bold;
-}
-
-.split-btn.active {
-  background: var(--primary);
-  box-shadow: 0 4px 15px var(--primary-glow);
-}
-
-.exercise-card {
-  background: var(--bg-panel);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  padding: 20px;
-  margin-bottom: 20px;
-  transition: opacity 0.3s ease;
-}
-
-.exercise-card.locked {
-  opacity: 0.7;
-}
-
-.exercise-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 15px;
-}
-
-.exercise-header h3 {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  font-size: clamp(0.7rem, 2vw, 1.1rem);
-}
-
-.exercise-header h3.unlocked { color: var(--primary); }
-.exercise-header h3.locked { color: var(--text-muted); }
-
-.nav-btn {
-  padding: 10px 15px;
-  background: transparent;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-.nav-btn:hover { background: var(--cyan-glow); }
-
-.badge-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.sys-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.sys-badge.unlocked { background: var(--cyan); color: var(--bg-panel); }
-.sys-badge.locked { background: var(--danger-bg); color: var(--danger); }
-
-.sets-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.set-row {
-  display: flex;
-  height: 25px;
-  border: 1px solid var(--border);
-  align-items: center;
-  justify-content: space-around;
-  gap: 15px;
-  background: var(--bg-input);
-  padding:15px 20px;
-  border-radius: 8px;
-}
-
-.set-label {
-  color: var(--text-main);
-  font-weight: bold;
-  font-size: clamp(0.6rem, 3vw, 1rem);
-  min-width: 3rem;
-}
-
-.set-input {
-  width: 35%;
-  height: 20px;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid var(--border-light);
-  background: var(--bg-card);
-  color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.set-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 5px var(--primary-glow);
-}
-
-.btn-remove {
-  margin-left: auto;
-  background: transparent;
-  border: none;
-  color: var(--danger);
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.btn-remove:hover { color: #f87171; }
-
-/* Buttons */
-.exercise-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-add-set {
-  padding: 10px 20px;
-  background: transparent;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  border-radius: 8px;
-  font-weight: bold;
-  width: auto;
-  font-size: clamp(0.6rem, 3vw, 1.2rem);
-}
-
-.btn-add-set:hover { background: var(--border-light); }
-
-.btn-complete {
-  padding: 10px 20px;
-  background: var(--primary);
-  border: none;
-  color: white;
-  border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 4px 10px var(--primary-glow);
-  margin-left: 5px;
-  font-size: clamp(0.6rem, 3vw, 1.2rem);
-  width: auto;
-}
-
-.btn-complete:hover { background: #2563eb; }
-
-/* Locked State */
-.locked-state-box {
-  text-align: center;
-  padding: 30px 20px;
-  background: var(--bg-input);
-  border-radius: 8px;
-  border: 1px dashed var(--border-light);
-}
-
-.locked-state-box span { font-size: 2rem; display: block; margin-bottom: 10px; }
-.locked-state-box h4 { color: var(--text-muted); margin: 0 0 10px 0; }
-.locked-state-box p { color: #6b7280; font-size: 0.9rem; margin-bottom: 20px; }
-
-.btn-force-unlock {
-  padding: 8px 16px;
-  background: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.btn-force-unlock:hover {
-  background: var(--primary-glow);
-}
 
 /* =========================================================
    3. SKILL TREE MODAL (On Click Window)
@@ -392,11 +187,6 @@ button:active {
 /* =========================================================
    5. SYSTEM NAVBAR (Bottom Floating)
    ========================================================= */
-
-body {
-  position: relative;
-  padding: 1rem;
-}
 
 .system-navbar {
   position: fixed;
@@ -1079,22 +869,6 @@ h2.success-text {
     100% { top: 200%; }
 }
 
-.workout-history-block {
-    height: auto;
-    max-height: 400px;
-    width: calc(100% - 40px);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow: hidden;
-    z-index: 100;
-}
-.workout-entry {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 .current-program {
   position: relative;
   display: flex;

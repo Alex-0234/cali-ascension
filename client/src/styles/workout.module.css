@@ -1,1 +1,266 @@
 
+.workoutScreenContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.splitSelector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.splitBtn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-weight: bold;
+}
+
+.splitBtn.active {
+  background: var(--primary);
+  box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.exerciseCard {
+  background: var(--bg-panel);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: opacity 0.3s ease;
+}
+
+.exerciseCard.locked {
+  opacity: 0.7;
+}
+
+.exerciseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 15px;
+}
+
+.exerciseHeader h3 {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: clamp(0.7rem, 2vw, 1.1rem);
+}
+
+.unlocked {
+  color: var(--cyan);
+}
+
+.locked {
+  color: #64748b;
+}
+
+.navBtn {
+  padding: 10px 15px;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navBtn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.badgeContainer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sysBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.sysBadge.unlocked {
+  background: var(--cyan);
+  color: #020617;
+}
+
+.sysBadge.locked {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.setsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.setRow {
+  display: flex;
+  height: 25px;
+  border: 1px solid var(--border);
+  align-items: center;
+  justify-content: space-around;
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px 20px;
+  border-radius: 8px;
+}
+
+.setLabel {
+  color: #e2e8f0;
+  font-weight: bold;
+  font-size: clamp(0.6rem, 3vw, 1rem);
+  min-width: 3rem;
+}
+
+.setInput {
+  width: 35%;
+  height: 20px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #0f172a;
+  color: white;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.setInput:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+
+.btnRemove {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.btnRemove:hover {
+  color: #f87171;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.exerciseActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btnAddSet {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  border-radius: 8px;
+  font-weight: bold;
+  width: auto;
+  font-size: clamp(0.6rem, 3vw, 1.2rem);
+  cursor: pointer;
+}
+
+.btnAddSet:hover {
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.btnComplete {
+  padding: 10px 20px;
+  background: var(--cyan);
+  border: none;
+  color: #020617;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 229, 255, 0.3);
+  margin-left: 5px;
+  font-size: clamp(0.6rem, 3vw, 1.2rem);
+  width: auto;
+  cursor: pointer;
+}
+
+.btnComplete:hover {
+  background: #06b6d4;
+}
+
+.lockedStateBox {
+  text-align: center;
+  padding: 30px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px dashed #334155;
+}
+
+.lockedStateBox span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.lockedStateBox h4 {
+  color: #94a3b8;
+  margin: 0 0 10px 0;
+}
+
+.lockedStateBox p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.btnForceUnlock {
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btnForceUnlock:hover {
+  background: rgba(0, 229, 255, 0.1);
+}
+
+.levelUpNotification {
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid var(--cyan);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--cyan);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
