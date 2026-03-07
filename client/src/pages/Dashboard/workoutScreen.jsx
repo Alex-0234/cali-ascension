@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";  
+
 import {saveWorkoutReps} from '../../utils/workoutSystem'
 import calculateLevel from "../../utils/levelUpSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
@@ -9,6 +10,7 @@ import Navbar from "../../components/layout/Navbar";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
 import { getPrevNextExerciseID } from "../../utils/workoutSelector";
 
+import styles from '../../styles/workout.module.css'
 
 export function WorkoutScreen() {
     const setUserData = useUserStore((state) => state.setUserData);
@@ -118,7 +120,6 @@ export function WorkoutScreen() {
         });
 
         syncUser();
-        
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
 
@@ -126,11 +127,11 @@ export function WorkoutScreen() {
 
     return (
         <>
-        <div className="workout-screen-container">
+        <div className={styles.workoutScreenContainer}>
 
             {levelChange.show && (
-                <div className="level-up-notification">
-                    <h2>Level Up *{levelChange.newLevels}!</h2>
+                <div className={styles.levelUpNotification}>
+                    <h2>Level Up +{levelChange.newLevels}!</h2>
                     <p>Total XP Gained: {Math.round(levelChange.xpGain)}</p>
                 </div>
             )}
@@ -142,47 +143,46 @@ export function WorkoutScreen() {
 
                     const exerciseData = EXERCISE_DB[currentExId];
                     const currentSets = workoutSets[category] || [];
-                    
                     const isUnlocked = currentProgress[currentExId] !== undefined;
 
                     return (
-                        <div key={category} className={`exercise-card ${isUnlocked ? '' : 'locked'}`}>
+                        <div key={category} className={`${styles.exerciseCard} ${!isUnlocked ? styles.locked : ''}`}>
                             
-                            <div className="exercise-header">
+                            <div className={styles.exerciseHeader}>
                                 <button 
-                                    className="nav-btn"
+                                    className={styles.navBtn}
                                     onClick={() => handleSwitchExercise(category, 'prev')}
                                 >&lt;</button>
                                 
-                                <h3 className={isUnlocked ? 'unlocked' : 'locked'} style={{ margin: 0 }}>
+                                <h3 className={isUnlocked ? styles.unlocked : styles.locked} style={{ margin: 0 }}>
                                     {exerciseData?.name || currentExId}
                                 </h3>
                                 
                                 <button 
-                                    className="nav-btn"
+                                    className={styles.navBtn}
                                     onClick={() => handleSwitchExercise(category, 'next')}
                                 >&gt;</button>
                             </div>
 
-                            <div className="badge-container">
-                                <span className={`sys-badge ${isUnlocked ? 'unlocked' : 'locked'}`}>
+                            <div className={styles.badgeContainer}>
+                                <span className={`${styles.sysBadge} ${isUnlocked ? styles.unlocked : styles.locked}`}>
                                     {isUnlocked ? '✓ UNLOCKED' : '🔒 LOCKED'}
                                 </span>
                             </div>
 
                             {isUnlocked ? (
                                 <>
-                                    <div className="sets-container">
+                                    <div className={styles.setsContainer}>
                                         {currentSets.map((set, index) => (
-                                            <div key={index} className="set-row">
-                                                <span className="set-label">Set {index + 1}</span>
+                                            <div key={index} className={styles.setRow}>
+                                                <span className={styles.setLabel}>Set {index + 1}</span>
                                                 <input 
                                                     type="number" 
                                                     min="0"
                                                     placeholder="Reps"
                                                     value={set.reps || ''}
                                                     onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
-                                                    className="set-input"
+                                                    className={styles.setInput}
                                                     required
                                                 />
                                                 <input 
@@ -191,11 +191,11 @@ export function WorkoutScreen() {
                                                     placeholder="+ kg"
                                                     value={set.extraWeight || ''}
                                                     onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
-                                                    className="set-input"
+                                                    className={styles.setInput}
                                                 />
                                                 {currentSets.length > 1 && (
                                                     <button 
-                                                        className="btn-remove"
+                                                        className={styles.btnRemove}
                                                         onClick={() => handleRemoveSet(category, index)}
                                                     >X</button>
                                                 )}
@@ -203,24 +203,24 @@ export function WorkoutScreen() {
                                         ))}
                                     </div>
 
-                                    <div className="exercise-actions">
+                                    <div className={styles.exerciseActions}>
                                         <button 
-                                            className="btn-add-set"
+                                            className={styles.btnAddSet}
                                             onClick={() => handleAddSet(category)}
                                         >+ Add Set</button>
                                         <button 
-                                            className="btn-complete"
+                                            className={styles.btnComplete}
                                             onClick={() => finishExercise(category, currentExId)}
                                         >Complete Exercise</button>
                                     </div>
                                 </>
                             ) : (
-                                <div className="locked-state-box">
+                                <div className={styles.lockedStateBox}>
                                     <span>🔒</span>
                                     <h4>Exercise Locked</h4>
                                     <p>You haven't reached this variation in your Skill Tree yet.</p>
                                     <button 
-                                        className="btn-force-unlock"
+                                        className={styles.btnForceUnlock}
                                         onClick={() => handleForceUnlock(category, currentExId)}
                                     >
                                         Force Unlock (Start Tracking)
