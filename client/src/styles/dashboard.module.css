@@ -54,7 +54,7 @@
   transition: all 0.3s ease;
 }
 
-.btn-logout:hover {
+.btnLogout:hover {
   background: var(--danger-bg);
   box-shadow: 0 0 10px rgba(248, 113, 113, 0.3);
   transform: translateY(-2px);
