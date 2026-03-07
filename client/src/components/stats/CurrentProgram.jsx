@@ -1,14 +1,16 @@
 
-import { useState } from "react";
 import { BarChart } from '@mui/x-charts';
+
 import useUserStore from "../../store/usePlayerStore";
-import WorkoutHistoryBlock from "../ui/workoutHistoryBlock";
+import useUIStore from "../../store/useUIStore";
+
+import SystemButton from "../ui/systemBtn";
 
 export default function CurrentProgram() {
     const userData = useUserStore((state) => state.userData);
     const syncUser = useUserStore((state) => state.syncUser);
+    const setHistory = useUIStore((state) => state.setHistory);
 
-    const [openHistory, setOpenHistory] = useState(false);
     /* const setsPerGroup =  */ // Add for the chart data
 
     const handleProgramChange = (e) => {
@@ -57,11 +59,9 @@ export default function CurrentProgram() {
 
             
             <p>Working on this...</p>
-            <button className="generic-btn" onClick={() => setOpenHistory(!openHistory)}>Workout History</button>
 
-            <div className='history-container' style={{width: '100%'}}>
-                { openHistory && <WorkoutHistoryBlock onClose={() => setOpenHistory(false)}/> }
-            </div>
+            <SystemButton text='History' onClick={() => setHistory({open: true, type: 'exercise'})} />
+
         </div>
 
         </>

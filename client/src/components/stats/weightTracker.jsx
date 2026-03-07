@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import useUserStore from '../../store/usePlayerStore';
 import getAvarage from '../../utils/weightTrackerFunctions';
 import evaluateReset from '../../utils/evaluateReset';
+import SystemButton from '../ui/systemBtn';
 
 
 export default function WeightTracker({ weightHistory = [] }) {
@@ -130,7 +131,7 @@ export default function WeightTracker({ weightHistory = [] }) {
 
             <div className="weight-bottom-row">
                 <p>Week Average: <span>{Math.round(avgWeight)} kg</span></p>
-                <button className='generic-btn' onClick={() => window.alert('Not yet')}>History</button>
+                <SystemButton text='History' onClick={() => window.alert('Not yet')} />
             </div>
             
         </div>

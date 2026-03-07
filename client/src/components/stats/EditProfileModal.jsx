@@ -3,8 +3,10 @@ import useUIStore from '../../store/useUIStore';
 
 import { useState } from 'react';
 import EditBtn from '../ui/editBtn';
+import CloseButton from '../ui/closeBtn';
 
 import styles from '../../styles/dashboard.module.css'
+
 
 export default function EditProfileModal() {
     const userData = useUserStore((state) => state.userData);
@@ -33,7 +35,7 @@ export default function EditProfileModal() {
         <>
         <div className={`${styles.profileModal}`} >
             <h2>Edit Profile</h2>
-            <button className='btn-close' onClick={() => setProfile(false)}>X</button>
+            <CloseButton onClose={() => setProfile(false)}/>
 
             <div className={`${styles.profileInfo} generic-border`}>
                 <div>
