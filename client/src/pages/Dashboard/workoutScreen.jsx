@@ -112,11 +112,18 @@ export function WorkoutScreen() {
             setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});
             setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000);
         }
+        const dateNow = new Date();
 
         setUserData({
             ...newUserData,
             level: newLevel,
-            xp: currentLeftoverXP
+            xp: currentLeftoverXP,
+            streak: { 
+                current: userData.current + 1,
+                highest: userData.current + 1 > userData.highest ? userData.current + 1 : userData.highest,
+                lastActive: dateNow.toLocaleDateString('en-CA'),
+            },
+            lastActive: [...userData.lastActive, dateNow.toLocaleDateString('en-CA')]
         });
 
         syncUser();

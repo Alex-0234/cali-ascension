@@ -16,7 +16,12 @@ const UserSchema = new mongoose.Schema({
     title: { type:String, default: "" },
     level: { type: Number, default: 1 },
     xp: { type: Number, default: 0 }, 
-    dailyStreak: {type: Number, default: 0},
+    streak: {
+        current: { type: Number, default: 0},
+        highest: { type: Number, default: 0},
+        lastActive: { type: Date }
+    },
+    activeDays: [],
     
     stats: {
         STR: { type: Number, default: 10 },

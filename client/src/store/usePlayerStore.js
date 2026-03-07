@@ -16,7 +16,12 @@ const INITIAL_PLAYER_STATE = {
     level: 1,
     rank: "Unranked",
     title: "None",
-    dailyStreak: 0,
+    streak: {
+      current: 0,
+      highest: 0,
+      lastActive: '',
+    },
+    activeDays: [],
     xp: 0,
     stats: {
       STR: 10,
