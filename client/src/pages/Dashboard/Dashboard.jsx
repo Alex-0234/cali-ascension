@@ -6,17 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import StatusWindow from './StatusWindow';
 import Navbar from '../../components/layout/Navbar';
 import EditProfileModal from '../../components/stats/EditProfileModal';
+import WorkoutHistoryBlock from '../../components/ui/workoutHistoryBlock';
 
 import styles from '../../styles/dashboard.module.css'
+
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const userData = useUserStore((state) => state.userData);
     const logout = useUserStore((state) => state.logout);  
     const isProfileOpen = useUIStore((state) => state.isProfileOpen);
+    const isHistory = useUIStore((state) => state.isHistory);
     const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
 
     const [isReady, setIsReady] = useState(false);
+    console.log(isHistory)
 
     useEffect(() => {
         setIsReady(true);
@@ -37,10 +41,16 @@ export default function Dashboard() {
     return (
         <>
         { isProfileOpen && (
-                <EditProfileModal />
+            <EditProfileModal />
         )}
+        { isHistory.open && isHistory.type === 'exercise' && (
+            <WorkoutHistoryBlock />
+        )}
+{/*         { isHistory.open && isHistory.type === 'weight' && (
+
+        )} */}
         
-        <main className={`${styles.dashboard} generic-border`}>
+        <main className={`${styles.dashboard}` }>
             <div className={`${styles.dashboardHeader}`}>
                 <h2>Dashboard</h2>
                 <button className={`${styles.btnLogout}`} onClick={logout}>Logout</button>
