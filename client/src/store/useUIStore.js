@@ -3,6 +3,7 @@
 const useUIStore = create((set) => ({
     isNotificationOpen: false,
     isProfileOpen: false,
+    isHistory: {open: false, type: null},
 
     toggleNotification: () => set((state) => ({ 
         isNotificationOpen: !state.isNotificationOpen 
@@ -19,5 +20,9 @@ const useUIStore = create((set) => ({
     setProfile: (value) => set({ 
         isProfileOpen: value 
     }),
+
+    setHistory: (value) => set({
+        isHistory: value,
+    })
 }));
 export default useUIStore;
