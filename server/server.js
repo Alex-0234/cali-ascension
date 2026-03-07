@@ -11,7 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: [process.env.VITE_API_URL, process.env.DOMAIN_URL, process.env.DOMAIN_URL_2, process.env.LOCALHOST_URL], 
+  origin: [ process.env.LOCALHOST_URL,
+            process.env.VERCEL_URL,
+            process.env.DOMAIN_URL,
+            process.env.DOMAIN_URL_2
+  ], 
 }));
 app.use(express.json());
 
