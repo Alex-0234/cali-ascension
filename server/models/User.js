@@ -16,12 +16,13 @@ const UserSchema = new mongoose.Schema({
     title: { type:String, default: "" },
     level: { type: Number, default: 1 },
     xp: { type: Number, default: 0 }, 
+    dailyStreak: {type: Number, default: 0},
     
     stats: {
         STR: { type: Number, default: 10 },
-        AGI: { type: Number, default: 10 },
-        VIT: { type: Number, default: 10 },
-        DEX: { type: Number, default: 10 }
+        END: { type: Number, default: 10 },
+        MOB: { type: Number, default: 10 },
+        TEC: { type: Number, default: 10 }
     },
 
     userEvaluation: {

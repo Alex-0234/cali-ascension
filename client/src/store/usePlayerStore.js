@@ -16,12 +16,13 @@ const INITIAL_PLAYER_STATE = {
     level: 1,
     rank: "Unranked",
     title: "None",
+    dailyStreak: 0,
     xp: 0,
     stats: {
       STR: 10,
-      AGI: 10,
-      VIT: 10,
-      DEX: 10
+      END: 10,
+      MOB: 10,
+      TEC: 10
     },
 
     userEvaluation: {},
@@ -116,21 +117,6 @@ const useUserStore = create((set, get) => ({
         
   },
 
-  addXP: (amount) => {
-    const syncUser = get().syncUser;
-    const currentData = get().userData;
-
-    const { newLevel, leftoverXP } = testingLevelUp(currentData.level, amount, currentData.xp);
-
-    set((state) => ({
-      userData: { 
-          ...state.userData,
-          level: newLevel,
-          xp: leftoverXP
-      }
-    }))
-    syncUser();
-  }
 }));
 
 export default useUserStore;
