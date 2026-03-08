@@ -75,6 +75,7 @@ export default function Login() {
                             placeholder="Username" 
                             onChange={(e)=>setUsername(e.target.value)}
                             />
+                        
                         ) : (
                             <input 
                             type="email" 
@@ -96,7 +97,6 @@ export default function Login() {
                         onChange={(e)=>setPassword(e.target.value)}
                     />
                     
-                    {/* btn-enter je pravděpodobně z tvého globálního CSS, necháváme ho */}
                     <button className={`btn-enter ${styles.btn}`} onClick={handleLogin}>
                         ENTER SYSTEM
                     </button>

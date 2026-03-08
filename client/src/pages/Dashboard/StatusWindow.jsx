@@ -104,12 +104,13 @@ export default function StatusWindow() {
                         ))}
                     </div>
 
-                </div>
 
                 <div className={styles.trackersStack}>
                     <CurrentProgram />
                     <WeightTracker weightHistory={userData.weightHistory} />
                     <HealthTracker BMR={BMR} BMI={BMI} />
+                </div>
+                
                 </div>
 
             </div>

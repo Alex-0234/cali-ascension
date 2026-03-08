@@ -151,11 +151,11 @@ const finishExercise = (category, exerciseID) => {
         const levelDifference = newLevel - userData.level;
 
         if (levelDifference > 0) {
-            setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});
-            setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000);
+            setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});  // LEVELUP SCREEN
+            setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000); 
         }
         
-        const { newStreakData, newActiveDays } = handleStreakChange();
+        const { newStreakData, newActiveDays } = handleStreakChange(); // UPDATING DAILY STREAK
 
         setUserData({
             ...newUserData,
