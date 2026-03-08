@@ -1,8 +1,10 @@
+  
 
+const CloseButton = ({onClose, position, align, top, right,  size = 24}) => {
 
-const CloseButton = ({onClose, size = 24}) => {
     return (
-        <button className='btn-close' onClick={onClose}>
+
+        <button  onClick={onClose} style={{position: position, placeSelf: align, background: 'transparent', border: 'none', top: top, right: right }}>
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 width={size} 
