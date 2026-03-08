@@ -70,7 +70,7 @@ export default function StatusWindow() {
                         
                         <div className={styles.corePill} style={{ flexBasis: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span className={styles.pillLabel}>Active Streak</span>
-                            <span className={`${styles.pillValue} ${styles.textGold}`}>🔥 {userData.dailyStreak} Days</span>
+                            <span className={`${styles.pillValue} ${styles.textGold}`}>🔥 {userData.streak.current} Days</span>
                         </div>
 
                         <div className={styles.corePill}>

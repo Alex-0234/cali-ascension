@@ -70,6 +70,49 @@ export function WorkoutScreen() {
         setWorkoutSets(prev => ({ ...prev, [category]: updatedSets }));
     };
 
+const handleStreakChange = () => {
+        const today = new Date().toISOString().split('T')[0]; 
+        
+        const currentStreak = userData.streak || { current: 0, highest: 0, lastActive: null };
+        const currentActiveDays = userData.activeDays || [];
+        
+        const lastActive = currentStreak.lastActive;
+
+        if (lastActive === today) {
+            return { 
+                newStreakData: currentStreak, 
+                newActiveDays: currentActiveDays 
+            };
+        }
+
+        let newCurrentStreak = currentStreak.current;
+
+        if (!lastActive) {
+            newCurrentStreak = 1;
+        } else {
+            const todayDate = new Date(today);
+            const lastDate = new Date(lastActive);
+            const diffTime = Math.abs(todayDate - lastDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+            if (diffDays === 1) {
+                newCurrentStreak += 1; 
+            } else if (diffDays > 1) {
+                newCurrentStreak = 1; 
+            }
+        }
+
+        const newStreakData = {
+            current: newCurrentStreak,
+            highest: Math.max(newCurrentStreak, currentStreak.highest),
+            lastActive: today
+        };
+        
+        const newActiveDays = [...currentActiveDays, today];
+        
+        return { newStreakData, newActiveDays };
+    }
+
     const handleForceUnlock = (category, exerciseId) => {
         setUserData({
             ...userData,
@@ -81,7 +124,7 @@ export function WorkoutScreen() {
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
 
-    const finishExercise = (category, exerciseID) => {
+const finishExercise = (category, exerciseID) => {
         const sets = workoutSets[category] || [];
         const totalReps = sets.reduce((sum, set) => sum + (set.reps || 0), 0);
         
@@ -101,35 +144,30 @@ export function WorkoutScreen() {
             ...userData,
             stats: stats,
             exerciseProgress: newProgress,
-            workoutHistory: [...(userData.workoutHistory), workoutRecord]
+            workoutHistory: [...(userData.workoutHistory || []), workoutRecord]
         };
 
         const { level: newLevel, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);
-
         const levelDifference = newLevel - userData.level;
 
         if (levelDifference > 0) {
             setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});
             setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000);
         }
-        const dateNow = new Date();
+        
+        const { newStreakData, newActiveDays } = handleStreakChange();
 
         setUserData({
             ...newUserData,
             level: newLevel,
             xp: currentLeftoverXP,
-            streak: { 
-                current: userData.current + 1,
-                highest: userData.current + 1 > userData.highest ? userData.current + 1 : userData.highest,
-                lastActive: dateNow.toLocaleDateString('en-CA'),
-            },
-            lastActive: [...userData.lastActive, dateNow.toLocaleDateString('en-CA')]
+            streak: newStreakData,
+            activeDays: newActiveDays
         });
 
         syncUser();
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
-
     const visibleCategories = SPLIT_MODES[selectedSplit] || [];
 
     return (
