@@ -4,6 +4,9 @@
   margin: 0 auto;
   padding: 20px;
   min-height: 100vh;
+  background: var(--bg-panel-a);
+  border-radius: 12px;
+  border: 2px solid var(--border-a);
 }
 
 .splitSelector {
@@ -28,9 +31,9 @@
 }
 
 .exerciseCard {
-  background: var(--bg-panel);
+  background: var(--bg-card-a);
   border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border-a);
   padding: 20px;
   margin-bottom: 20px;
   transition: opacity 0.3s ease;
@@ -58,7 +61,7 @@
 }
 
 .unlocked {
-  color: var(--cyan);
+  color: var(--primary);
 }
 
 .locked {
@@ -187,12 +190,12 @@
 
 .btnComplete {
   padding: 10px 20px;
-  background: var(--cyan);
+  background: var(--primary);
   border: none;
   color: #020617;
   border-radius: 8px;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 229, 255, 0.3);
+  box-shadow: 0 4px 10px var(--primary-glow);
   margin-left: 5px;
   font-size: clamp(0.6rem, 3vw, 1.2rem);
   width: auto;
