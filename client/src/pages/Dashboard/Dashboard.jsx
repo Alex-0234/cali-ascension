@@ -4,6 +4,7 @@ import useUIStore from '../../store/useUIStore'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatusWindow from './StatusWindow';
+import Header from '../../components/layout/header'
 import Navbar from '../../components/layout/Navbar';
 import EditProfileModal from '../../components/stats/EditProfileModal';
 import WorkoutHistoryBlock from '../../components/ui/workoutHistoryBlock';
@@ -50,11 +51,9 @@ export default function Dashboard() {
 
         )} */}
         
+        <Header logout={logout} />
         <main className={`${styles.dashboard}` }>
-            <div className={`${styles.dashboardHeader}`}>
-                <h2>Dashboard</h2>
-                <button className={`${styles.btnLogout}`} onClick={logout}>Logout</button>
-            </div>
+
 
             {!userData.isConfigured && isReady && (
                 <div className={`${styles.urgentQuestContainer}`}>

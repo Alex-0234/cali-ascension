@@ -1,17 +1,20 @@
 
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ReactFlow, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { EXERCISE_DB, ALL_EXERCISES } from '../../data/exercise_db'; // Adjust path
+
+import { EXERCISE_DB, ALL_EXERCISES } from '../../data/exercise_db'; 
 import { generateSkillTree } from '../../utils/skillTreeGenerator';
+
+import Header from '../layout/header'
 import Navbar from '../layout/Navbar';
+
 import getCompleteProficiencyForExercise from '../../utils/proficiencySystem';
 import useUserStore from '../../store/usePlayerStore';
 
 export default function SkillTree() {
     const exerciseProgress = useUserStore((state) => state.userData.exerciseProgress);
-    const setUserData = useUserStore((state) => state.setUserData);
-    const userData = useUserStore((state) => state.userData);
+    const { userData, setUserData, logout } = useUserStore();
 
     const [currentCategory, setCurrentCategory] = useState('pullups');
     const [modalVisibility, setModalVisibility] = useState(false);
@@ -59,9 +62,11 @@ export default function SkillTree() {
     const style = { background: 'transparent', padding: '10px 20px', color: 'var(--cyan)', border: '1px solid var(--cyan)', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }
 
     return (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 'calc(100dvh - 75px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <>
+        <Header logout={logout} />
+        <div style={{ position: 'fixed', top: '5rem', left: 0, width: '100%', height: 'calc(100dvh - 75px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             
-            <div style={{ padding: '15px', background: '#111', color: 'white', display: 'flex', gap: '15px', zIndex: 10, alignItems: 'center', borderBottom: '1px solid #333' }}>
+            <div style={{ padding: '15px', color: 'white', display: 'flex', gap: '15px', zIndex: 10, alignItems: 'center', borderBottom: '1px solid #333' }}>
                 <button 
                     onClick={() => setCurrentCategory('pushups')}
                     style={{ ...style, border: currentCategory === 'pushups' ? '2px solid var(--primary)' : '2px solid var(--cyan)', color: currentCategory === 'pushups' ? 'var(--primary)' : 'var(--cyan)' }}
@@ -84,7 +89,7 @@ export default function SkillTree() {
                 </span>
             </div>
 
-            <div style={{ flexGrow: 1, backgroundColor: '#0a0a0a', position: 'relative' }}>
+            <div style={{ padding: '2rem 2rem 7rem 2rem', height: '100%', backgroundColor: '#0a0a0a', position: 'relative' }}>
                 <ReactFlow 
                     nodes={nodes} 
                     edges={edges}
@@ -93,7 +98,7 @@ export default function SkillTree() {
                     colorMode="dark"
                     onNodeClick={handleClick}
                 >
-                    <Background color="#333" gap={16} />
+                    <Background color='var(--bg-panel-a)' gap={16} />
                     <Controls/>
                 </ReactFlow>
 
@@ -145,7 +150,7 @@ export default function SkillTree() {
                                 <span style={{ fontWeight: 'bold', color: '#d1d5db' }}>Proficiency</span>
                                 <span style={{ color: '#60a5fa', fontWeight: 'bold' }}>Lv. {proficiency.level} / 10</span>
                             </div>
-                            {/* Progress Bar */}
+
                             <div style={{ width: '100%', height: '12px', backgroundColor: '#374151', borderRadius: '6px', overflow: 'hidden' }}>
                                 <div style={{ 
                                     width: `${proficiency.progress}%`, 
@@ -156,7 +161,6 @@ export default function SkillTree() {
                             </div>
                         </div>
 
-                        {/* Tlačítka akcí */}
                         <div style={{ display: 'flex', gap: '10px', flexDirection: 'column' }}>
                             {exerciseData.animation && (
                                 <button 
@@ -187,5 +191,6 @@ export default function SkillTree() {
             </div>
             <Navbar />
         </div>
+        </>
     );
 }

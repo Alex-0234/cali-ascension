@@ -35,7 +35,7 @@ export default function EditProfileModal() {
         <>
         <div className={`${styles.profileModal}`} >
             <h2>Edit Profile</h2>
-            <CloseButton onClose={() => setProfile(false)}/>
+            <CloseButton onClose={() => setProfile(false)} position='absolute' align='center' top='20px' right='20px' size='30px'/>
 
             <div className={`${styles.profileInfo} generic-border`}>
                 <div>

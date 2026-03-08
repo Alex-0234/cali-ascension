@@ -1,12 +1,13 @@
+
 import useUserStore from "../../store/usePlayerStore"
 import useUIStore from "../../store/useUIStore";
+
 import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import { calculateBMR } from "../../utils/calculateBMI";
 import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
-
 
 import styles from "../../styles/status.module.css";
 import SystemButton from "../../components/ui/systemBtn";
@@ -21,25 +22,27 @@ const getStatName = (statKey) => {
     }
 };
 
+
 export default function StatusWindow() {
     const { userData, setUserData } = useUserStore();
     const setProfile = useUIStore((state) => state.setProfile);
 
     const [loaded, setLoaded] = useState(false);
     const [levelProgress, setLevelProgress] = useState(0);
-    
+
+    const currentProgress = getLevelProgress(userData.xp, userData.level);
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
     const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
+    const {level, currentLeftoverXP} = calculateLevel(userData);
 
     useEffect(() => {
         setLoaded(true);
     }, []);
 
     useEffect(() => {
-        const currentProgress = getLevelProgress(userData.xp, userData.level);
-        setLevelProgress(currentProgress);
-        const { level, currentLeftoverXP } = calculateLevel(userData);
 
+        setLevelProgress(currentProgress);
+        
         setUserData({
             ...userData,
             level: level,
@@ -54,16 +57,22 @@ export default function StatusWindow() {
             <div className={styles.dashboardWrapper}>
 
                 <div className={styles.profileCard}>
-                    <SystemButton text='Edit' onClick={() => setProfile(true)} />
-                    
+
+                        <div style={{placeSelf: 'end'}}>
+                            <SystemButton text='Edit' onClick={() => setProfile(true)} />
+                        </div>
+
                     <div className={styles.profileHeader}>
+
                         <div className={styles.badgeContainer}>
                             {userData.equippedBadge || "👤"}
                         </div>
+
                         <div className={styles.nameBlock}>
                             <div className={styles.playerTitle}>{userData.title || "Unranked Hunter"}</div>
                             <h2 className={styles.playerName}>{userData.shownName}</h2>
                         </div>
+                        
                     </div>
 
                     <div className={styles.coreStatsRow}>
