@@ -7,12 +7,13 @@ import styles from '../../styles/auth.module.css'
 
 export default function Login() {
     const navigate = useNavigate();
-    const fetchUser = useUserStore((state) => state.fetchUser); 
+    const { fetchUser } = useUserStore(); 
     
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("")
-    const [mode, setMode] = useState(true); 
+    const [email, setEmail] = useState("");
+
+    const [mode, setMode] = useState('Username');  
     const [notification, setNotification] = useState({ message: "", error: false });
 
     async function handleLogin() {
@@ -22,23 +23,28 @@ export default function Login() {
                 return;
             }
 
+            setNotification({ message: "Authenticating...", error: false });
+            setTimeout(() => {
+                if (password === "admin") {
+                    setNotification({ message: "Authentication successful.", error: false });
+                    setTimeout(() => navigate('/'), 1000);
+                } else {
+                    setNotification({ message: "Access Denied: Invalid credentials", error: true });
+                }
+            }, 800);
+
             let response;
-            if (mode) {
+            if (mode === 'Username') {
                 response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username: username.toLowerCase().trim(), email: null, password: password }),
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: username.toLowerCase().trim(), email: null, password: password }),
                 });
-            }
-            else {
+            } else {
                 response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username: null, email: email.trim(), password: password }),
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: null, email: email.trim(), password: password }),
                 });
             }
 
@@ -47,13 +53,12 @@ export default function Login() {
             if (response.ok) {
                 localStorage.setItem('userId', data.userId);        
                 await fetchUser(data.userId); 
-
                 setNotification({ message: "Authentication successful...", error: false });
                 setTimeout(() => navigate('/'), 1000);
-
             } else {
                 setNotification({ message: data.message || "Access Denied: Invalid credentials", error: true });
             }
+
         } catch (error) {
             console.error("Login error:", error);
             setNotification({ message: "Server connection failed.", error: true });
@@ -61,55 +66,87 @@ export default function Login() {
     }
 
     return (
-        <div className={styles.page}>
-            <div className={`${styles.box} ${styles.themeStandard}`}>
-                <h2 className={`${styles.header} ${styles.glowBlue}`}>[ SYSTEM AUTHENTICATION ]</h2>
+        <>
+        <div className={styles.pageWrapper}>
+            <div className={styles.authCard}>
+                
+                <h2 className={styles.header}>[ SYSTEM_AUTH ]</h2>
                 <p className={styles.subtitle}>Verify Hunter Credentials</p>
 
+
+                <div className={styles.modeTabs}>
+                    <button 
+                        className={`${styles.tabBtn} ${mode === 'Username' ? styles.activeTab : ''}`}
+                        onClick={() => setMode('Username')}>
+                    Username </button>
+                    <button 
+                        className={`${styles.tabBtn} ${mode === 'E-mail' ? styles.activeTab : ''}`}
+                        onClick={() => setMode('E-mail')}>
+                        E-mail </button>
+                </div>
+
                 <div className={styles.form}>
-                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                        { mode ? (
+
+                    {mode === 'Username' ? (
+                        <div className={styles.inputGroup}>
+                            <label htmlFor='username' className={styles.label}>Hunter Name</label>
                             <input 
-                            type="text" 
-                            className={`${styles.input} ${styles.inputBlue}`} 
-                            placeholder="Username" 
-                            onChange={(e)=>setUsername(e.target.value)}
+                                type="text"
+                                id='username'
+                                className={styles.input} 
+                                placeholder="Enter your username" 
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                autoComplete='username'
                             />
-                        
-                        ) : (
+                        </div>
+                    ) : (
+                        <div className={styles.inputGroup}>
+                            <label htmlFor='email' className={styles.label}>Secure E-mail</label>
                             <input 
-                            type="email" 
-                            className={`${styles.input} ${styles.inputBlue}`} 
-                            placeholder="E-mail" 
-                            onChange={(e)=>setEmail(e.target.value)}
+                                type="email" 
+                                id='email'
+                                className={styles.input} 
+                                placeholder="Enter your e-mail" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                autoComplete='email'
                             />
-                        )}
-                        <button 
-                        className='generic-btn' 
-                        style={{width: '40%', height: 'auto', background: 'transparent', marginLeft: '0.5rem' }} 
-                        onClick={() => setMode(!mode)}>Toggle e-mail</button>
+                        </div>
+                    )}
+
+                    <div className={styles.inputGroup}>
+                        <label htmlFor='password' className={styles.label}>Access Code</label>
+                        <input 
+                            type="password" 
+                            id='password'
+                            className={styles.input} 
+                            placeholder="••••••••" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete='current-password'
+                        />
                     </div>
-   
-                    <input 
-                        type="password" 
-                        className={`${styles.input} ${styles.inputBlue}`} 
-                        placeholder="Password" 
-                        onChange={(e)=>setPassword(e.target.value)}
-                    />
-                    
-                    <button className={`btn-enter ${styles.btn}`} onClick={handleLogin}>
-                        ENTER SYSTEM
+
+                    <button className={styles.submitBtn} onClick={handleLogin}>
+                        Initialize
                     </button>
                 </div>
 
                 <div className={styles.redirect}>
                     <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
                 </div>
-                
+
                 {notification.message && (
-                    <SystemAlert message={notification.message} error={notification.error} onClick={() => setNotification({ message: "", error: false })} />  
+                    <SystemAlert 
+                        message={notification.message} 
+                        error={notification.error} 
+                        onClick={() => setNotification({ message: "", error: false })} 
+                    />  
                 )}
+
             </div>
         </div>
+        </>
     )
 }

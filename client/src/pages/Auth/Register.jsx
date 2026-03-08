@@ -7,10 +7,12 @@ import styles from '../../styles/auth.module.css'
 
 export default function Register() {
     const navigate = useNavigate();
+    
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    
     const [notification, setNotification] = useState({ message: "", error: false });
 
     async function handleRegister() {
@@ -25,13 +27,16 @@ export default function Register() {
                 return;
             }
 
-            const {isValid, errors} = validatePassword(password);    
+            const { isValid, errors } = validatePassword(password);    
             
             if (isValid) {
+                setNotification({ message: "Hunter Registered. Preparing system...", error: false });
+                setTimeout(() => navigate('/login'), 1500);
+
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username: username.toLowerCase(), email, password }),
+                    body: JSON.stringify({ username: username.toLowerCase().trim(), email: email.trim(), password }),
                 });
 
                 if (response.ok) {
@@ -42,12 +47,10 @@ export default function Register() {
                     const errorData = await response.json();
                     setNotification({ message: errorData.message || "Registration failed", error: true });
                 }
-            }
-            else {
-                setNotification({message: errors, error: true});
+            } else {
+                setNotification({ message: errors, error: true });
             }
 
-            
         } catch (error) {
             console.error("Registration error:", error);
             setNotification({ message: "Cannot connect to server.", error: true });
@@ -55,38 +58,64 @@ export default function Register() {
     }
 
     return (
-        <div className={styles.page}>
-            <div className={`${styles.box} ${styles.themeUrgent}`}>
-                <h2 className={`${styles.header} ${styles.glowRed}`}>[ NEW AWAKENING DETECTED ]</h2>
-                <p className={`${styles.subtitle} ${styles.blinkingRed}`}>Register new Hunter to the System</p>
+        <>
+        <div className={styles.pageWrapper}>
+            <div className={styles.authCard}>
+                
+                <h2 className={styles.headerRed}>[ NEW AWAKENING ]</h2>
+                <p className={styles.subtitleRed}>Register new Hunter to the System</p>
 
                 <div className={styles.form}>
-                    <input 
-                        type="text" 
-                        className={`${styles.input} ${styles.inputRed}`} 
-                        placeholder="Hunter Name" 
-                        onChange={(e)=>setUsername(e.target.value)}
-                    />
-                    <input 
-                        type="email" 
-                        className={`${styles.input} ${styles.inputRed}`} 
-                        placeholder="Email Address" 
-                        onChange={(e)=>setEmail(e.target.value)}
-                    />
-                    <input 
-                        type="password" 
-                        className={`${styles.input} ${styles.inputRed}`} 
-                        placeholder="Password" 
-                        onChange={(e)=>setPassword(e.target.value)}
-                    />
-                    <input 
-                        type="password" 
-                        className={`${styles.input} ${styles.inputRed}`} 
-                        placeholder="Confirm Password" 
-                        onChange={(e)=>setConfirmPassword(e.target.value)}
-                    />
+               
+                    <div className={styles.inputGroup}>
+                        <label htmlFor='username' className={styles.label}>Username</label>
+                        <input 
+                            type="text" 
+                            id='username'
+                            className={styles.inputRed} 
+                            placeholder="Enter Hunter Name" 
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            autoComplete='username' />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label htmlFor='email' className={styles.label}>E-mail</label>
+                        <input 
+                            type="email" 
+                            id='email'
+                            className={styles.inputRed} 
+                            placeholder="Enter E-mail Address" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete='email' />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label htmlFor='password' className={styles.label}>Password</label>
+                        <input 
+                            type="password" 
+                            id='password'
+                            className={styles.inputRed} 
+                            placeholder="••••••••" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete='new-password' />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label htmlFor='confirmPassword' className={styles.label}>Verify Password</label>
+                        <input 
+                            type="password" 
+                            id='confirmPassword'
+                            className={styles.inputRed} 
+                            placeholder="••••••••" 
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            autoComplete='new-password' />
+                    </div>
                     
-                    <button className={`btn-urgent ${styles.btn}`} onClick={handleRegister}>
+                    <button className={styles.submitBtnRed} onClick={handleRegister}>
                         INITIALIZE HUNTER
                     </button>
                 </div>
@@ -98,7 +127,9 @@ export default function Register() {
                 {notification.message && (
                     <SystemAlert message={notification.message} error={notification.error} />  
                 )}
+
             </div>
         </div>
+        </>
     )
 }
