@@ -24,7 +24,8 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 * **Leveling:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
 
 ## To-Do List
-- [ ] Make the styling desktop compatible / better.
+- [X] Implement daily streak.
+- [X] Make the styling desktop compatible / better.
 - [ ] Introduce a confirmation component (Are you sure?)
 - [X] Implement weight history tracking.
      - [X] Make it one weight a day.
