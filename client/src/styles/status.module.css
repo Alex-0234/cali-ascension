@@ -31,7 +31,7 @@
 .windowContent {
   padding: 30px;
   display: flex;
-  max-height: 600px;
+  max-height: 100%;
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
@@ -360,3 +360,4 @@
   }
 
 }
+

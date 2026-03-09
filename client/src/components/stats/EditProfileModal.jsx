@@ -5,7 +5,7 @@ import { useState } from 'react';
 import EditBtn from '../ui/editBtn';
 import CloseButton from '../ui/closeBtn';
 
-import styles from '../../styles/dashboard.module.css'
+import styles from '../../styles/layout.module.css'
 
 
 export default function EditProfileModal() {
