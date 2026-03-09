@@ -5,8 +5,13 @@
 .workoutBlock {
   position: fixed;
   inset: 1rem;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   z-index: 9999;
-  background: rgba(15, 23, 42, 0.95);
+  background: var(--bg-panel-a);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: 12px;  

@@ -26,6 +26,7 @@
   --text-main: #f3f4f6;
   --text-muted: #9ca3af;
   --border-a: rgba(255, 255, 255, 0.05);
+  --border-radius: 1.5rem;
   --border: #374151;
   --border-light: #4b5563;
 }
