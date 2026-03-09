@@ -9,9 +9,11 @@ import Register from './pages/Auth/Register';
 import SkillTreeScreen from './components/reactflow/SkillTree';
 import Awakening from './pages/Onboarding/Awakening';
 import Evaluation from './pages/Onboarding/Evaluation';
-import Dashboard from './pages/Dashboard/Dashboard';
 import WorkoutScreen from './pages/Dashboard/workoutScreen';
 import ServerWakeup from './pages/Dashboard/SystemBootScreen';
+import SystemLayout from './pages/Dashboard/SystemLayout';
+import StatusWindow from './pages/Dashboard/StatusWindow';
+import SystemSidebar from './components/layout/desktopNavbar';
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -61,9 +63,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={
-           <ProtectedRoute><Dashboard /></ProtectedRoute>
-        } />
+        
+        <Route element={<ProtectedRoute><SystemLayout /></ProtectedRoute>}>
+            <Route path="/" element={<StatusWindow />} />
+            <Route path="/daily" element={<WorkoutScreen />} />
+            <Route path="/skill-tree" element={<SkillTreeScreen />} />
+        </Route>
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -76,13 +81,6 @@ function App() {
           <ProtectedRoute><Awakening /></ProtectedRoute>
         } />
         
-        <Route path="/daily" element={
-          <ProtectedRoute><WorkoutScreen /></ProtectedRoute>
-        } />
-
-        <Route path="/skill-tree" element={
-          <ProtectedRoute><SkillTreeScreen /></ProtectedRoute>
-        } />
       </Routes>
     </Router>
   );
