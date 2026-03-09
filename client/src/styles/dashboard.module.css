@@ -28,8 +28,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 15px;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -150,9 +150,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
+    min-width: calc(320px - 1.5rem);
     padding: 1.5rem;
-    width: auto;
+    margin-right: 1rem;
     z-index: 1000;
     background: rgba(15, 23, 42, 0.5);
     border: solid 2px var(--border-a);

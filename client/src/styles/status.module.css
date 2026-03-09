@@ -1,3 +1,71 @@
+.systemWindow {
+  width: 100%;
+  max-width: 850px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.15), inset 0 0 20px rgba(0, 229, 255, 0.05);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: windowOpen 0.5s ease-out forwards;
+  max-height: 90vh;
+}
+
+@keyframes windowOpen {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.windowNav {
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 10px;
+  border-top: 1px solid rgba(0, 229, 255, 0.2);
+  order: 2;
+}
+
+.windowContent {
+  padding: 30px;
+  display: flex;
+  max-height: 600px;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  order: 1;
+}
+
+.windowContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.windowContent::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.3);
+  border-radius: 10px;
+}
+
+@media (min-width: 800px) {
+  .systemWindow {
+    flex-direction: row;
+  }
+  .windowNav {
+    order: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 220px;
+    border-top: none;
+    border-right: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 30px 15px;
+    gap: 15px;
+  }
+  .windowContent {
+    order: 2;
+    flex: 1;
+  }
+}
 
 .dashboardWrapper {
   max-width: 800px; 
@@ -146,7 +214,7 @@
 .xpTrack {
   height: 12px;
   background: #0f172a;
-  border-radius: 99px; /* Úplně kulaté hrany */
+  border-radius: 99px;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
   overflow: hidden;
   border: 1px solid #1e293b;
@@ -206,4 +274,81 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.windowNav {
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 10px;
+  border-top: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.navHeaderBrand {
+  display: none; 
+}
+
+.navItem {
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.navItem:hover {
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.navItem.active {
+  color: var(--cyan, #00e5ff);
+  font-weight: bold;
+  background: rgba(0, 229, 255, 0.1);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+
+@media (min-width: 800px) {
+  .windowNav {
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 220px;
+    border-top: none;
+    border-right: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 30px 15px;
+    gap: 15px;
+  }
+
+  .navHeaderBrand {
+    display: block;
+    color: var(--cyan, #00e5ff);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+  }
+
+  .navItem {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+
+  .navItem.active {
+    border-left: 3px solid var(--cyan, #00e5ff);
+    border-radius: 0 8px 8px 0;
+  }
+
 }
