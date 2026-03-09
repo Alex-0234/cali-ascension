@@ -6,23 +6,18 @@ import useUserStore from "../../store/usePlayerStore";
 import {saveWorkoutReps} from '../../utils/workoutSystem'
 import calculateLevel from "../../utils/levelUpSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
-import Navbar from "../../components/layout/Navbar";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
 import { getPrevNextExerciseID } from "../../utils/workoutSelector";
 import CloseButton from "../../components/ui/closeBtn";
 
 import styles from '../../styles/workout.module.css'
-import Header from "../../components/layout/header";
 
 
 export function WorkoutScreen() {
-    const setUserData = useUserStore((state) => state.setUserData);
-    const userData = useUserStore((state) => state.userData);
+    const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
-    const syncUser = useUserStore((state) => state.syncUser);
-    const logout = useUserStore((state) => state.logout);
+    const selectedSplit = userData.currentProgram || 'Full Body';
     
-    const [selectedSplit, setSelectedSplit] = useState(userData.currentProgram || 'Full Body');
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     

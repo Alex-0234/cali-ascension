@@ -54,13 +54,9 @@ export default function StatusWindow() {
     if (!loaded) return <div style={{color: '#00e5ff', fontFamily: 'monospace'}}>Synchronizing Hunter Data...</div>;
 
     return (
-        <>
+      <>
         
-        <div className="mock-body">
-
-
-
-
+         <div className="mock-body">
 
                         <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '-10px'}}>
                             <SystemButton text='Edit' onClick={() => setProfile(true)} />
@@ -121,9 +117,6 @@ export default function StatusWindow() {
                         
                     </div>
 
-
-
-
-        </>
+      </>
     );
 }
