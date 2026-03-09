@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
 import { calculatePlayerStats } from "../../utils/statSystem";
+
 import CloseButton from "../../components/ui/closeBtn";
+import BackButton from "../../components/ui/backBtn";
 
 const PERSONAL_STEPS = [
     { key: 'shownName', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
@@ -74,6 +76,34 @@ const EvaluationScreen = () => {
         setMode('input');
     };
 
+    const handleReturn = () => {
+        if (mode === 'personal') {
+            if (personalStepIndex > 0) {
+                setPersonalStepIndex(prev => prev - 1); 
+            } else {
+                navigate('/status');
+            }
+        } 
+        else if (mode === 'selection') {
+            if (currentTierIndex > 0) {
+                setTierIndex(prev => prev - 1); 
+            } else {
+                if (currentStageIndex > 1) {
+                    setCurrentStageIndex(prev => prev - 1); 
+                    setTierIndex(0); 
+                } else {
+                    setCurrentStageIndex(0);
+                    setMode('personal');
+                    setPersonalStepIndex(PERSONAL_STEPS.length - 1); 
+                }
+            }
+        } 
+        else if (mode === 'input') {
+            setMode('selection');
+            setMaxReps(0);
+        }
+    };
+
 const handleSubmitExercise = async () => {
         const newDraft = {
             ...evaluationDraft, 
@@ -114,8 +144,9 @@ const handleSubmitExercise = async () => {
         const currentField = PERSONAL_STEPS[personalStepIndex]; 
 
         return (
-            <div className='input-screen'>
-                <CloseButton onClose={() => navigate('/status')}/>
+            <div className='input-screen' style={{position: 'relative'}}>
+                <CloseButton position='absolute' top='20px' right='20px' onClose={() => navigate('/status')}/>
+                <BackButton position='absolute' top='20px' left='20px' onClick={handleReturn}/>
                 <h2>System Calibration: PERSONAL DETAILS</h2>
                 <p>{currentField.label}</p>
                 
