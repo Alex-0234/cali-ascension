@@ -22,7 +22,7 @@ export default function SystemSidebar() {
             
             <div 
                 className={`${styles.navItem} ${isActive('/workout') ? styles.active : ''}`}
-                onClick={() => navigate('/daily')}> Training
+                onClick={() => navigate('/workout')}> Training
             </div>
             
             <div 

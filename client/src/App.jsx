@@ -66,7 +66,7 @@ function App() {
         
         <Route element={<ProtectedRoute><SystemLayout /></ProtectedRoute>}>
             <Route path="/" element={<StatusWindow />} />
-            <Route path="/daily" element={<WorkoutScreen />} />
+            <Route path="/workout" element={<WorkoutScreen />} />
             <Route path="/skill-tree" element={<SkillTreeScreen />} />
         </Route>
 
