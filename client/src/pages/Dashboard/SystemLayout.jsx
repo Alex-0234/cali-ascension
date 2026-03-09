@@ -70,6 +70,7 @@ export default function SystemLayout() {
                         <div className={styles.windowContent}>
 
                             <Outlet />
+                            
                         </div>
 
                     </div>

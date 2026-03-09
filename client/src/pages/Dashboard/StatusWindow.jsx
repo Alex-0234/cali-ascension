@@ -56,7 +56,7 @@ export default function StatusWindow() {
     return (
       <>
         
-         <div className="mock-body">
+         <div className="mock-body" style={{height: '100%'}}>
 
                         <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '-10px'}}>
                             <SystemButton text='Edit' onClick={() => setProfile(true)} />
