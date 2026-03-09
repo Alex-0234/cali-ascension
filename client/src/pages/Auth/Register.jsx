@@ -15,7 +15,9 @@ export default function Register() {
     
     const [notification, setNotification] = useState({ message: "", error: false });
 
-    async function handleRegister() {
+    async function handleRegister(e) {
+        if (e) e.preventDefault();
+        
         try {
             if (!username || !email || !password || !confirmPassword) {
                 setNotification({ message: "System Error: Missing required fields", error: true });

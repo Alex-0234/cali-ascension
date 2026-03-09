@@ -18,7 +18,9 @@ export default function Login() {
     const [mode, setMode] = useState('Username');  
     const [notification, setNotification] = useState({ message: "", error: false });
 
-    async function handleLogin() {
+    async function handleLogin(e) {
+        if (e) e.preventDefault();
+        
         try {
             if ((!username && !email) || !password) {
                 setNotification({ message: "System Error: Credentials required", error: true });
@@ -70,7 +72,6 @@ export default function Login() {
    return (
         <>
         <div className={styles.pageWrapper}>
-
 
                 <div className={styles.authBranding}>
                     <h1 className={styles.brandTitle}>CALISTHENICS<br/>ASCENSION</h1>
