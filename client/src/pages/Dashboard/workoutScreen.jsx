@@ -176,8 +176,6 @@ const finishExercise = (category, exerciseID) => {
 
     return (
         <>
-        <Header logout={logout} />
-        <div className={styles.workoutScreenContainer}>
 
             {levelChange.show && (
                 <div className={styles.levelUpNotification}>
@@ -278,8 +276,7 @@ const finishExercise = (category, exerciseID) => {
                     );
                 })}
             </div>
-            <Navbar />
-        </div>
+        
         </>
     );
 }
