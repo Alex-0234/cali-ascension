@@ -58,7 +58,7 @@ export default function SystemLayout() {
             {isProfileOpen && <EditProfileModal />}
             {isHistory.open && isHistory.type === 'exercise' && <WorkoutHistoryBlock />}
             
-            <Header logout={logout} />
+            { !isDesktop && <Header logout={logout} /> }
 
             <div className="mock-body"> 
                 <div className={styles.dashboardWrapper}>
