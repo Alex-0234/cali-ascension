@@ -13,6 +13,7 @@ import SystemSidebar from '../../components/layout/desktopNavbar';
 import { useMediaQuery } from '../../utils/useMediaQuery';
 
 import styles from '../../styles/status.module.css'; 
+import stylesQuest from '../../styles/layout.module.css';
 
 export default function SystemLayout() {
     const isDesktop = useMediaQuery('(min-width: 800px)');
@@ -44,9 +45,9 @@ export default function SystemLayout() {
 
     if (!userData.isConfigured && isReady) {
         return (
-            <div className="urgentQuestContainer" style={{marginTop: '100px', textAlign: 'center'}}>
-                <p className="questWarning">⚠ System requires initial calibration</p>
-                <button className="btnUrgent" onClick={() => navigate('/evaluation')}>
+            <div className={stylesQuest.urgentQuestContainer} style={{ textAlign: 'center'}}>
+                <p className={stylesQuest.questWarning}>⚠ System requires initial calibration</p>
+                <button className={stylesQuest.btnUrgent} onClick={() => navigate('/evaluation')}>
                     Start Evaluation
                 </button>
             </div>

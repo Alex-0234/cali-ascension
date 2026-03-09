@@ -1,5 +1,6 @@
 
 import useUserStore from "../../store/usePlayerStore"
+import useUIStore from "../../store/useUIStore";
 
 import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
@@ -26,7 +27,7 @@ const getStatName = (statKey) => {
 export default function StatusWindow() {
 
     const { userData, setUserData } = useUserStore();
-    const { setProfile } = useUserStore();
+    const { setProfile } = useUIStore();
 
     const [loaded, setLoaded] = useState(false);
     const [levelProgress, setLevelProgress] = useState(0);
