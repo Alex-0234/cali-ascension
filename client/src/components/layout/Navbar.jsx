@@ -4,7 +4,7 @@ const MockRouterLink = ({ to, children, className }) => <a href={to} className={
 const isCanvas = typeof window !== 'undefined' && window.location.pathname.includes('/artifacts/');
 
 export default function Navbar() {
-    const location = !isCanvas ? useLocation() : { pathname: '/' };
+    const location = !isCanvas ? useLocation() : { pathname: '/status' };
     const isActive = (path) => location.pathname === path;
 
     const RouterLink = isCanvas ? MockRouterLink : Link;
@@ -12,8 +12,8 @@ export default function Navbar() {
     return (
         <nav className="system-navbar">
             <ul className="nav-list">
-                <li className={isActive('/') ? 'active' : ''}>
-                    <RouterLink to="/">
+                <li className={isActive('/status') ? 'active' : ''}>
+                    <RouterLink to="/status">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>

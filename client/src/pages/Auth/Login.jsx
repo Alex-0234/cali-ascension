@@ -29,7 +29,7 @@ export default function Login() {
             setTimeout(() => {
                 if (password === "admin") {
                     setNotification({ message: "Authentication successful.", error: false });
-                    setTimeout(() => navigate('/'), 1000);
+                    setTimeout(() => navigate('/status'), 1000);
                 } else {
                     setNotification({ message: "Access Denied: Invalid credentials", error: true });
                 }
@@ -53,10 +53,10 @@ export default function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem('userId', data.userId);        
+                localStorage.setItem('userId', data.userId);  
                 await fetchUser(data.userId); 
                 setNotification({ message: "Authentication successful...", error: false });
-                setTimeout(() => navigate('/'), 1000);
+                setTimeout(() => navigate('/status'), 1000);
             } else {
                 setNotification({ message: data.message || "Access Denied: Invalid credentials", error: true });
             }

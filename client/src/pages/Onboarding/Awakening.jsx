@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Přidáno pro odchod
+import { useNavigate } from 'react-router-dom'; 
 import { getRankFromXP, calculatePlayerEP } from '../../utils/rankSystem';
 import useUserStore from '../../store/usePlayerStore';
 
@@ -40,7 +40,7 @@ export default function Awakening() {
 
 
     const handleEnterSystem = () => {
-        navigate('/');
+        navigate('/status');
     };
 
     return (

@@ -114,7 +114,7 @@ const handleSubmitExercise = async () => {
 
         return (
             <div className='input-screen'>
-                <div className="btn-close" onClick={() => navigate('/')}>X</div>
+                <div className="btn-close" onClick={() => navigate('/status')}>X</div>
                 <h2>System Calibration: PERSONAL DETAILS</h2>
                 <p>{currentField.label}</p>
                 

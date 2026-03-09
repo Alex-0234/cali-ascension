@@ -16,8 +16,8 @@ export default function SystemSidebar() {
             <div className={styles.navHeaderBrand}>[ SYSTEM ]</div>
 
             <div 
-                className={`${styles.navItem} ${isActive('/') ? styles.active : ''}`}
-                onClick={() => navigate('/')}> Status
+                className={`${styles.navItem} ${isActive('/status') ? styles.active : ''}`}
+                onClick={() => navigate('/status')}> Status
             </div>
             
             <div 
