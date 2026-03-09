@@ -1,6 +1,5 @@
 
 import useUserStore from "../../store/usePlayerStore"
-import useUIStore from "../../store/useUIStore";
 
 import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
@@ -8,10 +7,10 @@ import { calculateBMR } from "../../utils/calculateBMI";
 import WeightTracker from "../../components/stats/weightTracker";
 import HealthTracker from "../../components/stats/HealthTracker";
 import CurrentProgram from "../../components/stats/CurrentProgram";
+import calculateStreakFromHistory from "../../utils/calculateStreak";
 
 import styles from "../../styles/status.module.css";
 import SystemButton from "../../components/ui/systemBtn";
-import SystemSidebar from "../../components/layout/desktopNavbar";
 
 const getStatName = (statKey) => {
     switch (statKey) {
@@ -27,12 +26,14 @@ const getStatName = (statKey) => {
 export default function StatusWindow() {
 
     const { userData, setUserData } = useUserStore();
-    const setProfile = useUIStore((state) => state.setProfile);
+    const { setProfile } = useUserStore();
 
     const [loaded, setLoaded] = useState(false);
     const [levelProgress, setLevelProgress] = useState(0);
 
     const currentProgress = getLevelProgress(userData.xp, userData.level);
+    const currentStreak = calculateStreakFromHistory(userData.workoutHistory);
+    
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
     const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
     const {level, currentLeftoverXP} = calculateLevel(userData);
@@ -48,75 +49,76 @@ export default function StatusWindow() {
             ...userData,
             level: level,
             xp: currentLeftoverXP,
+            streak: currentStreak,
         });
+
     }, [userData.workoutHistory]);
 
     if (!loaded) return <div style={{color: '#00e5ff', fontFamily: 'monospace'}}>Synchronizing Hunter Data...</div>;
 
     return (
-      <>
+        <>
         
-         <div className="mock-body" style={{height: '100%'}}>
+        <div className="mock-body">
 
-                        <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '-10px'}}>
-                            <SystemButton text='Edit' onClick={() => setProfile(true)} />
-                        </div>
+                <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '-10px'}}>
+                    <SystemButton text='Edit' onClick={() => setProfile(true)} />
+                </div>
 
-                        <div className={styles.profileHeader}>
-                            <div className={styles.badgeContainer}>
-                                {userData.equippedBadge || "👤"}
-                            </div>
-
-                            <div className={styles.nameBlock}>
-                                <div className={styles.playerTitle} style={{color: userData.color}}>{userData.title || "Unranked Hunter"}</div>
-                                <h2 className={styles.playerName}>{userData.shownName}</h2>
-                            </div>
-                        </div>
-
-                        <div className={styles.coreStatsRow}>
-                            <div className={styles.corePill} style={{ flexBasis: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span className={styles.pillLabel}>Active Streak</span>
-                                <span className={`${styles.pillValue} ${styles.textGold}`}>🔥 {userData.streak.current} Days</span>
-                            </div>
-
-                            <div className={styles.corePill}>
-                                <span className={styles.pillLabel}>Hunter Rank</span>
-                                <span className={styles.pillValue} style={{color: userData.color}}>{userData.rank}</span>
-                            </div>
-                            
-                            <div className={styles.corePill} style={{ alignItems: 'flex-end', textAlign: 'right' }}>
-                                <span className={styles.pillLabel}>Current Level</span>
-                                <span className={styles.pillValue}>{userData.level}</span>
-                            </div>
-                        </div>
-
-                        <div className={styles.xpSection}>
-                            <div className={styles.xpLabels}>
-                                <span>Experience Progress</span>
-                                <span style={{fontFamily: 'monospace'}}>{Math.round(displayXP)} XP</span>
-                            </div>
-                            <div className={styles.xpTrack}>
-                                <div className={styles.xpFill} style={{ width: `${levelProgress}%` }}></div>
-                            </div>
-                        </div>
-
-                        <div className={styles.attributesGrid}>
-                            {Object.keys(userData.stats).map(statKey => (
-                                <div key={statKey} className={styles.attrBox}>
-                                    <span className={styles.attrName}>{getStatName(statKey)}</span>
-                                    <p className={styles.attrVal}>{userData.stats[statKey]}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className={styles.trackersStack}>
-                            <CurrentProgram />
-                            <WeightTracker weightHistory={userData.weightHistory} />
-                            <HealthTracker BMR={BMR} BMI={BMI} />
-                        </div>
-                        
+                <div className={styles.profileHeader}>
+                    <div className={styles.badgeContainer}>
+                        {userData.equippedBadge || "👤"}
                     </div>
 
-      </>
+                    <div className={styles.nameBlock}>
+                        <div className={styles.playerTitle} style={{color: userData.color}}>{userData.title || "Unranked Hunter"}</div>
+                        <h2 className={styles.playerName}>{userData.shownName}</h2>
+                    </div>
+                </div>
+
+                <div className={styles.coreStatsRow}>
+                    <div className={styles.corePill} style={{ flexBasis: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span className={styles.pillLabel}>Active Streak</span>
+                        <span className={`${styles.pillValue} ${styles.textGold}`}>🔥 {currentStreak.current} Days</span>
+                    </div>
+
+                    <div className={styles.corePill}>
+                        <span className={styles.pillLabel}>Hunter Rank</span>
+                        <span className={styles.pillValue} style={{color: userData.color}}>{userData.rank}</span>
+                    </div>
+                    
+                    <div className={styles.corePill} style={{ alignItems: 'flex-end', textAlign: 'right' }}>
+                        <span className={styles.pillLabel}>Current Level</span>
+                        <span className={styles.pillValue}>{userData.level}</span>
+                    </div>
+                </div>
+
+                <div className={styles.xpSection}>
+                    <div className={styles.xpLabels}>
+                        <span>Experience Progress</span>
+                        <span style={{fontFamily: 'monospace'}}>{Math.round(displayXP)} XP</span>
+                    </div>
+                    <div className={styles.xpTrack}>
+                        <div className={styles.xpFill} style={{ width: `${levelProgress}%` }}></div>
+                    </div>
+                </div>
+
+                <div className={styles.attributesGrid}>
+                    {Object.keys(userData.stats).map(statKey => (
+                        <div key={statKey} className={styles.attrBox}>
+                            <span className={styles.attrName}>{getStatName(statKey)}</span>
+                            <p className={styles.attrVal}>{userData.stats[statKey]}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className={styles.trackersStack}>
+                    <CurrentProgram />
+                    <WeightTracker weightHistory={userData.weightHistory} />
+                    <HealthTracker BMR={BMR} BMI={BMI} />
+                </div>
+                
+            </div>
+        </>
     );
 }

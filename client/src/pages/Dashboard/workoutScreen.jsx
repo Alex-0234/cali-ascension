@@ -12,7 +12,6 @@ import CloseButton from "../../components/ui/closeBtn";
 
 import styles from '../../styles/workout.module.css'
 
-
 export function WorkoutScreen() {
     const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
@@ -20,7 +19,6 @@ export function WorkoutScreen() {
     
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
-    
     const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0})
 
     useEffect(() => {
@@ -69,49 +67,6 @@ export function WorkoutScreen() {
         setWorkoutSets(prev => ({ ...prev, [category]: updatedSets }));
     };
 
-const handleStreakChange = () => {
-        const today = new Date().toISOString().split('T')[0]; 
-        
-        const currentStreak = userData.streak || { current: 0, highest: 0, lastActive: null };
-        const currentActiveDays = userData.activeDays || [];
-        
-        const lastActive = currentStreak.lastActive;
-
-        if (lastActive === today) {
-            return { 
-                newStreakData: currentStreak, 
-                newActiveDays: currentActiveDays 
-            };
-        }
-
-        let newCurrentStreak = currentStreak.current;
-
-        if (!lastActive) {
-            newCurrentStreak = 1;
-        } else {
-            const todayDate = new Date(today);
-            const lastDate = new Date(lastActive);
-            const diffTime = Math.abs(todayDate - lastDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
-            if (diffDays === 1) {
-                newCurrentStreak += 1; 
-            } else if (diffDays > 1) {
-                newCurrentStreak = 1; 
-            }
-        }
-
-        const newStreakData = {
-            current: newCurrentStreak,
-            highest: Math.max(newCurrentStreak, currentStreak.highest),
-            lastActive: today
-        };
-        
-        const newActiveDays = [...currentActiveDays, today];
-        
-        return { newStreakData, newActiveDays };
-    }
-
     const handleForceUnlock = (category, exerciseId) => {
         setUserData({
             ...userData,
@@ -154,14 +109,11 @@ const finishExercise = (category, exerciseID) => {
             setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000); 
         }
         
-        const { newStreakData, newActiveDays } = handleStreakChange(); // UPDATING DAILY STREAK
 
         setUserData({
             ...newUserData,
             level: newLevel,
             xp: currentLeftoverXP,
-            streak: newStreakData,
-            activeDays: newActiveDays
         });
 
         syncUser();
