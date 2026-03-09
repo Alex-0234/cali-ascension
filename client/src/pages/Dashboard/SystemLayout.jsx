@@ -60,7 +60,7 @@ export default function SystemLayout() {
             
             { !isDesktop && <Header logout={logout} /> }
 
-            <div className="mock-body"> 
+            <div className={styles.mockBody}> 
                 <div className={styles.dashboardWrapper}>
 
                     <div className={styles.systemWindow}>

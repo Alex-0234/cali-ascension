@@ -65,7 +65,7 @@ export default function Register() {
                 <h2 className={styles.headerRed}>[ NEW AWAKENING ]</h2>
                 <p className={styles.subtitleRed}>Register new Hunter to the System</p>
 
-                <div className={styles.form}>
+                <form className={styles.form}>
                
                     <div className={styles.inputGroup}>
                         <label htmlFor='username' className={styles.label}>Username</label>
@@ -118,7 +118,7 @@ export default function Register() {
                     <button className={styles.submitBtnRed} onClick={handleRegister}>
                         INITIALIZE HUNTER
                     </button>
-                </div>
+                </form>
 
                 <div className={styles.redirect}>
                     <p>Already awakened? <span onClick={() => navigate("/login")}>Access System</span></p>

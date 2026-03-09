@@ -4,9 +4,11 @@ import useUserStore from '../../store/usePlayerStore'
 import SystemAlert from '../../components/layout/Notification';
 
 import styles from '../../styles/auth.module.css'
+import { useMediaQuery } from '../../utils/useMediaQuery';
 
 export default function Login() {
     const navigate = useNavigate();
+    const isDesktop = useMediaQuery('min-height: 800px');
     const { fetchUser } = useUserStore(); 
     
     const [username, setUsername] = useState("");
@@ -68,11 +70,13 @@ export default function Login() {
    return (
         <>
         <div className={styles.pageWrapper}>
-            
-            <div className={styles.authBranding}>
-                <h1 className={styles.brandTitle}>CALISTHENICS<br/>ASCENSION</h1>
-                <p className={styles.brandSub}>Calisthenics helper</p>
-            </div>
+
+
+                <div className={styles.authBranding}>
+                    <h1 className={styles.brandTitle}>CALISTHENICS<br/>ASCENSION</h1>
+                    <p className={styles.brandSub}>Calisthenics helper</p>
+                </div>
+                
 
             <div className={styles.authContent}>
                 <div className={styles.authCard}>
@@ -89,28 +93,28 @@ export default function Login() {
                         </button>
                     </div>
 
-                    <div className={styles.form}>
+                    <form className={styles.form}>
                         {mode === 'Username' ? (
                             <div className={styles.inputGroup}>
                                 <label className={styles.label}>Hunter Name</label>
-                                <input type="text" className={styles.input} placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                                <input autoComplete='username' type="text" className={styles.input} placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div>
                         ) : (
                             <div className={styles.inputGroup}>
                                 <label className={styles.label}>Secure E-mail</label>
-                                <input type="email" className={styles.input} placeholder="Enter your e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <input autoComplete='email' type="email" className={styles.input} placeholder="Enter your e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                         )}
 
                         <div className={styles.inputGroup}>
                             <label className={styles.label}>Access Code</label>
-                            <input type="password" className={styles.input} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input autoComplete="current-password" type="password" className={styles.input} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         
                         <button className={styles.submitBtn} onClick={handleLogin}>
                             Initialize
                         </button>
-                    </div>
+                    </form>
 
                     <div className={styles.redirect}>
                         <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
