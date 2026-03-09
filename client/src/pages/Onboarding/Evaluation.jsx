@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
 import { calculatePlayerStats } from "../../utils/statSystem";
+import CloseButton from "../../components/ui/closeBtn";
 
 const PERSONAL_STEPS = [
     { key: 'shownName', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
@@ -114,7 +115,7 @@ const handleSubmitExercise = async () => {
 
         return (
             <div className='input-screen'>
-                <div className="btn-close" onClick={() => navigate('/status')}>X</div>
+                <CloseButton onClose={() => navigate('/status')}/>
                 <h2>System Calibration: PERSONAL DETAILS</h2>
                 <p>{currentField.label}</p>
                 
@@ -145,7 +146,7 @@ const handleSubmitExercise = async () => {
     if (mode === 'input' && currentTier) {
         return (
             <div className="input-screen">
-                <div className="generic-btn" onClick={() => setMode('selection')}>Back to Selection</div>
+                <BackButton onClick={() => setMode('selection')}/>
                 <h2>System Calibration: {currentStageName.toUpperCase()}</h2>
                 
                 {EXERCISE_DB[currentTier].animation && <Hologram videoSrc={currentTier.animation} />}
@@ -170,7 +171,7 @@ const handleSubmitExercise = async () => {
     if (mode === 'selection' && currentTier) {
         return (
             <div className="selection-screen">
-                <div className="generic-btn" onClick={() => setMode('personal')}>Back to Selection</div>
+                <BackButton onClick={() => setMode('selection')}/>
                 <h2>Can you perform at least 1 rep?</h2>
                 <h3 style={{marginTop: '10px'}}>{EXERCISE_DB[currentTier].name}</h3>
 

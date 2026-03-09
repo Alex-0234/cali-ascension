@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from './store/usePlayerStore';
 
@@ -65,6 +65,7 @@ function App() {
       <Routes>
         
         <Route element={<ProtectedRoute><SystemLayout /></ProtectedRoute>}>
+            <Route path='/' element={<Navigate to="/status" replace />}/>
             <Route path="/status" element={<StatusWindow />} />
             <Route path="/workout" element={<WorkoutScreen />} />
             <Route path="/skill-tree" element={<SkillTreeScreen />} />
