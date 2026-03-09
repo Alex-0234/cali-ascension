@@ -4,29 +4,35 @@ export const calculatePlayerEP = (userEvaluation) => {
 
     let totalEP = 0;
 
-    // 1. PUSHUPS CALCULATION
     if (userEvaluation?.pushups) {
         const { variationID, maxReps } = userEvaluation.pushups;
         const tierIndex = EXERCISE_DB[variationID].tier;
-        const tierEP = (tierIndex || 0) * 100; 
-        const repEP = (maxReps || 0) * 2; 
+        const tierEP = (tierIndex || 1) * 100; 
+        const repEP = (maxReps || 1) * 10; 
         totalEP += tierEP + repEP;
     }
 
-    // 2. SQUATS CALCULATION
     if (userEvaluation?.squats) {
         const { variationID, maxReps } = userEvaluation.squats;
         const tierIndex = EXERCISE_DB[variationID].tier;
-        const tierEP = (tierIndex || 0) * 100;
-        const repEP = (maxReps || 0) * 2; 
+        const tierEP = (tierIndex || 1) * 100;
+        const repEP = (maxReps || 1) * 10; 
         totalEP += tierEP + repEP;
     }
-    // 3. PULLUPS CALCULATION
+
     if (userEvaluation?.pullups) {
         const { variationID, maxReps } = userEvaluation.pullups;
         const tierIndex = EXERCISE_DB[variationID].tier;
-        const tierEP = (tierIndex || 0) * 100;
-        const repEP = (maxReps || 0) * 2; 
+        const tierEP = (tierIndex || 1) * 100;
+        const repEP = (maxReps || 1) * 10; 
+        totalEP += tierEP + repEP;
+    }
+
+    if (userEvaluation?.core) {
+        const { variationID, maxReps } = userEvaluation.core;
+        const tierIndex = EXERCISE_DB[variationID].tier;
+        const tierEP = (tierIndex || 1) * 100;
+        const repEP = (maxReps || 1) * 10; 
         totalEP += tierEP + repEP;
     }
 

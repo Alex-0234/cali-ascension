@@ -13,7 +13,6 @@ import WorkoutScreen from './pages/Dashboard/workoutScreen';
 import ServerWakeup from './pages/Dashboard/SystemBootScreen';
 import SystemLayout from './pages/Dashboard/SystemLayout';
 import StatusWindow from './pages/Dashboard/StatusWindow';
-import SystemSidebar from './components/layout/desktopNavbar';
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
