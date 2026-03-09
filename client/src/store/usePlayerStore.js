@@ -16,6 +16,7 @@ const INITIAL_PLAYER_STATE = {
     level: 1,
     rank: "Unranked",
     title: "None",
+    color: "blue",
     streak: {
       current: 0,
       highest: 0,

@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
     
     rank: { type:String, default: "" },
     title: { type:String, default: "" },
+    color: { type:String, default: 'blue'},
     level: { type: Number, default: 1 },
     xp: { type: Number, default: 0 }, 
     streak: {

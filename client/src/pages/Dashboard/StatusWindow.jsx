@@ -69,7 +69,7 @@ export default function StatusWindow() {
                         </div>
 
                         <div className={styles.nameBlock}>
-                            <div className={styles.playerTitle}>{userData.title || "Unranked Hunter"}</div>
+                            <div className={styles.playerTitle} style={{color: userData.color}}>{userData.title || "Unranked Hunter"}</div>
                             <h2 className={styles.playerName}>{userData.shownName}</h2>
                         </div>
                         
@@ -84,7 +84,7 @@ export default function StatusWindow() {
 
                         <div className={styles.corePill}>
                             <span className={styles.pillLabel}>Hunter Rank</span>
-                            <span className={`${styles.pillValue} ${styles.textCyan}`}>{userData.rank}</span>
+                            <span className={`${styles.pillValue}`} style={{color: userData.color}}>{userData.rank}</span>
                         </div>
                         
                         <div className={styles.corePill} style={{ alignItems: 'flex-end', textAlign: 'right' }}>

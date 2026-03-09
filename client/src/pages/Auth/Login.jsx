@@ -65,86 +65,62 @@ export default function Login() {
         }
     }
 
-    return (
+   return (
         <>
         <div className={styles.pageWrapper}>
-            <div className={styles.authCard}>
-                
-                <h2 className={styles.header}>[ SYSTEM_AUTH ]</h2>
-                <p className={styles.subtitle}>Verify Hunter Credentials</p>
+            
+            <div className={styles.authBranding}>
+                <h1 className={styles.brandTitle}>CALISTHENICS<br/>ASCENSION</h1>
+                <p className={styles.brandSub}>Calisthenics helper</p>
+            </div>
 
+            <div className={styles.authContent}>
+                <div className={styles.authCard}>
+                    
+                    <h2 className={styles.header}>[ SYSTEM_AUTH ]</h2>
+                    <p className={styles.subtitle}>Verify Hunter Credentials</p>
 
-                <div className={styles.modeTabs}>
-                    <button 
-                        className={`${styles.tabBtn} ${mode === 'Username' ? styles.activeTab : ''}`}
-                        onClick={() => setMode('Username')}>
-                    Username </button>
-                    <button 
-                        className={`${styles.tabBtn} ${mode === 'E-mail' ? styles.activeTab : ''}`}
-                        onClick={() => setMode('E-mail')}>
-                        E-mail </button>
-                </div>
-
-                <div className={styles.form}>
-
-                    {mode === 'Username' ? (
-                        <div className={styles.inputGroup}>
-                            <label htmlFor='username' className={styles.label}>Hunter Name</label>
-                            <input 
-                                type="text"
-                                id='username'
-                                className={styles.input} 
-                                placeholder="Enter your username" 
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                autoComplete='username'
-                            />
-                        </div>
-                    ) : (
-                        <div className={styles.inputGroup}>
-                            <label htmlFor='email' className={styles.label}>Secure E-mail</label>
-                            <input 
-                                type="email" 
-                                id='email'
-                                className={styles.input} 
-                                placeholder="Enter your e-mail" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                autoComplete='email'
-                            />
-                        </div>
-                    )}
-
-                    <div className={styles.inputGroup}>
-                        <label htmlFor='password' className={styles.label}>Access Code</label>
-                        <input 
-                            type="password" 
-                            id='password'
-                            className={styles.input} 
-                            placeholder="••••••••" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            autoComplete='current-password'
-                        />
+                    <div className={styles.modeTabs}>
+                        <button className={`${styles.tabBtn} ${mode === 'Username' ? styles.activeTab : ''}`} onClick={() => setMode('Username')}>
+                            Username
+                        </button>
+                        <button className={`${styles.tabBtn} ${mode === 'E-mail' ? styles.activeTab : ''}`} onClick={() => setMode('E-mail')}>
+                            E-mail
+                        </button>
                     </div>
 
-                    <button className={styles.submitBtn} onClick={handleLogin}>
-                        Initialize
-                    </button>
+                    <div className={styles.form}>
+                        {mode === 'Username' ? (
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label}>Hunter Name</label>
+                                <input type="text" className={styles.input} placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            </div>
+                        ) : (
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label}>Secure E-mail</label>
+                                <input type="email" className={styles.input} placeholder="Enter your e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </div>
+                        )}
+
+                        <div className={styles.inputGroup}>
+                            <label className={styles.label}>Access Code</label>
+                            <input type="password" className={styles.input} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                        
+                        <button className={styles.submitBtn} onClick={handleLogin}>
+                            Initialize
+                        </button>
+                    </div>
+
+                    <div className={styles.redirect}>
+                        <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
+                    </div>
+                    
+                    {notification.message && (
+                        <SystemAlert message={notification.message} error={notification.error} />  
+                    )}
+
                 </div>
-
-                <div className={styles.redirect}>
-                    <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
-                </div>
-
-                {notification.message && (
-                    <SystemAlert 
-                        message={notification.message} 
-                        error={notification.error} 
-                        onClick={() => setNotification({ message: "", error: false })} 
-                    />  
-                )}
-
             </div>
         </div>
         </>

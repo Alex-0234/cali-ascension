@@ -27,6 +27,7 @@ export default function Awakening() {
                 ...userData,
                 rank: result.rank,
                 title: result.title,
+                color: result.color,
                 level: 1,             
                 isConfigured: true,
             });
