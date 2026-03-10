@@ -103,6 +103,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                     ) : (
                         <LineChart
                             height={160} 
+                            margin={{ top: 10, bottom: 20, left: 10, right: 10 }}
                             xAxis={[{ 
                                 data: xData, 
                                 scaleType: 'point', 
@@ -119,7 +120,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                                 area: true,     
                                 showMark: true,   
                             }]}
-                            margin={{ left: 0, right: 10, top: 10, bottom: 25 }} 
+                            
                             sx={{
                                 '& .MuiChartsAxis-directionY .MuiChartsAxis-line': { display: 'none' },
                                 '& .MuiChartsAxis-directionY .MuiChartsAxis-tick': { display: 'none' },

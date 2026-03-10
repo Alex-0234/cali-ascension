@@ -78,8 +78,7 @@ export default function CurrentProgram() {
                         legend: {
                             direction: 'row',
                             position: { vertical: 'top', horizontal: 'middle' },
-                            padding: -5,
-                            labelStyle: { fill: 'var(--text-main)', fontFamily: 'monospace', fontSize: 12 }
+                            padding: 0,
                         }
                     }}
 

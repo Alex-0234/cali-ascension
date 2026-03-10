@@ -184,7 +184,7 @@
 
 .pillLabel {
   display: flex;
-  font-size: clamp(0.5rem, 3vw, 0.75rem);
+  font-size: clamp(0.7rem, 3vw, 0.75rem);
   color: #94a3b8;
   font-weight: 600;
   text-transform: uppercase;
@@ -193,11 +193,19 @@
 
 .pillValue {
   display: flex;
-  font-size: clamp(0.6rem, 3vw, 1.4rem);
+  font-size: clamp(0.8rem, 3vw, 1.4rem);
   font-weight: 800;
   margin: 0;
   font-family: 'JetBrains Mono', monospace; 
   color: #f8fafc;
+}
+@media (max-width: 380px) {
+  .corePill {
+    align-items: center;
+  }
+  .pillLabel {
+    text-align: start;
+  }
 }
 
 .textCyan { color: var(--cyan, #00e5ff) !important; }

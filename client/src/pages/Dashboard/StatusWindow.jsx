@@ -88,7 +88,7 @@ export default function StatusWindow() {
                         <span className={styles.pillValue} style={{color: userData.color}}>{userData.rank}</span>
                     </div>
                     
-                    <div className={styles.corePill} style={{ alignItems: 'flex-end', textAlign: 'right' }}>
+                    <div className={styles.corePill} >
                         <span className={styles.pillLabel}>Current Level</span>
                         <span className={styles.pillValue}>{userData.level}</span>
                     </div>

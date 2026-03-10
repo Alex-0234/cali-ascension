@@ -288,7 +288,7 @@
 .cardTitle {
   font-family: 'JetBrains Mono', monospace;
   color: var(--cyan, #00e5ff);
-  font-size: 1rem;
+  font-size: clamp(0.6rem, 2vw, 1rem);
   font-weight: 800;
   margin: 0;
   letter-spacing: 1px;
@@ -305,7 +305,7 @@
 
 .statusLabel {
   color: #64748b;
-  font-size: 0.85rem;
+  font-size: clamp(0.4rem, 2vw, 0.85rem);
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -315,7 +315,7 @@
   color: #f8fafc;
   font-weight: bold;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9rem;
+  font-size: clamp(0.6rem, 2vw, 0.9rem);
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
