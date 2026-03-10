@@ -530,6 +530,7 @@ button:disabled {
 
 
 .weight-info-col {
+    position: relative;
     flex: 0 0 auto; 
     display: flex;
     flex-direction: column;
@@ -586,6 +587,9 @@ button:disabled {
 
 
 .weight-modal {
+    position: absolute;
+    top: -1rem;
+    left: 0;
     background-color: var(--bg-input);
     padding: 10px;
     border-radius: 8px;
@@ -593,7 +597,7 @@ button:disabled {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    position: absolute;
+    
     z-index: 10;
 }
 
