@@ -1,9 +1,8 @@
 // src/utils/skillTreeGenerator.js
 
-
 // COMPLETELY GENERATED...
 
-export const generateSkillTree = (exerciseDB, exerciseList) => {
+export const generateSkillTree = (exerciseDB, exerciseList, userProgress) => {
     const nodes = [];
     const edges = [];
     
@@ -101,7 +100,7 @@ export const generateSkillTree = (exerciseDB, exerciseList) => {
 
                 nodes.push({
                     id: node.id,
-                    type: 'default', // Až budeš mít Custom Node, změníš to tady
+                    type: 'default',  //custom nodes
                     data: { 
                         label: node.name,
                         branch: node.branch || 'core',
@@ -113,16 +112,31 @@ export const generateSkillTree = (exerciseDB, exerciseList) => {
     }
 
     // 4. ⚡ GENERATE SQUARE EDGES
-    activeExercises.forEach((exercise) => {
+        activeExercises.forEach((exercise) => {
         if (exercise.prerequisites && exercise.prerequisites.length > 0) {
+            
+            const exerciseState = userProgress[exercise.id];
+            const isUnlocked = exerciseState ? true : false;
+            /* const isCompleted = exerciseState?.isCompleted; */
+
+            const edgeColor = isUnlocked ? 'var(--cyan)' : '#832626'; 
+            const strokeWidth = isUnlocked ? 2 : 1.5;
+
+            const shouldAnimate = isUnlocked; /* && !isCompleted; */
+
             exercise.prerequisites.forEach((prereqId) => {
                 edges.push({
                     id: `edge-${prereqId}-${exercise.id}`,
                     source: prereqId,
                     target: exercise.id,
-                    type: 'smoothstep', // 🟥 THIS MAKES THE EDGES SQUARE
-                    animated: true,
-                    style: { stroke: '#00ffcc', strokeWidth: 2 },
+                    type: 'smoothstep', 
+                    animated: shouldAnimate, 
+
+                    style: { 
+                        stroke: edgeColor, 
+                        strokeWidth: strokeWidth,
+                        transition: 'stroke 0.3s ease'
+                    },
                 });
             });
         }

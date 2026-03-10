@@ -15,6 +15,7 @@ export default function SkillTree() {
     const exerciseProgress = useUserStore((state) => state.userData.exerciseProgress);
     const { userData, setUserData } = useUserStore();
 
+
     const [currentCategory, setCurrentCategory] = useState('pushups');
     const [modalVisibility, setModalVisibility] = useState(false);
     const [exerciseId, setExerciseId] = useState('pushup_00');
@@ -23,8 +24,8 @@ export default function SkillTree() {
 
     const { nodes, edges } = useMemo(() => {
         const exerciseList = ALL_EXERCISES[currentCategory];
-        return generateSkillTree(EXERCISE_DB, exerciseList);
-    }, [currentCategory]);
+        return generateSkillTree(EXERCISE_DB, exerciseList, exerciseProgress);
+    }, [currentCategory, exerciseProgress]);
 
     const handleClick = async (event, node) => {
         event.preventDefault(); 
