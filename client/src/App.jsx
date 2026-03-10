@@ -13,6 +13,7 @@ import WorkoutScreen from './pages/Dashboard/workoutScreen';
 import ServerWakeup from './pages/Dashboard/SystemBootScreen';
 import SystemLayout from './pages/Dashboard/SystemLayout';
 import StatusWindow from './pages/Dashboard/StatusWindow';
+import Settings from './pages/Dashboard/Settings'
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -65,9 +66,10 @@ function App() {
         
         <Route element={<ProtectedRoute><SystemLayout /></ProtectedRoute>}>
             <Route path='/' element={<Navigate to="/status" replace />}/>
-            <Route path="/status" element={<StatusWindow />} />
-            <Route path="/workout" element={<WorkoutScreen />} />
-            <Route path="/skill-tree" element={<SkillTreeScreen />} />
+            <Route path='/settings' element={<Settings />} />
+            <Route path='/status' element={<StatusWindow />} />
+            <Route path='/workout' element={<WorkoutScreen />} />
+            <Route path='/skill-tree' element={<SkillTreeScreen />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

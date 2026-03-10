@@ -1,0 +1,64 @@
+
+import { useState } from 'react';
+import useUserStore from '../../store/usePlayerStore';
+
+import EditBtn from '../../components/ui/editBtn';
+import CloseButton from '../../components/ui/closeBtn';
+
+import styles from '../../styles/layout.module.css'
+
+
+export default function Settings() {
+    const userData = useUserStore((state) => state.userData);
+    const setUserData = useUserStore((state) => state.setUserData);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editField, setEditField] = useState(null);
+    const [newValue, setNewValue] = useState("");
+    
+
+    const handleEdit = (field) => {
+        setEditField(field);
+        setIsEditing(true);
+    }
+
+    const handleSave = () => {
+        setUserData({ ...userData, [editField]: newValue });
+        setEditField(null);
+        setIsEditing(false);
+
+    }
+
+
+    return (
+        <>
+            <h1> Currently in development... </h1>
+            <div className={`${styles.profileInfo} generic-border`}>
+                <div>
+                    <p><strong>Username:</strong> {userData.username}</p>
+                    <EditBtn onClick={() => handleEdit("username")} toChange="username" />
+                </div>
+                <div>
+                    <p><strong>Email:</strong> {userData.email}</p>
+                    <EditBtn onClick={() => handleEdit("email")} toChange="email" />
+                </div>
+                <div>
+                    <p><strong>Shown Username:</strong> {userData.shownName}</p>
+                    <EditBtn onClick={() => handleEdit("shownName")} toChange="shown username" />
+                </div>
+                {isEditing && editField && (
+                    <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}}>
+                        <h2>Edit {editField}</h2>
+                        <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
+                        <div className="edit-field generic-border">
+                            <input type="text" placeholder={`Enter new ${editField}`} onChange={(e) => setNewValue(e.target.value)} />
+                            <button className="save-btn" onClick={() => handleSave()}>Save</button>
+                        </div>
+                    </div>
+                
+                )}
+                
+            </div>
+        </>
+    )
+}

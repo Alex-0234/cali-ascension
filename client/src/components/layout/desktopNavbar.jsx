@@ -30,10 +30,18 @@ export default function SystemSidebar() {
                 onClick={() => navigate('/skill-tree')}> Skill Tree
             </div>
 
-            <div 
-                className={styles.navItem} 
-                style={{ marginTop: 'auto', color: '#ef4444' }}
-                onClick={logout}> Logout
+            <div style={{marginTop: 'auto'}}>
+                <div 
+                    className={styles.navItem} 
+                    style={{ color: '#444444' }}
+                    onClick={() => navigate('/settings')}> Settings
+                </div>
+
+                <div 
+                    className={styles.navItem} 
+                    style={{ color: '#ef4444' }}
+                    onClick={logout}> Logout
+                </div>
             </div>
         </nav>
         </>

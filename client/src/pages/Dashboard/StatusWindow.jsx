@@ -1,17 +1,17 @@
 
 import useUserStore from "../../store/usePlayerStore"
-import useUIStore from "../../store/useUIStore";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
-import { calculateBMR } from "../../utils/calculateBMI";
 import WeightTracker from "../../components/stats/weightTracker";
-import HealthTracker from "../../components/stats/HealthTracker";
-import CurrentProgram from "../../components/stats/CurrentProgram";
+import StatusReport from "../../components/stats/statusReport";
 import calculateStreakFromHistory from "../../utils/calculateStreak";
 
 import styles from "../../styles/status.module.css";
 import SystemButton from "../../components/ui/systemBtn";
+
 
 const getStatName = (statKey) => {
     switch (statKey) {
@@ -25,9 +25,9 @@ const getStatName = (statKey) => {
 
 
 export default function StatusWindow() {
+    const navigate = useNavigate();
 
     const { userData, setUserData } = useUserStore();
-    const { setProfile } = useUIStore();
 
     const [loaded, setLoaded] = useState(false);
     const [levelProgress, setLevelProgress] = useState(0);
@@ -36,7 +36,6 @@ export default function StatusWindow() {
     const currentStreak = calculateStreakFromHistory(userData.workoutHistory);
     
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
-    const { BMR, BMI } = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
     const {level, currentLeftoverXP} = calculateLevel(userData);
 
     useEffect(() => {
@@ -61,10 +60,6 @@ export default function StatusWindow() {
         <>
         
         <div className="mock-body">
-
-                <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '-10px'}}>
-                    <SystemButton text='Edit' onClick={() => setProfile(true)} />
-                </div>
 
                 <div className={styles.profileHeader}>
                     <div className={styles.badgeContainer}>
@@ -114,9 +109,8 @@ export default function StatusWindow() {
                 </div>
 
                 <div className={styles.trackersStack}>
-                    <CurrentProgram />
+                    <StatusReport />
                     <WeightTracker weightHistory={userData.weightHistory} />
-                    <HealthTracker BMR={BMR} BMI={BMI} />
                 </div>
                 
             </div>
