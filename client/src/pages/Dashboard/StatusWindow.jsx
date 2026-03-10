@@ -2,15 +2,12 @@
 import useUserStore from "../../store/usePlayerStore"
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import WeightTracker from "../../components/stats/weightTracker";
 import StatusReport from "../../components/stats/statusReport";
 import calculateStreakFromHistory from "../../utils/calculateStreak";
 
 import styles from "../../styles/status.module.css";
-import SystemButton from "../../components/ui/systemBtn";
 
 
 const getStatName = (statKey) => {
@@ -25,7 +22,6 @@ const getStatName = (statKey) => {
 
 
 export default function StatusWindow() {
-    const navigate = useNavigate();
 
     const { userData, setUserData } = useUserStore();
 

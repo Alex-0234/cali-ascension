@@ -4,6 +4,7 @@ import useUserStore from '../../store/usePlayerStore';
 import getAvarage from '../../utils/weightTrackerFunctions';
 import evaluateReset from '../../utils/evaluateReset';
 import SystemButton from '../ui/systemBtn';
+import CloseButton from '../ui/closeBtn'
 
 
 export default function WeightTracker({ weightHistory = [] }) {
@@ -59,7 +60,6 @@ export default function WeightTracker({ weightHistory = [] }) {
             });
         }
 
-
         syncUser();
         setIsTypingWeight(false);
     };
@@ -73,16 +73,13 @@ export default function WeightTracker({ weightHistory = [] }) {
                 <div className="weight-info-col">
                     <h4 className="weight-title">WEIGHT</h4>
                     <h2 className="weight-value">{currentWeight} {emptyHistory ? '' : 'kg'}</h2>
+                    <SystemButton text='Update' onClick={() => setIsTypingWeight(true)} />
                     
-                    {!isTypingWeight ? (
-                        <button className="generic-btn" onClick={() => setIsTypingWeight(true)}>
-                            Update
-                        </button>
-                    ) : (
+                    {isTypingWeight && (
                         <div className="weight-modal">
                             <div className="modal-header">
                                 <span style={{fontSize: '0.8rem', color: '#94a3b8'}}>New weight</span>
-                                <button className="btn-close" onClick={() => setIsTypingWeight(false)}>X</button>
+                                <CloseButton onClose={() => setIsTypingWeight(false)} />
                             </div>
                             <input 
                                 type="number" 
@@ -90,7 +87,8 @@ export default function WeightTracker({ weightHistory = [] }) {
                                 onChange={(e) => setTempWeight(e.target.value)} 
                                 className="weight-input"
                             />
-                            <button className="generic-btn" onClick={handleSaveWeight}>Save</button>
+                            
+                            <SystemButton text='Save' onClick={handleSaveWeight}/>
                         </div>
                     )}
                 </div>
