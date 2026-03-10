@@ -267,3 +267,101 @@
     transform: translateY(0);
   }
 }
+
+/* --- WORKOUT CONFIGURATION PANEL --- */
+
+.workoutCard {
+  background: #0f172a; 
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  margin-top: 2rem;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.cardHeader {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+}
+
+.cardTitle {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cyan, #00e5ff);
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.statusRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-family: 'Inter', sans-serif;
+}
+
+.statusLabel {
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.statusValue {
+  color: #f8fafc;
+  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* --- CUSTOM SELECT DROPDOWN --- */
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.styledSelect {
+  width: 100%;
+  appearance: none; 
+  -webkit-appearance: none;
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid #334155;
+  color: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color-scheme: dark; 
+}
+
+.styledSelect:hover {
+  background: rgba(2, 6, 23, 0.9);
+  border-color: #475569;
+}
+
+.styledSelect:focus {
+  outline: none;
+  border-color: var(--cyan, #00e5ff);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15);
+}
+
+.selectIcon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; 
+  color: var(--cyan, #00e5ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

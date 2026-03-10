@@ -62,99 +62,6 @@ button:active {
 
 
 /* =========================================================
-   3. SKILL TREE MODAL (On Click Window)
-   ========================================================= */
-.skill-modal {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg-card);
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
-  z-index: 100;
-  color: white;
-}
-
-.skill-modal.unlocked { border: 1px solid var(--primary); }
-.skill-modal.locked { border: 1px solid var(--border-light); }
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.modal-header h2 { margin: 0; }
-.modal-header h2.unlocked { color: white; }
-.modal-header h2.locked { color: var(--text-muted); }
-
-.btn-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  color: var(--danger);
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.modal-tier-info {
-  margin-left: 10px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-.proficiency-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.proficiency-header span:first-child { color: #d1d5db; font-weight: bold; }
-.proficiency-header span:last-child { color: var(--primary); font-weight: bold; }
-
-.skill-progress-track {
-  width: 100%;
-  height: 12px;
-  background: var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.skill-progress-fill {
-  height: 100%;
-  transition: width 0.3s ease-in-out;
-}
-
-.skill-progress-fill.unlocked { background: var(--primary); }
-.skill-progress-fill.locked { background: var(--border-light); }
-
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-}
-
-.btn-video {
-  padding: 10px;
-  background: var(--border);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-.btn-video:hover { background: var(--border-light); }
-
-/* =========================================================
    4. SYSTEM NOTIFICATIONS & ANIMATIONS
    ========================================================= */
 .level-up-notification {
@@ -257,46 +164,6 @@ button:active {
   stroke: var(--cyan);
   filter: drop-shadow(0 0 8px var(--cyan-glow));
   transform: translateY(-2px);
-}
-
-/* =========================================================
-   5. LEVEL PROGRESS BAR (Used in Status Window)
-   ========================================================= */
-
-.progress-bar {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.level-bar {
-  background: var(--bg-input);
-  border-radius: 8px;
-  overflow: hidden;
-  flex-grow: 1;
-  border: 1px solid var(--border);
-}
-
-.level-progress {
-  background: var(--cyan);
-  box-shadow: 0 0 15px var(--cyan-glow);
-  transition: width 0.5s ease-in-out;
-  height: 100%;
-}
-
-.progress-bar button {
-  background: var(--bg-card);
-  color: var(--cyan);
-  border: 1px solid var(--cyan);
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: bold;
-
-}
-
-.progress-bar button:hover {
-  background: var(--cyan-glow);
 }
 
 /* =========================================================
@@ -502,8 +369,8 @@ button:disabled {
 .rank-card h1 {
   font-size: clamp(2rem, 5vw, 3.5rem);
   margin: 0;
-  text-shadow: 0 0 25px currentColor; /* Zdílí glow podle barvy ranku */
-  font-family: monospace; /* Aby to působilo jako systémový znak */
+  text-shadow: 0 0 25px currentColor; 
+  font-family: monospace; 
 }
 
 .rank-title {
@@ -905,6 +772,9 @@ h2.success-text {
 .css-1yscjcf-MuiChartsAxis-root-MuiChartsXAxis-root .MuiChartsAxis-line {
   stroke: var(--text-main) !important;
 }
+.css-1t1rgxr-MuiChartsLegend-root {
+  color: var(--text-main) !important;
+}
 
 /* GENERIC STYLES */
 
@@ -917,7 +787,7 @@ h2.success-text {
   font-weight: bold;
 }
 .generic-border {
-    margin: 20px 0;
+    margin: 10px 0 0 0;
     padding: 20px;
     background-color: var(--bg-input);
     border-radius: 12px;
