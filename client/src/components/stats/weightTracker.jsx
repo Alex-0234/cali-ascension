@@ -103,7 +103,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                     ) : (
                         <LineChart
                             height={160} 
-                            margin={{ top: 10, bottom: 20, left: 10, right: 10 }}
+                            margin={{ top: 10, bottom: 25, left: -40, right: 0 }}
                             xAxis={[{ 
                                 data: xData, 
                                 scaleType: 'point', 

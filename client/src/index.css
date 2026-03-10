@@ -513,7 +513,6 @@ button:disabled {
     gap: 15px; 
 }
 
-
 .weight-main-row {
     display: flex;
     flex-direction: row;
@@ -522,6 +521,13 @@ button:disabled {
     gap: 20px;
     min-height: 160px; 
 }
+@media (max-width: 380px) {
+    .weight-main-row { 
+      flex-direction: column;
+    }
+}
+
+
 
 .weight-info-col {
     flex: 0 0 auto; 
@@ -535,12 +541,12 @@ button:disabled {
     color: #6b7280;
     margin: 0;
     letter-spacing: 2px;
-    font-size: 0.9rem;
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
 }
 
 .weight-value {
     margin: 0;
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     color: #ffffff;
 }
 
