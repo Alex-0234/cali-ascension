@@ -1,24 +1,29 @@
-import { ALL_EXERCISES } from "../data/exercise_db";
+import { EXERCISE_DB } from "../data/exercise_db";
 
 export const initialExerciseUnlock = (evaluationResults) => {
     const unlockedProgress = {};
 
     Object.keys(evaluationResults).forEach(category => {
-        const achievedID = evaluationResults[category].variationID; // např. 'pushup_02'
+        const achievedID = evaluationResults[category].variationID; 
         const maxReps = evaluationResults[category].maxReps;
 
-        const categoryPath = ALL_EXERCISES[category];
+        let continueDown = true;
+        let tempID = achievedID;
 
-        const achievedIndex = categoryPath.indexOf(achievedID);
+        while (continueDown) {
+            let prevIdArray = EXERCISE_DB[tempID].prerequisites;
+            if (prevIdArray.length > 0) {
+                prevIdArray.forEach(prevId => {
 
-        if (achievedIndex !== -1) {
-            for (let i = 0; i <= achievedIndex; i++) {
-                const exerciseId = categoryPath[i];
-
-                unlockedProgress[exerciseId] = {
-                    totalReps: maxReps,
-                    personalBest: maxReps,
-                };
+                    unlockedProgress[prevId] = {
+                        totalReps: maxReps,
+                        personalBest: maxReps,
+                    };
+                    tempID = prevId;  // Ignores, the id of the previous exercises in the array. Shouldnt matter for me.
+                })
+            }
+            else {
+                continueDown = false;
             }
         }
     });
