@@ -117,13 +117,12 @@
 
 .setRow {
   display: flex;
-  height: 25px;
+  height: 1.2rem;
   border: 1px solid var(--border);
   align-items: center;
   justify-content: space-around;
-  gap: 15px;
   background: rgba(0, 0, 0, 0.2);
-  padding: 15px 20px;
+  padding: 1rem 0.6rem;
   border-radius: 8px;
 }
 
@@ -131,13 +130,14 @@
   color: #e2e8f0;
   font-weight: bold;
   font-size: clamp(0.6rem, 3vw, 1rem);
-  min-width: 3rem;
+  min-width: 2rem;
 }
 
 .setInput {
-  width: 35%;
-  height: 20px;
-  padding: 8px;
+  min-width: 2rem;
+  height: 1rem;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: #0f172a;

@@ -32,7 +32,7 @@ export default function Settings() {
 
     return (
         <>
-            <h1> Currently in development... </h1>
+            <h3> Currently in development... </h3>
             <div className={`${styles.profileInfo} generic-border`}>
                 <div>
                     <p><strong>Username:</strong> {userData.username}</p>

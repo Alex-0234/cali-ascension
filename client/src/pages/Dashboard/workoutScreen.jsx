@@ -193,7 +193,7 @@ const finishExercise = (category, exerciseID) => {
                                                     className={styles.setInput}
                                                 />
                                                 {currentSets.length > 1 && (
-                                                    <CloseButton onClose={() => handleRemoveSet(category, index)} position='relative' align='start' />
+                                                    <CloseButton onClose={() => handleRemoveSet(category, index)} position='relative' align='center' />
                                                 )}
                                             </div>
                                         ))}
