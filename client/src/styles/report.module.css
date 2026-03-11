@@ -1,0 +1,15 @@
+
+.exerciseBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 2px solid var(--border-a);
+    border-radius: var(--border-radius);
+}
+
+.entryStats {
+    padding: 1rem;
+}
+.setsWrapper {
+    padding: 1rem;
+}

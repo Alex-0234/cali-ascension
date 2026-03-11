@@ -1,4 +1,3 @@
-import { useState } from 'react'
 
 import { BarChart } from '@mui/x-charts';
 import { setsPerGroup } from '../../utils/setsPerGroup';
@@ -7,23 +6,26 @@ import useUserStore from "../../store/usePlayerStore";
 import useUIStore from "../../store/useUIStore";
 
 import SystemButton from "../ui/systemBtn";
+import ExerciseBlock from '../ui/exerciseBlock';
 
 import filterWorkout from '../../utils/filterWorkout'
 
 import styles from '../../styles/workout.module.css'
+import { useEffect, useState } from 'react';
 
 
 export default function StatusReport() {
     const { userData, syncUser } = useUserStore()
     const { setHistory } = useUIStore();
 
-    const [currentFilter, setCurrentFilter] = useState({day: 'all', exercise: 'all' })
-
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
-    const filteredWorkoutHistory = filterWorkout(workoutHistory, currentFilter);
     const data =  setsPerGroup(workoutHistory);
 
+    const [filteredWorkout, setFilteredWorkout] = useState(filterWorkout(workoutHistory, {day: 'today', exercise: 'all'}))
 
+    useEffect(() => {
+        setFilteredWorkout(filterWorkout(workoutHistory, {day: 'today', exercise: 'all'}));
+    }, [workoutHistory])
 
     const handleProgramChange = (e) => {
         const newProgram = e.target.value;
@@ -106,16 +108,11 @@ export default function StatusReport() {
                 <div className={styles.cardHeader} style={{marginLeft: '1rem'}}>
                     <h3 className={styles.cardTitle}>[ TODAYS WORKOUT ]</h3>
                 </div>
-                <div style={{overflow: 'auto', height: '100%'}}>
-                    <h1> Work in progress... </h1>
-                    { filteredWorkoutHistory.map((workout, index) => {
-                        return (
-                            <div key={index}> 
-                                <h2>{workout.exerciseID}</h2>
-                                <p>{workout.date}</p>
-                            </div>
-                        )
-                    })}
+                <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', height: '80%', padding: '0 2rem 0 2rem', gap: '1rem'}}>
+                    { filteredWorkout.length > 0 && filteredWorkout.map((workout, index) => {
+                            return <ExerciseBlock workout={workout} index={index} />
+                        })
+                    }
                 </div>
                 
 
