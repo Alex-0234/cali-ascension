@@ -132,6 +132,10 @@ const finishExercise = (category, exerciseID) => {
             )}
 
             <div>
+                <h2> Manual input </h2>
+            </div>
+
+            <div>
                 {visibleCategories.map(category => {
                     const currentExId = activeExercises[category];
                     if (!currentExId) return null;
