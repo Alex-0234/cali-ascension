@@ -39,7 +39,13 @@ const filterWorkout = (workoutHistory, filterBy) => {
     let filteredHistory = workoutHistory;
 
     if (targetDay !== 'all') {
-        filteredHistory = filteredHistory.filter(workout => workout.date.split('T')[0] === targetDay);
+        filteredHistory = filteredHistory.filter(workout => {
+            const dateStr = String(workout.date);
+            
+            const pureDate = dateStr.includes('T') ? dateStr.split('T')[0] : dateStr;
+            
+            return pureDate === targetDay; 
+        });
     }
 
     if (exercisePrefix !== 'all') {
