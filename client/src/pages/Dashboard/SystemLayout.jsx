@@ -76,9 +76,10 @@ export default function SystemLayout() {
 
                     </div>
                 </div>
+                {!isDesktop && <Navbar />}
             </div>
 
-            {!isDesktop && <Navbar />}
+            
         </>
     );
 }
