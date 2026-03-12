@@ -46,6 +46,9 @@
   background: rgba(0, 229, 255, 0.3);
   border-radius: 10px;
 }
+.mockBody {
+  height: calc(100dvh - 10.5rem);
+}
 
 @media (min-width: 800px) {
   .mockBody {

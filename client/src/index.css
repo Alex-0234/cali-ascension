@@ -11,9 +11,9 @@
   --bg-input: #111827;
   
   /* Accents & Glowing Effects */
-  --primary: #3b82f6;        /* System Blue */
+  --primary: #3b82f6;   
   --primary-glow: rgba(59, 130, 246, 0.4);
-  --cyan: #00ffcc;           /* Level Up / Hologram Cyan */
+  --cyan: #00ffcc;          
   --cyan-glow: rgba(0, 255, 204, 0.4);
   
   /* Status Colors */
@@ -34,6 +34,7 @@
 /* =========================================================
    GLOBAL STYLES
    ========================================================= */
+
 body {
   overflow: hidden;
   background-color: var(--bg-dark);
@@ -42,7 +43,8 @@ body {
   margin: 0;
   padding: 1rem;
   padding-bottom: 0;
-}
+} 
+ 
 
 
 
