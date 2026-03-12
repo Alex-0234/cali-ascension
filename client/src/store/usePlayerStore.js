@@ -17,12 +17,12 @@ const INITIAL_PLAYER_STATE = {
     rank: "Unranked",
     title: "None",
     color: "blue",
-    streak: {
+    streak: {    // Change to work with the workoutHistory rework.
       current: 0,
       highest: 0,
       lastActive: '',
     },
-    activeDays: [],
+    activeDays: [],  // Not used currently. Probably delete later
     xp: 0,
     stats: {
       STR: 10,
@@ -39,7 +39,19 @@ const INITIAL_PLAYER_STATE = {
     isConfigured: false,
 
     weightHistory: [],
-    workoutHistory: [],
+    workoutHistory: [], // Complete rework
+
+    /* workoutHistory = {
+        2026-03-12: {
+            status: 'restday' / 'workout',      ...maybe change status to something better
+            totalVolume: 120,
+            exercises: [
+              {"pushup_05A": {totalReps: ...., sets: [...sets]} } 
+            ]
+        }
+        2026-03-11: {
+        etc.}
+      } */
 
 }
 

@@ -87,18 +87,22 @@ const finishExercise = (category, exerciseID) => {
         const newProgress = saveWorkoutReps(currentProgress, exerciseID, totalReps);
         const stats = calculatePlayerStats(newProgress);
 
+        const today = new Date();
+
         const workoutRecord = {
-            date: new Date(),
+            date: today,
             exerciseID: exerciseID,
             totalReps: totalReps,
             sets: [...sets],
         };
 
+
         const newUserData = {
             ...userData,
             stats: stats,
             exerciseProgress: newProgress,
-            workoutHistory: [...(userData.workoutHistory || []), workoutRecord]
+            workoutHistory: [...(userData.workoutHistory || []), workoutRecord],
+            activeDays: [...userData.activeDays, today]
         };
 
         const { level: newLevel, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);

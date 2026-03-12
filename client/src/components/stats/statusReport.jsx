@@ -1,6 +1,7 @@
-
+import { useEffect, useState } from 'react';
 import { BarChart } from '@mui/x-charts';
 import { setsPerGroup } from '../../utils/setsPerGroup';
+import { SPLIT_MODES } from '../../data/exercise_db';
 
 import useUserStore from "../../store/usePlayerStore";
 import useUIStore from "../../store/useUIStore";
@@ -11,16 +12,17 @@ import ExerciseBlock from '../ui/exerciseBlock';
 import filterWorkout from '../../utils/filterWorkout'
 
 import styles from '../../styles/workout.module.css'
-import { useEffect, useState } from 'react';
+
 
 
 export default function StatusReport() {
-    const { userData, syncUser } = useUserStore()
+    const { userData, setUserData, syncUser } = useUserStore()
     const { setHistory } = useUIStore();
 
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
     const data =  setsPerGroup(workoutHistory);
-
+    
+    const [muscleGroupToday, setMuscleGroupToday] = useState(SPLIT_MODES[userData.currentProgram][0]); // Get the right exercises.
     const [filteredWorkout, setFilteredWorkout] = useState(filterWorkout(workoutHistory, {day: 'today', exercise: 'all'}))
 
     useEffect(() => {
@@ -38,6 +40,18 @@ export default function StatusReport() {
         }));
         syncUser();
     };
+
+    const manualRestDaySwitch = () => {
+
+        setMuscleGroupToday('REST DAY');
+        const today = new Date();
+
+        setUserData({
+            ...userData,
+            activeDays: today,
+        });
+        syncUser();
+    }
 
     return (
         <>
@@ -71,6 +85,11 @@ export default function StatusReport() {
                             <path d="M6 9l6 6 6-6" />
                         </svg>
                     </div>
+                </div>
+
+                <div>
+                    <h2>[ Today ]: {`${muscleGroupToday}`}</h2>
+                    <SystemButton text='Rest Day?' onClick={() => manualRestDaySwitch()}/>
                 </div>
                 
            <div className='bar-chart-wrapper' style={{ width: '100%', height: '250px', paddingTop: '1rem', marginTop: '2rem', border: '2px solid var(--border-a)', borderRadius: 'var(--border-radius)' }}>
