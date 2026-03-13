@@ -1,30 +1,44 @@
 import { EXERCISE_DB } from "../data/exercise_db";
 import { TIER_XP_REWARDS } from "../data/rewardMap";
 
-export default function calculateLevel(userData) {
+export default function calculateLevel(userData) {              
     const workoutHistory = userData.workoutHistory || [];
     let totalXP = 0;
+    
     const standardWeight = userData.gender === 'female' ? 65 : 80;
 
-    workoutHistory.forEach(entry => {
-        if (!entry || !entry.exerciseID) return;
-        const exerciseData = EXERCISE_DB[entry.exerciseID];
-        if (!exerciseData) return;
-        
-        const baseXP = TIER_XP_REWARDS[exerciseData.tier];
+    if (workoutHistory.length > 1) return;
 
-        if (entry.sets && Array.isArray(entry.sets)) {
-            entry.sets.forEach(set => {
-                const reps = Number(set.reps) || 0;
-                const extraWeight = Number(set.extraWeight) || 0;
+/*     const sortedDates = Object.keys(workoutHistory).sort((a, b) => new Date(b) - new Date(a)); */
 
-                let setMultiplier = 1;
-                if (extraWeight > 0) {
-                    setMultiplier = 1 + (extraWeight / standardWeight);
+    Object.keys(workoutHistory).forEach(day => {
+        console.log(day)
+
+        if (workoutHistory[day].type === 'workout') {
+
+            workoutHistory[day].exercises.forEach(exercise => {
+
+                const exerciseData = EXERCISE_DB[exercise.exerciseID];
+                if (!exerciseData) return;
+
+                const baseXP = TIER_XP_REWARDS[exerciseData.tier];
+
+                if (exercise.sets && Array.isArray(exercise.sets)) {
+                    exercise.sets.forEach(set => {
+
+                        const reps = Number(set.reps) || 0;
+                        const extraWeight = Number(set.extraWeight) || 0;
+
+                        let setMultiplier = 1;
+                        if (extraWeight > 0) {
+                            setMultiplier = 1 + (extraWeight / standardWeight);
+                        }
+
+                        totalXP += (baseXP * reps) * setMultiplier;
+                    });
                 }
-
-                totalXP += (baseXP * reps) * setMultiplier;
-            });
+                
+            })
         }
     });
 
