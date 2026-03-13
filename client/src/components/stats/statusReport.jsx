@@ -9,7 +9,6 @@ import useUIStore from "../../store/useUIStore";
 import SystemButton from "../ui/systemBtn";
 import ExerciseBlock from '../ui/exerciseBlock';
 
-import filterWorkout from '../../utils/filterWorkout'
 
 import styles from '../../styles/workout.module.css'
 
@@ -23,10 +22,10 @@ export default function StatusReport() {
     const data =  setsPerGroup(workoutHistory);
     
     const [muscleGroupToday, setMuscleGroupToday] = useState(SPLIT_MODES[userData.currentProgram][0]); // Get the right exercises.
-    const [filteredWorkout, setFilteredWorkout] = useState(filterWorkout(workoutHistory, {day: 'today', exercise: 'all'}))
+    const [filteredWorkout, setFilteredWorkout] = useState('')
 
     useEffect(() => {
-        setFilteredWorkout(filterWorkout(workoutHistory, {day: 'today', exercise: 'all'}));
+        setFilteredWorkout('');
     }, [workoutHistory])
 
     const handleProgramChange = (e) => {
