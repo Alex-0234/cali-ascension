@@ -25,6 +25,8 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 
 ## To-Do List
 - [X] Implement daily streak.
+- [ ] Revamp the workout History
+- [ ] Update exercise data with a unit (reps/time/etc.)
 - [X] Make the styling desktop compatible / better.
 - [ ] Introduce a confirmation component (Are you sure?)
 - [X] Implement weight history tracking.
@@ -34,7 +36,7 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
 - [ ] Introduce some kind of points to unlock exercises in the tree.
 - [ ] Improve the evaluation window.
 - [X] Completely re-work the core tree. 
-- [X] Introduce settings / profile.
+- [X] Introduce settings.
      - [ ] Style it better
      - [ ] Refine it and add confirmation window
 - [ ] Include actual video previews.
