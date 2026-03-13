@@ -87,36 +87,49 @@ const finishExercise = (category, exerciseID) => {
         const newProgress = saveWorkoutReps(currentProgress, exerciseID, totalReps);
         const stats = calculatePlayerStats(newProgress);
 
-        const today = new Date();
+        const today = new Date().toISOString().split('T')[0];
 
-        const workoutRecord = {
-            date: today,
-            exerciseID: exerciseID,
-            totalReps: totalReps,
-            sets: [...sets],
+        const existingDay = userData.workoutHistory[today] || {
+            type: 'workout',
+            totalVolume: 0,
+            totalSets: 0,
+            exercises: []
         };
 
+        const newExerciseRecord = {
+            exerciseID: exerciseID,
+            totalReps: totalReps,
+            sets: [...sets]
+        };
 
         const newUserData = {
             ...userData,
             stats: stats,
             exerciseProgress: newProgress,
-            workoutHistory: [...(userData.workoutHistory || []), workoutRecord],
-            activeDays: [...userData.activeDays, today]
-        };
+            workoutHistory: {
+                ...userData.workoutHistory, 
+                [today]: { 
+                    type: 'workout',
+                    totalVolume: existingDay.totalVolume + totalReps, 
+                    totalSets: sets.length,
+                    exercises: [...existingDay.exercises, newExerciseRecord] 
+                }
+            }
+        }
+        console.log('new user data:', newUserData);
 
-        const { level: newLevel, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);
-        const levelDifference = newLevel - userData.level;
+        const { level, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);
+        console.log( level, currentLeftoverXP, totalXPEarned )
+        const levelDifference = level - userData.level;
 
         if (levelDifference > 0) {
             setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});  // LEVELUP SCREEN
             setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000); 
         }
         
-
         setUserData({
             ...newUserData,
-            level: newLevel,
+            level: level,
             xp: currentLeftoverXP,
         });
 

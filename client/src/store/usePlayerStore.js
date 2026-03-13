@@ -45,6 +45,7 @@ const INITIAL_PLAYER_STATE = {
         2026-03-12: {
             status: 'restday' / 'workout',      ...maybe change status to something better
             totalVolume: 120,
+            totalSets: 5,
             exercises: [
               {"pushup_05A": {totalReps: ...., sets: [...sets]} } 
             ]
