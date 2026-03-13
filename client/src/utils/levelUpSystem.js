@@ -2,21 +2,21 @@ import { EXERCISE_DB } from "../data/exercise_db";
 import { TIER_XP_REWARDS } from "../data/rewardMap";
 
 export default function calculateLevel(userData) {              
-    const workoutHistory = userData.workoutHistory || [];
+    const workoutHistory = userData.workoutHistory || {};
+    const safeWorkoutHistory = Array.isArray(workoutHistory) ? {} : workoutHistory;
     let totalXP = 0;
     
     const standardWeight = userData.gender === 'female' ? 65 : 80;
 
-    if (workoutHistory.length > 1) return;
+    if (Object.keys(safeWorkoutHistory).length < 1) return;
 
 /*     const sortedDates = Object.keys(workoutHistory).sort((a, b) => new Date(b) - new Date(a)); */
 
-    Object.keys(workoutHistory).forEach(day => {
-        console.log(day)
+    Object.keys(safeWorkoutHistory).forEach(day => {
 
-        if (workoutHistory[day].type === 'workout') {
+        if (safeWorkoutHistory[day].type === 'workout') {
 
-            workoutHistory[day].exercises.forEach(exercise => {
+            safeWorkoutHistory[day].exercises.forEach(exercise => {
 
                 const exerciseData = EXERCISE_DB[exercise.exerciseID];
                 if (!exerciseData) return;
