@@ -8,7 +8,7 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
         { id: 'core', label: 'Core', data: [0, 0, 0, 0], color: '#f59e0b' }
     ];
 
-    if (!workoutHistory || !Array.isArray(workoutHistory) || workoutHistory.length === 0) {
+    if (Object.keys(workoutHistory).length < 1) {
         return seriesData; 
     }
 
@@ -26,8 +26,8 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - daysToSubtract);
 
-    workoutHistory.forEach(entry => {
-        const entryDate = new Date(entry.date);
+    Object.keys(workoutHistory).forEach(day => {
+        const entryDate = new Date(day);
         entryDate.setHours(0, 0, 0, 0);
 
         const diffTime = entryDate.getTime() - startOfCurrentWeek.getTime();
@@ -46,19 +46,24 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
         }
 
         if (weekIndex !== null) {
-            const exerciseId = entry.exerciseID || "";
-            const amountOfSets = Array.isArray(entry.sets) ? entry.sets.length : 0;
+            
 
-            if (exerciseId.startsWith('pushup')) {
-                seriesData[0].data[weekIndex] += amountOfSets;
-            } else if (exerciseId.startsWith('pullup')) {
-                seriesData[1].data[weekIndex] += amountOfSets;
-            } else if (exerciseId.startsWith('squat')) {
-                seriesData[2].data[weekIndex] += amountOfSets;
-            } else if (exerciseId.startsWith('core')) {
-                seriesData[3].data[weekIndex] += amountOfSets;
-            }
+            workoutHistory[day].exercises.forEach(exercise => {
+                const exerciseId = exercise.exerciseID || "";
+                const amountOfSets = workoutHistory[day].totalSets;
+
+                if (exerciseId.startsWith('pushup')) {
+                    seriesData[0].data[weekIndex] += amountOfSets;
+                } else if (exerciseId.startsWith('pullup')) {
+                    seriesData[1].data[weekIndex] += amountOfSets;
+                } else if (exerciseId.startsWith('squat')) {
+                    seriesData[2].data[weekIndex] += amountOfSets;
+                } else if (exerciseId.startsWith('core')) {
+                    seriesData[3].data[weekIndex] += amountOfSets;
+                }
+            })
         }
+            
     });
 
     return seriesData;
