@@ -22,7 +22,6 @@ const INITIAL_PLAYER_STATE = {
       highest: 0,
       lastActive: '',
     },
-    activeDays: [],  // Not used currently. Probably delete later
     xp: 0,
     stats: {
       STR: 10,
@@ -46,6 +45,8 @@ const INITIAL_PLAYER_STATE = {
             status: 'restday' / 'workout',      ...maybe change status to something better
             totalVolume: 120,
             totalSets: 5,
+            duration: 0,
+            notes: '',
             exercises: [
               {"pushup_05A": {totalReps: ...., sets: [...sets]} } 
             ]

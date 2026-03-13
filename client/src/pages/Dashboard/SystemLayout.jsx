@@ -6,7 +6,6 @@ import useUIStore from '../../store/useUIStore';
 
 import Header from '../../components/layout/header';
 import Navbar from '../../components/layout/Navbar';
-import EditProfileModal from '../../components/stats/EditProfileModal'
 import WorkoutHistoryBlock from '../../components/ui/workoutHistoryBlock'
 import SystemSidebar from '../../components/layout/desktopNavbar';
 
@@ -23,7 +22,6 @@ export default function SystemLayout() {
     const logout = useUserStore((state) => state.logout);  
     const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
     
-    const isProfileOpen = useUIStore((state) => state.isProfileOpen);
     const isHistory = useUIStore((state) => state.isHistory);
 
     const [isReady, setIsReady] = useState(false);
@@ -56,7 +54,6 @@ export default function SystemLayout() {
 
     return (
         <>
-            {isProfileOpen && <EditProfileModal />}
             {isHistory.open && isHistory.type === 'exercise' && <WorkoutHistoryBlock />}
             
             { !isDesktop && <Header navigate={() => navigate('/settings')} logout={logout} /> }
