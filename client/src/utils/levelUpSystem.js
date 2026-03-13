@@ -8,7 +8,11 @@ export default function calculateLevel(userData) {
     
     const standardWeight = userData.gender === 'female' ? 65 : 80;
 
-    if (Object.keys(safeWorkoutHistory).length < 1) return;
+    if (Object.keys(safeWorkoutHistory).length < 1) return {
+        level: 0,
+        currentLeftoverXP: 0,
+        totalXPEarned: 0
+    };
 
 /*     const sortedDates = Object.keys(workoutHistory).sort((a, b) => new Date(b) - new Date(a)); */
 
