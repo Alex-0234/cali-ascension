@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import WeightTracker from "../../components/stats/weightTracker";
 import StatusReport from "../../components/stats/statusReport";
-import calculateStreakFromHistory from "../../utils/calculateStreak";
+import { calculateStreakFromObject } from "../../utils/calculateStreak";
 
 import styles from "../../styles/status.module.css";
 
@@ -29,7 +29,7 @@ export default function StatusWindow() {
     const [levelProgress, setLevelProgress] = useState(0);
 
     const currentProgress = getLevelProgress(userData.xp, userData.level);
-    const currentStreak = calculateStreakFromHistory(userData.workoutHistory);
+    const currentStreak = calculateStreakFromObject(userData.workoutHistory);
     
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
     const {level, currentLeftoverXP} = calculateLevel(userData);
