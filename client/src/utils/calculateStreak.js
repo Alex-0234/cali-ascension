@@ -1,11 +1,13 @@
 
 
 export function calculateStreakFromObject(workoutHistory) {
-    if (!workoutHistory || Object.keys(workoutHistory).length === 0) {
+    
+    const safeWorkoutHistory = Array.isArray(workoutHistory) ? {} : workoutHistory;
+    if (!safeWorkoutHistory || Object.keys(safeWorkoutHistory).length === 0) {
         return { current: 0, highest: 0 };
     }
 
-    const sortedDates = Object.keys(workoutHistory).sort((a, b) => new Date(b) - new Date(a));
+    const sortedDates = Object.keys(safeWorkoutHistory).sort((a, b) => new Date(b) - new Date(a));
 
     let highestStreak = 0;
     let currentStreak = 0;
@@ -16,13 +18,13 @@ export function calculateStreakFromObject(workoutHistory) {
     yesterdayDate.setDate(yesterdayDate.getDate() - 1);
     const yesterday = yesterdayDate.toISOString().split('T')[0];
 
-    const isStreakAlive = workoutHistory[today] || workoutHistory[yesterday];
+    const isStreakAlive = safeWorkoutHistory[today] || safeWorkoutHistory[yesterday];
 
     let lastDate = null;
 
     for (let i = sortedDates.length - 1; i >= 0; i--) {
         const dateString = sortedDates[i];
-        const log = workoutHistory[dateString];
+        const log = safeWorkoutHistory[dateString];
 
         const isLegitWorkout = log.type === 'workout' && (log.totalVolume >= 20);
         const isRestDay = log.type === 'rest';
