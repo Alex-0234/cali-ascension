@@ -29,13 +29,19 @@
 }
 
 .windowContent {
-  padding: 30px;
+  padding: 1.5rem;
   display: flex;
   max-height: 100%;
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
   order: 1;
+}
+
+@media (max-width: 380px) {
+  .windowContent {
+    padding: 0.5rem;
+  }
 }
 
 .windowContent::-webkit-scrollbar {

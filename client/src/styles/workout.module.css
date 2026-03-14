@@ -34,13 +34,19 @@
   background: var(--bg-card-a);
   border-radius: 12px;
   border: 2px solid var(--border-a);
-  padding: 20px;
+  padding: 1rem;
   margin-bottom: 20px;
   transition: opacity 0.3s ease;
 }
 
 .exerciseCard.locked {
   opacity: 0.7;
+}
+
+@media (max-width: 380px) {
+  .exerciseCard {
+    padding: 0.5rem;
+  }
 }
 
 .exerciseHeader {
