@@ -32,13 +32,15 @@ const INITIAL_PLAYER_STATE = {
 
     userEvaluation: {},
     exerciseProgress: {},
+    personalRecords: {},
+
 
     isLoading: false,
     isLoggedIn: false,
     isConfigured: false,
 
     weightHistory: [],
-    workoutHistory: [], // Complete rework
+    workoutHistory: {}, // Complete rework
 
     /* workoutHistory = {
         2026-03-12: {
