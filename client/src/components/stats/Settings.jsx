@@ -8,7 +8,7 @@ import CloseButton from '../ui/closeBtn';
 import styles from '../../styles/layout.module.css'
 
 
-export default function EditProfileModal() {
+export default function Settings() {
     const userData = useUserStore((state) => state.userData);
     const setUserData = useUserStore((state) => state.setUserData);
     const setProfile = useUIStore((state) => state.setProfile);

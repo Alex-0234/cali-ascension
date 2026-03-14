@@ -191,11 +191,12 @@ const finishExercise = (category, exerciseID) => {
                                     <div className={styles.setsContainer}>
                                         {currentSets.map((set, index) => (
                                             <div key={index} className={styles.setRow}>
+
                                                 <span className={styles.setLabel}>Set {index + 1}</span>
                                                 <input 
                                                     type="number" 
                                                     min="0"
-                                                    placeholder="Reps"
+                                                    placeholder={exerciseData.unit}
                                                     value={set.reps || ''}
                                                     onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
                                                     className={styles.setInput}
