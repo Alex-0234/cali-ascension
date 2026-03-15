@@ -148,8 +148,6 @@ export function WorkoutScreen() {
                 	...currentDay,
                     totalVolume: currentDay.totalVolume || 0 + totalReps,
                     totalSets: currentDay.totalSets || 0 + sets.length,
-                    duration: 0,
-                    notes: '',
                     exercises: {
                         ...currentDay.exercises,
                     	[exerciseID]: {
@@ -165,9 +163,14 @@ export function WorkoutScreen() {
 
     const handleFinishWorkoutDay = () => {
         if (currentWorkoutSession.length === 0) {
-            alert("Nebyl přidán žádný cvik!");
+            console.log("No exercises were added to the session");
             return;
         }
+        
+        setIsRunning(false);
+        setCurrentWorkoutSession(prev => ({
+        
+        })
 
         const newProgress = processWorkoutSession(userData.exerciseProgress, currentWorkoutSession);
         const stats = calculatePlayerStats(newProgress);
@@ -176,14 +179,7 @@ export function WorkoutScreen() {
 		if (workoutHistory[dateNow]) {
             
         }
-        const newHistoryEntries = currentWorkoutSession.map(ex => ({
-            [dateNow]: {
-                exerciseID: ex.exerciseID,
-                totalReps: ex.totalReps,
-                sets: ex.sets
-        }
-            
-        }));
+        const newHistoryEntries = currentWorkoutSession
 
         let nextIndex = workoutPlan.currentDayIndex;
         if (!overrideWorkout) {
@@ -218,7 +214,6 @@ export function WorkoutScreen() {
         syncUser();
         setCurrentWorkoutSession([]);
         setTraining(false);
-        setIsRunning(false);
         setTimeElapsed(0);
         setOverrideWorkout(null);
     };
