@@ -155,6 +155,7 @@ export function WorkoutScreen() {
         const dateNow = new Date().toISOString();
 
         const newHistoryEntries = currentWorkoutSession.map(ex => ({
+            
             date: dateNow,
             exerciseID: ex.exerciseID,
             totalReps: ex.totalReps,
