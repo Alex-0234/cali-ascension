@@ -176,11 +176,9 @@ export function WorkoutScreen() {
                 notes: '', // Add later
         }));
 
-        const newProgress = processWorkoutSession(userData.exerciseProgress, currentWorkoutSession);
-        const stats = calculatePlayerStats(newProgress);
-        const dateNow = new Date().toISOString();
+        const stats = calculatePlayerStats(currentWorkoutSession);
 
-        const newHistoryEntries = currentWorkoutSession
+        const newHistory = currentWorkoutSession;
 
         let nextIndex = workoutPlan.currentDayIndex;
         if (!overrideWorkout) {
@@ -190,8 +188,7 @@ export function WorkoutScreen() {
         const newUserData = {
             ...userData,
             stats: stats,
-            exerciseProgress: newProgress,
-            workoutHistory: updatedHistory,
+            workoutHistory: {...userData.workoutHistory, newHistory},
             workoutPlan: {
                 ...workoutPlan,
                 currentDayIndex: nextIndex
