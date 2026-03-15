@@ -162,19 +162,39 @@ export function WorkoutScreen() {
     };
 
     const handleFinishWorkoutDay = () => {
-        if (currentWorkoutSession.length === 0) {
+        if (!currentWorkoutSession[dateNow] || Object.keys(currentWorkoutSession[dateNow].exercises).length === 0) { 
             console.log("No exercises were added to the session");
             return;
         }
         
+        const dateNow = new Date().toISOString().split('T');
+        
         setIsRunning(false);
-        setCurrentWorkoutSession(prev => ({
+        setCurrentWorkoutSession(prev => {
+            const prevWorkSameDay = userData.workoutHistory[dateNow];
         	const currentDay = prev[dateNow];
-            [dateNow]: {
-            ...currentDay,
-            	duration: formatTime(timeElapsed),
+            let updatedDay = {
+            	...currentDay,
+            	duration: timeElapsed,
                 notes: '', // Add later
-        }));
+			}
+                
+				if (prevWorkSameDay) {
+                    updatedDay = {
+                    	totalVolume: currentDay.totalVolume + prevWorkSameDay.totalVolume,
+                        totalSets: currentDay.totalSets + prevWorkSameDay.totalSets,
+                        duration: formatTime(timeElapsed) + prevWorkSameDay.duration,
+                    	exercises: {
+                            ...prevWorkSameDay.exercises,
+                            ...currentDay.exercises
+                    	}
+                    }
+                }
+                
+                return {
+                    [dateNow]: updatedDay
+                }
+        });
 
         const stats = calculatePlayerStats(currentWorkoutSession);
 
