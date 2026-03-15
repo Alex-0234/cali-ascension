@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";  
 
-import { processWorkoutSession} from '../../utils/workoutSystem'
 import calculateLevel from "../../utils/levelUpSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
@@ -25,19 +24,30 @@ export function WorkoutScreen() {
         currentDayIndex: 0
     };
 
+    const dateNow = new Date().toISOString().split('T')[0];
+
     const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
     const selectedSplit = userData.currentProgram || 'Full Body';
     const workoutPlan = userData.workoutPlan || FALLBACK_PLAN;
     
     const [overrideWorkout, setOverrideWorkout] = useState(null);
+
     const [training, setTraining] = useState(false);
     const [currentWorkoutSession, setCurrentWorkoutSession] = useState({});
+
     const [activeExercises, setActiveExercises] = useState({});
+
     const [workoutSets, setWorkoutSets] = useState({});
     const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0});
     const [timeElapsed, setTimeElapsed] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
+
+
+    useEffect(() => {
+        console.log(currentWorkoutSession);
+    },[currentWorkoutSession])
+
 
     useEffect(() => {
         let interval = null;
@@ -126,89 +136,73 @@ export function WorkoutScreen() {
     };
 
     const handleAddExerciseToSession = (category, exerciseID) => {
-        
-        const dateNow = new Date().toISOString().split('T');
-        
         const sets = workoutSets[category] || [];
         const totalReps = sets.reduce((sum, set) => sum + (Number(set.reps) || 0), 0);
 
         if (totalReps === 0) return;
 
-        setCurrentWorkoutSession(prev => ({ // Add a condition to check for the date in workoutHistory
-            const currentDay = prev[dateNow] || {
+        setCurrentWorkoutSession(prev => {   
+            const currentDay = prev[dateNow] || userData.workoutHistory[dateNow] || {
                 status: 'workout',
                 totalVolume: 0,
                 totalSets: 0,
                 duration: 0,
                 notes: '',
                 exercises: {}
-            }
-            
+            };
+
+            const existingExercise = currentDay.exercises[exerciseID];
+
+            return {
+                ...prev,
                 [dateNow]: {
-                	...currentDay,
-                    totalVolume: currentDay.totalVolume || 0 + totalReps,
-                    totalSets: currentDay.totalSets || 0 + sets.length,
+                    ...currentDay,
+                    totalVolume: (currentDay.totalVolume || 0) + totalReps,
+                    totalSets: (currentDay.totalSets || 0) + sets.length,
                     exercises: {
                         ...currentDay.exercises,
-                    	[exerciseID]: {
-                			totalReps: totalReps,
-                			sets: [...sets]
-                    	}
+                        [exerciseID]: {
+                            totalReps: (existingExercise?.totalReps || 0) + totalReps,
+                            sets: existingExercise ? [...existingExercise.sets, ...sets] : [...sets]
+                        }
                     }
-            	}
-        }));
+                }
+            };
+        });
 
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
 
     const handleFinishWorkoutDay = () => {
-        if (!currentWorkoutSession[dateNow] || Object.keys(currentWorkoutSession[dateNow].exercises).length === 0) { 
+        const todaySession = currentWorkoutSession[dateNow];
+
+        if (!todaySession || Object.keys(todaySession.exercises).length === 0) { 
             console.log("No exercises were added to the session");
             return;
         }
-        
-        const dateNow = new Date().toISOString().split('T');
-        
+
         setIsRunning(false);
-        setCurrentWorkoutSession(prev => {
-            const prevWorkSameDay = userData.workoutHistory[dateNow];
-        	const currentDay = prev[dateNow];
-            let updatedDay = {
-            	...currentDay,
-            	duration: timeElapsed,
-                notes: '', // Add later
-			}
-                
-				if (prevWorkSameDay) {
-                    updatedDay = {
-                    	totalVolume: currentDay.totalVolume + prevWorkSameDay.totalVolume,
-                        totalSets: currentDay.totalSets + prevWorkSameDay.totalSets,
-                        duration: formatTime(timeElapsed) + prevWorkSameDay.duration,
-                    	exercises: {
-                            ...prevWorkSameDay.exercises,
-                            ...currentDay.exercises
-                    	}
-                    }
-                }
-                
-                return {
-                    [dateNow]: updatedDay
-                }
-        });
 
-        const stats = calculatePlayerStats(currentWorkoutSession);
+        const finalDayRecord = {
+            ...todaySession,
+            duration: todaySession.duration + timeElapsed, 
+            notes: '' // Add later
+        };
 
-        const newHistory = currentWorkoutSession;
+        const stats = calculatePlayerStats(finalDayRecord);
 
         let nextIndex = workoutPlan.currentDayIndex;
         if (!overrideWorkout) {
             nextIndex = (workoutPlan.currentDayIndex + 1) % workoutPlan.cycle.length;
-        }
+        } 
 
         const newUserData = {
             ...userData,
             stats: stats,
-            workoutHistory: {...userData.workoutHistory, newHistory},
+            workoutHistory: {
+                ...userData.workoutHistory, 
+                [dateNow]: finalDayRecord 
+            },
             workoutPlan: {
                 ...workoutPlan,
                 currentDayIndex: nextIndex
@@ -230,7 +224,7 @@ export function WorkoutScreen() {
         });
 
         syncUser();
-        setCurrentWorkoutSession([]);
+        setCurrentWorkoutSession({});
         setTraining(false);
         setTimeElapsed(0);
         setOverrideWorkout(null);
@@ -275,12 +269,14 @@ export function WorkoutScreen() {
                         </div>
                     </div>
 
-                    {currentWorkoutSession.length > 0 && (
+                    {currentWorkoutSession[dateNow] && Object.keys(currentWorkoutSession[dateNow].exercises).length > 0 && (
                         <div className={styles.sessionSummary}>
                             <h4 style={{ margin: '0 0 10px 0', color: 'var(--cyan, #00e5ff)', textTransform: 'uppercase' }}>Logged Exercises:</h4>
                             <ul style={{ margin: 0, paddingLeft: '20px', color: '#94a3b8' }}>
-                                {currentWorkoutSession.map((ex, i) => (
-                                    <li key={i}>{EXERCISE_DB[ex.exerciseID]?.name || ex.exerciseID} - {ex.totalReps} {EXERCISE_DB[ex.exerciseID]?.unit || 'reps'}</li>
+                                {Object.entries(currentWorkoutSession[dateNow].exercises).map(([exId, exData], i) => (
+                                    <li key={i}>
+                                        {EXERCISE_DB[exId]?.name || exId} - {exData.totalReps} {EXERCISE_DB[exId]?.unit || 'reps'}
+                                    </li>
                                 ))}
                             </ul>
                         </div>

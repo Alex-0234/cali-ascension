@@ -49,7 +49,7 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
         if (weekIndex !== null) {
             
 
-            safeWorkoutHistory[day].exercises.forEach(exercise => {
+            Object.keys(safeWorkoutHistory[day].exercises).forEach(exercise => {
                 const exerciseId = exercise.exerciseID || "";
                 const amountOfSets = safeWorkoutHistory[day].totalSets;
 

@@ -22,7 +22,6 @@ const UserSchema = new mongoose.Schema({
         highest: { type: Number, default: 0},
         lastActive: { type: Date }
     },
-    activeDays: [],
     
     stats: {
         STR: { type: Number, default: 10 },
