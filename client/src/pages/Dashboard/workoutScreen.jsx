@@ -169,16 +169,17 @@ export function WorkoutScreen() {
         
         setIsRunning(false);
         setCurrentWorkoutSession(prev => ({
-        
-        })
+        	const currentDay = prev[dateNow];
+            [dateNow]: {
+            ...currentDay,
+            	duration: formatTime(timeElapsed),
+                notes: '', // Add later
+        }));
 
         const newProgress = processWorkoutSession(userData.exerciseProgress, currentWorkoutSession);
         const stats = calculatePlayerStats(newProgress);
         const dateNow = new Date().toISOString();
 
-		if (workoutHistory[dateNow]) {
-            
-        }
         const newHistoryEntries = currentWorkoutSession
 
         let nextIndex = workoutPlan.currentDayIndex;
