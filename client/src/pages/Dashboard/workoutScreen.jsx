@@ -32,7 +32,7 @@ export function WorkoutScreen() {
     
     const [overrideWorkout, setOverrideWorkout] = useState(null);
     const [training, setTraining] = useState(false);
-    const [currentWorkoutSession, setCurrentWorkoutSession] = useState([]);
+    const [currentWorkoutSession, setCurrentWorkoutSession] = useState({});
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0});
@@ -126,20 +126,30 @@ export function WorkoutScreen() {
     };
 
     const handleAddExerciseToSession = (category, exerciseID) => {
+        
+        const dateNow = new Date().toISOString().split('T');
+        
         const sets = workoutSets[category] || [];
         const totalReps = sets.reduce((sum, set) => sum + (Number(set.reps) || 0), 0);
 
         if (totalReps === 0) return;
 
-        setCurrentWorkoutSession(prev => [
-            ...prev,
-            {
-                category: category,
-                exerciseID: exerciseID,
-                totalReps: totalReps,
-                sets: [...sets]
-            }
-        ]);
+        setCurrentWorkoutSession(prev => ({
+                [dateNow]: {
+                	status: 'workout',
+                    totalVolume: prev[dateNow].totalVolume || 0 + totalReps,
+                    totalSets: prev[dateNow].totalSets || 0 + sets.length,
+                    duration: 0,
+                    notes: '',
+                    exercises: {
+                        ...prev[dateNow].exercises,
+                    	[exerciseID]: {
+                			totalReps: totalReps,
+                			sets: [...sets]
+                    	}
+                    }
+            	}
+        }));
 
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
@@ -154,15 +164,17 @@ export function WorkoutScreen() {
         const stats = calculatePlayerStats(newProgress);
         const dateNow = new Date().toISOString();
 
-        const newHistoryEntries = currentWorkoutSession.map(ex => ({
+		if (workoutHistory[dateNow]) {
             
-            date: dateNow,
-            exerciseID: ex.exerciseID,
-            totalReps: ex.totalReps,
-            sets: ex.sets
+        }
+        const newHistoryEntries = currentWorkoutSession.map(ex => ({
+            [dateNow]: {
+                exerciseID: ex.exerciseID,
+                totalReps: ex.totalReps,
+                sets: ex.sets
+        }
+            
         }));
-
-        const updatedHistory = [...(Array.isArray(userData.workoutHistory) ? userData.workoutHistory : []), ...newHistoryEntries];
 
         let nextIndex = workoutPlan.currentDayIndex;
         if (!overrideWorkout) {
