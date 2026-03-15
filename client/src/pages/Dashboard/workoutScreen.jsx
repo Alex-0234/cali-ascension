@@ -134,15 +134,24 @@ export function WorkoutScreen() {
 
         if (totalReps === 0) return;
 
-        setCurrentWorkoutSession(prev => ({
+        setCurrentWorkoutSession(prev => ({ // Add a condition to check for the date in workoutHistory
+            const currentDay = prev[dateNow] || {
+                status: 'workout',
+                totalVolume: 0,
+                totalSets: 0,
+                duration: 0,
+                notes: '',
+                exercises: {}
+            }
+            
                 [dateNow]: {
-                	status: 'workout',
-                    totalVolume: prev[dateNow].totalVolume || 0 + totalReps,
-                    totalSets: prev[dateNow].totalSets || 0 + sets.length,
+                	...currentDay,
+                    totalVolume: currentDay.totalVolume || 0 + totalReps,
+                    totalSets: currentDay.totalSets || 0 + sets.length,
                     duration: 0,
                     notes: '',
                     exercises: {
-                        ...prev[dateNow].exercises,
+                        ...currentDay.exercises,
                     	[exerciseID]: {
                 			totalReps: totalReps,
                 			sets: [...sets]
