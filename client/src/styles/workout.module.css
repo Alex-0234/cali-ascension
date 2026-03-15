@@ -1,5 +1,5 @@
-
 .workoutScreenContainer {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -7,6 +7,8 @@
   background: var(--bg-panel-a);
   border-radius: 12px;
   border: 2px solid var(--border-a);
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .splitSelector {
@@ -14,6 +16,7 @@
   gap: 10px;
   justify-content: center;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .splitBtn {
@@ -37,6 +40,8 @@
   padding: 1rem;
   margin-bottom: 20px;
   transition: opacity 0.3s ease;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .exerciseCard.locked {
@@ -56,6 +61,7 @@
   margin-bottom: 15px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 15px;
+  gap: 10px;
 }
 
 .exerciseHeader h3 {
@@ -64,6 +70,7 @@
   letter-spacing: 1px;
   text-align: center;
   font-size: clamp(0.7rem, 2vw, 1.1rem);
+  word-wrap: break-word;
 }
 
 .unlocked {
@@ -83,6 +90,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .navBtn:hover {
@@ -123,32 +131,34 @@
 
 .setRow {
   display: flex;
-  height: 1.2rem;
   border: 1px solid var(--border);
   align-items: center;
-  justify-content: space-around;
+  gap: 8px;
   background: rgba(0, 0, 0, 0.2);
-  padding: 1rem 0.6rem;
+  padding: 0.8rem 0.5rem;
   border-radius: 8px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .setLabel {
   color: #e2e8f0;
   font-weight: bold;
-  font-size: clamp(0.6rem, 3vw, 1rem);
-  min-width: 2rem;
+  font-size: clamp(0.7rem, 3vw, 1rem);
+  white-space: nowrap;
 }
 
 .setInput {
-  min-width: 2rem;
-  height: 1rem;
-  padding: 0.5rem;
-  margin-right: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0.5rem;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: #0f172a;
   color: white;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  font-size: 1rem;
 }
 
 .setInput:focus {
@@ -158,13 +168,14 @@
 }
 
 .btnRemove {
-  margin-left: auto;
   background: transparent;
   border: none;
   color: #ef4444;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   cursor: pointer;
+  padding: 0 5px;
+  flex-shrink: 0;
 }
 
 .btnRemove:hover {
@@ -174,20 +185,24 @@
 
 .exerciseActions {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .btnAddSet {
+  flex: 1;
+  min-width: 120px;
   padding: 10px 20px;
   background: transparent;
   border: 1px solid var(--cyan);
   color: var(--cyan);
   border-radius: 8px;
   font-weight: bold;
-  width: auto;
-  font-size: clamp(0.6rem, 3vw, 1.2rem);
+  font-size: clamp(0.7rem, 3vw, 1rem);
   cursor: pointer;
+  text-align: center;
 }
 
 .btnAddSet:hover {
@@ -195,6 +210,8 @@
 }
 
 .btnComplete {
+  flex: 1;
+  min-width: 150px;
   padding: 10px 20px;
   background: var(--primary);
   border: none;
@@ -202,10 +219,9 @@
   border-radius: 8px;
   font-weight: bold;
   box-shadow: 0 4px 10px var(--primary-glow);
-  margin-left: 5px;
-  font-size: clamp(0.6rem, 3vw, 1.2rem);
-  width: auto;
+  font-size: clamp(0.7rem, 3vw, 1rem);
   cursor: pointer;
+  text-align: center;
 }
 
 .btnComplete:hover {
@@ -218,6 +234,8 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   border: 1px dashed #334155;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .lockedStateBox span {
@@ -245,6 +263,8 @@
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .btnForceUnlock:hover {
@@ -261,6 +281,8 @@
   color: var(--cyan);
   box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
   animation: slideDown 0.3s ease-out;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 @keyframes slideDown {
@@ -274,8 +296,6 @@
   }
 }
 
-/* --- WORKOUT CONFIGURATION PANEL --- */
-
 .workoutCard {
   background: #0f172a; 
   border: 1px solid #1e293b;
@@ -283,6 +303,8 @@
   margin-top: 2rem;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .cardHeader {
@@ -307,11 +329,12 @@
   align-items: center;
   margin-bottom: 15px;
   font-family: 'Inter', sans-serif;
+  gap: 10px;
 }
 
 .statusLabel {
   color: #64748b;
-  font-size: clamp(0.4rem, 2vw, 0.85rem);
+  font-size: clamp(0.5rem, 2vw, 0.85rem);
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -323,9 +346,9 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: clamp(0.6rem, 2vw, 0.9rem);
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  word-break: break-all;
+  text-align: right;
 }
-
-/* --- CUSTOM SELECT DROPDOWN --- */
 
 .selectWrapper {
   position: relative;
@@ -346,7 +369,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  color-scheme: dark; 
+  color-scheme: dark;
+  box-sizing: border-box;
 }
 
 .styledSelect:hover {
@@ -370,4 +394,112 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.startScreen {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-wrap: wrap;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.scheduleTitle {
+  color: var(--cyan, #00e5ff);
+  font-weight: 800;
+  margin-left: 10px;
+  word-wrap: break-word;
+}
+
+.startBtnWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+  width: 100%;
+}
+
+.trainingActiveScreen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.timerDisplay {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #94a3b8;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.timerText {
+  color: var(--cyan, #00e5ff);
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-left: 10px;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+.sessionSummary {
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .workoutScreenContainer {
+    padding: 10px;
+  }
+  .topBar {
+    flex-direction: column;
+    text-align: center;
+  }
+  .setRow {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .setInput {
+    min-width: 80px;
+  }
+  .btnComplete, .btnAddSet {
+    width: 100%;
+  }
 }

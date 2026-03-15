@@ -3,23 +3,66 @@ import { useState, useEffect } from "react";
 import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";  
 
-import {saveWorkoutReps} from '../../utils/workoutSystem'
+import { processWorkoutSession} from '../../utils/workoutSystem'
 import calculateLevel from "../../utils/levelUpSystem";
 import { calculatePlayerStats } from "../../utils/statSystem";
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
 import { getPrevNextExerciseID } from "../../utils/workoutSelector";
+
+import SystemButton from '../../components/ui/systemBtn'
 import CloseButton from "../../components/ui/closeBtn";
 
 import styles from '../../styles/workout.module.css'
 
 export function WorkoutScreen() {
+    const FALLBACK_PLAN = {
+        cycle: [
+            { name: 'Push Day', categories: ['pushups'] },
+            { name: 'Pull Day', categories: ['pullups'] },
+            { name: 'Leg Day', categories: ['squats'] },
+            { name: 'Core & Mobility', categories: ['core'] }
+        ],
+        currentDayIndex: 0
+    };
+
     const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
     const selectedSplit = userData.currentProgram || 'Full Body';
+    const workoutPlan = userData.workoutPlan || FALLBACK_PLAN;
     
+    const [overrideWorkout, setOverrideWorkout] = useState(null);
+    const [training, setTraining] = useState(false);
+    const [currentWorkoutSession, setCurrentWorkoutSession] = useState([]);
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
-    const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0})
+    const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0});
+    const [timeElapsed, setTimeElapsed] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+
+    useEffect(() => {
+        let interval = null;
+        if (isRunning) {
+            interval = setInterval(() => {
+                setTimeElapsed((prevTime) => prevTime + 1);
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [isRunning]);
+
+    const formatTime = (seconds) => {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    };
+
+    const toggleTimer = () => setIsRunning(!isRunning);
+    
+    const resetTimer = () => {
+        setIsRunning(false);
+        setTimeElapsed(0);
+    };
 
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
@@ -35,8 +78,12 @@ export function WorkoutScreen() {
 
         setActiveExercises(initialActive);
         setWorkoutSets(initialSets);
-
     }, [currentProgress]);
+
+    const handleStartTraining = () => {
+        setTraining(true);
+        setIsRunning(true);
+    }
 
     const handleSwitchExercise = (category, direction) => {
         const currentId = activeExercises[category];
@@ -78,69 +125,88 @@ export function WorkoutScreen() {
         setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
     };
 
-const finishExercise = (category, exerciseID) => {
+    const handleAddExerciseToSession = (category, exerciseID) => {
         const sets = workoutSets[category] || [];
-        const totalReps = sets.reduce((sum, set) => sum + (set.reps || 0), 0);
-        
+        const totalReps = sets.reduce((sum, set) => sum + (Number(set.reps) || 0), 0);
+
         if (totalReps === 0) return;
 
-        const newProgress = saveWorkoutReps(currentProgress, exerciseID, totalReps);
+        setCurrentWorkoutSession(prev => [
+            ...prev,
+            {
+                category: category,
+                exerciseID: exerciseID,
+                totalReps: totalReps,
+                sets: [...sets]
+            }
+        ]);
+
+        setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
+    };
+
+    const handleFinishWorkoutDay = () => {
+        if (currentWorkoutSession.length === 0) {
+            alert("Nebyl přidán žádný cvik!");
+            return;
+        }
+
+        const newProgress = processWorkoutSession(userData.exerciseProgress, currentWorkoutSession);
         const stats = calculatePlayerStats(newProgress);
+        const dateNow = new Date().toISOString();
 
-        const today = new Date().toISOString().split('T')[0];
+        const newHistoryEntries = currentWorkoutSession.map(ex => ({
+            date: dateNow,
+            exerciseID: ex.exerciseID,
+            totalReps: ex.totalReps,
+            sets: ex.sets
+        }));
 
-        const existingDay = userData.workoutHistory[today] || {
-            type: 'workout',
-            totalVolume: 0,
-            totalSets: 0,
-            exercises: []
-        };
+        const updatedHistory = [...(Array.isArray(userData.workoutHistory) ? userData.workoutHistory : []), ...newHistoryEntries];
 
-        const newExerciseRecord = {
-            exerciseID: exerciseID,
-            totalReps: totalReps,
-            sets: [...sets]
-        };
+        let nextIndex = workoutPlan.currentDayIndex;
+        if (!overrideWorkout) {
+            nextIndex = (workoutPlan.currentDayIndex + 1) % workoutPlan.cycle.length;
+        }
 
         const newUserData = {
             ...userData,
             stats: stats,
             exerciseProgress: newProgress,
-            workoutHistory: {
-                ...userData.workoutHistory, 
-                [today]: { 
-                    type: 'workout',
-                    totalVolume: existingDay.totalVolume + totalReps, 
-                    totalSets: sets.length,
-                    exercises: [...existingDay.exercises, newExerciseRecord] 
-                }
+            workoutHistory: updatedHistory,
+            workoutPlan: {
+                ...workoutPlan,
+                currentDayIndex: nextIndex
             }
-        }
-        console.log('new user data:', newUserData);
+        };
 
         const { level, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);
-        console.log( level, currentLeftoverXP, totalXPEarned )
         const levelDifference = level - userData.level;
 
         if (levelDifference > 0) {
-            setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});  // LEVELUP SCREEN
-            setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000); 
+            setLevelChange({show: true, newLevels: levelDifference, xpGain: totalXPEarned});
+            setTimeout(() => setLevelChange({show: false, newLevels: 0, xpGain: 0}), 3000);
         }
-        
+
         setUserData({
             ...newUserData,
             level: level,
-            xp: currentLeftoverXP,
+            xp: currentLeftoverXP
         });
 
         syncUser();
-        setWorkoutSets(prev => ({ ...prev, [category]: [{ reps: 0, extraWeight: 0 }] }));
+        setCurrentWorkoutSession([]);
+        setTraining(false);
+        setIsRunning(false);
+        setTimeElapsed(0);
+        setOverrideWorkout(null);
     };
-    const visibleCategories = SPLIT_MODES[selectedSplit] || [];
+
+    const activeDay = workoutPlan.cycle[workoutPlan.currentDayIndex];
+    const visibleCategories = activeDay?.categories || SPLIT_MODES[selectedSplit] || [];
+    const activeDayName = activeDay?.name || "Workout";
 
     return (
-        <>
-
+        <div className={styles.workoutScreenContainer}>
             {levelChange.show && (
                 <div className={styles.levelUpNotification}>
                     <h2>Level Up +{levelChange.newLevels}!</h2>
@@ -148,105 +214,144 @@ const finishExercise = (category, exerciseID) => {
                 </div>
             )}
 
-            <div>
-                <h2> Manual input </h2>
-            </div>
-
-            <div>
-                {visibleCategories.map(category => {
-                    const currentExId = activeExercises[category];
-                    if (!currentExId) return null;
-
-                    const exerciseData = EXERCISE_DB[currentExId];
-                    const currentSets = workoutSets[category] || [];
-                    const isUnlocked = currentProgress[currentExId] !== undefined;
-
-                    return (
-                        <div key={category} className={`${styles.exerciseCard} ${!isUnlocked ? styles.locked : ''}`}>
-                            
-                            <div className={styles.exerciseHeader}>
-                                <button 
-                                    className={styles.navBtn}
-                                    onClick={() => handleSwitchExercise(category, 'prev')}
-                                >&lt;</button>
-                                
-                                <h3 className={isUnlocked ? styles.unlocked : styles.locked} style={{ margin: 0 }}>
-                                    {exerciseData?.name || currentExId}
-                                </h3>
-                                
-                                <button 
-                                    className={styles.navBtn}
-                                    onClick={() => handleSwitchExercise(category, 'next')}
-                                >&gt;</button>
-                            </div>
-
-                            <div className={styles.badgeContainer}>
-                                <span className={`${styles.sysBadge} ${isUnlocked ? styles.unlocked : styles.locked}`}>
-                                    {isUnlocked ? '✓ UNLOCKED' : '🔒 LOCKED'}
-                                </span>
-                            </div>
-
-                            {isUnlocked ? (
-                                <>
-                                    <div className={styles.setsContainer}>
-                                        {currentSets.map((set, index) => (
-                                            <div key={index} className={styles.setRow}>
-
-                                                <span className={styles.setLabel}>Set {index + 1}</span>
-                                                <input 
-                                                    type="number" 
-                                                    min="0"
-                                                    placeholder={exerciseData.unit}
-                                                    value={set.reps || ''}
-                                                    onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
-                                                    className={styles.setInput}
-                                                    required
-                                                />
-                                                <input 
-                                                    type="number" 
-                                                    min="0"
-                                                    placeholder="+ kg"
-                                                    value={set.extraWeight || ''}
-                                                    onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
-                                                    className={styles.setInput}
-                                                />
-                                                {currentSets.length > 1 && (
-                                                    <CloseButton onClose={() => handleRemoveSet(category, index)} position='relative' align='center' />
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <div className={styles.exerciseActions}>
-                                        <button 
-                                            className={styles.btnAddSet}
-                                            onClick={() => handleAddSet(category)}
-                                        >+ Add Set</button>
-                                        <button 
-                                            className={styles.btnComplete}
-                                            onClick={() => finishExercise(category, currentExId)}
-                                        >Complete Exercise</button>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className={styles.lockedStateBox}>
-                                    <span>🔒</span>
-                                    <h4>Exercise Locked</h4>
-                                    <p>You haven't reached this variation in your Skill Tree yet.</p>
-                                    <button 
-                                        className={styles.btnForceUnlock}
-                                        onClick={() => handleForceUnlock(category, currentExId)}
-                                    >
-                                        Force Unlock (Start Tracking)
-                                    </button>
-                                </div>
-                            )}
+            {!training ? (
+                <div className={styles.startScreen}>
+                    <div className={styles.topBar}>
+                        <h2 style={{margin: 0, fontSize: '1rem', color: '#94a3b8'}}>
+                            On schedule: <span className={styles.scheduleTitle}>{activeDayName}</span>
+                        </h2>
+                        <SystemButton text='Switch' />
+                    </div>
+                    <div className={styles.startBtnWrapper}>
+                        <SystemButton text='Start training' onClick={handleStartTraining}/>
+                    </div>
+                </div>      
+            ) : (
+                <div className={styles.trainingActiveScreen}>
+                    <div className={styles.stickyHeader}>
+                        <div className={styles.topBar}>
+                            <h2 style={{margin: 0, fontSize: '1rem', color: '#94a3b8'}}>
+                                On schedule: <span className={styles.scheduleTitle}>{activeDayName}</span>
+                            </h2>
+                            <SystemButton text='Switch' />
                         </div>
-                    );
-                })}
-            </div>
-        
-        </>
+                        <div className={styles.timerDisplay}>
+                            Timer: <span className={styles.timerText}>{formatTime(timeElapsed)}</span>
+                        </div>
+                    </div>
+
+                    {currentWorkoutSession.length > 0 && (
+                        <div className={styles.sessionSummary}>
+                            <h4 style={{ margin: '0 0 10px 0', color: 'var(--cyan, #00e5ff)', textTransform: 'uppercase' }}>Logged Exercises:</h4>
+                            <ul style={{ margin: 0, paddingLeft: '20px', color: '#94a3b8' }}>
+                                {currentWorkoutSession.map((ex, i) => (
+                                    <li key={i}>{EXERCISE_DB[ex.exerciseID]?.name || ex.exerciseID} - {ex.totalReps} {EXERCISE_DB[ex.exerciseID]?.unit || 'reps'}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    <div>
+                        {visibleCategories.map(category => {
+                            const currentExId = activeExercises[category];
+                            if (!currentExId) return null;
+
+                            const exerciseData = EXERCISE_DB[currentExId];
+                            const currentSets = workoutSets[category] || [];
+                            const isUnlocked = currentProgress[currentExId] !== undefined;
+
+                            return (
+                                <div key={category} className={`${styles.exerciseCard} ${!isUnlocked ? styles.locked : ''}`}>
+                                    <div className={styles.exerciseHeader}>
+                                        <button 
+                                            className={styles.navBtn}
+                                            onClick={() => handleSwitchExercise(category, 'prev')}
+                                        >&lt;</button>
+                                        
+                                        <h3 className={isUnlocked ? styles.unlocked : styles.locked}>
+                                            {exerciseData?.name || currentExId}
+                                        </h3>
+                                        
+                                        <button 
+                                            className={styles.navBtn}
+                                            onClick={() => handleSwitchExercise(category, 'next')}
+                                        >&gt;</button>
+                                    </div>
+
+                                    <div className={styles.badgeContainer}>
+                                        <span className={`${styles.sysBadge} ${isUnlocked ? styles.unlocked : styles.locked}`}>
+                                            {isUnlocked ? '✓ UNLOCKED' : '🔒 LOCKED'}
+                                        </span>
+                                    </div>
+
+                                    {isUnlocked ? (
+                                        <>
+                                            <div className={styles.setsContainer}>
+                                                {currentSets.map((set, index) => (
+                                                    <div key={index} className={styles.setRow}>
+                                                        <span className={styles.setLabel}>Set {index + 1}</span>
+                                                        <input 
+                                                            type="number" 
+                                                            min="0"
+                                                            placeholder={exerciseData.unit}
+                                                            value={set.reps || ''}
+                                                            onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
+                                                            className={styles.setInput}
+                                                            required
+                                                        />
+                                                        <input 
+                                                            type="number" 
+                                                            min="0"
+                                                            placeholder="+ kg"
+                                                            value={set.extraWeight || ''}
+                                                            onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
+                                                            className={styles.setInput}
+                                                        />
+                                                        {currentSets.length > 1 && (
+                                                            <button 
+                                                                className={styles.btnRemove} 
+                                                                onClick={() => handleRemoveSet(category, index)}
+                                                            >✕</button>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className={styles.exerciseActions}>
+                                                <button 
+                                                    className={styles.btnAddSet}
+                                                    onClick={() => handleAddSet(category)}
+                                                >+ Add Set</button>
+                                                <button 
+                                                    className={styles.btnComplete}
+                                                    onClick={() => handleAddExerciseToSession(category, currentExId)}
+                                                >Complete Exercise</button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className={styles.lockedStateBox}>
+                                            <span>🔒</span>
+                                            <h4>Exercise Locked</h4>
+                                            <p>You haven't reached this variation in your Skill Tree yet.</p>
+                                            <button 
+                                                className={styles.btnForceUnlock}
+                                                onClick={() => handleForceUnlock(category, currentExId)}
+                                            >
+                                                Force Unlock (Start Tracking)
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
+                        <SystemButton text='Complete Workout Day' onClick={handleFinishWorkoutDay} />
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
 
