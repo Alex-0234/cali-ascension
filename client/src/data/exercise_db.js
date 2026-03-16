@@ -654,7 +654,7 @@ export const EVALUATION_EXERCISES = {
 export const SPLIT_MODES = {
     'Full Body': {
         cycle: [
-            { name: 'Upper Day', categories: ['pushups','pullups','squats','core'] },
+            { name: 'Full Body', categories: ['pushups','pullups','squats','core'] },
         ],
         currentDayIndex: 0
     },
