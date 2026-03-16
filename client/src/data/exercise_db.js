@@ -2,6 +2,8 @@ export const EXERCISE_DB = {
 
     // |||||||   PUSH-UPS   |||||||
 
+    // Add decline pushup or option
+
     "pushup_00": {
         id: "pushup_00",
         name: "Wall Push-up",
@@ -650,9 +652,26 @@ export const EVALUATION_EXERCISES = {
 };
 
 export const SPLIT_MODES = {
-    'none': ['pushups', 'pullups', 'squats', 'core'],
-    'Push/Pull/Legs': ['pushups', 'pullups','squats'],
-    'Upper/Lower': ['pushups', 'pullups', 'squats'],
-    'Legs & Core': ['squats', 'core'],
-    'Full Body': ['pushups', 'pullups', 'squats', 'core'],
+    'Full Body': {
+        cycle: [
+            { name: 'Upper Day', categories: ['pushups','pullups','squats','core'] },
+        ],
+        currentDayIndex: 0
+    },
+    'Push/Pull/Legs': {
+        cycle: [
+            { name: 'Push Day', categories: ['pushups','core'] },
+            { name: 'Pull Day', categories: ['pullups','core'] },
+            { name: 'Leg Day', categories: ['squats','core'] },
+        ],
+        currentDayIndex: 0,
+        },
+    'Upper/Lower': {
+        cycle: [
+            { name: 'Upper Day', categories: ['pushups','pullups'] },
+            { name: 'Lower Day', categories: ['squats','core'] },
+        ],
+        currentDayIndex: 0,
+        },
+
 };

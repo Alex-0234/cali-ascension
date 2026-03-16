@@ -11,7 +11,10 @@ const INITIAL_PLAYER_STATE = {
     gender: "",
     height: "",
     weight: "",
-    currentProgram: 'none',
+    currentSplit: {
+      split: 'Full Body',
+      currentDayIndex: 0,
+    },
 
     level: 1,
     rank: "Unranked",

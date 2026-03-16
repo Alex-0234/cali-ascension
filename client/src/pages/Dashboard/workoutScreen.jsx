@@ -79,11 +79,15 @@ export function WorkoutScreen() {
         const initialActive = {};
         const initialSets = {};
 
-        Object.keys(SPLIT_MODES).forEach(split => {
-            SPLIT_MODES[split].forEach(category => {
-                initialActive[category] = highestUnlocked[category]?.id || ALL_EXERCISES[category][0];
-                initialSets[category] = [{ reps: 0, extraWeight: 0 }];
-            });
+        const currentDayIndex = userData.currentSplit.currentDayIndex;
+
+        Object.keys(SPLIT_MODES[userData.currentSplit.split].cycle).forEach(exerciseGroup => {
+                exerciseGroup.categories.forEach(category => {
+                        initialActive[category] = highestUnlocked[category]?.id || ALL_EXERCISES[category][0];
+                        initialSets[category] = [{ reps: 0, extraWeight: 0 }];
+                    })
+
+
         });
 
         setActiveExercises(initialActive);
