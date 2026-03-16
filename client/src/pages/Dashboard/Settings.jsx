@@ -16,6 +16,9 @@ export default function Settings() {
     const [editField, setEditField] = useState(null);
     const [newValue, setNewValue] = useState("");
     
+    const allMainFields = ['username','email','password'];
+    const allSecondaryFields = ['shownName','gender','age',];
+    
 
     const handleEdit = (field) => {
         setEditField(field);
@@ -34,18 +37,16 @@ export default function Settings() {
         <>
             <h3> Currently in development... </h3>
             <div className={`${styles.profileInfo} generic-border`}>
-                <div>
-                    <p><strong>Username:</strong> {userData.username}</p>
-                    <EditBtn onClick={() => handleEdit("username")} toChange="username" />
-                </div>
-                <div>
-                    <p><strong>Email:</strong> {userData.email}</p>
-                    <EditBtn onClick={() => handleEdit("email")} toChange="email" />
-                </div>
-                <div>
-                    <p><strong>Shown Username:</strong> {userData.shownName}</p>
-                    <EditBtn onClick={() => handleEdit("shownName")} toChange="shown username" />
-                </div>
+                { allMainFields.forEach(field => {
+                    return (
+                    	<div>
+                            <label for=`settings_&{field}`>{field}</label>
+                            <input id=`settings_&{field}` onChange={(e) => setNewValue(e.target.value)}></input>
+                            <button onClick={() => handleSave()} > Submit </button>
+                        </div>
+                    )
+                }
+                }
                 {isEditing && editField && (
                     <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem'}}>
                         <h2>Edit {editField}</h2>
