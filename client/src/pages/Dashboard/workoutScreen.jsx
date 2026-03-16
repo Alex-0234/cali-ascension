@@ -81,7 +81,7 @@ export function WorkoutScreen() {
 
         const currentDayIndex = userData.currentSplit.currentDayIndex;
 
-        Object.keys(SPLIT_MODES[userData.currentSplit.split].cycle).forEach(exerciseGroup => {
+        SPLIT_MODES[userData.currentSplit.split].cycle.forEach(exerciseGroup => {
                 exerciseGroup.categories.forEach(category => {
                         initialActive[category] = highestUnlocked[category]?.id || ALL_EXERCISES[category][0];
                         initialSets[category] = [{ reps: 0, extraWeight: 0 }];
@@ -128,6 +128,7 @@ export function WorkoutScreen() {
         setWorkoutSets(prev => ({ ...prev, [category]: updatedSets }));
     };
 
+	// Remake for actual points and unlocking
     const handleForceUnlock = (category, exerciseId) => {
         setUserData({
             ...userData,
