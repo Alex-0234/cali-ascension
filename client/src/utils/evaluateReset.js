@@ -16,7 +16,7 @@ export default function evaluateReset(evaluatedArray, date = Date.now()) {
     };
 
     evaluatedArray.forEach(obj => {
-        const objDate = new Date(obj.date);
+        const objDate = new Date(obj.date).toISOString().split('T')[0];
 
         if (newDate.valueOf() > objDate.valueOf()) {
             tempId = obj.id;
@@ -24,8 +24,6 @@ export default function evaluateReset(evaluatedArray, date = Date.now()) {
             console.log(tempId)
         }
     });
-
-    console.log('tempDate: ', tempDate.toLocaleDateString('en-CA'))
 
     const finalDate = new Date(tempDate)
     const objYear = finalDate.getFullYear();
