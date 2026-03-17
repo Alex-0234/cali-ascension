@@ -1,57 +1,420 @@
 .workoutScreenContainer {
-  width: 100%;
-  max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
-  background: var(--bg-panel-a);
+  background: var(--bg-panel-a, rgba(15, 23, 42, 0.8));
   border-radius: 12px;
-  border: 2px solid var(--border-a);
+  border: 1px solid var(--border-a, rgba(0, 229, 255, 0.2));
   box-sizing: border-box;
   overflow-x: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.splitSelector {
+.trainingInactive {
+  width: 100%;
+  max-width: 650px;
+  padding: 30px;
+  margin-top: 10vh;
+}
+
+.trainingActive {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px 15px;
+  min-height: 85vh;
+}
+
+.startScreen {
   display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 30px;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.sysHeader {
+  border-bottom: 1px dashed #334155;
+  padding-bottom: 15px;
+  width: 100%;
+}
+
+.sysTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  letter-spacing: 1px;
+}
+
+.startScreenContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
   flex-wrap: wrap;
 }
-
-.splitBtn {
-  padding: 10px 20px;
+.statusPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.statusOptions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.statusBtn {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #334155;
+  color: #64748b;
+  padding: 12px 10px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.statusBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+}
+
+.statusOptimal {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #10b981;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+}
+
+.statusRecovery {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #f59e0b;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
+}
+
+.statusCritical {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #ef4444;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);
+}
+
+.overrideBox {
+  margin-top: 10px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 6px 6px 0;
+  animation: slideDown 0.3s ease-out;
+}
+
+.overrideBox p {
+  margin: 0 0 15px 0;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.btnConfirmOverride {
+  background: transparent;
+  border: 1px solid #f59e0b;
+  color: #f59e0b;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.btnConfirmOverride:hover {
+  background: rgba(245, 158, 11, 0.1);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+}
+
+@media (max-width: 480px) {
+  .statusOptions {
+    flex-direction: column;
+  }
+}
+
+.scheduleInfo {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.scheduleLabel {
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.scheduleTarget {
+  color: var(--cyan, #00e5ff);
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+}
+
+.startBtnWrapper {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.secondaryBtn {
+  background: transparent;
   border: none;
-  background: var(--bg-card);
-  color: var(--text-main);
+  color: #64748b;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #334155;
+  transition: color 0.2s;
+}
+
+.secondaryBtn:hover {
+  color: #e2e8f0;
+}
+
+.trainingActiveScreen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 10px 0 15px 0;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+.scheduleTitle {
+  color: var(--cyan, #00e5ff);
+  font-weight: 800;
+}
+
+.timerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 5px 10px 5px 15px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+}
+
+.timerText {
+  color: var(--cyan, #00e5ff);
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  transition: opacity 0.3s;
+}
+
+.timerPaused {
+  opacity: 0.5;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.1; }
+}
+
+.pauseBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #334155;
+  color: #94a3b8;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.pauseBtn:hover {
+  background: #1e293b;
+  color: var(--cyan, #00e5ff);
+  border-color: var(--cyan, #00e5ff);
+}
+.cancelBtn {
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #f87171;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
+.sessionSummary {
+  background: rgba(0, 229, 255, 0.03);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.summaryTitle {
+  margin: 0 0 12px 0;
+  color: var(--cyan, #00e5ff);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.summaryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #1e293b;
+}
+
+.summaryItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.summaryInfoWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5px;
+}
+
+.summaryName {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.summaryDetails {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summarySets {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.summaryTotal {
+  color: var(--cyan, #00e5ff);
   font-weight: bold;
 }
 
-.splitBtn.active {
-  background: var(--primary);
-  box-shadow: 0 4px 15px var(--primary-glow);
+.btnRemoveLog {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.btnRemoveLog:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.exercisesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .exerciseCard {
-  background: var(--bg-card-a);
+  background: rgba(2, 6, 23, 0.4);
   border-radius: 12px;
-  border: 2px solid var(--border-a);
-  padding: 1rem;
-  margin-bottom: 20px;
-  transition: opacity 0.3s ease;
+  border: 1px solid #1e293b;
+  padding: 20px;
+  transition: all 0.3s ease;
   box-sizing: border-box;
   width: 100%;
 }
 
 .exerciseCard.locked {
+  background: rgba(15, 23, 42, 0.2);
+  border: 1px dashed #334155;
   opacity: 0.7;
-}
-
-@media (max-width: 380px) {
-  .exerciseCard {
-    padding: 0.5rem;
-  }
 }
 
 .exerciseHeader {
@@ -59,8 +422,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 15px;
   gap: 10px;
 }
 
@@ -69,57 +430,59 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   text-align: center;
-  font-size: clamp(0.7rem, 2vw, 1.1rem);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   word-wrap: break-word;
 }
 
-.unlocked {
-  color: var(--primary);
-}
-
-.locked {
-  color: #64748b;
-}
+.unlocked { color: #f8fafc; }
+.lockedTitle { color: #64748b; }
 
 .navBtn {
-  padding: 10px 15px;
   background: transparent;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
+  border: 1px solid #334155;
+  color: #94a3b8;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  font-size: 1.2rem;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .navBtn:hover {
   background: rgba(0, 229, 255, 0.1);
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+  color: var(--cyan, #00e5ff);
+  border-color: var(--cyan, #00e5ff);
 }
 
 .badgeContainer {
-  text-align: center;
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
 }
 
 .sysBadge {
-  display: inline-block;
   padding: 4px 12px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: bold;
+  letter-spacing: 1px;
 }
 
-.sysBadge.unlocked {
-  background: var(--cyan);
-  color: #020617;
+.unlockedBadge {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--cyan, #00e5ff);
+  border: 1px solid rgba(0, 229, 255, 0.3);
 }
 
-.sysBadge.locked {
-  background: rgba(239, 68, 68, 0.2);
+.lockedBadge {
+  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
-  border: 1px solid #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .setsContainer {
@@ -131,375 +494,179 @@
 
 .setRow {
   display: flex;
-  border: 1px solid var(--border);
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: rgba(0, 0, 0, 0.2);
-  padding: 0.8rem 0.5rem;
+  border: 1px solid #1e293b;
+  padding: 10px;
   border-radius: 8px;
   box-sizing: border-box;
   width: 100%;
 }
 
 .setLabel {
-  color: #e2e8f0;
+  color: #94a3b8;
   font-weight: bold;
-  font-size: clamp(0.7rem, 3vw, 1rem);
-  white-space: nowrap;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  min-width: 50px;
 }
 
 .setInput {
   flex: 1;
   min-width: 0;
-  padding: 0.6rem 0.5rem;
+  padding: 10px;
   border-radius: 6px;
-  border: 1px solid var(--border);
-  background: #0f172a;
+  border: 1px solid #334155;
+  background: #020617;
   color: white;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
+  text-align: center;
 }
 
 .setInput:focus {
   outline: none;
-  border-color: var(--cyan);
-  box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+  border-color: var(--cyan, #00e5ff);
+  background: rgba(0, 229, 255, 0.02);
 }
 
 .btnRemove {
   background: transparent;
   border: none;
   color: #ef4444;
-  font-weight: bold;
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0 5px;
-  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
 .btnRemove:hover {
-  color: #f87171;
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  opacity: 1;
 }
 
 .exerciseActions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .btnAddSet {
   flex: 1;
-  min-width: 120px;
-  padding: 10px 20px;
+  padding: 12px;
   background: transparent;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
+  border: 1px dashed #475569;
+  color: #94a3b8;
   border-radius: 8px;
-  font-weight: bold;
-  font-size: clamp(0.7rem, 3vw, 1rem);
+  font-weight: 600;
   cursor: pointer;
-  text-align: center;
+  transition: all 0.2s;
 }
 
 .btnAddSet:hover {
-  background: rgba(0, 229, 255, 0.1);
+  border-color: var(--cyan, #00e5ff);
+  color: var(--cyan, #00e5ff);
+  background: rgba(0, 229, 255, 0.05);
 }
 
 .btnComplete {
-  flex: 1;
-  min-width: 150px;
-  padding: 10px 20px;
-  background: var(--primary);
+  flex: 2;
+  padding: 12px;
+  background: var(--cyan, #00e5ff);
   border: none;
-  color: white;
+  color: #020617;
   border-radius: 8px;
-  font-weight: bold;
-  box-shadow: 0 4px 10px var(--primary-glow);
-  font-size: clamp(0.7rem, 3vw, 1rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  text-align: center;
+  transition: all 0.2s;
 }
 
 .btnComplete:hover {
-  background: #06b6d4;
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
 .lockedStateBox {
   text-align: center;
-  padding: 30px 20px;
+  padding: 20px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  border: 1px dashed #334155;
-  box-sizing: border-box;
-  width: 100%;
+  border-top: 1px dashed #334155;
+  margin-top: 15px;
 }
 
-.lockedStateBox span {
+.lockIcon {
   font-size: 2rem;
   display: block;
   margin-bottom: 10px;
+  filter: grayscale(1);
+  opacity: 0.5;
 }
 
 .lockedStateBox h4 {
-  color: #94a3b8;
+  color: #ef4444;
   margin: 0 0 10px 0;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
 }
 
 .lockedStateBox p {
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin-bottom: 20px;
 }
 
 .btnForceUnlock {
-  padding: 8px 16px;
-  background: transparent;
-  color: var(--cyan);
-  border: 1px solid var(--cyan);
+  padding: 10px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 6px;
   font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
   cursor: pointer;
-  width: 100%;
-  box-sizing: border-box;
+  transition: all 0.2s;
 }
 
 .btnForceUnlock:hover {
-  background: rgba(0, 229, 255, 0.1);
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+}
+
+.finishWorkoutWrapper {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #1e293b;
+  padding-top: 30px;
 }
 
 .levelUpNotification {
   background: rgba(0, 229, 255, 0.1);
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--cyan, #00e5ff);
   padding: 15px;
   border-radius: 8px;
   text-align: center;
   margin-bottom: 20px;
-  color: var(--cyan);
+  color: var(--cyan, #00e5ff);
   box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-  animation: slideDown 0.3s ease-out;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.workoutCard {
-  background: #0f172a; 
-  border: 1px solid #1e293b;
-  border-radius: 12px;
-  margin-top: 2rem;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.cardHeader {
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.1);
-}
-
-.cardTitle {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--cyan, #00e5ff);
-  font-size: clamp(0.6rem, 2vw, 1rem);
-  font-weight: 800;
-  margin: 0;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.statusRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  font-family: 'Inter', sans-serif;
-  gap: 10px;
-}
-
-.statusLabel {
-  color: #64748b;
-  font-size: clamp(0.5rem, 2vw, 0.85rem);
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.statusValue {
-  color: #f8fafc;
-  font-weight: bold;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(0.6rem, 2vw, 0.9rem);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  word-break: break-all;
-  text-align: right;
-}
-
-.selectWrapper {
-  position: relative;
-  width: 100%;
-}
-
-.styledSelect {
-  width: 100%;
-  appearance: none; 
-  -webkit-appearance: none;
-  background: rgba(2, 6, 23, 0.6);
-  border: 1px solid #334155;
-  color: #f8fafc;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color-scheme: dark;
-  box-sizing: border-box;
-}
-
-.styledSelect:hover {
-  background: rgba(2, 6, 23, 0.9);
-  border-color: #475569;
-}
-
-.styledSelect:focus {
-  outline: none;
-  border-color: var(--cyan, #00e5ff);
-  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15);
-}
-
-.selectIcon {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; 
-  color: var(--cyan, #00e5ff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.startScreen {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  width: 100%;
-}
-
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(15, 23, 42, 0.8);
-  padding: 15px 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  flex-wrap: wrap;
-  gap: 10px;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.scheduleTitle {
-  color: var(--cyan, #00e5ff);
-  font-weight: 800;
-  margin-left: 10px;
-  word-wrap: break-word;
-}
-
-.startBtnWrapper {
-  display: flex;
-  justify-content: center;
-  padding: 40px 0;
-  width: 100%;
-}
-
-.trainingActiveScreen {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-}
-
-.stickyHeader {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(2, 6, 23, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.timerDisplay {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #94a3b8;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.timerText {
-  color: var(--cyan, #00e5ff);
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin-left: 10px;
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
-}
-
-.sessionSummary {
-  background: rgba(0, 229, 255, 0.05);
-  border: 1px solid rgba(0, 229, 255, 0.2);
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  width: 100%;
 }
 
 @media (max-width: 480px) {
-  .workoutScreenContainer {
-    padding: 10px;
-  }
   .topBar {
     flex-direction: column;
-    text-align: center;
+    align-items: stretch;
   }
-  .setRow {
-    flex-wrap: wrap;
+  .timerWrapper {
     justify-content: center;
   }
-  .setInput {
-    min-width: 80px;
-  }
-  .btnComplete, .btnAddSet {
-    width: 100%;
+  .exerciseActions {
+    flex-direction: column;
   }
 }
