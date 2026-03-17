@@ -1,9 +1,10 @@
 
+import styles from '../../styles/button.module.css'
 
-const SystemButton = ({text, onClick}) => {
+const SystemButton = ({ style = 'genericBtn', text, onClick }) => {
     return (
-        <button className='generic-btn' onClick={onClick}>
-            {`${text}`}
+        <button className={styles[style]} onClick={onClick}>
+            {text}
         </button>
     )
 }

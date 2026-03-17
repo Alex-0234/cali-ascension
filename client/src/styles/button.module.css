@@ -1,0 +1,27 @@
+.genericBtn {
+    background: var(--bg-card);
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+
+.dashed {  
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border: 1px dashed #475569;
+    color: #94a3b8;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dashed:hover {
+  border-color: var(--cyan, #00e5ff);
+  color: var(--cyan, #00e5ff);
+  background: rgba(0, 229, 255, 0.05);
+}
