@@ -655,8 +655,7 @@ export const SPLIT_MODES = {
     'Full Body': {
         cycle: [
             { name: 'Full Body', categories: ['pushups','pullups','squats','core'] },
-        ],
-        currentDayIndex: 0
+        ]
     },
     'Push/Pull/Legs': {
         cycle: [

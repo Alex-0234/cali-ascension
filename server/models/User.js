@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
     gender: String,
     weight: Number,
     height: Number,
+    bioStatus: String,
     
     rank: { type:String, default: "" },
     title: { type:String, default: "" },
@@ -36,7 +37,10 @@ const UserSchema = new mongoose.Schema({
     },
 
     isConfigured: { type: Boolean, default: false },
-    currentProgram: { type: String, default: "none" },
+    currentSplit: { 
+        split: {type: String, default: "Full Body" },
+        currentDayIndex: {type: Number, default: 0 },
+    },
 
     exerciseProgress: {
         type: mongoose.Schema.Types.Mixed,

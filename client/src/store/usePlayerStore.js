@@ -15,6 +15,7 @@ const INITIAL_PLAYER_STATE = {
       split: 'Full Body',
       currentDayIndex: 0,
     },
+    bioStatus: 'optimal',
 
     level: 1,
     rank: "Unranked",
@@ -43,7 +44,7 @@ const INITIAL_PLAYER_STATE = {
     isConfigured: false,
 
     weightHistory: [],
-    workoutHistory: {}, // Complete rework
+    workoutHistory: {}, 
 
     /* workoutHistory = {
         2026-03-12: {
