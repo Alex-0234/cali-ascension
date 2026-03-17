@@ -1,0 +1,225 @@
+.settingsContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #f8fafc;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.devBadge {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+}
+
+/* SECTIONS & GRID */
+.settingsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.settingsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--cyan, #00e5ff);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* INDIVIDUAL ROWS */
+.settingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card-a, rgba(15, 23, 42, 0.6));
+  border: 1px solid var(--border-a, #1e293b);
+  border-radius: 12px;
+  padding: 15px 20px;
+  transition: all 0.2s ease;
+}
+
+.settingRow:hover {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #334155;
+}
+
+.settingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.settingLabel {
+  color: #64748b;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.settingInputReadonly {
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  outline: none;
+  width: 100%;
+}
+
+.settingAction {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MODAL OVERLAY (GLASSMORPHISM) */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.editModal {
+  background: #0f172a;
+  border: 1px solid var(--cyan, #00e5ff);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+  animation: modalPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPopIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px dashed #334155;
+}
+
+.modalTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.2rem;
+}
+
+.highlightText {
+  color: var(--cyan, #00e5ff);
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.modalBody {
+  padding: 30px 20px;
+}
+
+.modalInput {
+  width: 100%;
+  background: #020617;
+  border: 1px solid #334155;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.modalInput:focus {
+  outline: none;
+  border-color: var(--cyan, #00e5ff);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid #1e293b;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.btnCancel {
+  background: transparent;
+  border: 1px solid #475569;
+  color: #cbd5e1;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btnCancel:hover {
+  background: #1e293b;
+  color: white;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .settingRow {
+    padding: 12px 15px;
+  }
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+}

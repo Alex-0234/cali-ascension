@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import useUserStore from '../../store/usePlayerStore';
 
@@ -6,8 +5,7 @@ import SystemButton from '../../components/ui/systemBtn';
 import EditBtn from '../../components/ui/editBtn';
 import CloseButton from '../../components/ui/closeBtn';
 
-import styles from '../../styles/layout.module.css'
-
+import styles from '../../styles/settings.module.css';
 
 export default function Settings() {
     const userData = useUserStore((state) => state.userData);
@@ -17,65 +15,115 @@ export default function Settings() {
     const [editField, setEditField] = useState(null);
     const [newValue, setNewValue] = useState("");
     
-    const allMainFields = ['username','email','password'];
-    const allSecondaryFields = ['shownName','gender','age',];
+    const allMainFields = ['username', 'email', 'password'];
+    const allSecondaryFields = ['shownName', 'gender', 'age'];
     
-
     const handleEdit = (field) => {
         setEditField(field);
+        setNewValue(""); 
         setIsEditing(true);
     }
 
     const handleSave = () => {
+        if (!newValue.trim()) {
+            alert("Value cannot be empty!");
+            return;
+        }
         setUserData({ ...userData, [editField]: newValue });
         setEditField(null);
         setIsEditing(false);
-
     }
 
-
     return (
-        <>
-            <h3> Currently in development... </h3>
-            <div className={`${styles.profileInfo} generic-border`}>
+        <div className={styles.settingsContainer}>
+            <div className={styles.headerArea}>
+                <h2 className={styles.pageTitle}>System Settings</h2>
+                <span className={styles.devBadge}>v_development</span>
+            </div>
 
-                {allMainFields.map((field, index) => {
-                    return (
-                    	<div key={index}>
-                            <label htmlFor={`settings_${field}`}> {field}: </label>
+            <div className={styles.settingsGrid}>
+                {/* ACCOUNT DETAILS SECTION */}
+                <div className={styles.settingsSection}>
+                    <h3 className={styles.sectionTitle}>Account Details</h3>
+                    <div className={styles.cardList}>
+                        {allMainFields.map((field, index) => (
+                            <div key={index} className={styles.settingRow}>
+                                <div className={styles.settingInfo}>
+                                    <label className={styles.settingLabel} htmlFor={`settings_${field}`}>
+                                        {field}
+                                    </label>
+                                    <input 
+                                        className={styles.settingInputReadonly}
+                                        name={field} 
+                                        id={`settings_${field}`} 
+                                        value={field === 'password' ? "********" : userData[field] || "Not set"} 
+                                        readOnly={true} 
+                                    />
+                                </div>
+                                <div className={styles.settingAction}>
+                                    <EditBtn onClick={() => handleEdit(field)} /> 
+                                </div>
+                            </div> 
+                        ))}
+                    </div>
+                </div>
 
-                            { field !== 'password' && (
-                                <input name={field} id={`settings_${field}`} value={`[ ${userData[field]} ]`} readOnly={true} style={{display: 'flex', width: 'auto'}}/>
-                            )     
-                            }
-                            <EditBtn onClick={() => handleEdit(field)} /> 
-                        </div> 
-                    )
-                })
-                }
-                {allSecondaryFields.map((field, index) => {
-                    return (
-                    	<div key={index}>
-                            <label htmlFor={`settings_${field}`}> {field}: </label>
-                            <input name={field} id={`settings_${field}`} value={`[ ${userData[field]} ]`} readOnly={true} style={{display: 'flex', width: 'auto'}}/>   
-                            <EditBtn onClick={() => handleEdit(field)} /> 
-                        </div> 
-                    )
-                })
-                }
+                {/* PLAYER PROFILE SECTION */}
+                <div className={styles.settingsSection}>
+                    <h3 className={styles.sectionTitle}>Player Profile</h3>
+                    <div className={styles.cardList}>
+                        {allSecondaryFields.map((field, index) => (
+                            <div key={index} className={styles.settingRow}>
+                                <div className={styles.settingInfo}>
+                                    <label className={styles.settingLabel} htmlFor={`settings_${field}`}>
+                                        {field === 'shownName' ? 'Display Name' : field}
+                                    </label>
+                                    <input 
+                                        className={styles.settingInputReadonly}
+                                        name={field} 
+                                        id={`settings_${field}`} 
+                                        value={userData[field] || "Not set"} 
+                                        readOnly={true} 
+                                    />   
+                                </div>
+                                <div className={styles.settingAction}>
+                                    <EditBtn onClick={() => handleEdit(field)} /> 
+                                </div>
+                            </div> 
+                        ))}
+                    </div>
+                </div>
+            </div>
 
+            {/* EDIT MODAL OVERLAY */}
+            {isEditing && editField && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.editModal}>
+                        <div className={styles.modalHeader}>
+                            <h3 className={styles.modalTitle}>
+                                Edit <span className={styles.highlightText}>{editField === 'shownName' ? 'Display Name' : editField}</span>
+                            </h3>
+                            <CloseButton onClose={() => setIsEditing(false)} />
+                        </div>
+                        
+                        <div className={styles.modalBody}>
+                            <input 
+                                className={styles.modalInput}
+                                type={editField === 'password' ? "password" : "text"} 
+                                placeholder={`Enter new ${editField}`} 
+                                value={newValue}
+                                onChange={(e) => setNewValue(e.target.value)}
+                                autoFocus
+                            />
+                        </div>
 
-                {isEditing && editField && (
-                    <div style={{ zIndex: 1000, height: 'auto', width: '300px', position: 'absolute',top: '10rem', padding: '1rem', background: 'var(--bg-panel-a)', backdropFilter: 'blur(16px)'}}>
-                        <h2>Edit {editField}</h2>
-                        <div className='btn-close' onClick={() => setIsEditing(false)}>X</div>
-                        <div className="edit-field generic-border">
-                            <input type="text" placeholder={`Enter new ${editField}`} onChange={(e) => setNewValue(e.target.value)} />
-                            <SystemButton /* className="save-btn" */ text={'Save'} onClick={() => handleSave()} />
+                        <div className={styles.modalFooter}>
+                            <button className={styles.btnCancel} onClick={() => setIsEditing(false)}>Cancel</button>
+                            <SystemButton text={'Save Changes'} onClick={handleSave} />
                         </div>
                     </div>
-                )}        
-            </div>
-        </>
+                </div>
+            )}        
+        </div>
     )
 }
