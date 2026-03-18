@@ -28,7 +28,7 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
     startOfCurrentWeek.setDate(today.getDate() - daysToSubtract);
 
     Object.keys(safeWorkoutHistory).forEach(day => {
-        const entryDate = new Date(day);
+        const entryDate = new Date(day)
         entryDate.setHours(0, 0, 0, 0);
 
         const diffTime = entryDate.getTime() - startOfCurrentWeek.getTime();
@@ -48,7 +48,7 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
 
         if (weekIndex !== null) {
             
-
+            if (!safeWorkoutHistory[day].exercises) return;
             Object.keys(safeWorkoutHistory[day].exercises).forEach(exercise => {
                 const exerciseId = exercise.exerciseID || "";
                 const amountOfSets = safeWorkoutHistory[day].totalSets;
