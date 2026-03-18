@@ -14,21 +14,21 @@ export default function calculateLevel(userData) {
         totalXPEarned: 0
     };
 
-/*     const sortedDates = Object.keys(workoutHistory).sort((a, b) => new Date(b) - new Date(a)); */
-
     Object.keys(safeWorkoutHistory).forEach(day => {
 
-        if (safeWorkoutHistory[day].type === 'workout') {
+        if (safeWorkoutHistory[day].status === 'workout') {
 
-            safeWorkoutHistory[day].exercises.forEach(exercise => {
+            Object.keys(safeWorkoutHistory[day].exercises).forEach(exercise => {
 
-                const exerciseData = EXERCISE_DB[exercise.exerciseID];
+                const exerciseData = EXERCISE_DB[exercise];
+
                 if (!exerciseData) return;
 
                 const baseXP = TIER_XP_REWARDS[exerciseData.tier];
+                const currentWorkoutSets = userData.workoutHistory[day].exercises[exercise].sets
 
-                if (exercise.sets && Array.isArray(exercise.sets)) {
-                    exercise.sets.forEach(set => {
+                if (currentWorkoutSets && Array.isArray(currentWorkoutSets)) {
+                   currentWorkoutSets.forEach(set => {
 
                         const reps = Number(set.reps) || 0;
                         const extraWeight = Number(set.extraWeight) || 0;

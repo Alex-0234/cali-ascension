@@ -4,7 +4,7 @@ import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db"
 import useUserStore from "../../store/usePlayerStore";  
 
 import calculateLevel from "../../utils/levelUpSystem";
-import { calculatePlayerStats } from "../../utils/statSystem";
+import { calculatePlayerStats } from '../../utils/statSystem'
 import { getHighestUnlockedExercises } from "../../utils/workoutSelector";
 import { getPrevNextExerciseID } from "../../utils/workoutSelector";
 
@@ -12,6 +12,7 @@ import SystemButton from '../../components/ui/systemBtn'
 import CloseButton from "../../components/ui/closeBtn";
 
 import styles from '../../styles/workout.module.css'
+import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
 
 export function WorkoutScreen() {
     const dateNow = new Date().toISOString().split('T')[0];
@@ -94,7 +95,6 @@ export function WorkoutScreen() {
             ...userData,
             currentSplit: {split: nextSplit, currentDayIndex: 0}
         })
-        console.log(userData, nextSplit)
     };
 
     const handleSwitchExercise = (category, direction) => {
@@ -200,22 +200,22 @@ export function WorkoutScreen() {
             exercises: mergedExercises
         };
 
-        const nextIndex = (!isOverride && splitData?.cycle) ? (scheduledDayIndex + 1) % splitData.cycle.length : scheduledDayIndex;
-
         const newUserData = {
             ...userData,
-            stats: calculatePlayerStats(finalDayRecord),
             workoutHistory: { ...userData.workoutHistory, [dateNow]: finalDayRecord },
-            currentSplit: { ...userData.currentSplit, currentDayIndex: nextIndex }
         };
+        
 
+        const newProgress = processWorkoutHistoryObject(newUserData.workoutHistory);
         const { level, currentLeftoverXP, totalXPEarned } = calculateLevel(newUserData);
+        const stats = calculatePlayerStats(newProgress);
+
         if (level - userData.level > 0) {
             setLevelChange({ show: true, newLevels: level - userData.level, xpGain: totalXPEarned });
             setTimeout(() => setLevelChange({ show: false, newLevels: 0, xpGain: 0 }), 3000);
         }
 
-        setUserData({ ...newUserData, level, xp: currentLeftoverXP, bioStatus: 'optimal' });
+        setUserData({ ...newUserData, level,stats: {...stats}, xp: currentLeftoverXP, bioStatus: 'optimal', exerciseProgress: { ...newProgress } });
         syncUser();
         setCurrentWorkoutSession({});
         setTraining(false);
