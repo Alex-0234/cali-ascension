@@ -1,7 +1,7 @@
-
-
 export const setsPerGroup = (workoutHistory, startOnMonday = true) => { 
-    const safeWorkoutHistory = Array.isArray(workoutHistory) ? {} : workoutHistory;
+
+    const safeWorkoutHistory = (workoutHistory && !Array.isArray(workoutHistory)) ? workoutHistory : {};
+    
     const seriesData = [
         { id: 'push', label: 'Push', data: [0, 0, 0, 0], color: '#ef4444' },
         { id: 'pull', label: 'Pull', data: [0, 0, 0, 0], color: '#00e5ff' },
@@ -28,11 +28,14 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
     startOfCurrentWeek.setDate(today.getDate() - daysToSubtract);
 
     Object.keys(safeWorkoutHistory).forEach(day => {
+
+        if (safeWorkoutHistory[day].status !== 'workout') return;
+
         const entryDate = new Date(day)
         entryDate.setHours(0, 0, 0, 0);
 
         const diffTime = entryDate.getTime() - startOfCurrentWeek.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); 
 
         let weekIndex = null;
         
@@ -46,12 +49,12 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
             weekIndex = 0; 
         }
 
-        if (weekIndex !== null) {
-            
-            if (!safeWorkoutHistory[day].exercises) return;
-            Object.keys(safeWorkoutHistory[day].exercises).forEach(exercise => {
-                const exerciseId = exercise.exerciseID || "";
-                const amountOfSets = safeWorkoutHistory[day].totalSets;
+        if (weekIndex !== null && safeWorkoutHistory[day].exercises) {
+
+            Object.keys(safeWorkoutHistory[day].exercises).forEach(exerciseId => {
+                const exerciseData = safeWorkoutHistory[day].exercises[exerciseId];
+
+                const amountOfSets = exerciseData.sets ? exerciseData.sets.length : 0;
 
                 if (exerciseId.startsWith('pushup')) {
                     seriesData[0].data[weekIndex] += amountOfSets;
@@ -62,9 +65,8 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
                 } else if (exerciseId.startsWith('core')) {
                     seriesData[3].data[weekIndex] += amountOfSets;
                 }
-            })
+            });
         }
-            
     });
 
     return seriesData;
