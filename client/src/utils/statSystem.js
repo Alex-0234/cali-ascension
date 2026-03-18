@@ -1,17 +1,17 @@
 import { EXERCISE_DB, ALL_EXERCISES } from "../data/exercise_db";
 
 const EXERCISE_STAT_SCALING = {
-    pushups: { STR: 1.0, END: 0.7, MOB: 0.5, TEC: 0.8 },
-    squats:  { STR: 1.0, END: 0.9, MOB: 0.8, TEC: 0.5 },
-    pullups: { STR: 1.0, END: 0.6, MOB: 0.7, TEC: 1.0 },
-    core:    { STR: 0.6, END: 1.0, MOB: 0.8, TEC: 0.7 }
+    pushups: { STR: 1.0, END: 1.0, MOB: 1.0, TEC: 1.0 },
+    squats:  { STR: 1.0, END: 1.0, MOB: 1.0, TEC: 1.0 },
+    pullups: { STR: 1.0, END: 1.0, MOB: 1.0, TEC: 1.0 },
+    core:    { STR: 1.0, END: 1.0, MOB: 1.0, TEC: 1.0 },
 };
 
 const BASE_STATS = 10;            
-const STATS_MULTIPLIER = 6.5;    
-const TIER_EXPONENT = 1.3;        
-const MAX_REPS_MASTERY = 8;      
-const MAX_STAT_CAP = 500;         
+const STATS_MULTIPLIER = 8;    
+const TIER_EXPONENT = 1.5;        
+const MAX_REPS_MASTERY = 10;      
+const MAX_STAT_CAP = 1000;         
 
 
 export function calculatePlayerStats(userProgress) {
@@ -46,8 +46,8 @@ export function calculatePlayerStats(userProgress) {
 
             const baseTierPoints = Math.pow(highestTierUnlocked, TIER_EXPONENT) * STATS_MULTIPLIER;
             
-            const cappedReps = Math.min(tempMaxReps, 15);
-            const repBonusPoints = (cappedReps / 15) * MAX_REPS_MASTERY;
+            const cappedReps = Math.min(tempMaxReps, 12);
+            const repBonusPoints = (cappedReps / 12) * MAX_REPS_MASTERY;
 
             const totalCategoryPoints = baseTierPoints + repBonusPoints;
 

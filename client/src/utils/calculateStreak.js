@@ -20,25 +20,22 @@ export function calculateStreakFromObject(workoutHistory) {
 
     const isStreakAlive = safeWorkoutHistory[today] || safeWorkoutHistory[yesterday];
 
-    let lastDate = null;
 
     for (let i = sortedDates.length - 1; i >= 0; i--) {
         const dateString = sortedDates[i];
         const log = safeWorkoutHistory[dateString];
 
-        const isLegitWorkout = log.type === 'workout' && (log.totalVolume >= 20);
-        const isRestDay = log.type === 'rest';
+        const isLegitWorkout = log.status === 'workout' && (log.totalVolume >= 12);
+        const isRestDay = log.status === 'restday';
 
         if (isLegitWorkout) {
             tempStreak++;
             highestStreak = Math.max(highestStreak, tempStreak);
-        } /* else if (isRestDay) {
+        } 
 
-        } */ 
         else {
             tempStreak = 0;
         }
-        lastDate = dateString;
     }
 
     currentStreak = isStreakAlive ? tempStreak : 0;

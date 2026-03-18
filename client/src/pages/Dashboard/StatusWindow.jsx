@@ -6,6 +6,7 @@ import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import WeightTracker from "../../components/stats/weightTracker";
 import StatusReport from "../../components/stats/statusReport";
 import { calculateStreakFromObject } from "../../utils/calculateStreak";
+import { calculatePlayerStats } from '../../utils/statSystem';
 
 import styles from "../../styles/status.module.css";
 
@@ -29,10 +30,12 @@ export default function StatusWindow() {
     const [levelProgress, setLevelProgress] = useState(0);
 
     const currentProgress = getLevelProgress(userData.xp, userData.level);
-    const currentStreak = calculateStreakFromObject(userData.workoutHistory);
+    const {current, highest} = calculateStreakFromObject(userData.workoutHistory);
     
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
     const {level, currentLeftoverXP} = calculateLevel(userData);
+    const stats = calculatePlayerStats(userData.exerciseProgress);
+    console.log(stats)
 
     useEffect(() => {
         setLoaded(true);
@@ -45,10 +48,14 @@ export default function StatusWindow() {
             ...userData,
             level: level,
             xp: currentLeftoverXP,
-            streak: currentStreak,
+            stats: {...stats},
+            streak: {
+                current: current,
+                highest: highest
+            },
         });
 
-    }, [userData.workoutHistory]);
+    }, [userData.workoutHistory, currentProgress]);
 
     if (!loaded) return <div style={{color: '#00e5ff', fontFamily: 'monospace'}}>Synchronizing Hunter Data...</div>;
 
@@ -71,7 +78,7 @@ export default function StatusWindow() {
                 <div className={styles.coreStatsRow}>
                     <div className={styles.corePill} style={{ flexBasis: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span className={styles.pillLabel}>Active Streak</span>
-                        <span className={`${styles.pillValue} ${styles.textGold}`}>🔥 {currentStreak.current} Days</span>
+                        <span className={`${styles.pillValue} ${styles.textGold}`}>🔥 {current} Days</span>
                     </div>
 
                     <div className={styles.corePill}>
