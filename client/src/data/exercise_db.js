@@ -662,15 +662,13 @@ export const SPLIT_MODES = {
             { name: 'Push Day', categories: ['pushups','core'] },
             { name: 'Pull Day', categories: ['pullups','core'] },
             { name: 'Leg Day', categories: ['squats','core'] },
-        ],
-        currentDayIndex: 0,
+        ]
         },
     'Upper/Lower': {
         cycle: [
             { name: 'Upper Day', categories: ['pushups','pullups'] },
             { name: 'Lower Day', categories: ['squats','core'] },
-        ],
-        currentDayIndex: 0,
+        ]
         },
 
 };
