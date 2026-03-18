@@ -167,7 +167,7 @@ export function WorkoutScreen() {
     };
 
     const handleBiometricStatusChange = (status) => {
-        if (userData.workoutHistory[dateNow]) return alert('User already had a workout today.');
+        if (userData.workoutHistory[dateNow].totalVolume > 0) return alert('User already had a workout today.');
         setUserData({
             ...userData, bioStatus: status,
             workoutHistory: { ...userData.workoutHistory, [dateNow]: { ...userData.workoutHistory[dateNow], status } }
@@ -215,7 +215,7 @@ export function WorkoutScreen() {
             setTimeout(() => setLevelChange({ show: false, newLevels: 0, xpGain: 0 }), 3000);
         }
 
-        setUserData({ ...newUserData, level, xp: currentLeftoverXP });
+        setUserData({ ...newUserData, level, xp: currentLeftoverXP, bioStatus: 'optimal' });
         syncUser();
         setCurrentWorkoutSession({});
         setTraining(false);
@@ -250,7 +250,7 @@ export function WorkoutScreen() {
                             ))}
                         </div>
 
-                        {bioStatus !== 'optimal' && (
+                        {userData.bioStatus !== bioStatus && (
                             <div className={styles.overrideBox}>
                                 <p>System override detected. Logging {bioStatus === 'recovery' ? 'rest day' : 'medical leave'}.</p>
                                 <button className={styles.btnConfirmOverride} onClick={() => handleBiometricStatusChange(bioStatus)}>Acknowledge & Log</button>

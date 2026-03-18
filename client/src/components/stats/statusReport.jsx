@@ -13,7 +13,6 @@ import ExerciseBlock from '../ui/exerciseBlock';
 import styles from '../../styles/workout.module.css'
 
 
-
 export default function StatusReport() {
     const { userData, setUserData, syncUser } = useUserStore()
     const { setHistory } = useUIStore();
@@ -21,7 +20,6 @@ export default function StatusReport() {
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
     const data =  setsPerGroup(workoutHistory);
     
-    const [muscleGroupToday, setMuscleGroupToday] = useState(SPLIT_MODES[userData.currentProgram][0]); // Get the right exercises.
     const [filteredWorkout, setFilteredWorkout] = useState('')
 
     useEffect(() => {
@@ -40,18 +38,6 @@ export default function StatusReport() {
         syncUser();
     };
 
-    const manualRestDaySwitch = () => {
-
-        setMuscleGroupToday('REST DAY');
-        const today = new Date();
-
-        setUserData({
-            ...userData,
-            activeDays: today,
-        });
-        syncUser();
-    }
-
     return (
         <>
         <div className={styles.workoutCard}>
@@ -60,36 +46,6 @@ export default function StatusReport() {
                     <h3 className={styles.cardTitle}>[ STATUS REPORT ]</h3>
                 </div>
 
-                <div className={styles.statusRow}>
-                    <span className={styles.statusLabel}>Active Program:</span>
-                    <span className={styles.statusValue}>
-                        {userData.currentProgram ? `[ ${userData.currentProgram.toUpperCase()} ]` : "[ UNASSIGNED ]"}
-                    </span>
-                </div>
-
-                <div className={styles.selectWrapper}>
-                    <select 
-                        className={styles.styledSelect}
-                        value={userData.currentProgram} 
-                        onChange={handleProgramChange}
-                    >
-                        <option value="">-- INITIALIZE PROTOCOL --</option>
-                        <option value="Push/Pull/Legs">Push / Pull / Legs</option>
-                        <option value="Upper/Lower">Upper / Lower Split</option>
-                        <option value="Full Body">Full Body Mastery</option>
-                    </select>
-
-                    <div className={styles.selectIcon}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6 9l6 6 6-6" />
-                        </svg>
-                    </div>
-                </div>
-
-                <div>
-                    <h2>[ Today ]: {`${muscleGroupToday}`}</h2>
-                    <SystemButton text='Rest Day?' onClick={() => manualRestDaySwitch()}/>
-                </div>
                 
            <div className='bar-chart-wrapper' style={{ width: '100%', height: '250px', paddingTop: '1rem', marginTop: '2rem', border: '2px solid var(--border-a)', borderRadius: 'var(--border-radius)' }}>
                 <BarChart
