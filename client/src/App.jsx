@@ -70,18 +70,12 @@ function App() {
             <Route path='/status' element={<StatusWindow />} />
             <Route path='/workout' element={<WorkoutScreen />} />
             <Route path='/skill-tree' element={<SkillTreeScreen />} />
+            <Route path="/evaluation" element={<Evaluation />} />
+            <Route path="/awakening" element={<Awakening />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
-        <Route path="/evaluation" element={
-          <ProtectedRoute><Evaluation /></ProtectedRoute>
-        } />
-        
-        <Route path="/awakening" element={
-          <ProtectedRoute><Awakening /></ProtectedRoute>
-        } />
         
       </Routes>
     </Router>

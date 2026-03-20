@@ -2,6 +2,7 @@
 import useUserStore from "../../store/usePlayerStore"
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
 import WeightTracker from "../../components/stats/weightTracker";
 import StatusReport from "../../components/stats/statusReport";
@@ -9,6 +10,7 @@ import { calculateStreakFromObject } from "../../utils/calculateStreak";
 import { calculatePlayerStats } from '../../utils/statSystem';
 
 import styles from "../../styles/status.module.css";
+import stylesQuest from '../../styles/layout.module.css';
 
 
 const getStatName = (statKey) => {
@@ -23,10 +25,11 @@ const getStatName = (statKey) => {
 
 
 export default function StatusWindow() {
+    const navigate = useNavigate();
 
     const { userData, setUserData } = useUserStore();
 
-    const [loaded, setLoaded] = useState(false);
+    const [isReady, setIsReady] = useState(false);
     const [levelProgress, setLevelProgress] = useState(0);
 
     const currentProgress = getLevelProgress(userData.xp, userData.level);
@@ -35,10 +38,9 @@ export default function StatusWindow() {
     const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
     const {level, currentLeftoverXP} = calculateLevel(userData);
     const stats = calculatePlayerStats(userData.exerciseProgress);
-    console.log(stats)
 
     useEffect(() => {
-        setLoaded(true);
+        setIsReady(true);
     }, []);
 
     useEffect(() => {
@@ -57,7 +59,9 @@ export default function StatusWindow() {
 
     }, [userData.workoutHistory, currentProgress]);
 
-    if (!loaded) return <div style={{color: '#00e5ff', fontFamily: 'monospace'}}>Synchronizing Hunter Data...</div>;
+    if (!isReady) return <div style={{color: '#00e5ff', fontFamily: 'monospace'}}>Synchronizing Hunter Data...</div>;
+
+
 
     return (
         <>
@@ -101,6 +105,17 @@ export default function StatusWindow() {
                         <div className={styles.xpFill} style={{ width: `${levelProgress}%` }}></div>
                     </div>
                 </div>
+                { !userData.isConfigured && isReady && (
+                    <div className={styles.windowContent} style={{height: '100vh'}}>
+                        <div className={stylesQuest.urgentQuestContainer} style={{ textAlign: 'center'}}>
+                            <p className={stylesQuest.questWarning}>⚠ System requires initial calibration</p>
+                            <button className={stylesQuest.btnUrgent} onClick={() => navigate('/evaluation')}>
+                                Start Evaluation
+                            </button>
+                        </div>
+                    </div>
+                    )
+                }
 
                 <div className={styles.attributesGrid}>
                     {Object.keys(userData.stats).map(statKey => (

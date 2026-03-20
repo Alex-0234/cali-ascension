@@ -3,10 +3,10 @@ export const setsPerGroup = (workoutHistory, startOnMonday = true) => {
     const safeWorkoutHistory = (workoutHistory && !Array.isArray(workoutHistory)) ? workoutHistory : {};
     
     const seriesData = [
-        { id: 'push', label: 'Push', data: [0, 0, 0, 0], color: '#ef4444' },
-        { id: 'pull', label: 'Pull', data: [0, 0, 0, 0], color: '#00e5ff' },
-        { id: 'squat', label: 'Legs', data: [0, 0, 0, 0], color: '#10b981' },
-        { id: 'core', label: 'Core', data: [0, 0, 0, 0], color: '#f59e0b' }
+        { id: 'push', label: 'Push', data: [0, 0, 0, 0], color: '#2bdae0' },
+        { id: 'pull', label: 'Pull', data: [0, 0, 0, 0], color: '#610994' },
+        { id: 'squat', label: 'Legs', data: [0, 0, 0, 0], color: '#9d10b9' },
+        { id: 'core', label: 'Core', data: [0, 0, 0, 0], color: '#f54d0b' }
     ];
 
     if (Object.keys(safeWorkoutHistory).length < 1) {

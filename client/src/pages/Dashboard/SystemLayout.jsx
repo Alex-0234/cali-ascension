@@ -12,23 +12,17 @@ import SystemSidebar from '../../components/layout/desktopNavbar';
 import { useMediaQuery } from '../../utils/useMediaQuery';
 
 import styles from '../../styles/status.module.css'; 
-import stylesQuest from '../../styles/layout.module.css';
+
 
 export default function SystemLayout() {
-    const isDesktop = useMediaQuery('(min-width: 800px)');
     const navigate = useNavigate();
+    const isDesktop = useMediaQuery('(min-width: 800px)');
     
     const userData = useUserStore((state) => state.userData);
     const logout = useUserStore((state) => state.logout);  
     const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
     
     const isHistory = useUIStore((state) => state.isHistory);
-
-    const [isReady, setIsReady] = useState(false);
-
-    useEffect(() => {
-        setIsReady(true);
-    }, []);
 
     if (!hasFetchedInitialData) {
         return (
@@ -41,16 +35,7 @@ export default function SystemLayout() {
         );
     }
 
-    if (!userData.isConfigured && isReady) {
-        return (
-            <div className={stylesQuest.urgentQuestContainer} style={{ textAlign: 'center'}}>
-                <p className={stylesQuest.questWarning}>⚠ System requires initial calibration</p>
-                <button className={stylesQuest.btnUrgent} onClick={() => navigate('/evaluation')}>
-                    Start Evaluation
-                </button>
-            </div>
-        );
-    }
+
 
     return (
         <>
