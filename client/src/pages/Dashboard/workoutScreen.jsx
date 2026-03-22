@@ -32,8 +32,11 @@ export function WorkoutScreen() {
     const [activeExercises, setActiveExercises] = useState({});
     const [workoutSets, setWorkoutSets] = useState({});
     const [levelChange, setLevelChange] = useState({show: false, newLevels: 0, xpGain: 0});
+
     const [timeElapsed, setTimeElapsed] = useState(0);
+    const [exerciseTimeElapsed, setExerciseTimeElapsed] = useState({})
     const [isRunning, setIsRunning] = useState(false);
+    const [isExerciseRunning, setIsExerciseRunning] = useState({})
 
     const activeSplitKey = overrideSplit || defaultSplitName;
     const splitData = SPLIT_MODES[activeSplitKey];
@@ -56,6 +59,7 @@ export function WorkoutScreen() {
         }
     }, [activeSplitKey, isOverride, scheduledDayIndex, splitData]);
 
+    // MAIN TIMER
     useEffect(() => {
         let interval = null;
         if (isRunning) interval = setInterval(() => setTimeElapsed(prev => prev + 1), 1000);
@@ -63,8 +67,43 @@ export function WorkoutScreen() {
         return () => clearInterval(interval);
     }, [isRunning]);
 
+    // EXERCISE TIMER 
+    useEffect(() => {
+        const intervals = {};
+
+        Object.keys(isExerciseRunning).forEach(key => {
+
+            if (isExerciseRunning[key]) {
+                intervals[key] = setInterval(() => {
+
+                    setExerciseTimeElapsed(prev => ({
+                        ...prev, 
+                        [key]: (prev[key] || 0) + 1 
+                    }));
+                }, 1000);
+            }
+        });
+
+        return () => {
+            Object.values(intervals).forEach(intervalId => clearInterval(intervalId));
+        };
+    }, [isExerciseRunning]);
+
+    const toggleExerciseTimer = (timerKey) => {
+        setIsExerciseRunning(prev => ({
+            ...prev,
+            [timerKey]: !prev[timerKey] 
+        }));
+    };
+
     const formatTime = (s) => `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
     const toggleTimer = () => setIsRunning(!isRunning);
+    const handleExerciseTimeReset = () => {
+        Object.keys(exerciseTimeElapsed).forEach(timer => {
+            setExerciseTimeElapsed(prev => ({ ...prev, [timer]: 0}))
+            console.log(exerciseTimeElapsed);
+        })
+    }
 
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
@@ -337,29 +376,76 @@ export function WorkoutScreen() {
                                     {isUnlocked ? (
                                         <>
                                             <div className={styles.setsContainer}>
-                                                {currentSets.map((set, index) => (
-                                                    <div key={index} className={styles.setRow}>
-                                                        <span className={styles.setLabel}>Set {index + 1}</span>
-                                                        <input 
-                                                            type="number" min="0" placeholder={exerciseData?.unit || "reps"} required
-                                                            value={set.reps || ''} onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
-                                                            className={styles.setInput}
-                                                        />
-                                                        <input 
-                                                            type="number" min="0" placeholder="+ kg"
-                                                            value={set.extraWeight || ''} onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
-                                                            className={styles.setInput}
-                                                        />
-                                                        {currentSets.length > 1 && (
-                                                            <button className={styles.btnRemove} onClick={() => setWorkoutSets(prev => ({ ...prev, [category]: workoutSets[category].filter((_, i) => i !== index) }))}>✕</button>
-                                                        )}
-                                                    </div>
-                                                ))}
+                                                {currentSets.map((set, index) => {
+                                                        return (
+                                                        <div key={index} className={styles.setRow}>
+                                                            <span className={styles.setLabel}>Set {index + 1}</span>
+                                                            {exerciseData?.unit === 'seconds' ? (
+                                                            (() => {
+                                                                const timerKey = `${category}-${index}`; 
+                                                                
+                                                                return (
+                                                                    <div className={styles.timerWrapper}>
+                                                                        <span className={`${styles.timerText} ${!isExerciseRunning[timerKey] ? styles.timerPaused : ''}`}>
+                                                                            {formatTime(exerciseTimeElapsed[timerKey] || 0)}
+                                                                        </span>
+                                                                        
+                                                                        <button 
+                                                                            className={styles.pauseBtn} 
+                                                                            onClick={() => {
+                                                                                toggleExerciseTimer(timerKey); 
+                                                                                if (isExerciseRunning[timerKey]) {
+                                                                                    handleUpdateSet(category, index, 'reps', exerciseTimeElapsed[timerKey]);
+                                                                                    console.log(currentSets)
+                                                                                }
+
+
+                                                                            }} 
+                                                                            title={isExerciseRunning[timerKey] ? "Pause Timer" : "Resume Timer"}
+                                                                        >
+                                                                            {isExerciseRunning[timerKey] ? "❚❚" : "▶"}
+                                                                        </button>
+                                                                        
+                                                                        <button 
+                                                                            className={styles.cancelBtn} 
+                                                                            title="Reset Timer" 
+                                                                            onClick={() => {
+                                                                                setExerciseTimeElapsed(prev => ({...prev, [timerKey]: 0})); 
+                                                                                setIsExerciseRunning(prev => ({...prev, [timerKey]: false}));
+                                                                                
+                                                                            }}
+                                                                        >
+                                                                            ✕
+                                                                        </button>
+                                                                    </div>
+                                                                );
+                                                            })()
+                                                        ) : (
+                                                                <input 
+                                                                type="number" min="0" placeholder={exerciseData?.unit || "reps"} required
+                                                                value={set.reps || ''} onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
+                                                                className={styles.setInput}
+                                                                />
+                                                            )}
+                                                            
+                                                            <input 
+                                                                type="number" min="0" placeholder="+ kg"
+                                                                value={set.extraWeight || ''} onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
+                                                                className={styles.setInput}
+                                                            />
+                                                            {currentSets.length > 1 && (
+                                                                <button className={styles.btnRemove} onClick={() => setWorkoutSets(prev => ({ ...prev, [category]: workoutSets[category].filter((_, i) => i !== index) }))}>✕</button>
+                                                            )}
+                                                        </div>)
+                                                })}
                                             </div>
 
                                             <div className={styles.exerciseActions}>
                                                 <button className={styles.btnAddSet} onClick={() => setWorkoutSets(prev => ({ ...prev, [category]: [...(prev[category] || []), { reps: 0, extraWeight: 0 }] }))}>+ Add Set</button>
-                                                <button className={styles.btnComplete} onClick={() => handleAddExerciseToSession(category, currentExId)}>Log Data</button>
+                                                <button className={styles.btnComplete} onClick={() => {
+                                                    handleAddExerciseToSession(category, currentExId);
+                                                    handleExerciseTimeReset();
+                                                }}>Log Data</button>
                                             </div>
                                         </>
                                     ) : (
