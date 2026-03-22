@@ -9,6 +9,8 @@ import { calculatePlayerStats } from "../../utils/statSystem";
 import CloseButton from "../../components/ui/closeBtn";
 import BackButton from "../../components/ui/backBtn";
 
+import stylesQuest from '../../styles/layout.module.css';
+
 const PERSONAL_STEPS = [
     { key: 'shownName', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
     { key: 'age', label: 'Enter your age', type: 'number', placeholder: '25' },
@@ -17,7 +19,7 @@ const PERSONAL_STEPS = [
     { key: 'weight', label: 'Enter your weight (kg)', type: 'number', placeholder: '75' }
 ];
 
-const STAGES = ['personal_details', 'pushups', 'squats','core','pullups'];
+const STAGES = ['quest', 'personal_details', 'pushups', 'squats','core','pullups'];
 
 const EvaluationScreen = () => {
     const navigate = useNavigate();
@@ -26,7 +28,7 @@ const EvaluationScreen = () => {
     const userData = useUserStore((state) => state.userData);
 
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
-    const [mode, setMode] = useState('personal'); // personal | selection | input
+    const [mode, setMode] = useState('quest'); // quest | personal | selection | input
     
     const [currentTierIndex, setTierIndex] = useState(0); 
     const [maxReps, setMaxReps] = useState(0);
@@ -139,6 +141,18 @@ const handleSubmitExercise = async () => {
             navigate('/awakening');
         }
     };
+    if (mode === 'quest') {
+        return (
+                <div style={{height: '100vh'}}>
+                        <div style={{ textAlign: 'center'}}>
+                            <p className={stylesQuest.questWarning}>⚠ System requires initial calibration</p>
+                            <button className={stylesQuest.btnUrgent} onClick={() => setMode('personal')}>
+                                Start Evaluation
+                            </button>
+                        </div>
+                </div>
+        )
+    }
 
     if (mode === 'personal') {
         const currentField = PERSONAL_STEPS[personalStepIndex]; 
@@ -216,7 +230,6 @@ const handleSubmitExercise = async () => {
         );
     }
 
-    return null; 
 };
 
 export default EvaluationScreen;

@@ -76,23 +76,7 @@ export default function StatusReport() {
                         '& .MuiChartsAxis-directionX .MuiChartsAxis-tick': { stroke: '#334155' },
                     }}
                 />
-            </div>
-            
-            <div style={{ width: '100%', height: '250px', paddingTop: '1rem', marginTop: '2rem', border: '2px solid var(--border-a)', borderRadius: 'var(--border-radius)', overflow: 'hidden' }}>
-                <div className={styles.cardHeader} style={{marginLeft: '1rem'}}>
-                    <h3 className={styles.cardTitle}>[ TODAYS WORKOUT ]</h3>
-                </div>
-                <div style={{display: 'flex', flexDirection: 'column', overflow: 'auto', height: '80%', padding: '0 2rem 0 2rem', gap: '1rem'}}>
-                    { filteredWorkout.length > 0 && filteredWorkout.map((workout, index) => {
-                            return <ExerciseBlock workout={workout} index={index} />
-                        })
-                    }
-                </div>
-                
-
-            </div>
-
-            
+            </div>   
             <p>Working on this...</p>
 
             <SystemButton text='History' onClick={() => setHistory({open: true, type: 'exercise'})} />

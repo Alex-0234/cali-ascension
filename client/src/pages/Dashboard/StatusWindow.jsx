@@ -61,6 +61,7 @@ export default function StatusWindow() {
 
     if (!isReady) return <div style={{color: '#00e5ff', fontFamily: 'monospace'}}>Synchronizing Hunter Data...</div>;
 
+    if (!userData.isConfigured) navigate('/evaluation');
 
 
     return (
@@ -105,17 +106,6 @@ export default function StatusWindow() {
                         <div className={styles.xpFill} style={{ width: `${levelProgress}%` }}></div>
                     </div>
                 </div>
-                { !userData.isConfigured && isReady && (
-                    <div className={styles.windowContent} style={{height: '100vh'}}>
-                        <div className={stylesQuest.urgentQuestContainer} style={{ textAlign: 'center'}}>
-                            <p className={stylesQuest.questWarning}>⚠ System requires initial calibration</p>
-                            <button className={stylesQuest.btnUrgent} onClick={() => navigate('/evaluation')}>
-                                Start Evaluation
-                            </button>
-                        </div>
-                    </div>
-                    )
-                }
 
                 <div className={styles.attributesGrid}>
                     {Object.keys(userData.stats).map(statKey => (
