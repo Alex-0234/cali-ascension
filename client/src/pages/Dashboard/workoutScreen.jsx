@@ -206,10 +206,11 @@ export function WorkoutScreen() {
     };
 
     const handleBiometricStatusChange = (status) => {
-        if (userData.workoutHistory[dateNow].totalVolume > 0) return alert('User already had a workout today.');
+        if (userData.workoutHistory[dateNow]?.totalVolume) return alert('User already had a workout today.');
+        setBioStatus(status);
         setUserData({
             ...userData, bioStatus: status,
-            workoutHistory: { ...userData.workoutHistory, [dateNow]: { ...userData.workoutHistory[dateNow], status } }
+            workoutHistory: { ...userData.workoutHistory, [dateNow]: { ...userData.workoutHistory[dateNow], status: status } }
         });
         syncUser();
     };
