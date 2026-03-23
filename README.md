@@ -44,7 +44,6 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
      - [ ] Now, make sure it changes muscle group daily ( based on the split )
      - [ ] Add manual selection. ( In case muscles are still sore )
 - [X] Introduce a workout history window.
-     - [X] Allow deleting workouts 
 
 ## Technologies used
 
