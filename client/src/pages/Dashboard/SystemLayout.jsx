@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import useUserStore from '../../store/usePlayerStore';
 import useUIStore from '../../store/useUIStore';
@@ -18,11 +18,31 @@ export default function SystemLayout() {
     const navigate = useNavigate();
     const isDesktop = useMediaQuery('(min-width: 800px)');
     
-    const userData = useUserStore((state) => state.userData);
-    const logout = useUserStore((state) => state.logout);  
+    const {userData, setUserData, logout} = useUserStore();
     const hasFetchedInitialData = useUserStore((state) => state.hasFetchedInitialData);
     
     const isHistory = useUIStore((state) => state.isHistory);
+    const dateNow = new Date().toISOString().split('T')[0];
+
+    useEffect(() => {
+        const lastDateActive = new Date(userData.currentProgram.date).getTime();
+        const today = new Date(dateNow).getTime();
+        const timeDiff = (today - lastDateActive) / (1000 * 60 * 60 * 24) ;
+
+        if (timeDiff > 0) {
+            setUserData({
+                ...userData,
+                currentProgram: {
+                    ...userData.currentProgram,
+                    currentDayIndex: userData.currentProgram.currentDayIndex + timeDiff,
+                    date: today,
+                }
+            })
+        }
+    },[setUserData, dateNow, userData])
+    
+
+
 
     if (!hasFetchedInitialData) {
         return (

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import { SPLIT_MODES, EXERCISE_DB, ALL_EXERCISES } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";  
@@ -21,11 +21,12 @@ export function WorkoutScreen() {
     const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData.exerciseProgress);
     
-    const defaultSplitName = userData.currentSplit?.split || 'Full Body';
-    const scheduledDayIndex = userData.currentSplit?.currentDayIndex || 0;
+    const defaultSplitName = userData.currentProgram?.split || 'Full Body';
+    let scheduledDayIndex = userData.currentProgram?.currentDayIndex || 0;
     
     const [bioStatus, setBioStatus] = useState(userData.bioStatus || 'optimal');
     const [overrideSplit, setOverrideSplit] = useState(null);
+    const [overrideExerciseGroup, setOverrideExerciseGroup] = useState(null);
 
     const [training, setTraining] = useState(false);
     const [currentWorkoutSession, setCurrentWorkoutSession] = useState({});
@@ -41,24 +42,29 @@ export function WorkoutScreen() {
 
     const activeSplitKey = overrideSplit || defaultSplitName;
     const splitData = SPLIT_MODES[activeSplitKey];
-    const isOverride = overrideSplit !== null;
+    const isOverride = overrideExerciseGroup !== null;
 
-    const { visibleCategories, activeDayName } = useMemo(() => {
-        if (isOverride) {
-            const allCats = splitData?.cycle ? splitData.cycle.flatMap(day => day.categories) : (splitData || []);
-           
-            return {
-                visibleCategories: [...new Set(allCats)],
-                activeDayName: userData.currentSplit.split === activeSplitKey ? `${activeSplitKey} ` : `${activeSplitKey} [Override]`
-            };
-        } else {
-            const todayData = splitData?.cycle ? splitData.cycle[scheduledDayIndex] : { name: activeSplitKey, categories: splitData };
-            return {
-                visibleCategories: todayData?.categories || [],
-                activeDayName: todayData?.name || activeSplitKey
-            };
+    let visibleCategories = [];
+    let activeDayName = '';
+
+    if (isOverride) {
+        splitData.cycle.map((group, index) => {
+            if (overrideExerciseGroup === group.name) {
+                visibleCategories = splitData.cycle[index].categories;
+                activeDayName = splitData.cycle[index].name;
+            }
+        })
+    }
+    else {
+        while (scheduledDayIndex - splitData.cycle.length > 0) {
+            scheduledDayIndex -= splitData.cycle.length;
         }
-    }, [activeSplitKey, isOverride, scheduledDayIndex, splitData]);
+        const todayData = splitData?.cycle ? splitData.cycle[scheduledDayIndex - 1] : null;
+        visibleCategories = todayData?.categories || splitData || [];
+
+        activeDayName = (!training && splitData?.cycle) ? activeSplitKey : (todayData?.name || activeSplitKey);
+    }
+
 
     // MAIN TIMER
     useEffect(() => {
@@ -73,10 +79,8 @@ export function WorkoutScreen() {
         const intervals = {};
 
         Object.keys(isExerciseRunning).forEach(key => {
-
             if (isExerciseRunning[key]) {
                 intervals[key] = setInterval(() => {
-
                     setExerciseTimeElapsed(prev => ({
                         ...prev, 
                         [key]: (prev[key] || 0) + 1 
@@ -102,29 +106,38 @@ export function WorkoutScreen() {
     const handleExerciseTimeReset = () => {
         Object.keys(exerciseTimeElapsed).forEach(timer => {
             setExerciseTimeElapsed(prev => ({ ...prev, [timer]: 0}))
-            console.log(exerciseTimeElapsed);
         })
     }
+    const visibleCategoriesString = JSON.stringify(visibleCategories);
 
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
+        const categories = JSON.parse(visibleCategoriesString);
 
         setActiveExercises(prev => {
+            let hasChanges = false;
             const next = { ...prev };
-            visibleCategories.forEach(cat => {
-                if (!next[cat]) next[cat] = highestUnlocked[cat]?.id || ALL_EXERCISES[cat][0];
+            categories.forEach(cat => {
+                if (!next[cat]) {
+                    next[cat] = highestUnlocked[cat]?.id || ALL_EXERCISES[cat][0];
+                    hasChanges = true;
+                }
             });
-            return next;
+            return hasChanges ? next : prev;
         });
 
         setWorkoutSets(prev => {
+            let hasChanges = false;
             const next = { ...prev };
-            visibleCategories.forEach(cat => {
-                if (!next[cat]) next[cat] = [{ reps: 0, extraWeight: 0 }];
+            categories.forEach(cat => {
+                if (!next[cat]) {
+                    next[cat] = [{ reps: 0, extraWeight: 0 }];
+                    hasChanges = true;
+                }
             });
-            return next;
+            return hasChanges ? next : prev;
         });
-    }, [visibleCategories, currentProgress]);
+    }, [visibleCategoriesString, currentProgress]);
 
     const handleOverride = () => {
         const splitNames = Object.keys(SPLIT_MODES);
@@ -133,7 +146,7 @@ export function WorkoutScreen() {
         setOverrideSplit(nextSplit === defaultSplitName ? null : nextSplit);
         setUserData({
             ...userData,
-            currentSplit: {...userData.currentSplit, split: nextSplit}
+            currentProgram: {...userData.currentProgram, split: nextSplit}
         })
     };
 
@@ -262,6 +275,7 @@ export function WorkoutScreen() {
         setTimeElapsed(0);
         setOverrideSplit(null);
     };
+
     if (levelChange.show) {
         return (
         <div 
@@ -294,8 +308,6 @@ export function WorkoutScreen() {
 
     return (
         <div className={`${styles.workoutScreenContainer} ${training ? styles.trainingActive : styles.trainingInactive}`}>
-
-
             {!training ? (
                 <div className={styles.startScreen}>
                     <div className={styles.statusPanel}>
@@ -325,7 +337,7 @@ export function WorkoutScreen() {
                     <div className={styles.startScreenContent} style={{ opacity: bioStatus !== 'optimal' ? 0.3 : 1, pointerEvents: bioStatus !== 'optimal' ? 'none' : 'auto', transition: 'all 0.3s' }}>
                         <div className={styles.scheduleInfo}>
                             <span className={styles.scheduleLabel}>Target Schedule:</span>
-                            <span className={styles.scheduleTarget}>{activeDayName}</span>
+                            <span className={styles.scheduleTarget}>{activeSplitKey}</span>
                         </div>
 
                         <div className={styles.startBtnWrapper}>
@@ -341,6 +353,13 @@ export function WorkoutScreen() {
                             <h2 style={{margin: 0, fontSize: '1rem', color: '#94a3b8'}}>
                                 Protocol: <span className={styles.scheduleTitle}>{activeDayName}</span>
                             </h2>
+                            <select value={activeDayName} onChange={(e) => setOverrideExerciseGroup(e.target.value)}>
+                                {Object.keys(splitData.cycle).map((group, index) => {
+                                    return (
+                                        <option key={index} value={splitData.cycle[group].name}>{splitData.cycle[group].name}</option>
+                                    )
+                                })}
+                            </select>
                             <div className={styles.timerWrapper}>
                                 <span className={`${styles.timerText} ${!isRunning ? styles.timerPaused : ''}`}>{formatTime(timeElapsed)}</span>
                                 <button className={styles.pauseBtn} onClick={toggleTimer} title={isRunning ? "Pause Timer" : "Resume Timer"}>
@@ -421,10 +440,7 @@ export function WorkoutScreen() {
                                                                                 toggleExerciseTimer(timerKey); 
                                                                                 if (isExerciseRunning[timerKey]) {
                                                                                     handleUpdateSet(category, index, 'reps', exerciseTimeElapsed[timerKey]);
-                                                                                    console.log(currentSets)
                                                                                 }
-
-
                                                                             }} 
                                                                             title={isExerciseRunning[timerKey] ? "Pause Timer" : "Resume Timer"}
                                                                         >
@@ -446,22 +462,22 @@ export function WorkoutScreen() {
                                                                 );
                                                             })()
                                                         ) : (
-                                                                <input 
-                                                                type="number" min="0" placeholder={exerciseData?.unit || "reps"} required
-                                                                value={set.reps || ''} onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
-                                                                className={styles.setInput}
-                                                                />
-                                                            )}
-                                                            
                                                             <input 
-                                                                type="number" min="0" placeholder="+ kg"
-                                                                value={set.extraWeight || ''} onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
-                                                                className={styles.setInput}
+                                                            type="number" min="0" placeholder={exerciseData?.unit || "reps"} required
+                                                            value={set.reps || ''} onChange={(e) => handleUpdateSet(category, index, 'reps', e.target.value)}
+                                                            className={styles.setInput}
                                                             />
-                                                            {currentSets.length > 1 && (
-                                                                <button className={styles.btnRemove} onClick={() => setWorkoutSets(prev => ({ ...prev, [category]: workoutSets[category].filter((_, i) => i !== index) }))}>✕</button>
-                                                            )}
-                                                        </div>)
+                                                        )}
+                                                        
+                                                        <input 
+                                                            type="number" min="0" placeholder="+ kg"
+                                                            value={set.extraWeight || ''} onChange={(e) => handleUpdateSet(category, index, 'extraWeight', e.target.value)}
+                                                            className={styles.setInput}
+                                                        />
+                                                        {currentSets.length > 1 && (
+                                                            <button className={styles.btnRemove} onClick={() => setWorkoutSets(prev => ({ ...prev, [category]: workoutSets[category].filter((_, i) => i !== index) }))}>✕</button>
+                                                        )}
+                                                    </div>)
                                                 })}
                                             </div>
 

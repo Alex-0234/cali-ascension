@@ -11,6 +11,11 @@ const UserSchema = new mongoose.Schema({
     gender: String,
     weight: Number,
     height: Number,
+    currentProgram: { 
+        split: {type: String, default: "Full Body" },
+        currentDayIndex: {type: Number, default: 0 },
+        date: Date,
+    },
     bioStatus: String,
     
     rank: { type:String, default: "" },
@@ -18,6 +23,7 @@ const UserSchema = new mongoose.Schema({
     color: { type:String, default: 'blue'},
     level: { type: Number, default: 1 },
     xp: { type: Number, default: 0 }, 
+    ep: { type: Number, default: 0 }, 
     streak: {
         current: { type: Number, default: 0},
         highest: { type: Number, default: 0},
@@ -37,10 +43,7 @@ const UserSchema = new mongoose.Schema({
     },
 
     isConfigured: { type: Boolean, default: false },
-    currentSplit: { 
-        split: {type: String, default: "Full Body" },
-        currentDayIndex: {type: Number, default: 0 },
-    },
+
 
     exerciseProgress: {
         type: mongoose.Schema.Types.Mixed,
