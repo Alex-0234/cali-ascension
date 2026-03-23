@@ -14,6 +14,7 @@ import ServerWakeup from './pages/Dashboard/SystemBootScreen';
 import SystemLayout from './pages/Dashboard/SystemLayout';
 import StatusWindow from './pages/Dashboard/StatusWindow';
 import Settings from './pages/Dashboard/Settings'
+import WorkoutHistoryBlock from './components/ui/workoutHistoryBlock';
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ function App() {
             <Route path='/status' element={<StatusWindow />} />
             <Route path='/workout' element={<WorkoutScreen />} />
             <Route path='/skill-tree' element={<SkillTreeScreen />} />
+            <Route path="/workout-history" element={<WorkoutHistoryBlock />} />
             <Route path="/evaluation" element={<Evaluation />} />
             <Route path="/awakening" element={<Awakening />} />
         </Route>
