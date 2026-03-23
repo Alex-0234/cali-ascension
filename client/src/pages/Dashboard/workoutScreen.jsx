@@ -133,7 +133,7 @@ export function WorkoutScreen() {
         setOverrideSplit(nextSplit === defaultSplitName ? null : nextSplit);
         setUserData({
             ...userData,
-            currentSplit: {split: nextSplit, currentDayIndex: 0}
+            currentSplit: {...userData.currentSplit, split: nextSplit}
         })
     };
 
