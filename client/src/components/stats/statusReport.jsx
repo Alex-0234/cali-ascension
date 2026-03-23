@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { BarChart } from '@mui/x-charts';
 import { setsPerGroup } from '../../utils/setsPerGroup';
 import { SPLIT_MODES } from '../../data/exercise_db';
@@ -14,6 +15,7 @@ import styles from '../../styles/workout.module.css'
 
 
 export default function StatusReport() {
+    const navigate = useNavigate()
     const { userData, setUserData, syncUser } = useUserStore()
     const { setHistory } = useUIStore();
 
@@ -79,7 +81,7 @@ export default function StatusReport() {
             </div>   
             <p>Working on this...</p>
 
-            <SystemButton text='History' onClick={() => setHistory({open: true, type: 'exercise'})} />
+            <SystemButton text='History' onClick={() => navigate('/workout-history')} />
 
         </div>
 
