@@ -1,0 +1,175 @@
+.levelUpNotification {
+  position: relative;
+  width: 100%;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(0, 229, 255, 0.05) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+  animation: levelUpEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.27) forwards;
+  transition: all 0.3s ease;
+}
+
+.levelUpNotification:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(0, 229, 255, 0.1) 100%);
+  border-color: rgba(16, 185, 129, 0.8);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(0, 229, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.levelUpGlow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: scanline 2.5s infinite linear;
+  pointer-events: none;
+}
+
+.levelUpContent {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px 15px 25px;
+  gap: 20px;
+}
+
+.levelUpIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px dashed rgba(16, 185, 129, 0.5);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.levelUpIcon {
+  color: #10b981;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+  animation: floatUp 2s infinite ease-in-out;
+}
+
+.levelUpTextGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.levelUpTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.levelBadge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  animation: pulseBadge 2s infinite;
+}
+
+.xpWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: fit-content;
+}
+
+.xpLabel {
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.xpValue {
+  color: var(--cyan, #00e5ff);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
+}
+
+.dismissHint {
+  text-align: center;
+  padding-bottom: 12px;
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.levelUpNotification:hover .dismissHint {
+  opacity: 1;
+  color: #94a3b8;
+}
+
+/* --- ANIMATIONS --- */
+
+@keyframes levelUpEntry {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes scanline {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes pulseBadge {
+  0%, 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
+}
+
+/* Responzivita pro menší obrazovky */
+@media (max-width: 480px) {
+  .levelUpContent {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  .levelUpTitle {
+    justify-content: center;
+  }
+  .xpWrapper {
+    margin: 0 auto;
+  }
+}

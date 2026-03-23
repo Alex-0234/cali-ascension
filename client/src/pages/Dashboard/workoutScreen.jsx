@@ -12,6 +12,7 @@ import SystemButton from '../../components/ui/systemBtn'
 import CloseButton from "../../components/ui/closeBtn";
 
 import styles from '../../styles/workout.module.css'
+import levelStyles from '../../styles/levelup.module.css'
 import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
 
 export function WorkoutScreen() {
@@ -252,7 +253,6 @@ export function WorkoutScreen() {
 
         if (level - userData.level > 0) {
             setLevelChange({ show: true, newLevels: level - userData.level, xpGain: totalXPEarned });
-            setTimeout(() => setLevelChange({ show: false, newLevels: 0, xpGain: 0 }), 3000);
         }
 
         setUserData({ ...newUserData, level,stats: {...stats}, xp: currentLeftoverXP, bioStatus: 'optimal', exerciseProgress: { ...newProgress } });
@@ -262,15 +262,39 @@ export function WorkoutScreen() {
         setTimeElapsed(0);
         setOverrideSplit(null);
     };
+    if (levelChange.show) {
+        return (
+        <div 
+            className={levelStyles.levelUpNotification} 
+            onClick={() => setLevelChange({ show: false, newLevels: 0, xpGain: 0 })}
+        >
+            <div className={levelStyles.levelUpGlow}></div>
+            
+            <div className={levelStyles.levelUpContent}>
+                <div className={levelStyles.levelUpIconWrapper}>
+                    <span className={levelStyles.levelUpIcon}>⇈</span>
+                </div>
+                
+                <div className={levelStyles.levelUpTextGroup}>
+                    <h2 className={levelStyles.levelUpTitle}>
+                        SYSTEM.LEVEL_UP
+                        <span className={levelStyles.levelBadge}>+{levelChange.newLevels}</span>
+                    </h2>
+                    <div className={levelStyles.xpWrapper}>
+                        <span className={levelStyles.xpLabel}>Total XP Yield:</span>
+                        <span className={levelStyles.xpValue}>+{Math.round(levelChange.xpGain)} XP</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div className={levelStyles.dismissHint}>[ Click to acknowledge ]</div>
+        </div>
+        )
+    }
 
     return (
         <div className={`${styles.workoutScreenContainer} ${training ? styles.trainingActive : styles.trainingInactive}`}>
-            {levelChange.show && (
-                <div className={styles.levelUpNotification}>
-                    <h2>Level Up +{levelChange.newLevels}!</h2>
-                    <p>Total XP Gained: {Math.round(levelChange.xpGain)}</p>
-                </div>
-            )}
+
 
             {!training ? (
                 <div className={styles.startScreen}>
