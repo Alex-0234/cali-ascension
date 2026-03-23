@@ -1,0 +1,274 @@
+.questContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.warningBox {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  border-left: 4px solid #ef4444;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.5);
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 500px;
+  animation: slideInFade 0.5s ease-out forwards;
+}
+
+.warningHeader {
+  color: #ef4444;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.blinkIcon {
+  animation: blinkFast 1s infinite;
+}
+
+.warningTitle {
+  color: #f8fafc;
+  font-size: 1.8rem;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+}
+
+.warningText {
+  color: #94a3b8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.btnUrgent {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 15px 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.btnUrgent:hover {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* --- SYSTEM WINDOWS (For Input/Selection/Personal) --- */
+.sysWindow {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 229, 255, 0.05);
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: windowOpen 0.4s ease-out forwards;
+}
+
+.sysHeader {
+  border-bottom: 1px dashed rgba(0, 229, 255, 0.4);
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.sysTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.sysSubtitle {
+  color: #00e5ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  display: block;
+  margin-top: 5px;
+}
+
+.inputBody {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.sysLabel {
+  color: #94a3b8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* --- INPUTS & SELECTS --- */
+.sysInput {
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid #1e293b;
+  border-bottom: 2px solid #00e5ff;
+  color: #00e5ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  padding: 15px;
+  border-radius: 4px;
+  outline: none;
+  transition: all 0.2s;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Speciálně pro select, aby v něm nevyčnívaly světlé optiony na tmavém webu */
+select.sysInput {
+  appearance: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+select.sysInput option {
+  background-color: #0f172a;
+  color: #00e5ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  padding: 10px;
+}
+
+.sysInput:focus {
+  background: rgba(0, 229, 255, 0.05);
+  box-shadow: 0 5px 15px rgba(0, 229, 255, 0.15);
+}
+
+.sysInput::placeholder {
+  color: rgba(0, 229, 255, 0.2);
+}
+
+/* --- BUTTONS --- */
+.btnGreen {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid #10b981;
+  color: #10b981;
+  padding: 15px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.btnGreen:hover:not(:disabled) {
+  background: #10b981;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.btnGreen:disabled {
+  border-color: #334155;
+  color: #64748b;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.btnRed {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 15px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.btnRed:hover {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.btnGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* --- SPECIFICS --- */
+.exerciseName {
+  color: #f8fafc;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.highlightText {
+  color: #94a3b8;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.highlightText span {
+  color: #00e5ff;
+  font-weight: bold;
+}
+
+.hologramWrapper {
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes windowOpen {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideInFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blinkFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
