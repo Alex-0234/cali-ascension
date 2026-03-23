@@ -3,14 +3,14 @@ import useUserStore from "../../store/usePlayerStore"
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import calculateLevel, { getLevelProgress } from "../../utils/levelUpSystem";
+import calculateLevel, { getLevelProgress, getXpNeededForLevel } from "../../utils/levelUpSystem";
 import WeightTracker from "../../components/stats/weightTracker";
 import StatusReport from "../../components/stats/statusReport";
 import { calculateStreakFromObject } from "../../utils/calculateStreak";
 import { calculatePlayerStats } from '../../utils/statSystem';
 
 import styles from "../../styles/status.module.css";
-import stylesQuest from '../../styles/layout.module.css';
+
 
 
 const getStatName = (statKey) => {
@@ -35,7 +35,8 @@ export default function StatusWindow() {
     const currentProgress = getLevelProgress(userData.xp, userData.level);
     const {current, highest} = calculateStreakFromObject(userData.workoutHistory);
     
-    const displayXP = userData.level >= 100 ? "MAX" : userData.xp;
+    const displayXP = userData.level >= 100 ? "MAX" : Math.round(userData.xp);
+    const xpNeeded = getXpNeededForLevel(userData.level);
     const {level, currentLeftoverXP} = calculateLevel(userData);
     const stats = calculatePlayerStats(userData.exerciseProgress);
 
@@ -100,7 +101,7 @@ export default function StatusWindow() {
                 <div className={styles.xpSection}>
                     <div className={styles.xpLabels}>
                         <span>Experience Progress</span>
-                        <span style={{fontFamily: 'monospace'}}>{Math.round(displayXP)} XP</span>
+                        <span style={{fontFamily: 'monospace'}}>{displayXP} / {Math.round(xpNeeded)} XP</span>
                     </div>
                     <div className={styles.xpTrack}>
                         <div className={styles.xpFill} style={{ width: `${levelProgress}%` }}></div>
