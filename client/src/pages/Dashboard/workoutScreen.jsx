@@ -15,11 +15,11 @@ import styles from '../../styles/workout.module.css'
 import levelStyles from '../../styles/levelup.module.css'
 import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
 
-export function WorkoutScreen() {
+function WorkoutScreen() {
     const dateNow = new Date().toISOString().split('T')[0];
 
     const { userData, setUserData, syncUser } = useUserStore();
-    const currentProgress = useUserStore(state => state.userData.exerciseProgress);
+    const currentProgress = useUserStore(state => state.userData?.exerciseProgress || {});
     
     const defaultSplitName = userData.currentProgram?.split || 'Full Body';
     let scheduledDayIndex = userData.currentProgram?.currentDayIndex || 0;
@@ -41,7 +41,7 @@ export function WorkoutScreen() {
     const [isExerciseRunning, setIsExerciseRunning] = useState({})
 
     const activeSplitKey = overrideSplit || defaultSplitName;
-    const splitData = SPLIT_MODES[activeSplitKey];
+    const splitData = SPLIT_MODES[activeSplitKey] || [];
     const isOverride = overrideExerciseGroup !== null;
 
     let visibleCategories = [];
@@ -119,7 +119,7 @@ export function WorkoutScreen() {
             const next = { ...prev };
             categories.forEach(cat => {
                 if (!next[cat]) {
-                    next[cat] = highestUnlocked[cat]?.id || ALL_EXERCISES[cat][0];
+                    next[cat] = highestUnlocked[cat]?.id || ALL_EXERCISES[cat]?.[0] || 'unknown_exercise';
                     hasChanges = true;
                 }
             });
@@ -220,11 +220,18 @@ export function WorkoutScreen() {
     };
 
     const handleBiometricStatusChange = (status) => {
-        if (userData.workoutHistory[dateNow]?.totalVolume) return alert('User already had a workout today.');
+        if (userData.workoutHistory?.[dateNow]?.totalVolume) return alert('User already had a workout today... Logging status: optimal'); // Change to notification
         setBioStatus(status);
         setUserData({
-            ...userData, bioStatus: status,
-            workoutHistory: { ...userData.workoutHistory, [dateNow]: { ...userData.workoutHistory[dateNow], status: status } }
+            ...userData, 
+            bioStatus: status,
+            workoutHistory: { 
+                ...(userData?.workoutHistory || {}), 
+                [dateNow]: {
+                     ...(userData?.workoutHistory?.[dateNow] || {}), 
+                     status: status 
+                    } 
+                }
         });
         syncUser();
     };
@@ -234,7 +241,7 @@ export function WorkoutScreen() {
         if (!todaySession || Object.keys(todaySession.exercises).length === 0) return;
 
         setIsRunning(false);
-        const historyDay = userData.workoutHistory?.[dateNow] || { totalVolume: 0, totalSets: 0, duration: 0, exercises: {} };
+        const historyDay = userData?.workoutHistory?.[dateNow] || { totalVolume: 0, totalSets: 0, duration: 0, exercises: {} };
         const mergedExercises = { ...historyDay.exercises };
         
         Object.entries(todaySession.exercises).forEach(([exId, exData]) => {

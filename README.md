@@ -34,15 +34,15 @@ Unlike traditional RPGs, progression here is strictly tied to real-world calisth
      - [X] Make midnight reser the cooldown. (Should work now)
 - [X] Add a meaning to exercising with extra weight.
 - [ ] Introduce some kind of points to unlock exercises in the tree.
-- [ ] Improve the evaluation window.
+- [X] Improve the evaluation window.
 - [X] Completely re-work the core tree. 
 - [X] Introduce settings.
      - [X] Style it better
      - [ ] Refine it and add confirmation window
 - [ ] Include actual video previews.
 - [X] Introduce actual workout split selection.
-     - [ ] Now, make sure it changes muscle group daily ( based on the split )
-     - [ ] Add manual selection. ( In case muscles are still sore )
+     - [X] Now, make sure it changes muscle group daily ( based on the split )
+     - [X] Add manual selection. ( In case muscles are still sore )
 - [X] Introduce a workout history window.
 
 ## Technologies used
