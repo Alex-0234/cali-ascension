@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BarChart } from '@mui/x-charts';
 import { setsPerGroup } from '../../utils/setsPerGroup';
-import { SPLIT_MODES } from '../../data/exercise_db';
 
 import useUserStore from "../../store/usePlayerStore";
-import useUIStore from "../../store/useUIStore";
 
 import SystemButton from "../ui/systemBtn";
 import ExerciseBlock from '../ui/exerciseBlock';
@@ -16,29 +13,9 @@ import styles from '../../styles/workout.module.css'
 
 export default function StatusReport() {
     const navigate = useNavigate()
-    const { userData, setUserData, syncUser } = useUserStore()
-    const { setHistory } = useUIStore();
 
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
     const data =  setsPerGroup(workoutHistory);
-    
-    const [filteredWorkout, setFilteredWorkout] = useState('')
-
-    useEffect(() => {
-        setFilteredWorkout('');
-    }, [workoutHistory])
-
-    const handleProgramChange = (e) => {
-        const newProgram = e.target.value;
-        console.log("Selected program:", newProgram);
-        useUserStore.setState((state) => ({
-            userData: {
-                ...state.userData,
-                currentProgram: newProgram
-            }
-        }));
-        syncUser();
-    };
 
     return (
         <>
@@ -79,7 +56,6 @@ export default function StatusReport() {
                     }}
                 />
             </div>   
-            <p>Working on this...</p>
 
             <SystemButton text='History' onClick={() => navigate('/workout-history')} />
 

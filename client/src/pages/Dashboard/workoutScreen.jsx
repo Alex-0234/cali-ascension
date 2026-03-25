@@ -60,11 +60,8 @@ function WorkoutScreen() {
     else {
         while (scheduledDayIndex - splitData.cycle.length > 0) {
             scheduledDayIndex -= splitData.cycle.length;
-            console.log('loop changes', scheduledDayIndex);
         }
-        console.log(scheduledDayIndex);
         const todayData = splitData?.cycle ? splitData.cycle[scheduledDayIndex] : null;
-        console.log('todayData', todayData)
         visibleCategories = todayData?.categories || splitData || [];
 
         activeDayName = (!training && splitData?.cycle) ? activeSplitKey : (todayData?.name || activeSplitKey);
@@ -117,7 +114,6 @@ function WorkoutScreen() {
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
         const categories = visibleCategories;
-        console.log(categories);
 
         setActiveExercises(prev => {
             let hasChanges = false;

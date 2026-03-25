@@ -20,6 +20,7 @@ const getStatName = (statKey) => {
 };
 
 export default function StatusWindow() {
+
     const navigate = useNavigate();
     const { userData, setUserData } = useUserStore();
 
@@ -27,15 +28,17 @@ export default function StatusWindow() {
     const [levelProgress, setLevelProgress] = useState(0);
 
     const currentProgress = getLevelProgress(userData.xp, userData.level);
-    const {current, highest} = calculateStreakFromObject(userData.workoutHistory);
+    const { current, highest } = calculateStreakFromObject(userData.workoutHistory);
     
     const displayXP = userData.level >= 100 ? "MAX" : Math.round(userData.xp);
     const xpNeeded = getXpNeededForLevel(userData.level);
-    const {level, currentLeftoverXP} = calculateLevel(userData);
+    const { level, currentLeftoverXP } = calculateLevel(userData);
     const stats = calculatePlayerStats(userData.exerciseProgress);
 
     useEffect(() => {
+
         setIsReady(true);
+        
     }, []);
 
     useEffect(() => {
@@ -56,7 +59,9 @@ export default function StatusWindow() {
 
     if (!isReady) return <div className={styles.sysLoading}>Synchronizing Hunter Data...</div>;
 
-    if (!userData.isConfigured) navigate('/evaluation');
+    if (!userData.isConfigured) {
+        navigate('/evaluation');
+    }
 
     return (
         <div className="mock-body">
