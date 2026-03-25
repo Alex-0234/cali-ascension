@@ -40,14 +40,16 @@ function WorkoutScreen() {
     const [isRunning, setIsRunning] = useState(false);
     const [isExerciseRunning, setIsExerciseRunning] = useState({})
 
-    const activeSplitKey = overrideSplit || defaultSplitName;
-    const splitData = SPLIT_MODES[activeSplitKey] || [];
+    const activeSplitKey = defaultSplitName || overrideSplit;
+    const splitData = SPLIT_MODES[activeSplitKey];
     const isOverride = overrideExerciseGroup !== null;
+    console.log('split data', splitData )
 
     let visibleCategories = [];
     let activeDayName = '';
 
     if (isOverride) {
+        
         splitData.cycle.map((group, index) => {
             if (overrideExerciseGroup === group.name) {
                 visibleCategories = splitData.cycle[index].categories;
@@ -58,8 +60,11 @@ function WorkoutScreen() {
     else {
         while (scheduledDayIndex - splitData.cycle.length > 0) {
             scheduledDayIndex -= splitData.cycle.length;
+            console.log('loop changes', scheduledDayIndex);
         }
-        const todayData = splitData?.cycle ? splitData.cycle[scheduledDayIndex - 1] : null;
+        console.log(scheduledDayIndex);
+        const todayData = splitData?.cycle ? splitData.cycle[scheduledDayIndex] : null;
+        console.log('todayData', todayData)
         visibleCategories = todayData?.categories || splitData || [];
 
         activeDayName = (!training && splitData?.cycle) ? activeSplitKey : (todayData?.name || activeSplitKey);
@@ -108,11 +113,11 @@ function WorkoutScreen() {
             setExerciseTimeElapsed(prev => ({ ...prev, [timer]: 0}))
         })
     }
-    const visibleCategoriesString = JSON.stringify(visibleCategories);
 
     useEffect(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
-        const categories = JSON.parse(visibleCategoriesString);
+        const categories = visibleCategories;
+        console.log(categories);
 
         setActiveExercises(prev => {
             let hasChanges = false;
@@ -137,7 +142,7 @@ function WorkoutScreen() {
             });
             return hasChanges ? next : prev;
         });
-    }, [visibleCategoriesString, currentProgress]);
+    }, [visibleCategories, currentProgress]);
 
     const handleOverride = () => {
         const splitNames = Object.keys(SPLIT_MODES);
@@ -244,7 +249,7 @@ function WorkoutScreen() {
         const historyDay = userData?.workoutHistory?.[dateNow] || { totalVolume: 0, totalSets: 0, duration: 0, exercises: {} };
         const mergedExercises = { ...historyDay.exercises };
         
-        Object.entries(todaySession.exercises).forEach(([exId, exData]) => {
+        Object.entries(todaySession.exercises || []).forEach(([exId, exData]) => {
             if (mergedExercises[exId]) {
                 mergedExercises[exId] = { totalReps: mergedExercises[exId].totalReps + exData.totalReps, sets: [...mergedExercises[exId].sets, ...exData.sets] };
             } else {
