@@ -1,5 +1,5 @@
 .workoutScreenContainer {
-  margin: 0 auto;
+  margin: 0;
   background: var(--bg-panel-a, rgba(15, 23, 42, 0.8));
   border-radius: 12px;
   border: 1px solid var(--border-a, rgba(0, 229, 255, 0.2));
@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 650px;
   padding: 30px;
-  margin-top: 10vh;
+  margin-top: 1rem;
 }
 
 .trainingActive {

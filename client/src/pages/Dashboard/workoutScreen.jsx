@@ -43,7 +43,6 @@ function WorkoutScreen() {
     const activeSplitKey = defaultSplitName || overrideSplit;
     const splitData = SPLIT_MODES[activeSplitKey];
     const isOverride = overrideExerciseGroup !== null;
-    console.log('split data', splitData )
 
     let visibleCategories = [];
     let activeDayName = '';
@@ -315,9 +314,19 @@ function WorkoutScreen() {
     }
 
     return (
-        <div className={`${styles.workoutScreenContainer} ${training ? styles.trainingActive : styles.trainingInactive}`}>
+        <>
+        { !userData?.isConfigured && (
+            <div style={{zIndex: '80', backdropFilter: 'blur(4px)', position: 'absolute', width: '100vw', height: '100vh', background: '#00000021', transform: 'translate(-50%,-50%)', top: '50%', left: '50%'}}>
+                <div style={{animation: 'windowOpen 0.4s ease-out forwards;', textAlign: 'center', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', height: '5rem', width: '80%', background: 'var(--bg-panel-a)', border: 'solid 1px var(--border)', padding: '1rem', borderRadius: '1rem'}}>
+                    <h3>Finish the initial evaluation...</h3>
+                </div>
+            </div>
+        )}
+
+        
+        <div className={`${styles.workoutScreenContainer} ${training ? styles.trainingActive : styles.trainingInactive}` } style={{animation: 'windowOpen 0.4s ease-out forwards;', }}>
             {!training ? (
-                <div className={styles.startScreen}>
+                <div className={styles.startScreen} style={{animation: 'slideInFade 0.5s ease-out forwards'}}>
                     <div className={styles.statusPanel}>
                         <div className={styles.sysHeader}>
                             <h2 className={styles.sysTitle}>Biometric.Status</h2>
@@ -342,7 +351,7 @@ function WorkoutScreen() {
                         )}
                     </div>
 
-                    <div className={styles.startScreenContent} style={{ opacity: bioStatus !== 'optimal' ? 0.3 : 1, pointerEvents: bioStatus !== 'optimal' ? 'none' : 'auto', transition: 'all 0.3s' }}>
+                    <div className={styles.startScreenContent} style={{ animationDelay: '1s', opacity: bioStatus !== 'optimal' ? 0.3 : 1, pointerEvents: bioStatus !== 'optimal' ? 'none' : 'auto', transition: 'all 0.3s' }}>
                         <div className={styles.scheduleInfo}>
                             <span className={styles.scheduleLabel}>Target Schedule:</span>
                             <span className={styles.scheduleTarget}>{activeSplitKey}</span>
@@ -516,7 +525,9 @@ function WorkoutScreen() {
                 </div>
             )}
         </div>
+    </>
     );
+    
 }
 
 export default WorkoutScreen;

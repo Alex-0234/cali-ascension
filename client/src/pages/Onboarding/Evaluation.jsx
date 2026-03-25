@@ -173,8 +173,8 @@ const EvaluationScreen = () => {
         return (
             <div className="mock-body">
                 <div className={styles.sysWindow}>
-                    <CloseButton position='absolute' top='20px' right='20px' onClose={() => navigate('/status')}/>
-                    <BackButton position='absolute' top='20px' left='20px' onClick={handleReturn}/>
+                    <CloseButton position='absolute' top='5px' right='2px' onClose={() => navigate('/status')}/>
+                    <BackButton stroke={'white'} position='absolute' top='5px' left='2px' onClick={handleReturn}/>
                     
                     <div className={styles.sysHeader}>
                         <h2 className={styles.sysTitle}>System.Calibration</h2>
