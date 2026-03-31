@@ -25,10 +25,14 @@ export function calculateStreakFromObject(workoutHistory) {
         const dateString = sortedDates[i];
         const log = safeWorkoutHistory[dateString];
 
+        if (!log.status && log.type) {
+            log.status = log.type;
+        }
+
         const isLegitWorkout = log.status === 'workout' && (log.totalVolume >= 12);
         const isRestDay = log.status === 'restday';
 
-        if (isLegitWorkout) {
+        if (isLegitWorkout || isRestDay) {
             tempStreak++;
             highestStreak = Math.max(highestStreak, tempStreak);
         } 
