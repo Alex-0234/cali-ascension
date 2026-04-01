@@ -332,7 +332,7 @@ function WorkoutScreen() {
                             <h2 className={styles.sysTitle}>Biometric.Status</h2>
                         </div>
                         <div className={styles.statusOptions}>
-                            {['optimal', 'recovery', 'critical'].map(status => (
+                            {['optimal', 'restday', 'critical'].map(status => (
                                 <button 
                                     key={status}
                                     className={`${styles.statusBtn} ${bioStatus === status ? styles[`status${status.charAt(0).toUpperCase() + status.slice(1)}`] : ''}`}

@@ -19,11 +19,12 @@ export default function StatusReport() {
 
     return (
         <>
+        <div className={styles.cardHeader}>
+            <h3 className={styles.cardTitle}>STATUS.WORKOUT_REPORT</h3>
+        </div>
         <div className={styles.workoutCard}>
     
-                <div className={styles.cardHeader}>
-                    <h3 className={styles.cardTitle}>[ STATUS REPORT ]</h3>
-                </div>
+                
 
                 
            <div className='bar-chart-wrapper' style={{ width: '100%', height: '250px', paddingTop: '1rem', marginTop: '2rem', border: '2px solid var(--border-a)', borderRadius: 'var(--border-radius)' }}>
