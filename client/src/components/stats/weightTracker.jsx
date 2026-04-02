@@ -129,7 +129,7 @@ export default function WeightTracker({ weightHistory = [] }) {
             </div>
 
             <div className="weight-bottom-row">
-                <p>Week Average: <span>{Math.round(avgWeight)} kg</span></p>
+                <p>Week Average: <span>{Number.parseFloat(avgWeight).toFixed(2)} kg</span></p>
                 <SystemButton text='History' onClick={() => window.alert('Not yet')} />
             </div>
             
