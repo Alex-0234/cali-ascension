@@ -15,6 +15,7 @@ export const getHighestUnlockedExercises = (userProgress) => {
         categoryExerciseIDs.forEach(exerciseID => {
             const playerStats = userProgress[exerciseID];
             const gameRules = EXERCISE_DB[exerciseID];
+            //console.log('categoryExerciseIDs:', categoryExerciseIDs, 'playerStats: ', playerStats, 'gameRules: ', gameRules) 
 
             if (playerStats) {
                 if (gameRules.tier > highestTier) {

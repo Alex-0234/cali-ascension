@@ -1,24 +1,65 @@
-export const EXERCISE_DB = {
-
-    // |||||||   PUSH-UPS   |||||||
-
-    // Add decline pushup or option
-
+export const REHAB_DB = {
     "pushup_00": {
         id: "pushup_00",
         name: "Wall Push-up",
         unit: "reps",
         animation: "/videos/wall_pushup.mp4",
         tier: 0,
+        category: "pushups",
         prerequisites: [], 
     },
+    "squat_00": {
+        id: "squat_00",
+        name: "Assisted Squat",
+        unit: "reps",
+        animation: "/videos/assisted_squat.mp4",
+        tier: 0,
+        category: "squats",
+        prerequisites: [], 
+    },
+    "pullup_00": {
+        id: "pullup_00",
+        name: "Wall Pull",
+        unit: "reps",
+        animation: "/videos/wall_pull.mp4",
+        tier: 0,
+        category: "pullups",
+        prerequisites: [], 
+    },
+    "dip_00": {
+        id: "dip_00",
+        name: "Assisted Bench Dip",
+        unit: "reps",
+        animation: "/videos/assisted_bench_dip.mp4",
+        tier: 0,
+        category: "dips",
+        prerequisites: [],
+    },
+    "core_00": {
+        id: "core_00",
+        name: "Wall Plank / Incline Plank",
+        unit: "seconds",
+        animation: "/videos/wall_plank.mp4",
+        tier: 0,
+        category: "core",
+        prerequisites: [],
+    }
+};
+
+// ==========================================
+// MAIN EXERCISE DATABASE (Tier 1+)
+// ==========================================
+export const EXERCISE_DB = {
+
+    // |||||||   PUSH-UPS   |||||||
+
     "pushup_01": {
         id: "pushup_01",
         name: "Incline Push-up",
         unit: "reps",
         animation: "/videos/incline_pushup.mp4",
         tier: 1,
-        prerequisites: ["pushup_00"],
+        prerequisites: [], 
     },
     "pushup_02": {
         id: "pushup_02",
@@ -36,6 +77,15 @@ export const EXERCISE_DB = {
         tier: 3,
         prerequisites: ["pushup_02"], 
     },
+    "pushup_04D": {
+        id: "pushup_04D",
+        name: "Decline Push-up",
+        unit: "reps",
+        animation: "/videos/decline_pushup.mp4",
+        tier: 4,
+        branch: "shoulders",
+        prerequisites: ["pushup_03"], 
+    }, 
     "pushup_04A": {
         id: "pushup_04A",
         name: "Diamond Push-up",
@@ -135,60 +185,97 @@ export const EXERCISE_DB = {
         branch: "planche",
         prerequisites: ["pushup_06C"], 
     },
-    "pushup_04D": {
-        id: "pushup_04D",
+    "pushup_05D": {
+        id: "pushup_05D",
         name: "Pike Push-up",
         unit: "reps",
         animation: "/videos/pike_pushup.mp4",
         tier: 4,
         branch: "shoulders",
-        prerequisites: ["pushup_03"], 
+        prerequisites: ["pushup_04D"], 
     },
-    "pushup_05D": {
-        id: "pushup_05D",
+    "pushup_06D": {
+        id: "pushup_06D",
         name: "Elevated Pike Push-up",
         unit: "reps",
         animation: "/videos/elevated_pike_pushup.mp4",
         tier: 5,
         branch: "shoulders",
-        prerequisites: ["pushup_04D"], 
+        prerequisites: ["pushup_05D"], 
     },
-    "pushup_06D": {
-        id: "pushup_06D",
+    "pushup_07D": {
+        id: "pushup_07D",
         name: "Wall Handstand Push-up",
         unit: "reps",
         animation: "/videos/wall_handstand_pushup.mp4",
         tier: 7,
         branch: "shoulders",
-        prerequisites: ["pushup_05D"], 
+        prerequisites: ["pushup_06D"], 
     },
-    "pushup_07D": {
-        id: "pushup_07D",
+    "pushup_08D": {
+        id: "pushup_08D",
         name: "Freestanding HSPU",
         unit: "reps",
         animation: "/videos/freestanding_hspu.mp4",
         tier: 9,
         branch: "shoulders",
-        prerequisites: ["pushup_06D"], 
+        prerequisites: ["pushup_07D"], 
+    },
+
+    // |||||||   DIPS   |||||||
+
+    "dip_01": {
+        id: "dip_01",
+        name: "Bench Dips",
+        unit: "reps",
+        animation: "/videos/bench_dips.mp4",
+        tier: 1,
+        prerequisites: [], 
+    },
+    "dip_02": {
+        id: "dip_02",
+        name: "Straight Bar Dips",
+        unit: "reps",
+        animation: "/videos/straight_bar_dips.mp4",
+        tier: 2,
+        prerequisites: ["dip_01"], 
+    },
+    "dip_03": {
+        id: "dip_03",
+        name: "Parallel Bar Dips",
+        unit: "reps",
+        animation: "/videos/parallel_bar_dips.mp4",
+        tier: 3,
+        prerequisites: ["dip_02"], 
+    },
+    "dip_04A": {
+        id: "dip_04A",
+        name: "Ring Dips",
+        unit: "reps",
+        animation: "/videos/ring_dips.mp4",
+        tier: 4,
+        branch: "stability",
+        prerequisites: ["dip_03"], 
+    },
+    "dip_05A": {
+        id: "dip_05A",
+        name: "Bulgarian Ring Dips",
+        unit: "reps",
+        animation: "/videos/bulgarian_ring_dips.mp4",
+        tier: 5,
+        branch: "stability",
+        prerequisites: ["dip_04A"], 
     },
 
     // |||||||   SQUATS   |||||||
 
-    "squat_00": {
-        id: "squat_00",
-        name: "Assisted Squat",
-        unit: "reps",
-        animation: "/videos/assisted_squat.mp4",
-        tier: 0,
-        prerequisites: [], 
-    },
     "squat_01": {
         id: "squat_01",
         name: "Half Squat",
         unit: "reps",
         animation: "/videos/half_squat.mp4",
         tier: 1,
-        prerequisites: ["squat_00"], 
+        prerequisites: [], 
     },
     "squat_02": {
         id: "squat_02",
@@ -299,7 +386,7 @@ export const EXERCISE_DB = {
         tier: 1,
         branch: "isometric",
         prerequisites: [], 
-    },
+    }, 
     "core_01A": {
         id: "core_01A", 
         name: "Hollow Body Hold",
@@ -429,18 +516,19 @@ export const EXERCISE_DB = {
 
     "pullup_00": {
         id: "pullup_00",
-        name: "Wall Pull",
-        unit: "reps",
-        animation: "/videos/wall_pull.mp4",
-        tier: 0,
-        prerequisites: [], 
-    },
-    "pullup_01": {
-        id: "pullup_01",
         name: "Australian Pull-up",
         unit: "reps",
         animation: "/videos/australian_pullup.mp4",
         tier: 1,
+        prerequisites: [], 
+    },
+    "pullup_01": {
+        id: "pullup_01",
+        name: "Decline Australian Pull-up",
+        unit: "reps",
+        animation: "/videos/decline_australian_pullup.mp4",
+        tier: 2,
+        branch: "horizontal",
         prerequisites: ['pullup_00'], 
     },
     "pullup_02": {
@@ -613,14 +701,14 @@ export const EXERCISE_DB = {
 
 export const ALL_EXERCISES = {
     pushups: [
-        'pushup_00', 'pushup_01', 'pushup_02', 'pushup_03',
+        'pushup_01', 'pushup_02', 'pushup_03',
         'pushup_04A', 'pushup_04B', 'pushup_04C', 'pushup_04D',
         'pushup_05A', 'pushup_05B', 'pushup_05C', 'pushup_05D',
         'pushup_06A', 'pushup_06B', 'pushup_06C', 'pushup_06D',
-        'pushup_07A', 'pushup_07C', 'pushup_07D'
+        'pushup_07A', 'pushup_07C', 'pushup_07D','pushup_08D'
     ],
     squats: [
-        'squat_00', 'squat_01', 'squat_02',
+        'squat_01', 'squat_02',
         'squat_03A', 'squat_03B', 'squat_03C',
         'squat_04A', 'squat_04B', 'squat_04C',
         'squat_05A', 'squat_05C',
@@ -641,6 +729,9 @@ export const ALL_EXERCISES = {
         'pullup_09A', 'pullup_09B', 'pullup_09C',
         'pullup_10A', 'pullup_10B', 'pullup_10C',
         'pullup_11A'
+    ],
+    dips: [
+        'dip_01', 'dip_02', 'dip_03', 'dip_04A', 'dip_05A'
     ]
 };
 
@@ -654,19 +745,19 @@ export const EVALUATION_EXERCISES = {
 export const SPLIT_MODES = {
     'Full Body': {
         cycle: [
-            { name: 'Full Body', categories: ['pushups','pullups','squats','core'] },
+            { name: 'Full Body', categories: ['pushups','dips','pullups','squats','core'] },
         ]
     },
     'Push/Pull/Legs': {
         cycle: [
-            { name: 'Push Day', categories: ['pushups','core'] },
+            { name: 'Push Day', categories: ['pushups', 'dips'] },
             { name: 'Pull Day', categories: ['pullups','core'] },
             { name: 'Leg Day', categories: ['squats','core'] },
         ]
         },
     'Upper/Lower': {
         cycle: [
-            { name: 'Upper Day', categories: ['pushups','pullups'] },
+            { name: 'Upper Day', categories: ['pushups','dips','pullups'] },
             { name: 'Lower Day', categories: ['squats','core'] },
         ]
         },
