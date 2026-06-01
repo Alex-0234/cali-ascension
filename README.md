@@ -6,7 +6,7 @@ The primary goal of this tracker is to ensure that the in-game stats accurately 
 
 ## Live Demo
 
-[Test the App Here]([https://www.alexliska.dev](https://cali-ascension.vercel.app)) (Temporary URL for testing purposes)
+[Test the App Here](https://cali-ascension.vercel.app) (Temporary URL for testing purposes)
 
 - Username: test
 - Password: test
