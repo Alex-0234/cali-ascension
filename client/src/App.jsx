@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useNavigate } from 'react-router-dom';
 import useUserStore from './store/usePlayerStore';
 
+import Terminal from './components/layout/terminal';
 import Login from './pages/Auth/Login'; 
 import Register from './pages/Auth/Register';
 import SkillTreeScreen from './components/reactflow/SkillTree';
@@ -21,9 +22,9 @@ const ProtectedRoute = ({ children }) => {
   const userData = useUserStore((state) => state.userData);
   
   useEffect(() => {
-      if (!userData.isLoading && !userData.isLoggedIn && !localStorage.getItem('userId')) {
-          navigate('/login');
-      }
+ /*  if (!userData.isLoading && !userData.isLoggedIn && !localStorage.getItem('userId')) {
+      navigate('/login');
+  } */
   }, [userData.isLoading, userData.isLoggedIn, navigate]);
 
   if (userData.isLoading) return <div>System Initializing...</div>;
@@ -58,7 +59,7 @@ function App() {
   }, [userData, syncUser, isServerReady]); 
 
   if (!isServerReady) {
-      return <ServerWakeup onServerReady={() => setIsServerReady(true)} />;
+      return <ServerWakeup onServerReady={() => setIsServerReady(false)} />;
   }
 
   return (
@@ -66,7 +67,7 @@ function App() {
       <Routes>
         
         <Route element={<ProtectedRoute><SystemLayout /></ProtectedRoute>}>
-            <Route path='/' element={<Navigate to="/status" replace />}/>
+            <Route path='/' element={<Terminal/>}/>
             <Route path='/settings' element={<Settings />} />
             <Route path='/status' element={<StatusWindow />} />
             <Route path='/workout' element={<WorkoutScreen />} />

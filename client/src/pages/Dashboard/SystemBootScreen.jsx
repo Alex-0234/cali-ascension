@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Terminal from '../../components/layout/terminal';
 
 export default function ServerWakeup({ onServerReady }) {
     const [status, setStatus] = useState('connecting'); 
@@ -40,36 +41,7 @@ export default function ServerWakeup({ onServerReady }) {
 
     return (
         <>
-            <div className="wakeup-overlay">
-                <div className={`wakeup-box ${status === 'connecting' ? 'box-red' : 'box-cyan'}`}>
-                    
-                    <div className="wakeup-scanline"></div>
-
-                    <div className="wakeup-header">
-                        {status === 'connecting' ? '⚠ [ SYSTEM BOOTING ]' : '✓ [ SYSTEM ONLINE ]'}
-                    </div>
-                    
-                    <div className="wakeup-content">
-                        {status === 'connecting' ? (
-                            <>
-                                <h2 className="pulse-text">Connecting to the server{dots}</h2>
-                                <p>System is waking up... Estimated time 50 seconds.</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2 className="success-text">ACCESS GRANTED</h2>
-                                <p>Mana link established. Welcome back, Hunter.</p>
-                            </>
-                        )}
-                    </div>
-                    
-                    {status === 'connecting' && (
-                        <div className="wakeup-progress-bar">
-                            <div className="wakeup-progress-fill"></div>
-                        </div>
-                    )}
-                </div>
-            </div>
+            <Terminal/>
         </>
     );
 }
