@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import Terminal from '../../components/layout/terminal';
+import Terminal from '../../pages/Dashboard/terminal';
+import StatusPanel from '../../components/ui/terminal_status';
 
 export default function ServerWakeup({ onServerReady }) {
     const [status, setStatus] = useState('connecting'); 
@@ -41,7 +42,7 @@ export default function ServerWakeup({ onServerReady }) {
 
     return (
         <>
-            <Terminal/>
+            <Terminal content={<div></div>}/>
         </>
     );
 }

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useNavigate } from 'react-router-dom';
 import useUserStore from './store/usePlayerStore';
 
-import Terminal from './components/layout/terminal';
+import Terminal from './pages/Dashboard/terminal';
 import Login from './pages/Auth/Login'; 
 import Register from './pages/Auth/Register';
 import SkillTreeScreen from './components/reactflow/SkillTree';
