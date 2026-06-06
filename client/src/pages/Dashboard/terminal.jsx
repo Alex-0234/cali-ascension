@@ -1,11 +1,20 @@
 import {useState, useEffect} from 'react';
+
+import useUserStore from '../../store/usePlayerStore';
+import useTerminalStore from '../../store/terminalStore';
+
 import Typewriter from '../../components/ui/typewriter';
+import Message from '../../components/ui/message';
 import StatusPanel from '../../components/ui/terminal_status';
 
 const Terminal = ({content}) => {
+    const {userData, syncUser, fetchUser} = useUserStore();
+    const {terminalData, setTerminalData} = useTerminalStore();
+
     const [isServerReady, setIsServerReady] = useState(false);
     const [terminalOn, setTerminalOn] = useState(false);
     const [clearReset, setClearReset] = useState(false);
+    const [introductionDone, setIntroductionDone] = useState(false);
 
     const introArray = ['>  Connection Succesfull', '>  Starting Terminal', '>  Terminal is Online', '> clear']
     const [introIndex, setIntroIndex] = useState(-1);
@@ -59,6 +68,9 @@ const Terminal = ({content}) => {
         }
     }, [introIndex]);
 
+    // FUNCTIONS
+    
+
     return (
         <div style={{
             position: 'relative',
@@ -100,7 +112,7 @@ const Terminal = ({content}) => {
             }}>
 
                 {/* SCROLL SECTION */}
-                <div class={'hide-scrollbar'} style={{
+                <div className={'hide-scrollbar'} style={{
                     height: '100%',
                     width: '100%',
                     overflowY: 'scroll',
@@ -128,7 +140,7 @@ const Terminal = ({content}) => {
 
                         }}> <span>------</span> <span>GENESIS-OS 2.0</span> · <span>ACCESS {isServerReady ? 'GRANTED' : 'DENIED'}</span> · <span>TERMINAL {terminalOn ? 'ONLINE' : 'OFFLINE'}</span>   <span>------</span>   </p>
 
-                        <StatusPanel terminalOn={terminalOn}/>
+                        <StatusPanel terminalOn={terminalOn} />
 
                         {!clearReset &&
                         <p  key={0} style={{
@@ -137,8 +149,8 @@ const Terminal = ({content}) => {
                                 fontSize: '0.8rem',
                                 fontFamily: 'var(--font-normal)'
                             }}>
-                            <Typewriter text={'>  Connecting to the GENESIS server.'} speed={30}/>
-                        </p>
+                            &#62;  Connecting to the GENESIS server.                 
+                            </p>
                         
                         }
                         {!clearReset && startIntro && introIndex >= 0 && introArray.slice(0, introIndex + 1).map((line, index) => (
@@ -159,9 +171,20 @@ const Terminal = ({content}) => {
                         minWidth: '80%',
                         width: '100%',
                         height: '100%',
-                        background: '#333',
+                        fontFamily: 'var(--font-normal)'
                     }}>
-                        {content}
+                        {clearReset && 
+                        !userData.userId && 
+                        !introductionDone &&
+                        <Message scenario={'introduceTerminal'}/>  }
+
+                        {clearReset &&
+                        !userData.userId &&
+                        introductionDone &&
+                        <Message scenario={'alertLogin'} />
+                        }
+
+                        {clearReset && userData.userId && content}
                     </div>
                 </div>
             </section>

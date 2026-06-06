@@ -17,20 +17,6 @@ import StatusWindow from './pages/Dashboard/StatusWindow';
 import Settings from './pages/Dashboard/Settings'
 import WorkoutHistoryBlock from './components/ui/workoutHistoryBlock';
 
-const ProtectedRoute = ({ children }) => {
-  const navigate = useNavigate();
-  const userData = useUserStore((state) => state.userData);
-  
-  useEffect(() => {
- /*  if (!userData.isLoading && !userData.isLoggedIn && !localStorage.getItem('userId')) {
-      navigate('/login');
-  } */
-  }, [userData.isLoading, userData.isLoggedIn, navigate]);
-
-  if (userData.isLoading) return <div>System Initializing...</div>;
-
-  return userData.isLoggedIn ? children : null;
-};
 
 function App() {
   const fetchUser = useUserStore((state) => state.fetchUser);
@@ -58,30 +44,8 @@ function App() {
       
   }, [userData, syncUser, isServerReady]); 
 
-  if (!isServerReady) {
-      return <ServerWakeup onServerReady={() => setIsServerReady(false)} />;
-  }
-
   return (
-    <Router>
-      <Routes>
-        
-        <Route element={<ProtectedRoute><SystemLayout /></ProtectedRoute>}>
-            <Route path='/' element={<Terminal/>}/>
-            <Route path='/settings' element={<Settings />} />
-            <Route path='/status' element={<StatusWindow />} />
-            <Route path='/workout' element={<WorkoutScreen />} />
-            <Route path='/skill-tree' element={<SkillTreeScreen />} />
-            <Route path="/workout-history" element={<WorkoutHistoryBlock />} />
-            <Route path="/evaluation" element={<Evaluation />} />
-            <Route path="/awakening" element={<Awakening />} />
-        </Route>
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        
-      </Routes>
-    </Router>
+    <Terminal content={<p>Working on it.</p>}/>
   );
 }
 

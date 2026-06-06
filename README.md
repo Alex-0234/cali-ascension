@@ -19,41 +19,14 @@ Currently under rebrand and complete redesign to improve UX.
 
 Unlike traditional RPGs, progression here is strictly tied to real-world performance. 
 
-* **Ranks:** Ranks serve as your starting point. The stronger you are at the beginning, the higher your initial rank (with possible re-evaluations later on).
-* **Stats:** Stats are currently calculated based on the hardest skill achieved and the number of reps the user can perform. There is a cap of 12 reps, which signals it is time to move on to the next variation.
-* **Skill Trees:** Skill trees visually map the progression of exercises and skills (e.g., Australian Pull-ups unlock Jackknife Pull-ups and Isometric Hold Pull-ups).
-* **Progression:** Logging reps in advanced exercises cascades down the tree, automatically improving your proficiency score in the prerequisite, easier skills.
-* **Leveling:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
-
 ## To-Do List
-- [X] Implement daily streak.
-- [X] Revamp the workout History
-- [X] Update exercise data with a unit (reps/time/etc.)
-- [X] Make the styling desktop compatible / better.
-- [ ] Introduce a confirmation component (Are you sure?)
-- [X] Implement weight history tracking.
-     - [X] Make it one weight a day.
-     - [X] Make midnight reser the cooldown. (Should work now)
-- [X] Add a meaning to exercising with extra weight.
-- [ ] Introduce some kind of points to unlock exercises in the tree.
-- [X] Improve the evaluation window.
-- [X] Completely re-work the core tree. 
-- [X] Introduce settings.
-     - [X] Style it better
-     - [ ] Refine it and add confirmation window
-- [ ] Include actual video previews.
-- [X] Introduce actual workout split selection.
-     - [X] Now, make sure it changes muscle group daily ( based on the split )
-     - [X] Add manual selection. ( In case muscles are still sore )
-- [X] Introduce a workout history window.
+- [ ] Make the terminal monologues work through zustand.
 
 ## Technologies used
 
 **Frontend**
 - React (vite)
 - Zustand
-- MUI X Charts
-- React Router 
 - React Flow
 
 **Backend**
@@ -65,4 +38,4 @@ Unlike traditional RPGs, progression here is strictly tied to real-world perform
 
 ## Project Background 
 
-This is a personal project and serves as my introduction to React and React Flow. The development process is heavily "vibe-coded," as learning through building and iterating in this hands-on way saves a significant amount of time.
+This is kind of a rebrand from previous project. With this rebrand I want to focus more on the frontend and make the UX better. 
