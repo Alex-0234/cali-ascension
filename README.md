@@ -1,8 +1,10 @@
-# Calisthenics-Ascension
+# Calisthenics-Ascension ---> GENESIS
 
-A web-based, RPG-like tracker that combines ranks, leveling up, daily quests, and overall game-like features while focusing on actual, in-real-life progress in Calisthenics. 
+A web-based, RPG-like tracker that combines ranks, leveling up, daily quests, and overall game-like features while focusing on actual, in-real-life progress. 
 
 The primary goal of this tracker is to ensure that the in-game stats accurately reflect real-world physical progress, provided it receives truthful input from the user.
+
+Currently under rebrand and complete redesign to improve UX.
 
 ## Live Demo
 
@@ -15,7 +17,7 @@ The primary goal of this tracker is to ensure that the in-game stats accurately 
   
 ## Core Mechanics
 
-Unlike traditional RPGs, progression here is strictly tied to real-world calisthenics performance. 
+Unlike traditional RPGs, progression here is strictly tied to real-world performance. 
 
 * **Ranks:** Ranks serve as your starting point. The stronger you are at the beginning, the higher your initial rank (with possible re-evaluations later on).
 * **Stats:** Stats are currently calculated based on the hardest skill achieved and the number of reps the user can perform. There is a cap of 12 reps, which signals it is time to move on to the next variation.
