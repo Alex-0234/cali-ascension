@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 
 import useUserStore from '../../store/usePlayerStore';
 import useTerminalStore from '../../store/terminalStore';
+import terminalScenarios from '../../data/message_db';
 
 import Typewriter from '../../components/ui/typewriter';
 import Message from '../../components/ui/message';
@@ -9,16 +10,20 @@ import StatusPanel from '../../components/ui/terminal_status';
 
 const Terminal = ({content}) => {
     const {userData, syncUser, fetchUser} = useUserStore();
-    const {terminalData, setTerminalData} = useTerminalStore();
+    const currentScenario = useTerminalStore((state) => state.currentScenario);
+    const setScenario = useTerminalStore((state) => state.setScenario);
 
+
+    // Starting intro
     const [isServerReady, setIsServerReady] = useState(false);
     const [terminalOn, setTerminalOn] = useState(false);
-    const [clearReset, setClearReset] = useState(false);
-    const [introductionDone, setIntroductionDone] = useState(false);
-
-    const introArray = ['>  Connection Succesfull', '>  Starting Terminal', '>  Terminal is Online', '> clear']
+    const [clearReset, setClearReset] = useState(false);    const introArray = ['>  Connection Succesfull', '>  Starting Terminal', '>  Terminal is Online', '> clear']
     const [introIndex, setIntroIndex] = useState(-1);
     const [startIntro, setStartIntro] = useState(false);
+
+    // Terminal necessities
+    const [trackedUser, setTrackedUser] = useState(null);
+    const [isAsked, setIsAsked] = useState(false);
 
     useEffect(() => {
         if (!isServerReady) {
@@ -69,6 +74,21 @@ const Terminal = ({content}) => {
     }, [introIndex]);
 
     // FUNCTIONS
+    /* const startScenario = (scenario) => {
+        setTerminalData({
+            ...terminalData,
+            isTyping: true,
+        })
+        return (
+            <Message scenario={scenario} />
+        )
+    } */
+   const handleScenarioChange = () => {
+    if (currentScenario === '') {
+        setScenario(terminalScenarios[0]);
+    }
+        
+   }
     
 
     return (
@@ -121,6 +141,7 @@ const Terminal = ({content}) => {
                     <div style={{
                         width: '100%',
                         height: 'fit-content',
+                        fontFamily: 'var(--font-normal)'
 
                     }}>
                         <h1 style={{
@@ -128,6 +149,7 @@ const Terminal = ({content}) => {
                         fontSize: '5rem',
                         lineHeight: '4.5rem',
                         margin: '0',
+                        fontFamily: 'var(--pixel)'
 
                         }}>GENESIS</h1>
                         <p style={{
@@ -163,6 +185,11 @@ const Terminal = ({content}) => {
                                 <Typewriter text={line} speed={30}/>
                             </p>
                         ))}
+                        { clearReset &&
+                            <Message scenarios={['introduceTerminal', 'loginAlert']}/>
+                        }
+                        
+                        
                         
                     </div>
                     {/* CONTENT SECTION */}
@@ -173,17 +200,6 @@ const Terminal = ({content}) => {
                         height: '100%',
                         fontFamily: 'var(--font-normal)'
                     }}>
-                        {clearReset && 
-                        !userData.userId && 
-                        !introductionDone &&
-                        <Message scenario={'introduceTerminal'}/>  }
-
-                        {clearReset &&
-                        !userData.userId &&
-                        introductionDone &&
-                        <Message scenario={'alertLogin'} />
-                        }
-
                         {clearReset && userData.userId && content}
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import useTerminalData from '../../store/terminalStore'
 
 const StatusPanel = ({terminalOn}) => {
     // const userData = 
-    const terminalData = useTerminalData();
+    const isTyping = useTerminalData((state) => state.isTyping);
     const [status, setStatus] = useState('offline');
     const [activity, setActivity] = useState('unidentified');
     const [trackedUser, setTrackedUser] = useState('unknown');
@@ -11,12 +11,9 @@ const StatusPanel = ({terminalOn}) => {
     useEffect(() => {
         if (terminalOn) {
             setStatus('online');
+            isTyping ? setActivity('is typing') : setActivity('Idle');
         }
-
-    },[terminalData, terminalOn])
-   /*  useEffect(() => {
-
-    },[userData]) */
+    },[terminalOn, isTyping])
 
     return (
         <div className={'wrapper'} style={{
