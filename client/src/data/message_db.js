@@ -3,6 +3,7 @@
 export const terminalScenarios = {
     'introduceTerminal': {
         id: 'terminal_00',
+        header: '[ Introduction ]',
         lines: [
             "Hello user, I'm GENESIS.",
             'I can help you with tracking your workouts and exercise progressions.',
@@ -11,6 +12,7 @@ export const terminalScenarios = {
     },
     'loginAlert': {
         id: 'terminal_01',
+        header: '[ Please Login ]',
         lines: [
             "Make sure to login or make a new account to continue.",
             "You can use navigation in the header or type login / register (Maybe add later)",

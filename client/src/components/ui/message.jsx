@@ -1,50 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import useTerminalStore from '../../store/terminalStore';
 import { terminalScenarios } from '../../data/message_db';
 import Typewriter from './typewriter';
 
-const Message = ({scenarios}) => {
-    const Typing = useTerminalStore((state) => state.Typing);
-    const [activeLineIndex, setActiveLineIndex] = useState(0);
-    let activeLines = []
+const Message = ({ scenarios }) => {
+  const Typing = useTerminalStore((state) => state.Typing);
+  const [activeLineIndex, setActiveLineIndex] = useState(0);
 
-    const numberOfScenarios = scenarios.length;
-    for (let i = 0; i <= numberOfScenarios - 1; i++) {
-        for (let x = 0; x <= (terminalScenarios[scenarios[i]].lines).length - 1;x++) {
-            activeLines.push(terminalScenarios[scenarios[i]].lines[x]);
+  const activeLines = useMemo(() => {
+    let lines = [];
+    scenarios.forEach((scenarioKey) => {
+      const scenario = terminalScenarios[scenarioKey];
+      if (scenario) {
+        if (scenario.header) {
+          lines.push(`.${scenario.header}`); 
         }
-    }
-    console.log(activeLines)
+        if (scenario.lines) {
+          lines.push(...scenario.lines);
+        }
+      }
+    });
+    return lines;
+  }, [scenarios]);
+
+  const totalLines = activeLines.length;
 
   useEffect(() => {
     setActiveLineIndex(0);
-  }, []);
+    if (totalLines > 0) {
+      Typing(true);
+    }
+  }, [scenarios, totalLines, Typing]);
 
+  useEffect(() => {
+    if (totalLines === 0) return;
 
-  const totalLines = activeLines.length;
-  Typing(true);
+    if (activeLineIndex >= totalLines) {
+      Typing(false);
+      return;
+    }
+
+    const currentLine = activeLines[activeLineIndex];
+    if (currentLine && currentLine.startsWith('.')) {
+      setActiveLineIndex((prev) => prev + 1);
+    }
+  }, [activeLineIndex, activeLines, totalLines, Typing]);
 
   return (
     <>
       {activeLines.map((line, index) => {
         if (index > activeLineIndex) return null;
 
+        const isHeader = line.startsWith('.');
+
         return (
-          <p key={`${line}_${index}`} style={{ margin: '0.5rem 0' }}>
-            <span style={{ marginRight: '0.8rem' }}>&#62;</span>
-            <Typewriter 
-              text={line} 
-              speed={30} 
-              onComplete={index === activeLineIndex ? () => {
-                if (activeLineIndex < totalLines - 1) {
-                  setActiveLineIndex((prev) => prev + 1);
-                } 
-                else {
-                    Typing(false);
-                }
-              } : null}
-            />
-          </p>
+          <React.Fragment key={`line_wrapper_${index}`}>
+            {isHeader ? (
+              <p className="header" style={{ margin: '0.5rem 0', fontWeight: 'bold' }}>
+                {line.slice(1)} 
+              </p>
+            ) : (
+              <p style={{ margin: '0.5rem 0' }}>
+                <span style={{ marginRight: '0.8rem' }}>&#62;</span>
+                <Typewriter 
+                  text={line} 
+                  speed={20} 
+                  onComplete={index === activeLineIndex ? () => {
+                    setActiveLineIndex((prev) => prev + 1);
+                  } : null}
+                />
+              </p>
+            )}
+          </React.Fragment>
         );
       })}
     </>
