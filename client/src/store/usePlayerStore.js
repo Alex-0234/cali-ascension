@@ -11,11 +11,6 @@ const INITIAL_PLAYER_STATE = {
     gender: "",
     height: "",
     weight: "",
-    currentProgram: {
-      split: 'Full Body',
-      currentDayIndex: 0,
-      date: '2026-03-14',
-    },
     bioStatus: 'optimal',
 
     level: 1,

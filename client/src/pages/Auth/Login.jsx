@@ -1,14 +1,8 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'; 
-import useUserStore from '../../store/usePlayerStore'
-import SystemAlert from '../../components/layout/Notification';
 
-import styles from '../../styles/auth.module.css'
-import { useMediaQuery } from '../../utils/useMediaQuery';
+import useUserStore from '../../store/usePlayerStore'
 
 export default function Login() {
-    const navigate = useNavigate();
-    const isDesktop = useMediaQuery('min-height: 800px');
     const { fetchUser } = useUserStore(); 
     
     const [username, setUsername] = useState("");
@@ -16,24 +10,23 @@ export default function Login() {
     const [email, setEmail] = useState("");
 
     const [mode, setMode] = useState('Username');  
-    const [notification, setNotification] = useState({ message: "", error: false });
+
 
     async function handleLogin(e) {
         if (e) e.preventDefault();
         
         try {
             if ((!username && !email) || !password) {
-                setNotification({ message: "System Error: Credentials required", error: true });
+               //
                 return;
             }
 
-            setNotification({ message: "Authenticating...", error: false });
             setTimeout(() => {
                 if (password === "admin") {
-                    setNotification({ message: "Authentication successful.", error: false });
-                    setTimeout(() => navigate('/status'), 1000);
+
+                    //
                 } else {
-                    setNotification({ message: "Access Denied: Invalid credentials", error: true });
+                    //
                 }
             }, 800);
 
@@ -57,73 +50,68 @@ export default function Login() {
             if (response.ok) {
                 localStorage.setItem('userId', data.userId);  
                 await fetchUser(data.userId); 
-                setNotification({ message: "Authentication successful...", error: false });
-                setTimeout(() => navigate('/status'), 1000);
+                    //
             } else {
-                setNotification({ message: data.message || "Access Denied: Invalid credentials", error: true });
+                //
             }
 
         } catch (error) {
             console.error("Login error:", error);
-            setNotification({ message: "Server connection failed.", error: true });
+            //
         }
     }
 
    return (
         <>
-        <div className={styles.pageWrapper}>
+        <div >
 
-                <div className={styles.authBranding}>
-                    <h1 className={styles.brandTitle}>CALISTHENICS<br/>ASCENSION</h1>
-                    <p className={styles.brandSub}>Calisthenics helper</p>
+                <div >
+                    <h1 >CALISTHENICS<br/>ASCENSION</h1>
+                    <p >Calisthenics helper</p>
                 </div>
                 
 
-            <div className={styles.authContent}>
-                <div className={styles.authCard}>
+            <div >
+                <div >
                     
-                    <h2 className={styles.header}>[ SYSTEM_AUTH ]</h2>
-                    <p className={styles.subtitle}>Verify Hunter Credentials</p>
+                    <h2 >[ SYSTEM_AUTH ]</h2>
+                    <p >Verify Hunter Credentials</p>
 
-                    <div className={styles.modeTabs}>
-                        <button className={`${styles.tabBtn} ${mode === 'Username' ? styles.activeTab : ''}`} onClick={() => setMode('Username')}>
+                    <div >
+                        <button  onClick={() => setMode('Username')}>
                             Username
                         </button>
-                        <button className={`${styles.tabBtn} ${mode === 'E-mail' ? styles.activeTab : ''}`} onClick={() => setMode('E-mail')}>
+                        <button  onClick={() => setMode('E-mail')}>
                             E-mail
                         </button>
                     </div>
 
-                    <form className={styles.form}>
+                    <form >
                         {mode === 'Username' ? (
-                            <div className={styles.inputGroup}>
-                                <label className={styles.label}>Hunter Name</label>
-                                <input autoComplete='username' type="text" className={styles.input} placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <div >
+                                <label >Hunter Name</label>
+                                <input autoComplete='username' type="text"  placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div>
                         ) : (
-                            <div className={styles.inputGroup}>
-                                <label className={styles.label}>Secure E-mail</label>
-                                <input autoComplete='email' type="email" className={styles.input} placeholder="Enter your e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <div >
+                                <label >Secure E-mail</label>
+                                <input autoComplete='email' type="email"  placeholder="Enter your e-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                         )}
 
-                        <div className={styles.inputGroup}>
-                            <label className={styles.label}>Access Code</label>
-                            <input autoComplete="current-password" type="password" className={styles.input} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <div >
+                            <label >Access Code</label>
+                            <input autoComplete="current-password" type="password"  placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         
-                        <button className={styles.submitBtn} onClick={handleLogin}>
+                        <button  onClick={handleLogin}>
                             Initialize
                         </button>
                     </form>
 
-                    <div className={styles.redirect}>
-                        <p>Unregistered? <span onClick={() => navigate("/register")}>Awaken Here</span></p>
+                    <div >
+                        <p>Unregistered? <span>Awaken Here</span></p>
                     </div>
-                    
-                    {notification.message && (
-                        <SystemAlert message={notification.message} error={notification.error} />  
-                    )}
 
                 </div>
             </div>

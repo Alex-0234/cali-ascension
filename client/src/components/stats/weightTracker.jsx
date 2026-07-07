@@ -1,4 +1,4 @@
-import { LineChart } from '@mui/x-charts';
+
 import { useState, useEffect } from 'react';
 import useUserStore from '../../store/usePlayerStore';
 import getAvarage from '../../utils/weightTrackerFunctions';
@@ -8,9 +8,7 @@ import CloseButton from '../ui/closeBtn'
 
 
 export default function WeightTracker({ weightHistory = [] }) {
-    const userData = useUserStore((state) => state.userData);
-    const setUserData = useUserStore((state) => state.setUserData);
-    const syncUser = useUserStore((state) => state.syncUser);
+    const {userData, setUserData, syncUser} = useUserStore((state) => state.userData);
 
     const [isTypingWeight, setIsTypingWeight] = useState(false);
     const [tempWeight, setTempWeight] = useState(userData.weight || 0);
@@ -94,12 +92,12 @@ export default function WeightTracker({ weightHistory = [] }) {
                 </div>
 
                 <div className="weight-chart-col">
-                    {emptyHistory ? (
+                    {emptyHistory && (
                         <div className="empty-chart-placeholder">
                             <p>No data yet...</p>
                         </div>
-                    ) : (
-                        <LineChart
+                    )}
+                       /*  <LineChart
                             height={160} 
                             margin={{ top: 10, bottom: 25, left: -40, right: 0 }}
                             xAxis={[{ 
@@ -123,8 +121,7 @@ export default function WeightTracker({ weightHistory = [] }) {
                                 '& .MuiChartsAxis-directionY .MuiChartsAxis-line': { display: 'none' },
                                 '& .MuiChartsAxis-directionY .MuiChartsAxis-tick': { display: 'none' },
                             }}
-                        />
-                    )}
+                        /> */
                 </div>
             </div>
 

@@ -1,6 +1,3 @@
-import { useNavigate } from 'react-router';
-import { BarChart } from '@mui/x-charts';
-import { setsPerGroup } from '../../utils/setsPerGroup';
 
 import useUserStore from "../../store/usePlayerStore";
 
@@ -8,27 +5,20 @@ import SystemButton from "../ui/systemBtn";
 import ExerciseBlock from '../ui/exerciseBlock';
 
 
-import styles from '../../styles/workout.module.css'
-
-
 export default function StatusReport() {
-    const navigate = useNavigate()
 
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
-    const data =  setsPerGroup(workoutHistory);
+    //const data =  setsPerGroup(workoutHistory);
 
     return (
         <>
-        <div className={styles.cardHeader}>
-            <h3 className={styles.cardTitle}>STATUS.WORKOUT_REPORT</h3>
+        <div>
+            <h3>STATUS.WORKOUT_REPORT</h3>
         </div>
-        <div className={styles.workoutCard}>
+        <div>
     
-                
-
-                
            <div className='bar-chart-wrapper' style={{ width: '100%', height: '250px', paddingTop: '1rem', marginTop: '2rem', border: '2px solid var(--border-a)', borderRadius: 'var(--border-radius)' }}>
-                <BarChart
+{/*                 <BarChart
                     series={data} 
 
                     xAxis={[{ 
@@ -55,10 +45,10 @@ export default function StatusReport() {
                         '& .MuiChartsAxis-directionX .MuiChartsAxis-line': { stroke: '#334155' },
                         '& .MuiChartsAxis-directionX .MuiChartsAxis-tick': { stroke: '#334155' },
                     }}
-                />
+                /> */}
             </div>   
 
-            <SystemButton text='History' onClick={() => navigate('/workout-history')} />
+            <SystemButton text='History' />
 
         </div>
 
