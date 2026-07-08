@@ -11,10 +11,10 @@ import { calculatePlayerStats } from '../../utils/statSystem';
 import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
 
 import SystemButton from '../../components/ui/systemBtn';
-import LevelUpModal from '../../components/ui/LevelUpModal';
-import BioStatusGate from '../../components/ui/BioStatusGate';
-import SessionSummaryList from '../../components/ui/SessionSummaryList';
-import ExerciseCard from '../../components/ui/ExerciseCard';
+import LevelUpModal from "../../components/ui/levelUpModal";
+import BioStatusGate from '../../components/ui/bioStatusGate'
+import SessionSummaryList from '../../components/ui/sessionSummaryList';
+import ExerciseCard from '../../components/ui/exerciseCard';
 
 function Workout() {
     const dateNow = new Date().toISOString().split('T')[0];
