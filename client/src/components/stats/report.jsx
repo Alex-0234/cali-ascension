@@ -5,7 +5,7 @@ import SystemButton from "../ui/systemBtn";
 import ExerciseBlock from '../ui/exerciseBlock';
 
 
-export default function StatusReport() {
+export default function Report() {
 
     const workoutHistory = useUserStore((state) => state.userData.workoutHistory);
     //const data =  setsPerGroup(workoutHistory);

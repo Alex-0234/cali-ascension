@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useUserStore from "../../store/usePlayerStore";
 
+import Login from "../Auth/Login";
+import Register from "../Auth/Register";
 import Workout from "./workout";
 import Status from "./status";
 
@@ -12,8 +14,9 @@ const SECTIONS = [
 ];
 
 const System = () => {
-    const { userData } = useUserStore();
+    const { userData, logout } = useUserStore();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [auth, setAuth] = useState({isOpen: false, modal: '',});
     const [activeSection, setActiveSection] = useState('status');
 
     useEffect(() => {
@@ -40,13 +43,16 @@ const System = () => {
                             >
                                 {userData.equippedBadge || "👤"}
                             </div>
+                            <button onClick={logout}>Logout</button>
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
-                            <button className="text-xs tracking-wider uppercase px-3 py-1.5 border border-slate-700 text-slate-300 rounded-sm hover:border-cyan-400 hover:text-cyan-300 transition-colors">
+                            <button className="text-xs tracking-wider uppercase px-3 py-1.5 border border-slate-700 text-slate-300 rounded-sm hover:border-cyan-400 hover:text-cyan-300 transition-colors"
+                            onClick={() => setAuth({isOpen: true, modal: 'login'})}>
                                 Login
                             </button>
-                            <button className="text-xs tracking-wider uppercase px-3 py-1.5 border border-cyan-400/50 bg-cyan-500/10 text-cyan-300 rounded-sm hover:bg-cyan-500/20 transition-colors">
+                            <button className="text-xs tracking-wider uppercase px-3 py-1.5 border border-cyan-400/50 bg-cyan-500/10 text-cyan-300 rounded-sm hover:bg-cyan-500/20 transition-colors"
+                            onClick={() => setAuth({isOpen: true, modal: 'register'})}>
                                 Get Started
                             </button>
                         </div>
@@ -57,7 +63,7 @@ const System = () => {
                     {SECTIONS.map(({ id, label }) => (
                         <button
                             key={id}
-                            onClick={() => setActiveSection(id)}
+                            onClick={() => {setActiveSection(id); auth.isOpen && setAuth({isOpen: false, modal: ''})}}
                             className={`px-4 py-2.5 text-xs tracking-wider uppercase whitespace-nowrap border-b-2 transition-colors ${
                                 activeSection === id
                                     ? 'text-cyan-300 border-cyan-400'
@@ -70,10 +76,16 @@ const System = () => {
                 </nav>
 
                 <div className="flex-1 overflow-auto">
-                    {activeSection === 'status' && <Status />}
-                    {activeSection === 'workout' && <Workout />}
+                    {auth.isOpen && auth.modal === 'login' && (
+                        <Login onFinish={() => setAuth({isOpen: false, modal: ''})} onRedirect={() => setAuth({isOpen: true, modal:'register'})} />
+                    )}
+                    {auth.isOpen && auth.modal === 'register' && (
+                        <Register onFinish={() => setAuth({isOpen: false, modal: ''})} onRedirect={() => setAuth({isOpen: true, modal:'login'})}/>
+                    )}
+                    {!auth.isOpen && activeSection === 'status' && <Status />}
+                    {!auth.isOpen && activeSection === 'workout' && <Workout />}
 
-                    {(activeSection === 'skilltree' || activeSection === 'stats') && (
+                    {!auth.isOpen && (activeSection === 'skilltree' || activeSection === 'stats') && (
                         <div className="flex flex-col items-center justify-center gap-3 h-full text-center px-6">
                             <span className="text-xl text-slate-600">◇</span>
                             <p className="text-xs tracking-widest uppercase text-slate-500">Module Offline</p>

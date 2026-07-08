@@ -1,7 +1,7 @@
 import useUserStore from "../../store/usePlayerStore"
 import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress, getXpNeededForLevel } from "../../utils/levelUpSystem";
-
+//import WeightTracker from "../../components/stats/weightTracker";
 import { calculateStreakFromObject } from "../../utils/calculateStreak";
 import { calculatePlayerStats } from '../../utils/statSystem';
 
@@ -14,6 +14,8 @@ const getStatName = (statKey) => {
         default: return statKey;
     }
 };
+
+const XP_TICKS = 20;
 
 export default function Status() {
     const { userData, setUserData } = useUserStore();
@@ -29,15 +31,13 @@ export default function Status() {
     const { level, currentLeftoverXP } = calculateLevel(userData);
     const stats = calculatePlayerStats(userData.exerciseProgress);
 
+    const hasActiveStreak = current > 0;
+    const filledTicks = Math.round((levelProgress / 100) * XP_TICKS);
+
     useEffect(() => {
         setIsReady(true);
     }, []);
 
-    /* useEffect(() => {
-        if (!userData.isConfigured) {
-            navigate('/evaluation');
-        }
-    }, [userData.isConfigured]); */
 
     useEffect(() => {
         setLevelProgress(currentProgress);
@@ -58,7 +58,7 @@ export default function Status() {
     if (!isReady) {
         return (
             <div className="flex items-center justify-center h-screen bg-slate-950 text-cyan-300 text-sm tracking-widest uppercase">
-                Synchronizing Hunter Data...
+                Synchronizing Operator Data...
             </div>
         );
     }
@@ -68,7 +68,8 @@ export default function Status() {
             <div className="flex flex-col gap-5 max-w-3xl mx-auto p-6">
 
                 <div className="flex items-center gap-3 text-xs tracking-widest text-slate-400 uppercase">
-                    <span>System.Hunter_Profile</span>
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_6px_rgba(52,211,153,0.7)]"></span>
+                    <span>System.Operator_Profile</span>
                     <span className="flex-1 h-px bg-slate-800"></span>
                 </div>
 
@@ -83,7 +84,7 @@ export default function Status() {
 
                         <div className="flex flex-col gap-0.5">
                             <div className="text-xs tracking-widest uppercase" style={{ color: userData.color }}>
-                                {userData.title || "Unranked Hunter"}
+                                {userData.title || "Unranked Operator"}
                             </div>
                             <h2 className="text-lg font-semibold text-slate-100">{userData.shownName}</h2>
                         </div>
@@ -92,13 +93,15 @@ export default function Status() {
                     <div className="h-px bg-slate-800"></div>
 
                     <div className="grid grid-cols-3 gap-3">
-                        <div className="border border-amber-400/30 bg-amber-500/5 rounded-sm p-3 flex flex-col items-center gap-1">
+                        <div className={`border rounded-sm p-3 flex flex-col items-center gap-1 ${hasActiveStreak ? 'border-amber-400/30 bg-amber-500/5' : 'border-slate-700 bg-slate-900/40'}`}>
                             <span className="text-[10px] tracking-widest uppercase text-slate-500">Active Streak</span>
-                            <span className="text-sm font-mono text-amber-400">[ 🔥 {current} DAYS ]</span>
+                            <span className={`text-sm font-mono ${hasActiveStreak ? 'text-amber-400' : 'text-slate-500'}`}>
+                                {hasActiveStreak ? `[ 🔥 ${current} DAYS ]` : '— 0 DAYS —'}
+                            </span>
                         </div>
 
                         <div className="border border-slate-700 bg-slate-900/40 rounded-sm p-3 flex flex-col items-center gap-1">
-                            <span className="text-[10px] tracking-widest uppercase text-slate-500">Hunter Rank</span>
+                            <span className="text-[10px] tracking-widest uppercase text-slate-500">Rank</span>
                             <span className="text-sm font-mono" style={{ color: userData.color }}>{userData.rank}</span>
                         </div>
 
@@ -115,8 +118,13 @@ export default function Status() {
                                 {displayXP} <span className="text-slate-500">/ {Math.round(xpNeeded)} XP</span>
                             </span>
                         </div>
-                        <div className="h-2 bg-slate-800 rounded-sm overflow-hidden">
-                            <div className="h-full bg-cyan-400" style={{ width: `${levelProgress}%` }}></div>
+                        <div className="flex gap-[3px]">
+                            {Array.from({ length: XP_TICKS }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className={`flex-1 h-2 rounded-[1px] ${i < filledTicks ? 'bg-cyan-400 shadow-[0_0_4px_rgba(34,211,238,0.5)]' : 'bg-slate-800'}`}
+                                ></div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -136,7 +144,7 @@ export default function Status() {
                 </div>
 
                 <div className="flex flex-col gap-4 mt-1">
-                   {/*  <StatusReport />
+                    {/* <StatusReport />
                     <WeightTracker weightHistory={userData.weightHistory} /> */}
                 </div>
 
