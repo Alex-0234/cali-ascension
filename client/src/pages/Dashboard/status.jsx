@@ -73,7 +73,7 @@ export default function Status() {
             </div>
 
             <div className="h-full w-full gap-6 mx-auto p-6">
-                <div className='block1 flex h-fit gap-4 flex-col lg:flex-row'>
+                <div className='block1 flex h-fit gap-4 flex-col md:flex-row'>
                     <div className="border border-accent/20 bg-panel/60 rounded-sm p-6 flex flex-col gap-5">
                         <div className="flex items-center gap-4">
                             <div
