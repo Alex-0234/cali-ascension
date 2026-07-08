@@ -10,21 +10,13 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = [
-    process.env.LOCALHOST_URL,
-    process.env.VERCEL_BRANCH_URL,
-    process.env.VERCEL_URL,
-].filter(Boolean); 
-
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            console.error(`CORS IS BLOCKING: ${origin}`);
-            callback(new Error('CORS is blockin the domain!'));
-        }
-    },
+    origin: [
+        process.env.LOCALHOST_URL,
+        process.env.VERCEL_BRANCH_URL,
+        process.env.VERCEL_URL,
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
 }));
 
