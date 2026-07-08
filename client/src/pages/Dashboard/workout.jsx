@@ -92,7 +92,7 @@ function Workout() {
         <>
             <LevelUpModal levelChange={levelChange} onAcknowledge={acknowledge} />
 
-            <div className="flex flex-col h-full w-full bg-slate-950 text-slate-100">
+            <div className="flex flex-col h-full w-full bg-card text-text-bright">
                 {!training ? (
                     <BioStatusGate
                         bioStatus={bioStatus}
@@ -103,18 +103,18 @@ function Workout() {
                     />
                 ) : (
                     <div className="flex flex-col gap-4 h-full overflow-auto">
-                        <div className="sticky top-0 z-10 bg-slate-950/95 border-b border-cyan-500/20 backdrop-blur-sm">
+                        <div className="sticky top-0 z-10 bg-card/95 border-b border-accent/20 backdrop-blur-sm">
                             <div className="flex items-center justify-between gap-4 px-4 py-3">
                                 <div className="flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_6px_rgba(34,211,238,0.7)]"></span>
-                                    <h2 className="m-0 text-sm text-slate-300 tracking-wide">Training Session</h2>
+                                    <span className="w-1.5 h-1.5 bg-accent-glow rounded-full shadow-[0_0_6px_#22d3eeb3]"></span>
+                                    <h2 className="m-0 text-sm text-text-main tracking-wide">Training Session</h2>
                                 </div>
 
                                 <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-2 border border-slate-700 rounded-sm px-2.5 py-1 bg-slate-900/60">
-                                        <span className={`font-mono text-sm ${!mainTimer.isRunning ? 'text-slate-500' : 'text-cyan-300'}`}>{mainTimer.format()}</span>
+                                    <div className="flex items-center gap-2 border border-border-main rounded-sm px-2.5 py-1 bg-panel/60">
+                                        <span className={`font-mono text-sm ${!mainTimer.isRunning ? 'text-text-muted' : 'text-accent-light'}`}>{mainTimer.format()}</span>
                                         <button
-                                            className="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-cyan-300 transition-colors text-xs"
+                                            className="w-6 h-6 flex items-center justify-center text-text-main hover:text-accent-light transition-colors text-xs"
                                             onClick={mainTimer.toggle}
                                             title={mainTimer.isRunning ? "Pause Timer" : "Resume Timer"}
                                         >
@@ -122,7 +122,7 @@ function Workout() {
                                         </button>
                                     </div>
                                     <button
-                                        className="w-7 h-7 flex items-center justify-center text-slate-400 border border-slate-700 rounded-sm hover:border-red-400 hover:text-red-300 transition-colors text-xs"
+                                        className="w-7 h-7 flex items-center justify-center text-text-main border border-border-main rounded-sm hover:border-danger hover:text-danger transition-colors text-xs"
                                         title="Cancel Workout"
                                         onClick={handleCancelWorkout}
                                     >✕</button>
@@ -135,9 +135,9 @@ function Workout() {
                             onRemove={workoutSession.removeExercise}
                         />
 
-                        <div className="flex items-center gap-3 px-4 text-xs tracking-widest text-slate-500 uppercase">
+                        <div className="flex items-center gap-3 px-4 text-xs tracking-widest text-text-muted uppercase">
                             <span>Exercise Modules</span>
-                            <span className="flex-1 h-px bg-slate-800"></span>
+                            <span className="flex-1 h-px bg-border-subtle"></span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 pb-4">
@@ -164,7 +164,7 @@ function Workout() {
                             })}
                         </div>
 
-                        <div className="flex justify-center px-4 pt-2 pb-6 border-t border-slate-800/60">
+                        <div className="flex justify-center px-4 pt-2 pb-6 border-t border-border-subtle/60">
                             <SystemButton text='Terminate Protocol (Finish)' onClick={handleFinishWorkoutDay} />
                         </div>
                     </div>
