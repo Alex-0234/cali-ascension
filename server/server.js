@@ -12,9 +12,8 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
     process.env.LOCALHOST_URL,
+    process.env.VERCEL_BRANCH_URL,
     process.env.VERCEL_URL,
-    process.env.DOMAIN_URL,
-    process.env.DOMAIN_URL_2
 ].filter(Boolean); 
 
 app.use(cors({
