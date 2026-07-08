@@ -30,10 +30,13 @@ const UserSchema = new mongoose.Schema({
     xp: { type: Number, default: 0 }, 
     ep: { type: Number, default: 0 }, 
     stats: {
-        STR: { type: Number, default: 10 },
-        END: { type: Number, default: 10 },
-        MOB: { type: Number, default: 10 },
-        TEC: { type: Number, default: 10 }
+        STR: { type: Number, default: 10 }, // REP RANGE: 1-4
+        HYP: { type: Number, default: 10 }, // REP RANGE: 5-12
+        END: { type: Number, default: 10 }, // REP RANGE: 12-25+
+        POW: { type: Number, default: 10 }, // EXPLOSIVE REPS
+        // MAYBE DELETE
+        MOB: { type: Number, default: 10 }, // STRETCHING ??
+        TEC: { type: Number, default: 10 }, // INCREASE WITH PROFICIENCY ??
     },
 
     exerciseProgress: {

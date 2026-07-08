@@ -28,10 +28,13 @@ const INITIAL_PLAYER_STATE = {
     xp: 0,
     ep: 0, // exercise points?
     stats: {
-      STR: 10,
-      END: 10,
-      MOB: 10,
-      TEC: 10
+      STR: 10, // REP RANGE: 1-4
+      HYP: 10, // REP RANGE: 5-12
+      END: 10, // REP RANGE: 13-25+
+      POW: 10, // EXPLOSIVE REPS
+      // DELETE?
+      MOB: 10, // STRETCHING ??
+      TEC: 10 // INCREASE WITH PROFICIENCY ??
     },
     exerciseProgress: {},
 
