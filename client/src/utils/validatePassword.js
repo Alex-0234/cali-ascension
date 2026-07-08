@@ -2,7 +2,7 @@
 
 export default function validatePassword(password) {
     const errors = [];
-
+/* 
     if (password.length < 8) {
         errors.push("Password must be at least 8 characters long. \n");
     }
@@ -21,7 +21,7 @@ export default function validatePassword(password) {
 
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
         errors.push("Password must contain at least one special character. \n");
-    }
+    } */
 
     return {
         isValid: errors.length === 0,

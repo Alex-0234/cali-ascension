@@ -1,40 +1,39 @@
 import { create } from 'zustand';
 
 const INITIAL_PLAYER_STATE = {
-  
+    // essentials
     userId: "",
     username: "",
     email: "",
-
-    shownName: "",
-    age: "",
-    gender: "",
-    height: "",
-    weight: "",
+    // user specified
+    userInfo: {
+        visibleName: "",
+        age: "",
+        gender: "",
+        height: "",
+        weight: "",
+    },
+    title: "Rookie",
+    color: "lightblue",
     bioStatus: 'optimal',
-
-    level: 1,
-    rank: "Unranked",
-    title: "None",
-    color: "blue",
-    streak: {    // Change to work with the workoutHistory rework.
+    streak: {    
       current: 0,
       highest: 0,
       lastActive: '',
     },
+
+    // default stats
+    rating: "100",
+    level: 1,
     xp: 0,
-    ep: 0,
+    ep: 0, // exercise points?
     stats: {
       STR: 10,
       END: 10,
       MOB: 10,
       TEC: 10
     },
-
-    userEvaluation: {},
     exerciseProgress: {},
-    personalRecords: {},
-
 
     isLoading: false,
     isLoggedIn: false,
@@ -42,21 +41,6 @@ const INITIAL_PLAYER_STATE = {
 
     weightHistory: [],
     workoutHistory: {}, 
-
-    /* workoutHistory = {
-        2026-03-12: {
-            status: 'restday' / 'workout',      ...maybe change status to something better
-            totalVolume: 120,
-            totalSets: 5,
-            duration: 0,
-            notes: '',
-            exercises: [
-              {"pushup_05A": {totalReps: ...., sets: [...sets]} } 
-            ]
-        }
-        2026-03-11: {
-        etc.}
-      } */
 
 }
 
