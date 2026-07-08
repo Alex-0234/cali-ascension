@@ -54,7 +54,7 @@ export default function Login({ onFinish, onRedirect }) {
     }
 
     return (
-        <div className="max-h-full w-full flex items-center justify-center bg-slate-950 px-4">
+        <div className="w-full h-full flex items-center justify-center bg-slate-950 px-4">
             <div className="w-full max-w-md flex flex-col gap-6">
 
                 <div className="border border-cyan-500/20 bg-slate-900/60 rounded-sm p-6 flex flex-col gap-5">

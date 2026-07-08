@@ -69,26 +69,30 @@ export default function ServerWakeup({ onServerReady }) {
     }, [animationFinished]);
 
     return (
-        <section ref={wakeupSectionRef} className='flex h-screen w-full justify-center bg-dark items-center'>
+        <section ref={wakeupSectionRef} className='flex h-screen w-full justify-center items-center'>
             <div className='relative flex items-center justify-center h-1/3 w-1/2'>
-
                 <div
                     ref={loaderRef}
-                    className='absolute w-6 h-6 border-2 border-blue rounded-xs'
+                    className='absolute w-6 h-6 border-2 border-cyan-400/70 rounded-xs'
                 />
-
                 <div
                     ref={frameRef}
-                    className='absolute inset-0 flex flex-col bg-dark-blue border border-blue rounded-xs p-4'
+                    className='absolute inset-0 flex flex-col bg-panel border border-cyan-500/30 rounded-md p-4'
                 >
                     <div className="wakeup-scanline"></div>
+                    <div className="flex items-center gap-2.5">
+                        <span className="w-2 h-2 bg-accent-glow rotate-45 shadow-[0_0_8px_#22d3ee99]"></span>
+                        <span className="text-sm tracking-widest text-text-bright uppercase">System</span>
+                        <span className="text-xs tracking-widest text-text-muted uppercase hidden sm:inline">// Calisthenics Protocol</span>
+                    </div>
                 </div>
+              
 
                 <div
                     ref={contentRef}
                     className='relative z-10 flex flex-col items-center text-center px-6 gap-2'
                 >
-                    <div className="wakeup-header">
+                   <div className="wakeup-header">
                         {status === 'connecting' ? 'STATUS: STARTING' : 'STATUS: READY'}
                     </div>
 
@@ -104,7 +108,7 @@ export default function ServerWakeup({ onServerReady }) {
                                 <p>Ready to continue.</p>
                             </>
                         )}
-</div>
+                    </div>
 
                     {status === 'connecting' && (
                         <div className="wakeup-progress-bar">

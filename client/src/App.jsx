@@ -48,7 +48,7 @@ function App() {
 
   useEffect(() => {
     console.log(userData);
-  },[userData])
+  },[userData.userId])
 
   if (!isServerReady) {
       return <ServerWakeup onServerReady={() => setIsServerReady(true)} />;

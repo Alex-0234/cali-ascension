@@ -41,14 +41,14 @@ export default function ExerciseCard({
 
                                     {isSeconds ? (
                                         <div className="flex items-center gap-2">
-                                            <span className={`font-mono text-sm ${!exerciseTimer.running[timerKey] ? 'text-slate-500' : 'text-cyan-300'}`}>
-                                                {exerciseTimer.format(exerciseTimer.times[timerKey] || 0)}
+                                            <span className={`font-mono text-sm ${!exerciseTimer.running[timerKey] ? 'text-border-main' : 'text-cyan-300'} ${exerciseTimer.countdown[timerKey] && 'text-red-600'}`}>
+                                                {exerciseTimer.running[timerKey] ? exerciseTimer.format(exerciseTimer.times[timerKey] || 0) : exerciseTimer.format(exerciseTimer.countdown[timerKey] || exerciseTimer.times[timerKey])}
                                             </span>
 
                                             <button
                                                 className={iconBtnClass}
                                                 onClick={() => {
-                                                    exerciseTimer.toggle(timerKey);
+                                                    exerciseTimer.running[timerKey] ? exerciseTimer.toggle(timerKey) : exerciseTimer.startTimer(timerKey);
                                                     if (exerciseTimer.running[timerKey]) {
                                                         onUpdateSet(index, 'reps', exerciseTimer.times[timerKey]);
                                                     }

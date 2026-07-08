@@ -62,7 +62,7 @@ export default function Register({ onFinish, onRedirect }) {
     }
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-slate-950 px-4">
+        <div className="h-full w-full flex items-center justify-center bg-slate-950 px-4">
             <div className="w-full max-w-md border border-cyan-500/20 bg-slate-900/60 rounded-sm p-6 flex flex-col gap-5">
 
                 <div className="flex flex-col gap-1">
@@ -114,12 +114,10 @@ export default function Register({ onFinish, onRedirect }) {
                             className="bg-slate-950 border border-slate-700 text-slate-100 text-sm px-3 py-2 rounded-sm focus:border-cyan-400 focus:outline-none"
                         />
                     </div>
-
-                    {notification.message && (
-                        <p className={`text-xs ${notification.error ? 'text-red-400' : 'text-emerald-400'}`}>
-                            {notification.message}
-                        </p>
-                    )}
+                    
+                    <p className={`text-xs h-4 ${notification.error ? 'text-red-400' : 'text-emerald-400'}`}>
+                        {notification.message}
+                    </p>
 
                     <button
                         type="submit"
