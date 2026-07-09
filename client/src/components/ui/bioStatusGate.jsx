@@ -32,7 +32,7 @@ export default function BioStatusGate({savedStatus}) {
     };
 
     return (
-        <section className="h-fit w-full bg-slate-950 text-slate-100 p-8">
+        <section className="h-fit w-full flex flex-col justify-center bg-slate-950 text-slate-100 p-4 sm:p-8">
 
             <div className="flex items-center gap-3 text-xs tracking-widest text-slate-400 uppercase">
                 <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_6px_rgba(52,211,153,0.7)]"></span>
@@ -40,7 +40,7 @@ export default function BioStatusGate({savedStatus}) {
                 <span className="flex-1 h-px bg-slate-800"></span>
             </div>
 
-              <div className="h-fit min-w-[80%] flex flex-col flex-1 gap-6 mx-auto p-6">
+              <div className="h-fit min-w-[80%] flex flex-col flex-1 gap-6 mx-auto p-3 sm:p-6">
                 <div className="w-full max-w-md border border-cyan-500/20 bg-slate-900/60 rounded-sm p-5">
                     <div className="mb-4">
                         <h2 className="text-xs tracking-widest text-slate-400 uppercase">Biometric.Status</h2>

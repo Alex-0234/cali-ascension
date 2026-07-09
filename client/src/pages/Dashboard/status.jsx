@@ -67,7 +67,7 @@ export default function Status() {
     }
 
     return (
-        <section className="h-screen w-full bg-card text-text-bright p-8">
+        <section className="h-screen w-full bg-card text-text-bright p-4 sm:p-8">
 
             <div className="flex items-center gap-3 text-xs tracking-widest text-text-main uppercase">
                 <span className="w-1.5 h-1.5 bg-success rounded-full shadow-[0_0_6px_#34d399b3]"></span>
@@ -75,9 +75,9 @@ export default function Status() {
                 <span className="flex-1 h-px bg-border-subtle"></span>
             </div>
 
-            <div className="h-full w-full gap-6 mx-auto p-6">
+            <div className="h-full w-full gap-6 mx-auto p-3 sm:p-6">
                 <div className='block1 flex h-fit gap-4 flex-col md:flex-row'>
-                    <div className="border border-accent/20 bg-panel/60 rounded-sm p-6 flex flex-col gap-5">
+                    <div className="border border-accent/20 bg-panel/60 rounded-sm p-4 flex flex-col gap-5">
                         <div className="flex items-center gap-4">
                             <div
                                 className="w-14 h-14 flex items-center justify-center rounded-full border-2 text-2xl bg-card flex-shrink-0"

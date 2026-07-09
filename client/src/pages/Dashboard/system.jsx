@@ -11,7 +11,6 @@ const SECTIONS = [
     { id: 'status', label: 'Dashboard' },
     { id: 'workout', label: 'Workout' },
     { id: 'skilltree', label: 'Skill Tree' },
-    { id: 'stats', label: 'Stats' },
 ];
 
 const System = () => {
@@ -26,13 +25,13 @@ const System = () => {
 
     return (
         <section className="flex justify-center items-center h-screen w-full bg-dark font-robotomono">
-            <div className="flex flex-col h-[90%] w-[90%] bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden">
+            <div className="flex flex-col h-[98%] w-[98%] sm:w-[90%] sm:h-[90%] bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden">
 
                 <div className="flex items-center justify-between px-6 py-4 border-b border-accent/20 bg-panel/40">
                     <div className="flex items-center gap-2.5">
                         <span className="w-2 h-2 bg-accent-glow rotate-45 shadow-[0_0_8px_#22d3ee99]"></span>
                         <span className="text-sm tracking-widest text-text-bright uppercase">System</span>
-                        <span className="text-xs tracking-widest text-text-muted uppercase hidden sm:inline">// Calisthenics Protocol</span>
+                        <span className="text-xs text-text-muted uppercase hidden sm:inline">// Calisthenics Protocol</span>
                     </div>
 
                     {isLoggedIn ? (
@@ -87,7 +86,7 @@ const System = () => {
                     {!auth.isOpen && activeSection === 'status' && <Status />}
                     {!auth.isOpen && activeSection === 'workout' && <Workout />}
 
-                    {!auth.isOpen && (activeSection === 'skilltree' || activeSection === 'stats') && (
+                    {!auth.isOpen && (activeSection === 'skilltree') && (
                         <div className="flex flex-col items-center justify-center gap-3 h-full text-center px-6">
                             <span className="text-xl text-text-muted">◇</span>
                             <p className="text-xs tracking-widest uppercase text-text-muted">Module Offline</p>

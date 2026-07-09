@@ -27,8 +27,6 @@ function Workout() {
     const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData?.exerciseProgress || {});
 
-    
-    const [training, setTraining] = useState(false);
     const [stage, setStage] = useState('SETUP');
     // ['SETUP', 'SELECT', 'BUILD', 'START']
 
@@ -67,15 +65,14 @@ function Workout() {
         setUserData({ ...newUserData, level, xp, stats, bioStatus: 'optimal', exerciseProgress: newProgress });
         await syncUser();
         workoutSession.clear();
-        setTraining(false);
         mainTimer.reset();
     };
 
     const handleCancelWorkout = () => {
         if (window.confirm("Are you sure you want to delete this workout?")) {
-            setTraining(false);
             workoutSession.clear();
             mainTimer.reset();
+            setStage('SETUP');
         }
     };
 
@@ -91,7 +88,7 @@ function Workout() {
                         <div className="flex justify-center items-center gap-3  pl-8 pr-8">
                             {userData.bioStatus === 'optimal' ? (
                                 <>
-                                    <SystemButton text='Start Workout' onClick={() => setStage('START')} />
+                                    <SystemButton text='Start Workout' onClick={() => {setStage('START'); mainTimer.toggle()}} />
                                     <SystemButton variant='secondary' text='Build Workout' onClick={() => setStage('BUILD')} />
                                 </>
                             ) : (
