@@ -36,13 +36,14 @@ const INITIAL_PLAYER_STATE = {
       MOB: 10, // STRETCHING ??
       TEC: 10 // INCREASE WITH PROFICIENCY ??
     },
-    exerciseProgress: {},
-
+    
     isLoading: false,
     isLoggedIn: false,
     isConfigured: false,
 
+    exerciseProgress: {},
     weightHistory: [],
+    customWorkouts: [],
     workoutHistory: {}, 
 
 }

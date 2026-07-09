@@ -48,6 +48,7 @@ const UserSchema = new mongoose.Schema({
         date: { type: Date, default: Date.now },
         weight: Number 
     }],
+    customWorkouts: [],
     workoutHistory: {},
 
     isConfigured: { type: Boolean, default: false },
