@@ -12,10 +12,10 @@ import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
 
 import SystemButton from '../../components/ui/systemBtn';
 import LevelUpModal from "../../components/ui/levelUpModal";
-import BioStatusGate from '../../components/ui/bioStatusGate';
 import SessionSummaryList from '../../components/ui/sessionSummaryList';
 import ExerciseCard from '../../components/ui/exerciseCard';
 import BuildWorkout from '../../components/ui/buildWorkout';
+import SetupWorkout from "../../components/ui/setupWorkout";
 
 function Workout() {
     const dateNow = new Date().toISOString().split('T')[0];
@@ -82,25 +82,7 @@ function Workout() {
 
             <div className="flex flex-col h-full w-full bg-card text-text-bright">
                 {stage === 'SETUP' && (
-                    <>
-                        <BioStatusGate savedStatus={userData.bioStatus} />
-
-                        <div className="flex justify-center items-center gap-3  pl-8 pr-8">
-                            {userData.bioStatus === 'optimal' ? (
-                                <>
-                                    <SystemButton text='Start Workout' onClick={() => {setStage('START'); mainTimer.toggle()}} />
-                                    <SystemButton variant='secondary' text='Build Workout' onClick={() => setStage('BUILD')} />
-                                </>
-                            ) : (
-                                <>
-                                    <SystemButton text='Start Workout' onClick={() => setStage('START')} disabled={true} />
-                                    <SystemButton variant='secondary' text='Build Workout' onClick={() => setStage('BUILD')} disabled={true} />
-                                    <p className='text-sm'>Switch biometric status to continue...</p>
-                                </>
-                            )}
-                          
-                        </div>
-                    </>
+                    <SetupWorkout timer={mainTimer} onChangeToBuild={() => setStage('BUILD')} onChangeToStart={() => setStage('START')}/>
                 )}
                 {stage === 'BUILD' && (
                     <BuildWorkout />
