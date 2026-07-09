@@ -1,17 +1,17 @@
   
 
-const CloseButton = ({onClose, position, align, top, right,  size = 24}) => {
+const CloseButton = ({onClose, color, position, align, top, right,  size = 24}) => {
 
     return (
 
-        <button  onClick={onClose} style={{position: position, placeSelf: align, background: 'transparent', border: 'none', top: top, right: right }}>
+        <button onClick={onClose} className='cursor-pointer' style={{position: position, placeSelf: align, background: 'transparent', border: 'none', top: top, right: right }}>
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 width={size} 
                 height={size} 
-                viewBox="0 0 24 24" 
+                viewBox={`0 0 ${size} ${size}`}
                 fill="none" 
-                stroke={`var(--text-main)`} 
+                stroke={`${color}`} 
                 strokeWidth="2" 
                 strokeLinecap="round" 
                 strokeLinejoin="round"

@@ -7,14 +7,15 @@ import useExerciseSelection from "../../hooks/useExerciseSelection";
 
 import { ALL_EXERCISES, EXERCISE_DB } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";
-import { calculatePlayerStats } from '../../utils/statSystem';
+import { calculatePlayerStats } from '../../utils/statCalculator';
 import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
 
 import SystemButton from '../../components/ui/systemBtn';
 import LevelUpModal from "../../components/ui/levelUpModal";
-import BioStatusGate from '../../components/ui/bioStatusGate'
+import BioStatusGate from '../../components/ui/bioStatusGate';
 import SessionSummaryList from '../../components/ui/sessionSummaryList';
 import ExerciseCard from '../../components/ui/exerciseCard';
+import BuildWorkout from '../../components/ui/buildWorkout';
 
 function Workout() {
     const dateNow = new Date().toISOString().split('T')[0];
@@ -26,28 +27,18 @@ function Workout() {
     const { userData, setUserData, syncUser } = useUserStore();
     const currentProgress = useUserStore(state => state.userData?.exerciseProgress || {});
 
-    const [bioStatus, setBioStatus] = useState(userData.bioStatus || 'optimal');
+    
     const [training, setTraining] = useState(false);
+    const [stage, setStage] = useState('SETUP');
+    // ['SETUP', 'SELECT', 'BUILD', 'START']
+
+     // SETUP -> [ START? , BUILD? ] -> (START)[ SELECT WORKOUT? BUILD WORKOUT? ] -> [ START QUICK WORKOUT ](LEFT RIGHT TOGGLE)
+                                                                               //-> (BUILD)[ NEW WORKOUT ] -> [BUILD COMPONENT] -> {NAME, ETC.}
 
     const visibleCategories = Object.keys(ALL_EXERCISES);
     const exerciseSelection = useExerciseSelection(visibleCategories, currentProgress);
     const workoutSession = useWorkoutSession(dateNow);
 
-    const handleBiometricStatusChange = (status) => {
-        if (userData.workoutHistory?.[dateNow]?.totalVolume) {
-            return alert('User already had a workout today... Logging status: optimal'); // TODO: replace with notification
-        }
-        setBioStatus(status);
-        setUserData({
-            ...userData,
-            bioStatus: status,
-            workoutHistory: {
-                ...(userData?.workoutHistory || {}),
-                [dateNow]: { ...(userData?.workoutHistory?.[dateNow] || {}), status }
-            }
-        });
-        syncUser();
-    };
 
     const handleForceUnlock = (category, exerciseId) => {
         setUserData({ ...userData, exerciseProgress: { ...currentProgress, [exerciseId]: { totalReps: 0, personalBest: 0 } } });
@@ -62,7 +53,7 @@ function Workout() {
         }
     };
 
-    const handleFinishWorkoutDay = () => {
+    const handleFinishWorkoutDay = async () => {
         if (!workoutSession.hasEntries) return;
 
         const finalDayRecord = workoutSession.mergeIntoHistory(userData?.workoutHistory?.[dateNow], mainTimer.time);
@@ -70,11 +61,11 @@ function Workout() {
 
         const newUserData = { ...userData, workoutHistory: { ...userData.workoutHistory, [dateNow]: finalDayRecord } };
         const newProgress = processWorkoutHistoryObject(newUserData.workoutHistory);
-        const stats = calculatePlayerStats(newProgress);
+        const stats = calculatePlayerStats(newUserData, newProgress);
         const { level, xp } = evaluate(userData.level, newUserData);
 
         setUserData({ ...newUserData, level, xp, stats, bioStatus: 'optimal', exerciseProgress: newProgress });
-        syncUser();
+        await syncUser();
         workoutSession.clear();
         setTraining(false);
         mainTimer.reset();
@@ -93,15 +84,34 @@ function Workout() {
             <LevelUpModal levelChange={levelChange} onAcknowledge={acknowledge} />
 
             <div className="flex flex-col h-full w-full bg-card text-text-bright">
-                {!training ? (
-                    <BioStatusGate
-                        bioStatus={bioStatus}
-                        savedStatus={userData.bioStatus}
-                        onSetStatus={setBioStatus}
-                        onAcknowledgeOverride={handleBiometricStatusChange}
-                        onStart={() => { setTraining(true); mainTimer.toggle(); }}
-                    />
-                ) : (
+                {stage === 'SETUP' && (
+                    <>
+                        <BioStatusGate savedStatus={userData.bioStatus} />
+
+                        <div className="flex justify-center items-center gap-3  pl-8 pr-8">
+                            {userData.bioStatus === 'optimal' ? (
+                                <>
+                                    <SystemButton text='Start Workout' onClick={() => setStage('START')} />
+                                    <SystemButton variant='secondary' text='Build Workout' onClick={() => setStage('BUILD')} />
+                                </>
+                            ) : (
+                                <>
+                                    <SystemButton text='Start Workout' onClick={() => setStage('START')} disabled={true} />
+                                    <SystemButton variant='secondary' text='Build Workout' onClick={() => setStage('BUILD')} disabled={true} />
+                                    <p className='text-sm'>Switch biometric status to continue...</p>
+                                </>
+                            )}
+                          
+                        </div>
+                    </>
+                )}
+                {stage === 'BUILD' && (
+                    <BuildWorkout />
+                )}
+                {/* {stage === 'SELECT' && (
+
+                )} */}
+                {stage === 'START' && (
                     <div className="flex flex-col gap-4 h-full overflow-auto">
                         <div className="sticky top-0 z-10 bg-card/95 border-b border-accent/20 backdrop-blur-sm">
                             <div className="flex items-center justify-between gap-4 px-4 py-3">

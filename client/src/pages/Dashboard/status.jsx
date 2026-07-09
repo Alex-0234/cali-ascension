@@ -3,14 +3,17 @@ import { useState, useEffect } from "react";
 import calculateLevel, { getLevelProgress, getXpNeededForLevel } from "../../utils/levelUpSystem";
 //import WeightTracker from "../../components/stats/weightTracker";
 import { calculateStreakFromObject } from "../../utils/calculateStreak";
-import { calculatePlayerStats } from '../../utils/statSystem';
+import { calculatePlayerStats } from '../../utils/statCalculator';
 
 const getStatName = (statKey) => {
     switch (statKey) {
         case 'STR': return 'Strength';
+        case 'HYP': return 'Hypertrophy'; // UHH, maybe change name later
         case 'END': return 'Endurance';
-        case 'MOB': return 'Mobility';
-        case 'TEC': return 'Technique';
+        case 'POW': return 'Power'; 
+        // DELETE?
+        case 'MOB': return 'Mobility'; 
+        case 'TEC': return 'Technique'; 
         default: return statKey;
     }
 };
@@ -29,7 +32,7 @@ export default function Status() {
     const displayXP = userData.level >= 100 ? "MAX" : Math.round(userData.xp);
     const xpNeeded = getXpNeededForLevel(userData.level);
     const { level, currentLeftoverXP } = calculateLevel(userData);
-    const stats = calculatePlayerStats(userData.exerciseProgress);
+    const stats = calculatePlayerStats(userData, userData.exerciseProgress);
 
     const hasActiveStreak = current > 0;
     const filledTicks = Math.round((levelProgress / 100) * XP_TICKS);

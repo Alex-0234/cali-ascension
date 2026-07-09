@@ -13,7 +13,7 @@ export function processWorkoutHistoryObject(workoutHistory) {
             }
         });
     }
-
+    // TODO - find the reason why time based exercises arent saving.
     Object.keys(safeWorkoutHistory).forEach(day => {
         if (safeWorkoutHistory[day].status === 'workout') {
             Object.keys(safeWorkoutHistory[day].exercises).forEach((exerciseId, index) => {
