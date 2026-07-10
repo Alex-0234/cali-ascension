@@ -88,7 +88,7 @@ function Workout() {
                     <BuildWorkout />
                 )}
                 {/* {stage === 'SELECT' && (
-
+                    <SelectWorkout />
                 )} */}
                 {stage === 'START' && (
                     <div className="flex flex-col gap-4 h-full overflow-auto">

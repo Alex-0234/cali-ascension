@@ -77,7 +77,7 @@ export default function BuildWorkout() {
     } */
 
     return (
-        <section className='flex flex-col min-h-screen h-auto w-full p-8'>
+        <section className='flex flex-col max-h-screen h-auto w-full p-4 sm:p-8'>
 
             <div className="flex items-center gap-3 text-xs tracking-widest text-text-main uppercase">
                 <span className="w-1.5 h-1.5 bg-success rounded-full shadow-[0_0_6px_#34d399b3]"></span>
@@ -88,7 +88,7 @@ export default function BuildWorkout() {
                 <div className='p-4 h-fit w-full'>
                     <SystemButton text='create new' onClick={() => setCreateModal(!createModal)}/>
                 </div>
-                <div className="h-full w-full flex flex-col gap-4 relative">
+                <div className="h-full w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 relative">
                     {selectExerciseModal && (
                         <div className='absolute top-0 w-full h-full flex flex-col justify-evenly z-30 bg-panel border-b-1 border-b-border-main rounded-t-md overflow-hidden'>
                             <div className='flex justify-evenly w-full h-auto mt-2 '>
@@ -162,14 +162,26 @@ export default function BuildWorkout() {
                     )}
 
                     {workouts.map((workout, index) => (
-                        <div key={`${workout.name}-${index}`} className='h-fit w-full flex flex-col justify-between bg-panel rounded-md p-4'>
-                            <div className='h-8 w-full flex justify-between'>
-                                <h2>{workout.name}</h2>
-                                <p>{workout.description}</p>
+                        <div key={`${workout.name}-${index}`} className='h-fit w-full max-w-md flex flex-col justify-between bg-panel rounded-md p-4'>
+                            <div className='h-fit min-h-16 w-full flex flex-col justify-evenly'>
+                                <div className='flex justify-evenly m-2'>
+                                    <SystemButton text='start' disabled={true}/>  {/* Need some smaller buttons */}
+                                    <SystemButton text='edit' disabled={true}/>
+                                    <SystemButton text='delete' disabled={true}/>
+                                </div>
+                                <div className="flex items-center gap-3 text-xs tracking-widest text-text-main uppercase mb-1">
+                                    <span className="w-1.5 h-1.5 bg-success rounded-full shadow-[0_0_6px_#34d399b3]"></span>
+                                    <span><h2 className='uppercase text-lg text-text-bright'>{workout.name}</h2></span>
+                                    <span className="flex-1 h-px bg-border-subtle"></span>
+                                </div>
+                                    
+
+                                
+                                <p className='lowercase text-md text-text-main'>{workout.description}</p>
                             </div>
 
                             {workout.exercises === 'all' ? (
-                                <p className='text-text-muted text-xs mt-2'>All exercises included</p>
+                                <p className='text-text-muted text-s mt-2'>All exercises included</p>
                             ) : (
                                 <div className='flex flex-col gap-2 mt-2'>
                                     {Object.entries(CATEGORY_MAP).map(([label, categoryKey]) => {
@@ -178,7 +190,7 @@ export default function BuildWorkout() {
 
                                         return (
                                             <div key={categoryKey} className='w-full'>
-                                                <span className='text-text-muted text-xs uppercase tracking-widest'>{label}:</span>
+                                                <span className='text-text-muted text-s uppercase tracking-widest'>{label}:</span>
                                                 <div className='flex flex-col ml-2'>
                                                     {ids.map(id => (
                                                         <span key={id}>{EXERCISE_DB[id]?.name || id}</span>

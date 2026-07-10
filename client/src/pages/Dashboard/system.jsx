@@ -75,7 +75,7 @@ const System = () => {
                     ))}
                 </nav>
 
-                <div className="flex-1 overflow-auto">
+                <div className=" overflow-auto">
                     {/* <ServerWakeup /> */}
                     {auth.isOpen && auth.modal === 'login' && (
                         <Login onFinish={() => setAuth({isOpen: false, modal: ''})} onRedirect={() => setAuth({isOpen: true, modal:'register'})} />
