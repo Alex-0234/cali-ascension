@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Card from './card';
 import SystemButton from '../../components/ui/systemBtn';
 import useUserStore from '../../store/usePlayerStore';
 
@@ -32,35 +33,37 @@ export default function BioStatusGate({savedStatus}) {
     };
 
     return (
-        <section className="w-full max-w-md border border-cyan-500/20 bg-slate-900/60 rounded-sm p-5">
-            <div className="mb-4">
-                <h2 className="text-xs tracking-widest text-slate-400 uppercase">Biometric.Status</h2>
-            </div>
-            <div className="flex gap-2">
-                {['optimal', 'restday', 'critical'].map(status => {
-                    const isActive = bioStatus === status;
-                    return (
-                        <button
-                            key={status}
-                            className={`flex-1 px-3 py-2 text-xs tracking-wider uppercase rounded-sm border transition-colors ${isActive ? STATUS_STYLES[status] : 'border-slate-700 text-slate-400 hover:border-slate-500'}`}
-                            onClick={() => setBioStatus(status)}
-                        >
-                            {status.toUpperCase()}
-                        </button>
-                    );
-                })}
-            </div>
+        <>
+            <div className='flex flex-col m-4 w-fit'>
+                <div className="mb-4">
+                    <h2 className="text-xs tracking-widest text-slate-400 uppercase">Biometric.Status</h2>
+                </div>
+                <div className="flex gap-2">
+                    {['optimal', 'restday', 'critical'].map(status => {
+                        const isActive = bioStatus === status;
+                        return (
+                            <button
+                                key={status}
+                                className={`flex-1 px-3 py-2 text-xs tracking-wider uppercase rounded-sm border transition-colors ${isActive ? STATUS_STYLES[status] : 'border-slate-700 text-slate-400 hover:border-slate-500'}`}
+                                onClick={() => setBioStatus(status)}
+                            >
+                                {status.toUpperCase()}
+                            </button>
+                        );
+                    })}
+                </div>
 
-            {overridePending ? (
-                <div className="mt-4 flex flex-col gap-3 border border-amber-400/30 bg-amber-500/5 rounded-sm p-3">
-                    <p className="text-xs text-amber-200">System override detected. Logging {bioStatus === 'restday' ? 'recovery' : 'medical leave'}.</p>
-                    <button className="self-start text-xs tracking-wider uppercase px-3 py-1.5 border border-amber-400/40 text-amber-300 rounded-sm hover:bg-amber-500/10 transition-colors" onClick={() => handleBiometricStatusChange(bioStatus)}>Acknowledge & Log</button>
-                </div>
-            ) : (
-                <div className="mt-4 flex flex-col gap-3 border border-emerald-400 bg-emerald-500/10 rounded-sm p-3">
-                    <p className="text-xs text-emerald-300">Make sure to rest once in a while..</p>
-                </div>
-            )}
-        </section>
+                {overridePending ? (
+                    <div className="mt-4 flex flex-col gap-3 border border-amber-400/30 bg-amber-500/5 rounded-sm p-3">
+                        <p className="text-xs text-amber-200">System override detected. Logging {bioStatus === 'restday' ? 'recovery' : 'medical leave'}.</p>
+                        <button className="self-start text-xs tracking-wider uppercase px-3 py-1.5 border border-amber-400/40 text-amber-300 rounded-sm hover:bg-amber-500/10 transition-colors" onClick={() => handleBiometricStatusChange(bioStatus)}>Acknowledge & Log</button>
+                    </div>
+                ) : (
+                    <div className="mt-4 flex flex-col gap-3 border border-emerald-400 bg-emerald-500/10 rounded-sm p-3">
+                        <p className="text-xs text-emerald-300">Make sure to rest once in a while..</p>
+                    </div>
+                )}
+            </div>
+        </>
     );
 }

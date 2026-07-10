@@ -4,6 +4,9 @@ import calculateLevel, { getLevelProgress, getXpNeededForLevel } from "../../uti
 //import WeightTracker from "../../components/stats/weightTracker";
 import { calculateStreakFromObject } from "../../utils/calculateStreak";
 import { calculatePlayerStats } from '../../utils/statCalculator';
+import Column from "../../components/ui/column";
+import Grid from "../../components/ui/grid";
+import Card from "../../components/ui/card";
 
 const getStatName = (statKey) => {
     switch (statKey) {
@@ -67,18 +70,10 @@ export default function Status() {
     }
 
     return (
-        <section className="h-screen w-full bg-card text-text-bright p-4 sm:p-8">
-
-            <div className="flex items-center gap-3 text-xs tracking-widest text-text-main uppercase">
-                <span className="w-1.5 h-1.5 bg-success rounded-full shadow-[0_0_6px_#34d399b3]"></span>
-                <span>System.Operator_Profile</span>
-                <span className="flex-1 h-px bg-border-subtle"></span>
-            </div>
-
-            <div className="h-full w-full gap-6 mx-auto p-3 sm:p-6">
-                <div className='block1 flex h-fit gap-4 flex-col md:flex-row'>
+        <Column>
+            <Card name='operator_profile' TWCSS='flex flex-col sm:flex-row gap-3'> 
                     <div className="border border-accent/20 bg-panel/60 rounded-sm p-4 flex flex-col gap-5">
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center w-full gap-4">
                             <div
                                 className="w-14 h-14 flex items-center justify-center rounded-full border-2 text-2xl bg-card flex-shrink-0"
                                 style={{ borderColor: userData.color || 'var(--color-accent-glow)' }}
@@ -136,7 +131,7 @@ export default function Status() {
                             </div>
                         </div>
                     </div>
-                    <div className='flex flex-col'>
+                    <div className='flex flex-1 flex-col'>
                     
                         <div className="h-full w-full flex flex-col sm:flex-col justify-evenly bg-panel/40 p-2 rounded-md">
                             <div className="flex items-center gap-3 p-3 text-xs tracking-widest text-text-main uppercase mt-1">
@@ -151,18 +146,7 @@ export default function Status() {
                             ))}
                         </div>
                     </div>
-                </div>
-                
-                
-
-                
-
-                <div className="flex flex-col gap-4 mt-1">
-                    {/* <StatusReport />
-                    <WeightTracker weightHistory={userData.weightHistory} /> */}
-                </div>
-
-            </div>
-        </section>
+            </Card>
+        </Column>
     );
 }

@@ -1,24 +1,26 @@
 import { EXERCISE_DB } from "../data/exercise_db";
 import { TIER_XP_REWARDS } from "../data/rewardMap";
 
-export default function calculateLevel(userData) {              
+
+export default function calculateLevel(userData) {   
+    /** @type {Object<string, Object>} */
     const workoutHistory = userData.workoutHistory || {};
-    const safeWorkoutHistory = Array.isArray(workoutHistory) ? {} : workoutHistory;
+
     let totalXP = 0;
     
     const standardWeight = userData.gender === 'female' ? 65 : 80;
 
-    if (Object.keys(safeWorkoutHistory).length < 1) return {
+    if (Object.keys(workoutHistory).length < 1) return {
         level: 0,
         currentLeftoverXP: 0,
         totalXPEarned: 0
     };
 
-    Object.keys(safeWorkoutHistory).forEach(day => {
+    Object.keys(workoutHistory).forEach(day => {
 
-        if (safeWorkoutHistory[day].status === 'workout') {
+        if (workoutHistory[day].status === 'workout') {
 
-            Object.keys(safeWorkoutHistory[day].exercises).forEach(exercise => {
+            Object.keys(workoutHistory[day].exercises).forEach(exercise => {
 
                 const exerciseData = EXERCISE_DB[exercise];
 
@@ -56,7 +58,7 @@ export default function calculateLevel(userData) {
 
     return {
         level: Math.min(tempLevel, 100),
-        currentLeftoverXP: Math.min(tempLevel, 100) < 100 ? currentXP : 0,
+        currentLeftoverXP: userData.xp + totalXP,
         totalXPEarned: totalXP
     };
 }

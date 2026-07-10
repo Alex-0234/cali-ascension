@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import useUserStore from './store/usePlayerStore';
 
@@ -8,8 +7,6 @@ import ServerWakeup from './pages/Dashboard/serverWakeup'
 import System from './pages/Dashboard/system'
 
 import './index.css'
-
-
 
 function App() {
   const { userData, fetchUser, syncUser} = useUserStore();

@@ -28,12 +28,12 @@ function Workout() {
     const currentProgress = useUserStore(state => state.userData?.exerciseProgress || {});
 
     const [stage, setStage] = useState('SETUP');
+    const [visibleCategories, setVisibleCategories] = useState(Object.keys(ALL_EXERCISES));
     // ['SETUP', 'SELECT', 'BUILD', 'START']
 
      // SETUP -> [ START? , BUILD? ] -> (START)[ SELECT WORKOUT? BUILD WORKOUT? ] -> [ START QUICK WORKOUT ](LEFT RIGHT TOGGLE)
                                                                                //-> (BUILD)[ NEW WORKOUT ] -> [BUILD COMPONENT] -> {NAME, ETC.}
 
-    const visibleCategories = Object.keys(ALL_EXERCISES);
     const exerciseSelection = useExerciseSelection(visibleCategories, currentProgress);
     const workoutSession = useWorkoutSession(dateNow);
 
@@ -51,7 +51,15 @@ function Workout() {
         }
     };
 
-    const handleFinishWorkoutDay = async () => {
+    const handleStartWorkout = (routine) => {
+        if (!routine) return;
+
+        setVisibleCategories(Object.keys(routine));
+        setStage('START');
+        mainTimer.toggle();
+    }
+
+    const handleFinishWorkoutDay = () => {
         if (!workoutSession.hasEntries) return;
 
         const finalDayRecord = workoutSession.mergeIntoHistory(userData?.workoutHistory?.[dateNow], mainTimer.time);
@@ -63,7 +71,8 @@ function Workout() {
         const { level, xp } = evaluate(userData.level, newUserData);
 
         setUserData({ ...newUserData, level, xp, stats, bioStatus: 'optimal', exerciseProgress: newProgress });
-        await syncUser();
+        syncUser();
+        setStage('SETUP');
         workoutSession.clear();
         mainTimer.reset();
     };
@@ -85,7 +94,7 @@ function Workout() {
                     <SetupWorkout timer={mainTimer} onChangeToBuild={() => setStage('BUILD')} onChangeToStart={() => setStage('START')}/>
                 )}
                 {stage === 'BUILD' && (
-                    <BuildWorkout />
+                    <BuildWorkout onWorkoutStart={(routine) => handleStartWorkout(routine)}/>
                 )}
                 {/* {stage === 'SELECT' && (
                     <SelectWorkout />

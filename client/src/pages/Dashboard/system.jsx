@@ -59,7 +59,7 @@ const System = () => {
                     )}
                 </div>
 
-                <nav className="flex gap-1 px-6 border-b border-accent/20 bg-panel/20 overflow-x-auto">
+                <nav className="flex gap-1 min-h-10 px-6 border-b border-accent/20 bg-panel/20 overflow-x-auto">
                     {SECTIONS.map(({ id, label }) => (
                         <button
                             key={id}
@@ -75,7 +75,7 @@ const System = () => {
                     ))}
                 </nav>
 
-                <div className=" overflow-auto">
+                <div className="h-full w-full overflow-auto">
                     {/* <ServerWakeup /> */}
                     {auth.isOpen && auth.modal === 'login' && (
                         <Login onFinish={() => setAuth({isOpen: false, modal: ''})} onRedirect={() => setAuth({isOpen: true, modal:'register'})} />
