@@ -25,6 +25,8 @@ const INITIAL_PLAYER_STATE = {
     // default stats
     rating: "100",
     level: 1,
+    prestige: 0,
+    prestigeXPConsumed: 0,
     xp: 0,
     ep: 0, // exercise points?
     stats: {

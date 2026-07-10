@@ -27,6 +27,8 @@ const UserSchema = new mongoose.Schema({
     // default stats
     rating: { type:String, default: "" },
     level: { type: Number, default: 0 },
+    prestige: { type: Number, default: 0 },
+    prestigeXPConsumed:{ type: Number, default: 0 },
     xp: { type: Number, default: 0 }, 
     ep: { type: Number, default: 0 }, 
     stats: {
