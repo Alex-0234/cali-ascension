@@ -1,15 +1,12 @@
 import { useState } from "react";
 import useUserStore from "../../store/usePlayerStore";
-import Hologram from "../../components/ui/hologram";
-import { useNavigate } from 'react-router-dom';
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
-import { calculatePlayerStats } from "../../utils/statSystem";
+import { calculatePlayerStats } from "../../utils/statCalculator";
 
 import CloseButton from "../../components/ui/closeBtn";
 import BackButton from "../../components/ui/backBtn";
-
-import styles from '../../styles/evaluation.module.css';
+import Card from "../../components/ui/card";
 
 const PERSONAL_STEPS = [
     { key: 'shownName', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
@@ -21,8 +18,7 @@ const PERSONAL_STEPS = [
 
 const EXERCISE_STAGES = ['pushups', 'squats', 'core', 'pullups'];
 
-const EvaluationScreen = () => {
-    const navigate = useNavigate();
+export default function Evaluation() {
     const setUserData = useUserStore((state) => state.setUserData);
     const syncUser = useUserStore((state) => state.syncUser)
     const userData = useUserStore((state) => state.userData);
@@ -35,7 +31,7 @@ const EvaluationScreen = () => {
     const [personalStepIndex, setPersonalStepIndex] = useState(0);
     
     const [personalInfo, setPersonalInfo] = useState({
-        shownName: '', age: '', gender: '', height: '', weight: ''
+        visibleName: '', age: '', gender: '', height: '', weight: ''
     });
     const [evaluationDraft, setEvaluationDraft] = useState({});
 
@@ -55,8 +51,8 @@ const EvaluationScreen = () => {
         } else {
             setUserData({
                 ...userData,
-                ...personalInfo, 
-                weightHistory: [{ weight: personalInfo.weight, date: new Date() }],
+                userInfo: personalInfo, 
+                weightHistory: [{ weight: userData.userInfo.weight, date: new Date() }],
             });
             setCurrentStageIndex(0); 
             setTierIndex(0);
@@ -82,7 +78,7 @@ const EvaluationScreen = () => {
             if (personalStepIndex > 0) {
                 setPersonalStepIndex(prev => prev - 1); 
             } else {
-                navigate('/status');
+                setMode('quest');
             }
         } 
         else if (mode === 'selection') {
@@ -90,11 +86,9 @@ const EvaluationScreen = () => {
                 setTierIndex(prev => prev - 1); 
             } else {
                 if (currentStageIndex > 0) {
-
                     setCurrentStageIndex(prev => prev - 1); 
                     setTierIndex(0); 
                 } else {
-
                     setMode('personal');
                     setPersonalStepIndex(PERSONAL_STEPS.length - 1); 
                 }
@@ -119,19 +113,17 @@ const EvaluationScreen = () => {
         setEvaluationDraft(newDraft);
 
         if (currentStageIndex < EXERCISE_STAGES.length - 1) {
-            // Posun na ďalšiu kategóriu cviku
             setCurrentStageIndex(prev => prev + 1);
             setTierIndex(0); 
             setMode('selection'); 
             setMaxReps(0); 
         } else {
-            // Koniec evaluácie
             const initialProgress = initialExerciseUnlock(newDraft);
             const stats = calculatePlayerStats(initialProgress);
 
             setUserData({
                 ...userData,
-                ...personalInfo, 
+                userInfo: personalInfo, 
                 stats: stats,
                 userEvaluation: newDraft, 
                 exerciseProgress: initialProgress,
@@ -139,122 +131,130 @@ const EvaluationScreen = () => {
             });
             await syncUser();
 
-            navigate('/awakening');
+            console.log(userData);
         }
     };
 
-    // --- RENDER BLOCK 1: URGENT QUEST WARNING ---
+    // --- SHARED CONTAINER WRAPPER ---
+    // A fixed-height container ensures the UI stays consistent regardless of content size.
+    const containerClasses = "relative min-w-full h-auto max-w-3xl mx-auto text-green-400 font-mono p-6 flex flex-col rounded-xl overflow-hidden";
+    const inputClasses = "w-full bg-slate-800 border border-slate-600 text-white p-3 rounded focus:outline-none focus:border-green-500 transition-colors mt-2";
+    const buttonClasses = "w-full bg-green-700 hover:bg-green-600 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 px-4 rounded transition-colors mt-auto uppercase tracking-wide";
+
+    // --- RENDER BLOCK 1: QUEST ---
     if (mode === 'quest') {
         return (
-            <div className="mock-body">
-                <div className={styles.questContainer}>
-                    <div className={styles.warningBox}>
-                        <div className={styles.warningHeader}>
-                            <span className={styles.blinkIcon}>⚠</span> SYSTEM ALERT
-                        </div>
-                        <h2 className={styles.warningTitle}>Initial Calibration Required</h2>
-                        <p className={styles.warningText}>
-                            Hunter profile is incomplete. To unlock system features, a full biometric and physical evaluation must be completed immediately.
-                        </p>
-                        
-                        <button className={styles.btnUrgent} onClick={() => setMode('personal')}>
-                            ACCEPT EVALUATION
+                <div className={containerClasses}>
+                    <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
+                        <h1 className="text-2xl font-bold text-white uppercase">Initial Evaluation Required</h1>
+                        <p className="text-slate-400">Calibrate your system to begin.</p>
+                        <button 
+                            className={buttonClasses} 
+                            onClick={() => setMode('personal')}
+                        >
+                            INITIATE_CALIBRATION
                         </button>
                     </div>
                 </div>
-            </div>
         )
     }
 
-    // --- RENDER BLOCK 2: PERSONAL DETAILS ---
+    // --- RENDER BLOCK 2: PERSONAL ---
     if (mode === 'personal') {
         const currentField = PERSONAL_STEPS[personalStepIndex]; 
 
         return (
-            <div className="mock-body">
-                <div className={styles.sysWindow}>
-                    <CloseButton position='absolute' top='5px' right='2px' onClose={() => navigate('/status')}/>
-                    <BackButton stroke={'white'} position='absolute' top='5px' left='2px' onClick={handleReturn}/>
-                    
-                    <div className={styles.sysHeader}>
-                        <h2 className={styles.sysTitle}>System.Calibration</h2>
-                        <span className={styles.sysSubtitle}>// Personal_Details [{personalStepIndex + 1}/{PERSONAL_STEPS.length}]</span>
-                    </div>
+            <div className={containerClasses}>
+                <CloseButton position='absolute' top='16px' right='16px' />
+                <BackButton stroke={'white'} position='absolute' top='16px' left='16px' onClick={handleReturn} />
+                
+                <div className="mt-12 mb-6 border-b border-slate-700 pb-2">
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider">System.Calibration</h2>
+                    <span className="text-sm text-slate-400">// Personal_Details [{personalStepIndex + 1}/{PERSONAL_STEPS.length}]</span>
+                </div>
 
-                    <div className={styles.inputBody}>
-                        <p className={styles.sysLabel}>&gt; {currentField.label}_</p>
-                        
-                        {currentField.key === 'gender' ? (
-                            <select 
-                                className={styles.sysInput}
-                                value={personalInfo[currentField.key]}
-                                onChange={(e) => setPersonalInfo({ ...personalInfo, [currentField.key]: e.target.value })}
-                                autoFocus
-                            >
-                                <option value="" disabled>Select from database...</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Solo Leveler">Solo Leveler</option>
-                            </select>
-                        ) : (
-                            <input 
-                                className={styles.sysInput}
-                                type={currentField.type}
-                                placeholder={currentField.placeholder}
-                                value={personalInfo[currentField.key]} 
-                                onChange={(e) => setPersonalInfo({ ...personalInfo, [currentField.key]: e.target.value })}
-                                required 
-                                autoFocus
-                            />
-                        )}
-                        
-                        <button 
-                            className={styles.btnGreen} 
-                            onClick={handleNextPersonal}
-                            disabled={!personalInfo[currentField.key]} 
+                <div className="flex-1 flex flex-col">
+                    <p className="text-lg text-slate-300">&gt; {currentField.label}_</p>
+                    
+                    {currentField.key === 'gender' ? (
+                        <select 
+                            className={inputClasses}
+                            value={personalInfo[currentField.key]}
+                            onChange={(e) => setPersonalInfo({ ...personalInfo, [currentField.key]: e.target.value })}
+                            autoFocus
                         >
-                            CONFIRM_DATA
-                        </button>
-                    </div>
+                            <option value="" disabled>Select from database...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Solo Leveler">Solo Leveler</option>
+                        </select>
+                    ) : (
+                        <input 
+                            className={inputClasses}
+                            type={currentField.type}
+                            placeholder={currentField.placeholder}
+                            value={personalInfo[currentField.key]} 
+                            onChange={(e) => setPersonalInfo({ ...personalInfo, [currentField.key]: e.target.value })}
+                            required 
+                            autoFocus
+                        />
+                    )}
+                    
+                    <button 
+                        className={buttonClasses}
+                        onClick={handleNextPersonal}
+                        disabled={!personalInfo[currentField.key]} 
+                    >
+                        CONFIRM_DATA
+                    </button>
                 </div>
             </div>
         );
     }
 
-    // --- RENDER BLOCK 3: EXERCISE INPUT ---
+    // --- RENDER BLOCK 3: INPUT ---
     if (mode === 'input' && currentTier) {
         return (
-            <div className="mock-body">
-                <div className={styles.sysWindow}>
-                    <BackButton position='absolute' top='20px' left='20px' onClick={handleReturn}/>
+            <div className={containerClasses}>
+                <BackButton position='absolute' top='16px' left='16px' onClick={handleReturn}/>
+                
+                <div className="mt-12 mb-4 border-b border-slate-700 pb-2">
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider">System.Calibration</h2>
+                    <span className="text-sm text-slate-400">// {currentStageName.toUpperCase()}</span>
+                </div>
+                
+                <div className="flex-1 flex flex-col overflow-y-auto pb-4">
+                    {EXERCISE_DB[currentTier]?.animation && (
+                        <div className="w-full h-40 bg-black rounded-lg border border-slate-600 overflow-hidden mb-4 flex-shrink-0">
+                            <video 
+                                src={EXERCISE_DB[currentTier].animation} 
+                                className="w-full h-full object-cover opacity-80"
+                                autoPlay 
+                                loop 
+                                muted 
+                                playsInline 
+                            />
+                        </div>
+                    )}
                     
-                    <div className={styles.sysHeader}>
-                        <h2 className={styles.sysTitle}>System.Calibration</h2>
-                        <span className={styles.sysSubtitle}>// {currentStageName.toUpperCase()}</span>
-                    </div>
+                    <p className="text-slate-300 mb-4">Target Technique: <span className="font-bold text-white">{EXERCISE_DB[currentTier]?.name}</span></p>
                     
-                    <div className={styles.inputBody}>
-                        {EXERCISE_DB[currentTier]?.animation && (
-                            <div className={styles.hologramWrapper}>
-                                <Hologram videoSrc={EXERCISE_DB[currentTier].animation} />
-                            </div>
-                        )}
-                        
-                        <p className={styles.highlightText}>Target Technique: <span>{EXERCISE_DB[currentTier]?.name}</span></p>
-                        
-                        <p className={styles.sysLabel}>&gt; Enter Max Reps until failure:_</p>
-                        <input 
-                            className={styles.sysInput}
-                            type="number" 
-                            value={maxReps || ''} 
-                            onChange={(e) => setMaxReps(parseInt(e.target.value) || 0)} 
-                            autoFocus
-                        />
-                        
-                        <button onClick={handleSubmitExercise} className={styles.btnGreen} disabled={maxReps <= 0}>
-                            LOG_PERFORMANCE
-                        </button>
-                    </div>
+                    <p className="text-slate-300">&gt; Enter Max Reps until failure:_</p>
+                    <input 
+                        className={inputClasses}
+                        type="number" 
+                        value={maxReps || ''} 
+                        onChange={(e) => setMaxReps(parseInt(e.target.value) || 0)} 
+                        autoFocus
+                    />
+                    
+                    <button 
+                        className={`${buttonClasses} mt-6`} 
+                        onClick={handleSubmitExercise} 
+                        disabled={maxReps <= 0}
+                    >
+                        LOG_PERFORMANCE
+                    </button>
                 </div>
             </div>
         );
@@ -263,29 +263,44 @@ const EvaluationScreen = () => {
     // --- RENDER BLOCK 4: EXERCISE SELECTION ---
     if (mode === 'selection' && currentTier) {
         return (
-            <div className="mock-body">
-                <div className={styles.sysWindow}>
-                    <BackButton position='absolute' top='20px' left='20px' onClick={handleReturn}/>
-                    
-                    <div className={styles.sysHeader}>
-                        <h2 className={styles.sysTitle}>System.Calibration</h2>
-                        <span className={styles.sysSubtitle}>// {currentStageName.toUpperCase()}</span>
-                    </div>
+            <div className={containerClasses}>
+                <BackButton position='absolute' top='16px' left='16px' onClick={handleReturn}/>
+                
+                <div className="mt-12 mb-4 border-b border-slate-700 pb-2">
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider">System.Calibration</h2>
+                    <span className="text-sm text-slate-400">// {currentStageName.toUpperCase()}</span>
+                </div>
 
-                    <div className={styles.inputBody}>
-                        <p className={styles.sysLabel}>&gt; Can you perform at least 1 rep?_</p>
-                        <h3 className={styles.exerciseName}>{EXERCISE_DB[currentTier]?.name}</h3>
+                <div className="flex-1 flex flex-col">
+                    <p className="text-slate-300 mb-2">&gt; Can you perform at least 1 rep?_</p>
+                    <h3 className="text-xl font-bold text-white mb-4">{EXERCISE_DB[currentTier]?.name}</h3>
 
-                        {EXERCISE_DB[currentTier]?.animation && (
-                            <div className={styles.hologramWrapper}>
-                                <Hologram videoSrc={EXERCISE_DB[currentTier].animation} />
-                            </div>
-                        )}
-                        
-                        <div className={styles.btnGrid}>
-                            <button onClick={handleNo} className={styles.btnRed}>NO [TOO HARD]</button>
-                            <button onClick={handleYes} className={styles.btnGreen}>YES [EASY]</button>
+                    {EXERCISE_DB[currentTier]?.animation && (
+                        <div className="w-full h-40 bg-black rounded-lg border border-slate-600 overflow-hidden mb-6 flex-shrink-0">
+                            <video 
+                                src={EXERCISE_DB[currentTier].animation} 
+                                className="w-full h-full object-cover opacity-80"
+                                autoPlay 
+                                loop 
+                                muted 
+                                playsInline 
+                            />
                         </div>
+                    )}
+                    
+                    <div className="flex gap-4 mt-auto">
+                        <button 
+                            className="flex-1 bg-red-900/50 hover:bg-red-800 text-red-200 border border-red-700 font-bold py-3 px-4 rounded transition-colors"
+                            onClick={handleNo} 
+                        >
+                            NO [TOO HARD]
+                        </button>
+                        <button 
+                            className="flex-1 bg-green-700 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition-colors"
+                            onClick={handleYes} 
+                        >
+                            YES [EASY]
+                        </button>
                     </div>
                 </div>
             </div>
@@ -293,6 +308,4 @@ const EvaluationScreen = () => {
     }
 
     return null;
-};
-
-export default EvaluationScreen;
+}

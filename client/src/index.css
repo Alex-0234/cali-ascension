@@ -76,5 +76,12 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-color: #06b5d41b;
+  }
+
+  .blink-yellow {
+    border-color: #fbbf24;
+    background-color: #fbbe2468;
+    color: #fbbf24;
   }
 }

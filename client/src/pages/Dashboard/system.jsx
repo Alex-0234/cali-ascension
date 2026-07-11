@@ -47,11 +47,11 @@ const System = () => {
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
-                            <button className="text-xs tracking-wider uppercase px-3 py-1.5 border border-border-main text-text-main rounded-sm hover:border-accent-glow hover:text-accent-light transition-colors"
+                            <button id='login-btn' className="text-xs tracking-wider uppercase px-3 py-1.5 border border-border-main text-text-main rounded-sm hover:border-accent-glow hover:text-accent-light transition-colors"
                             onClick={() => setAuth({isOpen: true, modal: 'login'})}>
                                 Login
                             </button>
-                            <button className="text-xs tracking-wider uppercase px-3 py-1.5 border border-accent-glow/50 bg-accent/10 text-accent-light rounded-sm hover:bg-accent/20 transition-colors"
+                            <button id='register-btn' className="text-xs tracking-wider uppercase px-3 py-1.5 border border-accent-glow/50 bg-accent/10 text-accent-light rounded-sm hover:bg-accent/20 transition-colors"
                             onClick={() => setAuth({isOpen: true, modal: 'register'})}>
                                 Get Started
                             </button>

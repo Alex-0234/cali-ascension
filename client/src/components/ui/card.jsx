@@ -1,9 +1,9 @@
 
 
-export default function Card({children, name=null, bg = false, contTWCSS='h-fit w-full', TWCSS}) {
+export default function Card({children, name=null, bg = false, contTWCSS, TWCSS}) {
 
     return (
-           <section className={`block  ${contTWCSS}`}>
+           <section className={`block ${contTWCSS || 'h-fit w-fit'}`}>
 
                 {name && (
                     <div className="flex items-center gap-3 p-2 text-xs tracking-widest text-text-main uppercase mb-4">
@@ -13,7 +13,7 @@ export default function Card({children, name=null, bg = false, contTWCSS='h-fit 
                     </div>
                     )}
                 {bg ? (
-                        <section className={`border-cyan-500/20 bg-slate-900/60 rounded-sm p-1 ${TWCSS}`}>
+                        <section className={`border-cyan-500/20 bg-slate-900/60 rounded-sm p-1 ${TWCSS || ''}`}>
                             {children}
                         </section>
                 ) : (

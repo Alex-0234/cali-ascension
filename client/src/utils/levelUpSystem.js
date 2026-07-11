@@ -24,7 +24,10 @@ export default function calculateLevel(userData) {
             Object.keys(workoutHistory[day].exercises).forEach(exercise => {
                 const exerciseData = EXERCISE_DB[exercise];
                 if (!exerciseData) return;
-                const baseXP = TIER_XP_REWARDS[exerciseData.tier];
+
+                const baseXP = Math.sqrt(TIER_XP_REWARDS[exerciseData.tier]);
+                if (baseXP === undefined) return;
+
                 const currentWorkoutSets = userData.workoutHistory[day].exercises[exercise].sets;
                 if (currentWorkoutSets && Array.isArray(currentWorkoutSets)) {
                     currentWorkoutSets.forEach(set => {

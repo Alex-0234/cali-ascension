@@ -25,25 +25,21 @@ const getStatName = (statKey) => {
 
 export default function Profile() {
     const { userData, setUserData } = useUserStore();
+    const {isLoggedIn} = userData;
     const prestige = canPrestige(userData);
 
     const displayXP = userData.level >= 100 ? "MAX" : Math.round(userData.xp);
     const xpNeeded = getXpNeededForLevel(userData.level);
 
-    const [isReady, setIsReady] = useState(false);
-    const [levelProgress, setLevelProgress] = useState(0);
-
-    const currentLevelProgress = getLevelProgress(userData.xp, userData.level);
+    const currentLevelProgress = getLevelProgress(userData.xp, userData.level, userData.prestige);
     const { current, highest } = calculateStreakFromObject(userData.workoutHistory);
 
+    const [isReady, setIsReady] = useState(false);
+    const [levelProgress, setLevelProgress] = useState(currentLevelProgress);
 
     const { level, currentLeftoverXP } = calculateLevel(userData);
     const stats = calculatePlayerStats(userData, userData.exerciseProgress);
-    
-    const hasActiveStreak = current > 0;
-    const filledTicks = Math.round((levelProgress / 100) * XP_TICKS);
-    
-
+     
     const handlePrestige  = () => {
         const newUserData = prestigeUser(userData);
         setUserData(newUserData);
@@ -80,7 +76,11 @@ export default function Profile() {
 
     return (
       <>
-      <Card bg={true} contTWCSS="w-full h-full lg:w-3/4 max-w-xl" TWCSS={'p-6'}>
+      
+      <Card bg={true} contTWCSS="w-full h-full lg:w-3/4 max-w-xl" TWCSS={'p-6 relative'}>
+            {!isLoggedIn && (
+                <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
+            )}
             <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 font-mono text-[11px] tracking-[0.08em] uppercase text-ink-faint">
                 <span className="w-1.5 h-1.5 rounded-full bg-presence shadow-[0_0_0_3px_rgba(111,207,151,0.12)]"></span>
@@ -109,59 +109,74 @@ export default function Profile() {
                     </div>
         
                     <div className="flex items-center gap-2 basis-full @panel-md:basis-auto @panel-md:ml-auto">
-                    <div className="flex items-center gap-2 bg-raised border border-hair rounded-chip px-3 py-2">
-                        <svg className="w-[15px] h-[15px] text-accent shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 2c1 3-1.5 4.5-2.5 6.5C8.5 10.8 8 12.5 9 14c-1.5-.3-3-1.8-3-4C4.5 12 4 15 4 16.5 4 20 7.2 22 11 22c4.5 0 8-3 8-7.3 0-3.4-2.3-6-4.5-8-.3 1.8-1 2.6-2 3.3-.2-3-1-6-4-8z"/></svg>
-                        <div className="flex flex-col leading-tight">
-                            <span className="font-mono font-semibold text-sm text-ink tabular-nums">{current} days</span>
-                            <span className="font-mono text-[9.5px] tracking-wide uppercase text-ink-faint">Best {highest}d</span>
+                        <div className="flex items-center gap-2 bg-raised border border-hair rounded-md px-3 py-2">
+                            <svg className="w-4 h-4 text-accent shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 2c1 3-1.5 4.5-2.5 6.5C8.5 10.8 8 12.5 9 14c-1.5-.3-3-1.8-3-4C4.5 12 4 15 4 16.5 4 20 7.2 22 11 22c4.5 0 8-3 8-7.3 0-3.4-2.3-6-4.5-8-.3 1.8-1 2.6-2 3.3-.2-3-1-6-4-8z"/></svg>
+                            <div className="flex flex-col leading-tight">
+                                <span className="font-mono font-semibold text-sm text-ink tabular-nums">{current} days</span>
+                                <span className="font-mono text-[9.5px] tracking-wide uppercase text-ink-faint">Best {highest}d</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-2 bg-raised border border-hair rounded-chip px-3 py-2">
-                        <svg className="w-[15px] h-[15px] text-ep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-                        <div className="flex flex-col leading-tight">
-                            <span className="font-mono font-semibold text-sm text-ep tabular-nums">{userData.ep}</span>
-                            <span className="font-mono text-[9.5px] tracking-wide uppercase text-ink-faint">EP · unlocks</span>
+                        <div className="flex items-center gap-2 bg-raised border border-hair rounded-md px-3 py-2">
+                            <svg className="w-4 h-4 text-ep shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+                            <div className="flex flex-col leading-tight">
+                                <span className="font-mono font-semibold text-sm text-ep tabular-nums">{userData.ep}</span>
+                                <span className="font-mono text-[9.5px] tracking-wide uppercase text-ink-faint">EP · unlocks</span>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
         
                 <div className="flex flex-col gap-3 @panel-md:flex-row">
         
-                    <div className="flex-1 @panel-md:flex-[1.3] bg-raised border border-hair rounded-card p-4 flex flex-col gap-3.5">
-                    <div className="flex items-end justify-between gap-3 flex-wrap">
-                        <div className="flex items-baseline gap-2.5">
-                        <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-ink-faint">Level</span>
-                        <span className="font-mono font-semibold text-[34px] leading-none text-ink tabular-nums">{userData.level}</span>
-                        <span className="font-mono text-[10.5px] tracking-wide text-accent bg-accent/10 border border-accent/25 rounded-[5px] px-[7px] py-[3px] whitespace-nowrap">Prestige {userData.prestige}</span>
+                    <div className="flex-1 @panel-md:flex-[1.3] bg-raised border border-hair rounded-md p-4 flex flex-col gap-3.5">
+                        <div className="flex items-end justify-between gap-3 flex-wrap">
+                            <div className="flex items-baseline gap-2.5">
+                                <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-ink-faint">Level</span>
+                                <span className="font-mono font-semibold text-[34px] leading-none text-ink tabular-nums">{userData.level}</span>
+                                <span className="font-mono text-[10.5px] tracking-wide text-accent bg-accent/10 border border-accent/25 rounded-[5px] px-[7px] py-[3px] whitespace-nowrap">
+                                {prestige ? (
+                                    <span className='cursor-pointer' onClick={() => {handlePrestige()}}>
+                                        <span> ⇈ </span>
+                                        Prestige {userData.prestige}
+                                    </span>
+                                    
+                                ) : (
+                                    <span>
+                                    Prestige {userData.prestige}
+                                    </span>
+                                )}
+                                </span>
+                            </div>
+                            <div className="font-mono text-[12.5px] text-ink-muted ">
+                                <span className="text-ink font-semibold tabular-nums">{displayXP}</span> / {Math.round(xpNeeded)} <span className="text-ink-faint">XP</span>
+                            </div>
                         </div>
-                        <div className="font-mono text-[12.5px] text-ink-muted">
-                        <span className="text-ink font-semibold tabular-nums">{levelProgress === 100 ? 'MAX' : Math.round(levelProgress * (xpNeeded / 100))}</span> / {Math.round(xpNeeded)} <span className="text-ink-faint">XP</span>
+                        <div className="h-1.5 rounded-full bg-white overflow-hidden">
+                            <div className={`fill-bar h-full rounded-md bg-accent transition-[width] duration-1000 ease-out`} style={{width: levelProgress + '%'}} data-fill="64"></div>
                         </div>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-hair overflow-hidden">
-                        <div className="fill-bar h-full rounded-full bg-accent transition-[width] duration-1000 ease-out w-[0%]" data-fill="64"></div>
-                    </div>
-                    <div className="flex justify-between font-mono text-[10.5px] text-ink-faint">
-                        {!userData.level >= 100 && (<span>Progress to Level {userData.level + 1}</span>)}
-                        <span>{xpNeeded - Math.round(levelProgress * (xpNeeded / 100))} XP remaining</span>
-                    </div>
+                        <div className="flex justify-between font-mono text-[10.5px] text-ink-faint">
+                            {!userData.level >= 100 && (<span>Progress to Level {userData.level + 1}</span>)}
+                            <span>{xpNeeded - Math.round(levelProgress * (xpNeeded / 100))} XP remaining</span>
+                        </div>
                     </div>
         
-                    <div className="flex-1 bg-raised border border-dashed border-hair-2 rounded-card p-4 flex flex-col gap-2.5">
-                    <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-ink-faint">Effort Rating</span>
-                        <svg className="w-4 h-4 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3"><circle cx="12" cy="12" r="9"></circle></svg>
-                    </div>
-                    <span className="font-mono font-semibold text-[28px] leading-none text-ink-faint">—</span>
-                    <p className="font-mono text-[10.5px] text-ink-faint leading-relaxed">Reserved for a daily effort score, separate from streak and level. Not tracking yet.</p>
+                    <div className="flex-1 bg-raised border border-dashed border-hair-2 rounded-md p-4 flex flex-col gap-2.5">
+                        <div className="flex items-center justify-between gap-2">
+                            <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-ink-faint">Effort Rating</span>
+                            <svg className="w-4 h-4 text-ink-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3"><circle cx="12" cy="12" r="9"></circle></svg>
+                        </div>
+                        <span className="font-mono font-semibold text-[28px] leading-none text-ink-faint">{userData.rating || 100}</span>
+                        <p className="font-mono text-[10.5px] text-ink-faint leading-relaxed">Reserved for a daily effort score, separate from streak and level. Not tracking yet.</p>
                     </div>
                 </div>
                 </div>
                     
             </div>
         </Card>
-        <Card contTWCSS="lg:w-1/4 rounded-md" TWCSS={'p-6 h-full'} bg={true} >
+        <Card contTWCSS="lg:w-1/4 rounded-md" TWCSS={'p-6 h-full relative'} bg={true} >
+        {!isLoggedIn && (
+                <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
+            )}
             <div className="flex flex-col gap-3 @panel-lg:flex-1 min-w-0">
                 <div className="flex items-center gap-2.5">
                     <span className="font-mono text-[11px] tracking-[0.08em] uppercase text-ink-faint whitespace-nowrap">Attributes</span>

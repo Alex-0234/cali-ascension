@@ -29,10 +29,6 @@ function Workout() {
 
     const [stage, setStage] = useState('SETUP');
     const [visibleCategories, setVisibleCategories] = useState(Object.keys(ALL_EXERCISES));
-    // ['SETUP', 'SELECT', 'BUILD', 'START']
-
-     // SETUP -> [ START? , BUILD? ] -> (START)[ SELECT WORKOUT? BUILD WORKOUT? ] -> [ START QUICK WORKOUT ](LEFT RIGHT TOGGLE)
-                                                                               //-> (BUILD)[ NEW WORKOUT ] -> [BUILD COMPONENT] -> {NAME, ETC.}
 
     const exerciseSelection = useExerciseSelection(visibleCategories, currentProgress);
     const workoutSession = useWorkoutSession(dateNow);
