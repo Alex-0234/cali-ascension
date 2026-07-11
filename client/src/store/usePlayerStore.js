@@ -23,7 +23,7 @@ const INITIAL_PLAYER_STATE = {
     },
 
     // default stats
-    rating: "100",
+    rating: 100,
     level: 1,
     prestige: 0,
     prestigeXPConsumed: 0,
