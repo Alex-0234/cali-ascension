@@ -1,6 +1,6 @@
 
 
-export default function Card({children, name=null, bg = false, contTWCSS='h-[14rem] w-full', TWCSS}) {
+export default function Card({children, name=null, bg = false, contTWCSS='h-fit w-full', TWCSS}) {
 
     return (
            <section className={`block  ${contTWCSS}`}>

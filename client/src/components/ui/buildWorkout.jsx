@@ -90,9 +90,9 @@ export default function BuildWorkout({onWorkoutStart}) {
                     </div>
                 </div>
             </Card>
-            <Card contTWCSS="h-full overflow-hidden" TWCSS='flex flex-col items-center sm:grid sm:grid-cols-2 h-full gap-2 p-2 overflow-auto'>
+            <Card contTWCSS="h-full overflow-auto" TWCSS='flex flex-col items-center sm:grid sm:grid-cols-2 lg:grid-cols-4 h-fit gap-2 p-2'>
                         {selectExerciseModal && (
-                            <div className='absolute top-0 left-0 w-full h-full flex flex-col justify-start z-30 bg-panel border-b border-b-border-main rounded-t-md overflow-hidden'>
+                            <div className='absolute top-0 left-0 w-full h-full flex flex-col justify-start z-30 bg-panel border-b border-b-border-main rounded-t-md'>
                                 <div className="flex items-center gap-3 text-xs tracking-widest text-text-main uppercase px-4 mt-2">
                                     <span className="w-1.5 h-1.5 bg-success rounded-full shadow-[0_0_6px_#34d399b3]"></span>
                                     <span>System.select_exercise</span>
