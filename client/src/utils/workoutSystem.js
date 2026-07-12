@@ -5,14 +5,12 @@ export function processWorkoutHistoryObject(workoutHistory) {
     
     const safeWorkoutHistory = (workoutHistory && !Array.isArray(workoutHistory)) ? workoutHistory : {};
 
-    if (ALL_EXERCISES) {
-        Object.keys(ALL_EXERCISES).forEach(category => {
-            const baseExerciseId = ALL_EXERCISES[category][0];
-            if (baseExerciseId) {
-                tempProgress[baseExerciseId] = { totalReps: 0, personalBest: 0 };
-            }
-        });
-    }
+    Object.keys(ALL_EXERCISES).forEach(category => {
+        const baseExerciseId = ALL_EXERCISES[category][0];
+        if (baseExerciseId) {
+            tempProgress[baseExerciseId] = { totalReps: 0, personalBest: 0 };
+        }
+    });
     // TODO - find the reason why time based exercises arent saving.
     Object.keys(safeWorkoutHistory).forEach(day => {
         if (safeWorkoutHistory[day].status === 'workout') {
