@@ -102,7 +102,7 @@ export default function Profile() {
                     <div className="shrink-0 w-12 h-12 rounded-chip bg-raised border border-hair-2 flex items-center justify-center font-mono text-lg font-semibold text-accent">T</div>
                     <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                        <h1 className="font-display font-bold text-[21px] leading-tight tracking-tight text-ink @panel-lg:text-2xl">{userData.visibleName || userData.username}</h1>
+                        <h1 className="font-display font-bold text-[21px] leading-tight tracking-tight text-ink @panel-lg:text-2xl">{userData.userInfo.visibleName || userData.username}</h1>
                         <span className="font-mono text-[10.5px] tracking-wide uppercase text-ink-muted border border-hair-2 rounded-[5px] px-[7px] py-[2.5px] leading-[1.4]">{userData.title || 'Rookie'}</span>
                     </div>
                     <div className="mt-1 font-mono text-[11.5px] text-ink-faint">Calisthenics · Member since {}</div>
