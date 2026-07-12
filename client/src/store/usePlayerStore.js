@@ -8,10 +8,10 @@ const INITIAL_PLAYER_STATE = {
     // user specified
     userInfo: {
         visibleName: "",
-        age: "",
+        age: 0,
         gender: "",
-        height: "",
-        weight: "",
+        height: 0,
+        weight: 0,
     },
     title: "Rookie",
     color: "lightblue",

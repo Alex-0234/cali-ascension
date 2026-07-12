@@ -9,11 +9,11 @@ const UserSchema = new mongoose.Schema({
     
     // user specified
     userInfo: {
-        visibleName: String,
-        age: Number,
-        gender: String,
-        weight: Number,
-        height: Number,
+        visibleName: { type:String, default: "" },
+        age: { type: Number, default: 0},
+        gender: { type:String, default: "" },
+        weight: { type: Number, default: 0},
+        height: { type: Number, default: 0},
     },
     title: { type:String, default: "" },
     color: { type:String, default: 'lightblue'},
