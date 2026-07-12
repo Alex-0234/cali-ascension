@@ -87,8 +87,8 @@ export function prestigeUser(userData) {
     return {
         ...userData,
         prestige: (userData.prestige || 0) + 1,
-        prestigeXPConsumed: totalXPEarned, 
+        prestigeXPConsumed: totalXPEarned, // TODO - Change to consume only enough for the 100 levels. 
         level: 0,
-        xp: 0
+        xp: 0 // kep the rest of prestigeXPConsumed as leftover xp.
     };
 }
