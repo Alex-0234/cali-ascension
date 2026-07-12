@@ -119,13 +119,13 @@ export default function Evaluation() {
             setMaxReps(0); 
         } else {
             const initialProgress = initialExerciseUnlock(newDraft);
-            const stats = calculatePlayerStats(initialProgress);
+            const stats = calculatePlayerStats(userData);
 
             setUserData({
                 ...userData,
                 userInfo: personalInfo, 
                 stats: stats,
-                userEvaluation: newDraft, 
+                //userEvaluation: newDraft, 
                 exerciseProgress: initialProgress,
                 isConfigured: true,
             });
