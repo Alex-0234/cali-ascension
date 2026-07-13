@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useUserStore from "../../store/usePlayerStore";
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
@@ -9,7 +9,7 @@ import BackButton from "../../components/ui/backBtn";
 import Card from "../../components/ui/card";
 
 const PERSONAL_STEPS = [
-    { key: 'shownName', label: 'Choose your username', type: 'text', placeholder: 'Hunter Name' },
+    { key: 'visibleName', label: 'Choose your username', type: 'text', placeholder: 'name' },
     { key: 'age', label: 'Enter your age', type: 'number', placeholder: '25' },
     { key: 'gender', label: 'Select your gender', type: 'select' }, 
     { key: 'height', label: 'Enter your height (cm)', type: 'number', placeholder: '180' },
@@ -19,9 +19,8 @@ const PERSONAL_STEPS = [
 const EXERCISE_STAGES = ['pushups', 'squats', 'core', 'pullups'];
 
 export default function Evaluation() {
-    const setUserData = useUserStore((state) => state.setUserData);
-    const syncUser = useUserStore((state) => state.syncUser)
-    const userData = useUserStore((state) => state.userData);
+    const {setUserData, syncUser, userData} = useUserStore();
+    const { userInfo } = userData;
 
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
     const [mode, setMode] = useState('quest'); // quest | personal | selection | input
@@ -30,9 +29,7 @@ export default function Evaluation() {
     const [maxReps, setMaxReps] = useState(0);
     const [personalStepIndex, setPersonalStepIndex] = useState(0);
     
-    const [personalInfo, setPersonalInfo] = useState({
-        visibleName: '', age: '', gender: '', height: '', weight: ''
-    });
+    const [personalInfo, setPersonalInfo] = useState(userInfo);
     const [evaluationDraft, setEvaluationDraft] = useState({});
 
     const currentStageName = EXERCISE_STAGES[currentStageIndex];
@@ -47,16 +44,11 @@ export default function Evaluation() {
 
     const handleNextPersonal = () => {
         if (personalStepIndex < PERSONAL_STEPS.length - 1) {
-            setPersonalStepIndex(prev => prev + 1); 
+            setPersonalStepIndex(prev => prev + 1);
         } else {
-            setUserData({
-                ...userData,
-                userInfo: personalInfo, 
-                weightHistory: [{ weight: userData.userInfo.weight, date: new Date() }],
-            });
-            setCurrentStageIndex(0); 
+            setCurrentStageIndex(0);
             setTierIndex(0);
-            setMode('selection');    
+            setMode('selection');
         }
     };
 
@@ -102,41 +94,46 @@ export default function Evaluation() {
 
     const handleSubmitExercise = async () => {
         const newDraft = {
-            ...evaluationDraft, 
-            [currentStageName]: {      
+            ...evaluationDraft,
+            [currentStageName]: {
                 variationID: currentTier,
                 variationName: EXERCISE_DB[currentTier].name,
                 maxReps: maxReps
-            }          
+            }
         };
-        
+    
         setEvaluationDraft(newDraft);
-
+    
         if (currentStageIndex < EXERCISE_STAGES.length - 1) {
             setCurrentStageIndex(prev => prev + 1);
-            setTierIndex(0); 
-            setMode('selection'); 
-            setMaxReps(0); 
+            setTierIndex(0);
+            setMode('selection');
+            setMaxReps(0);
         } else {
+            const cleanInfo = {
+                ...personalInfo,
+                age: Number(personalInfo.age) || 0,
+                height: Number(personalInfo.height) || 0,
+                weight: Number(personalInfo.weight) || 0,
+            };
+    
             const initialProgress = initialExerciseUnlock(newDraft);
-            const stats = calculatePlayerStats(userData, initialProgress);
 
-            setUserData({
+            const newUserData = {
                 ...userData,
-                userInfo: personalInfo, 
-                stats: stats,
-                //userEvaluation: newDraft, 
+                userInfo: cleanInfo,
+                weightHistory: [{ weight: cleanInfo.weight, date: new Date() }],
                 exerciseProgress: initialProgress,
                 isConfigured: true,
-            });
+            };
+    
+            const stats = calculatePlayerStats(newUserData);
+    
+            setUserData({ ...newUserData, stats });
             await syncUser();
-
-            console.log(userData);
         }
     };
 
-    // --- SHARED CONTAINER WRAPPER ---
-    // A fixed-height container ensures the UI stays consistent regardless of content size.
     const containerClasses = "relative min-w-full h-auto max-w-3xl mx-auto text-green-400 font-mono p-6 flex flex-col rounded-xl overflow-hidden";
     const inputClasses = "w-full bg-slate-800 border border-slate-600 text-white p-3 rounded focus:outline-none focus:border-green-500 transition-colors mt-2";
     const buttonClasses = "w-full bg-green-700 hover:bg-green-600 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 px-4 rounded transition-colors mt-auto uppercase tracking-wide";
@@ -186,7 +183,6 @@ export default function Evaluation() {
                             <option value="" disabled>Select from database...</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
-                            <option value="Solo Leveler">Solo Leveler</option>
                         </select>
                     ) : (
                         <input 

@@ -8,7 +8,8 @@ import useExerciseSelection from "../../hooks/useExerciseSelection";
 import { ALL_EXERCISES, EXERCISE_DB } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";
 import { calculatePlayerStats } from '../../utils/statCalculator';
-import { processWorkoutHistoryObject } from "../../utils/workoutSystem";
+import { applySessionToProgress } from "../../utils/workoutSystem";
+import { calculateWorkoutEP, calculateWorkoutRating, updateRating } from "../../utils/Progression";
 
 import SystemButton from '../../components/ui/systemBtn';
 import LevelUpModal from "../../components/ui/levelUpModal";
@@ -58,15 +59,28 @@ function Workout() {
     const handleFinishWorkoutDay = () => {
         if (!workoutSession.hasEntries) return;
 
+        const sessionExercises = workoutSession.today.exercises;
         const finalDayRecord = workoutSession.mergeIntoHistory(userData?.workoutHistory?.[dateNow], mainTimer.time);
         if (!finalDayRecord) return;
 
-        const newUserData = { ...userData, workoutHistory: { ...userData.workoutHistory, [dateNow]: finalDayRecord } };
-        const newProgress = processWorkoutHistoryObject(newUserData.workoutHistory);
-        const stats = calculatePlayerStats(newUserData, newProgress);
+        const newProgress = applySessionToProgress(currentProgress, sessionExercises);
+        const rating = updateRating(userData.rating, calculateWorkoutRating(sessionExercises));
+        const ep = (userData.ep || 0) + calculateWorkoutEP(sessionExercises);
+
+        const newUserData = {
+            ...userData,
+            workoutHistory: { ...userData.workoutHistory, [dateNow]: finalDayRecord },
+            exerciseProgress: newProgress,
+            rating,
+            ep,
+            bioStatus: 'optimal',
+        };
+        const stats = calculatePlayerStats(newUserData);
+
+
         const { level, xp } = evaluate(userData.level, newUserData);
 
-        setUserData({ ...newUserData, level, xp, stats, bioStatus: 'optimal', exerciseProgress: newProgress });
+        setUserData({ ...newUserData, stats: stats, level, xp });
         syncUser();
         setStage('SETUP');
         workoutSession.clear();

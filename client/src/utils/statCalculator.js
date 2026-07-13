@@ -1,67 +1,34 @@
 import { EXERCISE_DB, ALL_EXERCISES } from "../data/exercise_db";
 
-// ---------------------------------------------------------------------------
-// CONFIG
-// ---------------------------------------------------------------------------
-const BASE_STATS = 10;
-const MAX_STAT_CAP = 1000;
-const CONTRIBUTION_SCALE = 40;
+const STAT_FLOOR = 10;
+const STAT_CEIL = 1000;
+const MAX_TIER = 11;
+const TIER_BASE = 1.35;
 
-// Tier now runs 0 (rehab) to 11 (one-arm pull-up), so weight by tier directly
-// (no more tier-1). tier 0 -> weight 1, tier 11 -> ~26.5. Adjust the base
-// (1.35) to make harder variations matter more or less.
-function tierWeight(tier) {
-  return Math.pow(1.35, tier ?? 0);
-}
+const TIER_EXPONENT = { STR: 1, HYP: 0.75, END: 0.5, POW: 1 };
 
-// ---------------------------------------------------------------------------
-// REP-BASED CURVES (unit === "reps")
-// Smooth triangular weighting instead of hard buckets.
-// ---------------------------------------------------------------------------
-const REP_PROFILES = {
-  STR: { peak: 2, spread: 6 },
-  HYP: { peak: 8, spread: 8 },
-  END: { peak: 20, spread: 14 },
-};
-
-// ---------------------------------------------------------------------------
-// HOLD-BASED CURVES (unit === "seconds") — L-sit, front lever, plank, etc.
-// A short near-max hold behaves like a low-rep strength set; a long hold
-// behaves like an endurance set. Holds don't map to HYP the way reps do,
-// so isometrics only contribute to STR and END.
-// ---------------------------------------------------------------------------
-const HOLD_PROFILES = {
-  STR: { peak: 8, spread: 15 },   // ~8s hold at a hard skill = near-max effort
-  END: { peak: 45, spread: 40 },  // long holds = static endurance
-};
-
-function triangleWeight(value, peak, spread) {
-  const distance = Math.abs(value - peak);
-  return Math.max(0, 1 - distance / spread);
-}
-
-function scoresForSet(unit, amount) {
-  if (unit === "seconds") {
-    return {
-      STR: triangleWeight(amount, HOLD_PROFILES.STR.peak, HOLD_PROFILES.STR.spread),
-      HYP: 0,
-      END: triangleWeight(amount, HOLD_PROFILES.END.peak, HOLD_PROFILES.END.spread),
-    };
-  }
-  // default: reps
-  return {
-    STR: triangleWeight(amount, REP_PROFILES.STR.peak, REP_PROFILES.STR.spread),
-    HYP: triangleWeight(amount, REP_PROFILES.HYP.peak, REP_PROFILES.HYP.spread),
-    END: triangleWeight(amount, REP_PROFILES.END.peak, REP_PROFILES.END.spread),
-  };
-}
-
-// ---------------------------------------------------------------------------
-// RECENCY DECAY — reflects current capability, not lifetime history.
-// ---------------------------------------------------------------------------
 const RECENCY_FULL_DAYS = 21;
 const RECENCY_FADE_DAYS = 90;
 const RECENCY_FLOOR = 0.35;
+
+function tierFactor(tier = 0, exponent = 1) {
+  return Math.pow(TIER_BASE, exponent * (tier - MAX_TIER));
+}
+
+function repFactors(amount, unit) {
+  if (unit === "seconds") {
+    return {
+      STR: 0.6 + 0.4 * Math.min(amount / 10, 1),
+      HYP: 0,
+      END: Math.min(amount / 60, 1),
+    };
+  }
+  return {
+    STR: 0.6 + 0.4 * Math.min(amount / 5, 1),
+    HYP: Math.min(amount / 12, 1),
+    END: Math.min(amount / 30, 1),
+  };
+}
 
 function recencyMultiplier(daysAgo) {
   if (daysAgo <= RECENCY_FULL_DAYS) return 1;
@@ -71,79 +38,99 @@ function recencyMultiplier(daysAgo) {
 }
 
 function daysBetween(dateStr, today) {
-  return Math.floor((today - new Date(dateStr)) / (1000 * 60 * 60 * 24));
+  return Math.max(0, Math.floor((today - new Date(dateStr)) / 86400000));
 }
 
-// ---------------------------------------------------------------------------
-// MAIN CALCULATION
-// ---------------------------------------------------------------------------
-export function calculatePlayerStats(userData, userProgress) {
-  const raw = { STR: 0, HYP: 0, END: 0, POW: 0 };
+function collectObservations(userData, today) {
+  const observations = {};
+  const push = (id, obs) => {
+    (observations[id] ??= []).push(obs);
+  };
 
-  if (!userData?.workoutHistory || !userProgress) {
-    return { STR: BASE_STATS, HYP: BASE_STATS, END: BASE_STATS, POW: BASE_STATS };
-  }
+  Object.entries(userData.exerciseProgress || {}).forEach(([id, p]) => {
+    if (p?.personalBest > 0) {
+      push(id, { amount: p.personalBest, extraWeight: 0, recency: 1 });
+    }
+  });
 
-  const today = new Date();
+  Object.entries(userData.workoutHistory || {}).forEach(([date, day]) => {
+    if (day?.status !== "workout") return;
+    const recency = recencyMultiplier(daysBetween(date, today));
 
-  Object.keys(ALL_EXERCISES).forEach((category) => {
-    ALL_EXERCISES[category].forEach((exerciseId) => {
-      const exerciseData = EXERCISE_DB[exerciseId];
-      if (!exerciseData || !userProgress[exerciseId]) return;
-
-      const tw = tierWeight(exerciseData.tier);
-      const isPowerBranch = exerciseData.isExplosive === true;
-
-      // Best recent set per exercise, per stat — your level is your best
-      // current performance on a movement, not the sum of every rep ever done.
-      const best = { STR: 0, HYP: 0, END: 0, POW: 0 };
-
-      Object.entries(userData.workoutHistory).forEach(([date, day]) => {
-        const exHistory = day.exercises?.[exerciseId];
-        if (!exHistory) return;
-
-        const recency = recencyMultiplier(daysBetween(date, today));
-
-        Object.values(exHistory.sets).forEach((set) => {
-          // "reps" field is used for both unit types in your history shape —
-          // if you store hold duration under a different key (e.g. set.seconds),
-          // swap this line accordingly.
-          const amount = set.reps;
-          const scores = scoresForSet(exerciseData.unit, amount);
-
-          best.STR = Math.max(best.STR, scores.STR * tw * recency);
-          best.HYP = Math.max(best.HYP, scores.HYP * tw * recency);
-          best.END = Math.max(best.END, scores.END * tw * recency);
-
-          // POW comes from branch:"power" exercises, weighted by tier/recency
-          // directly rather than through a rep curve — for explosive work,
-          // performing the movement at all (at a given difficulty) is what
-          // counts, not landing on a specific rep count.
-          if (isPowerBranch) {
-            best.POW = Math.max(best.POW, tw * recency);
-          }
+    Object.entries(day.exercises || {}).forEach(([id, ex]) => {
+      (Array.isArray(ex.sets) ? ex.sets : []).forEach((set) => {
+        const amount = Number(set.reps) || 0;
+        if (amount <= 0) return;
+        push(id, {
+          amount,
+          extraWeight: Number(set.extraWeight) || 0,
+          recency,
         });
       });
-
-      raw.STR += best.STR;
-      raw.HYP += best.HYP;
-      raw.END += best.END;
-      raw.POW += best.POW;
     });
   });
 
-  const compress = (x) => Math.sqrt(x) * CONTRIBUTION_SCALE;
+  return observations;
+}
 
-  const Stats = {
-    STR: BASE_STATS + compress(raw.STR),
-    HYP: BASE_STATS + compress(raw.HYP),
-    END: BASE_STATS + compress(raw.END),
-    POW: BASE_STATS + compress(raw.POW),
-  };
+export function calculatePlayerStats(userData) {
+  const today = new Date();
+  const observations = collectObservations(userData, today);
+  const bodyWeight =
+    Number(userData.userInfo?.weight) ||
+    (userData.userInfo?.gender === "female" ? 65 : 80);
 
-  Object.keys(Stats).forEach((k) => {
-    Stats[k] = Math.min(Math.floor(Stats[k]), MAX_STAT_CAP);
+  const categories = Object.keys(ALL_EXERCISES);
+  const totals = { STR: 0, HYP: 0, END: 0, POW: 0 };
+  let powCategories = 0;
+
+  categories.forEach((category) => {
+    const best = { STR: 0, HYP: 0, END: 0, POW: 0 };
+    let categoryHasExplosive = false;
+
+    ALL_EXERCISES[category].forEach((exerciseId) => {
+      const data = EXERCISE_DB[exerciseId];
+      if (!data) return;
+      if (data.isExplosive) categoryHasExplosive = true;
+
+      (observations[exerciseId] || []).forEach((obs) => {
+        const reps = repFactors(obs.amount, data.unit);
+        const load = 1 + obs.extraWeight / bodyWeight;
+
+        const score = (stat, repFactor) =>
+          Math.min(1, tierFactor(data.tier, TIER_EXPONENT[stat]) * repFactor * load) *
+          obs.recency;
+
+        best.STR = Math.max(best.STR, score("STR", reps.STR));
+        best.HYP = Math.max(best.HYP, score("HYP", reps.HYP));
+        best.END = Math.max(best.END, score("END", reps.END));
+
+        if (data.isExplosive) {
+          best.POW = Math.max(best.POW, score("POW", reps.STR));
+        }
+      });
+    });
+
+    totals.STR += best.STR;
+    totals.HYP += best.HYP;
+    totals.END += best.END;
+    if (categoryHasExplosive) {
+      totals.POW += best.POW;
+      powCategories += 1;
+    }
   });
 
-  return Stats;
+  const n = categories.length || 1;
+  const scale = (sum, divisor) =>
+    Math.min(
+      STAT_CEIL,
+      Math.floor(STAT_FLOOR + (STAT_CEIL - STAT_FLOOR) * (sum / divisor))
+    );
+
+  return {
+    STR: scale(totals.STR, n),
+    HYP: scale(totals.HYP, n),
+    END: scale(totals.END, n),
+    POW: scale(totals.POW, powCategories || 1),
+  };
 }

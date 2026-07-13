@@ -1,5 +1,34 @@
+import { useState, useEffect, useRef } from "react";
+import { MODIFIERS } from "../../data/exercise_db";
+
 const inputClass = "bg-slate-950 border border-slate-700 text-slate-100 text-sm px-2 py-1.5 rounded-sm w-20 focus:border-cyan-400 focus:outline-none";
 const iconBtnClass = "w-7 h-7 flex items-center justify-center text-slate-400 border border-slate-700 rounded-sm hover:border-cyan-400 hover:text-cyan-300 transition-colors text-xs";
+
+const MOD_ABBR = { incline: "INC", decline: "DEC", band: "BND", explosive: "EXP" };
+
+const modBtnClass = (active, isExplosive) => {
+    const base = "text-[10px] tracking-widest uppercase px-2.5 py-1 transition-colors";
+    if (!active) return `${base} text-slate-400 hover:text-slate-200`;
+    return isExplosive
+        ? `${base} text-amber-300 bg-amber-500/10`
+        : `${base} text-cyan-300 bg-cyan-500/10`;
+};
+
+function ModifierChips({ mods }) {
+    if (!mods?.length) return null;
+    return (
+        <span className="flex gap-1">
+            {mods.map((m) => (
+                <span
+                    key={m}
+                    className={`text-[9px] tracking-wider px-1.5 py-0.5 rounded-sm border ${m === "explosive" ? "border-amber-400/30 text-amber-300" : "border-cyan-400/30 text-cyan-300"}`}
+                >
+                    {MOD_ABBR[m] || m.toUpperCase()}
+                </span>
+            ))}
+        </span>
+    );
+}
 
 export default function ExerciseCard({
     category,
@@ -14,6 +43,44 @@ export default function ExerciseCard({
     onLog,
     onForceUnlock,
 }) {
+    const [activeMods, setActiveMods] = useState([]);
+    const prevSetCount = useRef(sets.length);
+
+    // Toggles persist across sets, only reset when the exercise changes
+    useEffect(() => setActiveMods([]), [exerciseData?.id]);
+
+    // A newly added set inherits the current toggles; earlier sets keep
+    // whatever was saved on them
+    useEffect(() => {
+        if (sets.length > prevSetCount.current) {
+            onUpdateSet(sets.length - 1, "modifiers", activeMods);
+        }
+        prevSetCount.current = sets.length;
+    }, [sets.length]);
+
+    // Native explosive exercises already feed the power stat
+    const supported = (exerciseData?.supportedModifiers || []).filter(
+        (m) => !(m === "explosive" && exerciseData?.isExplosive)
+    );
+    const hasSlope = supported.includes("incline") && supported.includes("decline");
+    const standalone = supported.filter((m) => !hasSlope || (m !== "incline" && m !== "decline"));
+
+    // Toggling edits the set currently being filled (the last one) and
+    // becomes the default for sets added afterwards
+    const toggleMod = (mod) => {
+        let next;
+        if (activeMods.includes(mod)) {
+            next = activeMods.filter((m) => m !== mod);
+        } else {
+            const cleared = mod === "incline" || mod === "decline"
+                ? activeMods.filter((m) => m !== "incline" && m !== "decline")
+                : activeMods;
+            next = [...cleared, mod];
+        }
+        setActiveMods(next);
+        onUpdateSet(sets.length - 1, "modifiers", next);
+    };
+
     return (
         <div className={`flex flex-col gap-3 border rounded-sm p-4 ${isUnlocked ? 'border-slate-700 bg-slate-900/60' : 'border-slate-800 bg-slate-900/30 opacity-80'}`}>
             <div className="flex items-center justify-between gap-2">
@@ -30,13 +97,40 @@ export default function ExerciseCard({
 
             {isUnlocked ? (
                 <>
+                    {supported.length > 0 && (
+                        <div className="flex flex-col gap-1.5 border-t border-slate-800 pt-2">
+                            <span className="text-[10px] tracking-widest uppercase text-slate-500">Modifiers</span>
+                            <div className="flex flex-wrap items-center gap-2">
+                                {hasSlope && (
+                                    <div className="flex border border-slate-700 rounded-sm overflow-hidden divide-x divide-slate-700">
+                                        <button className={modBtnClass(activeMods.includes("incline"))} onClick={() => toggleMod("incline")}>
+                                            {MODIFIERS.incline.label}
+                                        </button>
+                                        <button className={modBtnClass(activeMods.includes("decline"))} onClick={() => toggleMod("decline")}>
+                                            {MODIFIERS.decline.label}
+                                        </button>
+                                    </div>
+                                )}
+                                {standalone.map((m) => (
+                                    <button
+                                        key={m}
+                                        className={`border rounded-sm ${activeMods.includes(m) && m === "explosive" ? "border-amber-400/40" : "border-slate-700"} ${modBtnClass(activeMods.includes(m), m === "explosive")}`}
+                                        onClick={() => toggleMod(m)}
+                                    >
+                                        {MODIFIERS[m]?.label || m}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     <div className="flex flex-col gap-2">
                         {sets.map((set, index) => {
                             const timerKey = `${category}-${index}`;
                             const isSeconds = exerciseData?.unit === 'seconds';
 
                             return (
-                                <div key={index} className="flex items-center gap-2">
+                                <div key={index} className="flex items-center gap-2 flex-wrap">
                                     <span className="text-xs text-slate-500 w-10">Set {index + 1}</span>
 
                                     {isSeconds ? (
@@ -79,8 +173,11 @@ export default function ExerciseCard({
                                         value={set.extraWeight || ''} onChange={(e) => onUpdateSet(index, 'extraWeight', e.target.value)}
                                         className={inputClass}
                                     />
+
+                                    <ModifierChips mods={set.modifiers} />
+
                                     {sets.length > 1 && (
-                                        <button className="text-slate-500 hover:text-red-400 text-xs" onClick={() => onRemoveSet(index)}>✕</button>
+                                        <button className="text-slate-500 hover:text-red-400 text-xs ml-auto" onClick={() => onRemoveSet(index)}>✕</button>
                                     )}
                                 </div>
                             );

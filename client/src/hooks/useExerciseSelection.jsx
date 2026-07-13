@@ -50,7 +50,8 @@ export default function useExerciseSelection(categories, currentProgress) {
     const updateSet = (category, index, field, value) => {
         setWorkoutSets(prev => {
             const updated = [...prev[category]];
-            updated[index] = { ...updated[index], [field]: Number(value) };
+            const numeric = field === 'reps' || field === 'extraWeight';
+            updated[index] = { ...updated[index], [field]: numeric ? Number(value) : value };
             return { ...prev, [category]: updated };
         });
     };

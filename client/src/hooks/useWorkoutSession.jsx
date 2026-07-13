@@ -6,7 +6,6 @@ export default function useWorkoutSession(dateNow) {
 
     const addExercise = (category, exerciseID, sets) => {
         const validSets = sets.filter(s => Number(s.reps) > 0);
-        //console.log('validSets:', validSets);
         const totalReps = validSets.reduce((sum, s) => sum + (Number(s.reps) || 0), 0);
         if (totalReps === 0) return false;
 
