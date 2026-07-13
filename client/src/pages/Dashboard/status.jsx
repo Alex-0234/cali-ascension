@@ -3,7 +3,7 @@ import Column from "../../components/ui/column";
 import Grid from "../../components/ui/grid";
 import Card from "../../components/ui/card";
 import Profile from "../../components/ui/proflie";
-import Evaluation from "../Onboarding/Evaluation";
+import Evaluation from "./evaluation";
 
 
 

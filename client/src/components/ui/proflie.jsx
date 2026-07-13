@@ -24,7 +24,7 @@ export default function Profile() {
     // never as a side effect of viewing the profile.
     const stats = useMemo(
         () => calculatePlayerStats(userData),
-        [userData.exerciseProgress, userData.workoutHistory, userData.userInfo]
+        [userData]
     );
     const { level, currentLeftoverXP } = useMemo(
         () => calculateLevel(userData),
