@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useTimer from "../../hooks/useTimer";
 import useKeyedTimers from "../../hooks/useKeyedTimer";
 import useLevelUp from "../../hooks/useLevelUp";
@@ -7,15 +7,15 @@ import useExerciseSelection from "../../hooks/useExerciseSelection";
 
 import { ALL_EXERCISES, EXERCISE_DB } from "../../data/exercise_db";
 import useUserStore from "../../store/usePlayerStore";
+import useUIStore from "../../store/useUIStore";
 import { calculatePlayerStats } from '../../utils/statCalculator';
 import { applySessionToProgress } from "../../utils/workoutSystem";
-import { calculateWorkoutEP, calculateWorkoutRating, updateRating } from "../../utils/Progression";
+import { calculateWorkoutEP, calculateWorkoutRating, getUnlockCost, updateRating } from "../../utils/Progression";
 
 import SystemButton from '../../components/ui/systemBtn';
 import LevelUpModal from "../../components/ui/levelUpModal";
 import SessionSummaryList from '../../components/ui/sessionSummaryList';
 import ExerciseCard from '../../components/ui/exerciseCard';
-import BuildWorkout from '../../components/ui/buildWorkout';
 import SetupWorkout from "../../components/ui/setupWorkout";
 
 function Workout() {
@@ -33,12 +33,22 @@ function Workout() {
 
     const exerciseSelection = useExerciseSelection(visibleCategories, currentProgress);
     const workoutSession = useWorkoutSession(dateNow);
+    const setNavGuard = useUIStore(state => state.setNavGuard);
+    
+    useEffect(() => {
+        setNavGuard(stage === 'START' ? () => true : null);
+        return () => setNavGuard(null);
+    }, [stage, setNavGuard]);
 
 
     const handleForceUnlock = (category, exerciseId) => {
         setUserData({ ...userData, exerciseProgress: { ...currentProgress, [exerciseId]: { totalReps: 0, personalBest: 0 } } });
         exerciseSelection.setExercise(category, exerciseId);
     };
+    const handleUnlock = (exerciseId) => {
+        const EpCost = getUnlockCost(exerciseId);
+        console.log(EpCost);
+    }
 
     const handleLogExercise = (category, exerciseID) => {
         const added = workoutSession.addExercise(category, exerciseID, exerciseSelection.workoutSets[category] || []);
@@ -77,10 +87,16 @@ function Workout() {
         };
         const stats = calculatePlayerStats(newUserData);
 
+        const { level, xp, gained } = evaluate(userData, newUserData);
+        const finishedDayRecord = gained > 0 ? { ...finalDayRecord, leveledUp: level } : finalDayRecord;
 
-        const { level, xp } = evaluate(userData.level, newUserData);
-
-        setUserData({ ...newUserData, stats: stats, level, xp });
+        setUserData({
+            ...newUserData,
+            workoutHistory: { ...newUserData.workoutHistory, [dateNow]: finishedDayRecord },
+            stats,
+            level,
+            xp,
+        });
         syncUser();
         setStage('SETUP');
         workoutSession.clear();
@@ -101,14 +117,8 @@ function Workout() {
 
             <div className="flex flex-col h-full w-full bg-card text-text-bright">
                 {stage === 'SETUP' && (
-                    <SetupWorkout timer={mainTimer} onChangeToBuild={() => setStage('BUILD')} onChangeToStart={() => setStage('START')}/>
+                    <SetupWorkout onWorkoutStart={handleStartWorkout} />
                 )}
-                {stage === 'BUILD' && (
-                    <BuildWorkout onWorkoutStart={(routine) => handleStartWorkout(routine)}/>
-                )}
-                {/* {stage === 'SELECT' && (
-                    <SelectWorkout />
-                )} */}
                 {stage === 'START' && (
                     <div className="flex flex-col gap-4 h-full overflow-auto">
                         <div className="sticky top-0 z-10 bg-card/95 border-b border-accent/20 backdrop-blur-sm">
@@ -166,7 +176,7 @@ function Workout() {
                                         onAddSet={() => exerciseSelection.addSet(category)}
                                         onRemoveSet={(index) => exerciseSelection.removeSet(category, index)}
                                         onLog={() => handleLogExercise(category, currentExId)}
-                                        onForceUnlock={() => handleForceUnlock(category, currentExId)}
+                                        onForceUnlock={() => handleUnlock(currentExId)}
                                     />
                                 );
                             })}

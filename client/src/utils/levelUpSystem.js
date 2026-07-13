@@ -17,34 +17,46 @@ export function getXpForFullRun(prestige = 0) {
     return base * Math.pow(PRESTIGE_SCALING, prestige);
 }
 
+function getStandardWeight(userData) {
+    return userData.userInfo?.gender === 'female' ? 65 : 80;
+}
+
+export function calculateSetXP(exerciseId, set, standardWeight) {
+    const exerciseData = EXERCISE_DB[exerciseId];
+    if (!exerciseData) return 0;
+
+    const tierReward = TIER_XP_REWARDS[exerciseData.tier];
+    if (!Number.isFinite(tierReward)) return 0;
+    const baseXP = Math.sqrt(tierReward);
+
+    const reps = Number(set.reps) || 0;
+    const extraWeight = Number(set.extraWeight) || 0;
+    const setMultiplier = extraWeight > 0 ? 1 + extraWeight / standardWeight : 1;
+    return baseXP * reps * setMultiplier;
+}
+
+function sumDayXP(day, standardWeight) {
+    let dayXP = 0;
+    Object.entries(day.exercises || {}).forEach(([exerciseId, ex]) => {
+        if (!Array.isArray(ex.sets)) return;
+        ex.sets.forEach(set => {
+            dayXP += calculateSetXP(exerciseId, set, standardWeight);
+        });
+    });
+    return dayXP;
+}
+
 export default function calculateLevel(userData) {
     const workoutHistory = userData.workoutHistory || {};
     const prestige = userData.prestige || 0;
     const prestigeXPConsumed = userData.prestigeXPConsumed || 0;
-
-    const standardWeight = userData.userInfo?.gender === 'female' ? 65 : 80;
+    const standardWeight = getStandardWeight(userData);
 
     let totalXP = 0;
 
     Object.values(workoutHistory).forEach(day => {
         if (day.status !== 'workout') return;
-
-        Object.entries(day.exercises || {}).forEach(([exerciseId, ex]) => {
-            const exerciseData = EXERCISE_DB[exerciseId];
-            if (!exerciseData) return;
-
-            const tierReward = TIER_XP_REWARDS[exerciseData.tier];
-            if (!Number.isFinite(tierReward)) return;
-            const baseXP = Math.sqrt(tierReward);
-
-            if (!Array.isArray(ex.sets)) return;
-            ex.sets.forEach(set => {
-                const reps = Number(set.reps) || 0;
-                const extraWeight = Number(set.extraWeight) || 0;
-                const setMultiplier = extraWeight > 0 ? 1 + extraWeight / standardWeight : 1;
-                totalXP += baseXP * reps * setMultiplier;
-            });
-        });
+        totalXP += sumDayXP(day, standardWeight);
     });
 
     let currentXP = Math.max(0, totalXP - prestigeXPConsumed);
@@ -91,4 +103,59 @@ export function prestigeUser(userData) {
         level: carried.level,
         xp: carried.currentLeftoverXP,
     };
+}
+
+// How much XP a single logged day contributed, grouped by exercise.
+export function getXpBreakdown(userData, date) {
+    const day = userData.workoutHistory?.[date];
+    const breakdown = {};
+    if (!day || day.status !== 'workout') return breakdown;
+
+    const standardWeight = getStandardWeight(userData);
+
+    Object.entries(day.exercises || {}).forEach(([exerciseId, ex]) => {
+        if (!Array.isArray(ex.sets)) return;
+        breakdown[exerciseId] = ex.sets.reduce(
+            (sum, set) => sum + calculateSetXP(exerciseId, set, standardWeight),
+            0
+        );
+    });
+
+    return breakdown;
+}
+
+// Replays workoutHistory chronologically and reports each day a level threshold was crossed.
+// Uses the account's current prestige/prestigeXPConsumed for the whole replay, since past
+// prestige counts at each historical date aren't tracked.
+export function getLevelUpHistory(userData) {
+    const workoutHistory = userData.workoutHistory || {};
+    const prestige = userData.prestige || 0;
+    const prestigeXPConsumed = userData.prestigeXPConsumed || 0;
+    const standardWeight = getStandardWeight(userData);
+
+    const days = Object.entries(workoutHistory)
+        .filter(([, day]) => day.status === 'workout')
+        .sort(([a], [b]) => new Date(a) - new Date(b));
+
+    let level = 0;
+    let xpIntoLevel = -prestigeXPConsumed;
+    const history = [];
+
+    days.forEach(([date, day]) => {
+        const dayXP = sumDayXP(day, standardWeight);
+        xpIntoLevel += dayXP;
+
+        let levelsGained = 0;
+        while (level < MAX_LEVEL && xpIntoLevel >= getXpNeededForLevel(level, prestige)) {
+            xpIntoLevel -= getXpNeededForLevel(level, prestige);
+            level += 1;
+            levelsGained += 1;
+        }
+
+        if (levelsGained > 0) {
+            history.push({ date, level, levelsGained, xpGainedThatDay: dayXP });
+        }
+    });
+
+    return history;
 }

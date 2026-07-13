@@ -1,33 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Mono:100,200,300,regular,500,600,700,100italic,200italic,300italic,italic,500italic,600italic,700italic);
 @import 'tailwindcss';
 
-/* @theme {
-
-  --color-dark: #0a0b0d;
-  --color-panel: #131519;
-  --color-raised: #191c21;
-  --color-hair: #24272e;
-  --color-hair-2: #2c3038;
- 
-  --color-ink: #edeef0;
-  --color-ink-muted: #90959e;
-  --color-ink-faint: #5b6067;
-
-  --color-accent: #e4a247;
-  --color-ep: #6fa3c7;
-  --color-presence: #6fcf97;
- 
-  --font-display: "Inter", -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
- 
-  --radius-panel: 0.875rem; 
-  --radius-card: 0.625rem; 
-  --radius-chip: 0.5rem; 
- 
-  --container-panel-md: 40rem; 
-  --container-panel-lg: 68.75rem; 
-} */
-
 @theme {
   --color-dark: #0D1317;
   --color-darkblue: #0C1046;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useUserStore from "../../store/usePlayerStore";
+import useUIStore from "../../store/useUIStore";
 
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
@@ -17,7 +18,7 @@ const System = () => {
     const { userData, logout } = useUserStore();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [auth, setAuth] = useState({isOpen: false, modal: '',});
-    const [activeSection, setActiveSection] = useState('status');
+    const { activeSection, requestSection } = useUIStore();
 
     useEffect(() => {
         setIsLoggedIn(!!userData.isLoggedIn);
@@ -63,7 +64,7 @@ const System = () => {
                     {SECTIONS.map(({ id, label }) => (
                         <button
                             key={id}
-                            onClick={() => {setActiveSection(id); auth.isOpen && setAuth({isOpen: false, modal: ''})}}
+                            onClick={() => {requestSection(id); auth.isOpen && setAuth({isOpen: false, modal: ''})}}
                             className={`px-4 py-2.5 text-xs tracking-wider uppercase whitespace-nowrap border-b-2 transition-colors ${
                                 activeSection === id
                                     ? 'text-accent-light border-accent-glow'
@@ -76,7 +77,6 @@ const System = () => {
                 </nav>
 
                 <div className="h-full w-full overflow-auto">
-                    {/* <ServerWakeup /> */}
                     {auth.isOpen && auth.modal === 'login' && (
                         <Login onFinish={() => setAuth({isOpen: false, modal: ''})} onRedirect={() => setAuth({isOpen: true, modal:'register'})} />
                     )}

@@ -7,6 +7,12 @@ const TIER_BASE = 1.35;
 
 const TIER_EXPONENT = { STR: 1, HYP: 0.75, END: 0.5, POW: 1 };
 
+const MOD_MULTIPLIERS = { incline: 0.75, decline: 1.25, band: 0.70 };
+
+function getModMultiplier(mods = []) {
+  return mods.reduce((acc, m) => acc * (MOD_MULTIPLIERS[m] ?? 1), 1);
+}
+
 const RECENCY_FULL_DAYS = 21;
 const RECENCY_FADE_DAYS = 90;
 const RECENCY_FLOOR = 0.35;
@@ -49,7 +55,7 @@ function collectObservations(userData, today) {
 
   Object.entries(userData.exerciseProgress || {}).forEach(([id, p]) => {
     if (p?.personalBest > 0) {
-      push(id, { amount: p.personalBest, extraWeight: 0, recency: 1 });
+      push(id, { amount: p.personalBest, extraWeight: 0, modMultiplier: 1, isExplosive: false, recency: 1 });
     }
   });
 
@@ -61,9 +67,12 @@ function collectObservations(userData, today) {
       (Array.isArray(ex.sets) ? ex.sets : []).forEach((set) => {
         const amount = Number(set.reps) || 0;
         if (amount <= 0) return;
+        const mods = set.modifiers || [];
         push(id, {
           amount,
           extraWeight: Number(set.extraWeight) || 0,
+          modMultiplier: getModMultiplier(mods),
+          isExplosive: mods.includes("explosive"),
           recency,
         });
       });
@@ -98,14 +107,15 @@ export function calculatePlayerStats(userData) {
         const load = 1 + obs.extraWeight / bodyWeight;
 
         const score = (stat, repFactor) =>
-          Math.min(1, tierFactor(data.tier, TIER_EXPONENT[stat]) * repFactor * load) *
+          Math.min(1, tierFactor(data.tier, TIER_EXPONENT[stat]) * repFactor * load * obs.modMultiplier) *
           obs.recency;
 
         best.STR = Math.max(best.STR, score("STR", reps.STR));
         best.HYP = Math.max(best.HYP, score("HYP", reps.HYP));
         best.END = Math.max(best.END, score("END", reps.END));
 
-        if (data.isExplosive) {
+        if (data.isExplosive || obs.isExplosive) {
+          categoryHasExplosive = true;
           best.POW = Math.max(best.POW, score("POW", reps.STR));
         }
       });

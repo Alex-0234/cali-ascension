@@ -18,24 +18,33 @@ const RATING_FLOOR = 0;
 const RATING_SCALE = 400;
 const K_FACTOR = 32;
 const DIFFICULTY_RATING_CEIL = 5000;
-const FULL_VOLUME_SETS = 10;
+const MIN_EFFORT_SETS = 3;   // fewer sets than this and peak effort isn't credited in full
+const VOLUME_BONUS_MAX = 0.25; // extra volume beyond the hardest set can add at most this much
+const VOLUME_HALF_LIFE = 4;  // extra hardest-set-equivalent sets needed to reach half of the bonus
 
 export function calculateWorkoutRating(workoutExercises) {
   let hardestSet = 0;
   let volume = 0;
+  let setCount = 0;
 
   Object.entries(workoutExercises).forEach(([exerciseId, ex]) => {
     Object.values(ex.sets ?? {}).forEach((set) => {
       const score = setScore(exerciseId, set.reps);
       hardestSet = Math.max(hardestSet, score);
       volume += score;
+      setCount += 1;
     });
   });
 
   if (hardestSet === 0) return 0;
 
-  const volumeFactor = Math.min(volume / (hardestSet * FULL_VOLUME_SETS), 1);
-  return Math.round(DIFFICULTY_RATING_CEIL * hardestSet * (0.6 + 0.4 * volumeFactor));
+  // Peak effort (hardestSet) drives the score, not how the session was structured -
+  // no assumption that a "full" workout looks like any particular number of sets.
+  const effortFactor = Math.min(setCount / MIN_EFFORT_SETS, 1);
+  const extraSets = Math.max(0, volume / hardestSet - 1);
+  const volumeBonus = VOLUME_BONUS_MAX * (extraSets / (extraSets + VOLUME_HALF_LIFE));
+
+  return Math.round(DIFFICULTY_RATING_CEIL * hardestSet * effortFactor * (1 + volumeBonus));
 }
 
 // completion: 0..1, fraction of the planned workout actually finished.
@@ -48,6 +57,7 @@ export function updateRating(currentRating, workoutRating, completion = 1) {
 const EP_SCALE = 15;
 const SET_DECAY = 0.8;
 const UNLOCK_BASE_COST = 20;
+const UNLOCK_TIER_BASE = 1.6;
 const PREREQ_MIN_REPS = 8;
 const PREREQ_MIN_SECONDS = 20;
 
@@ -66,7 +76,7 @@ export function calculateWorkoutEP(workoutExercises) {
 export function getUnlockCost(exerciseId) {
   const data = EXERCISE_DB[exerciseId];
   if (!data) return Infinity;
-  return Math.round(UNLOCK_BASE_COST * Math.pow(TIER_BASE, data.tier));
+  return Math.round(UNLOCK_BASE_COST * Math.pow(UNLOCK_TIER_BASE, data.tier));
 }
 
 export function canUnlockExercise(exerciseId, exerciseProgress) {
@@ -90,6 +100,21 @@ export function canUnlockExercise(exerciseId, exerciseProgress) {
   }
 
   return { ok: true, cost: getUnlockCost(exerciseId) };
+}
+
+// The cheapest exercise the player could unlock right now (prereqs already met), or null.
+export function getCheapestUnlockable(exerciseProgress) {
+  let best = null;
+
+  Object.keys(EXERCISE_DB).forEach((exerciseId) => {
+    const check = canUnlockExercise(exerciseId, exerciseProgress);
+    if (!check.ok) return;
+    if (!best || check.cost < best.cost) {
+      best = { ...EXERCISE_DB[exerciseId], cost: check.cost };
+    }
+  });
+
+  return best;
 }
 
 // Pure: returns { ep, exerciseProgress } on success, null on failure.
