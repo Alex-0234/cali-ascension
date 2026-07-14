@@ -2,7 +2,7 @@ import useUserStore from "../../store/usePlayerStore"
 import Column from "../../components/ui/column";
 import Grid from "../../components/ui/grid";
 import Card from "../../components/ui/card";
-import Profile from "../../components/ui/proflie";
+import Profile from "../../components/ui/profile";
 import Evaluation from "./evaluation";
 
 

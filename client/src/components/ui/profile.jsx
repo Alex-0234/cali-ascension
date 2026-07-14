@@ -6,6 +6,14 @@ import { calculatePlayerStats } from '../../utils/statCalculator';
 import { getCheapestUnlockable } from '../../utils/Progression';
 import Card from "./card";
 
+const STAT_TOOLTIPS = {
+    STR: 'Peak exercise difficulty × reps. Tier matters most — grinding easy sets won\'t move this.',
+    HYP: 'Volume in the 6–12 rep range across all categories. Low reps and holds contribute nothing here.',
+    END: 'High-rep and long-hold performance. Tier matters less — consistency and volume win.',
+    POW: 'Explosive movements primarily. Heavy strength work bleeds in at a reduced rate.',
+    BAL: 'How evenly training is spread across all categories. Neglecting any one area will drag this down.',
+};
+
 const AP_STATE_STYLES = {
     adapting:     { bar: 'bg-success',    text: 'text-success' },
     detraining:   { bar: 'bg-yellow-400', text: 'text-yellow-400' },
@@ -74,7 +82,7 @@ export default function Profile() {
 
     return (
       <>
-      <Card bg={true} contTWCSS="w-full h-full min-w-0 lg:w-3/4 max-w-2xl" TWCSS={'p-6 relative'}>
+      <Card bg={true} contTWCSS="w-full h-auto min-w-0 lg:w-3/4 max-w-2xl" TWCSS={'p-6 relative h-full'}>
             {!isLoggedIn && (
                 <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
             )}
@@ -186,7 +194,14 @@ export default function Profile() {
                     <>
                     {statKey !== 'apState' && statKey !== 'AP' && (
                         <div key={statKey} className="flex justify-between items-center gap-3.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
-                            <span className="font-mono text-xs tracking-wide uppercase text-text-main shrink-0">{getStatName(statKey)}</span>
+                            <div className="relative group/stat shrink-0">
+                                <span className="font-mono text-xs tracking-wide uppercase text-text-main cursor-default">{getStatName(statKey)}</span>
+                                {STAT_TOOLTIPS[statKey] && (
+                                    <div className="absolute bottom-full left-0 mb-2 hidden group-hover/stat:block w-48 bg-panel border border-border-subtle rounded-md p-2.5 z-10 pointer-events-none shadow-lg">
+                                        <p className="font-mono text-xs text-text-muted leading-relaxed">{STAT_TOOLTIPS[statKey]}</p>
+                                    </div>
+                                )}
+                            </div>
                             <div className="flex-1 h-1 rounded-full bg-panel overflow-hidden min-w-4">
                                 <div className="fill-bar h-full rounded-full bg-accent-glow transition-[width] duration-1000 ease-out" style={{width: `${(stats[statKey] / 1000) * 100}%`}}></div>
                             </div>
