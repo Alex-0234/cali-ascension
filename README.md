@@ -1,44 +1,77 @@
-# Calisthenics-Ascension
+# Cali Ascension
 
-A web-based, RPG-like tracker that combines ranks, leveling up, daily quests, and overall game-like features while focusing on actual, in-real-life progress in Calisthenics. 
-
-The primary goal of this tracker is to ensure that the in-game stats accurately reflect real-world physical progress, provided it receives truthful input from the user.
+A calisthenics progression tracker built around one idea: your in-game stats should actually mean something. Level up, unlock exercises, and watch your numbers climb — but only because you got stronger in real life.
 
 ## Live Demo
 
-[Test the App Here](https://cali-ascension.vercel.app) (Temporary URL for testing purposes)
+[cali-ascension.vercel.app](https://cali-ascension.vercel.app)
 
-- Username: test
-- Password: test
+- Username: `test` / Password: `test`
 
-  **Note**: I am using a free instance type on Render for the backend. It might take a minute or so to inicialize.
-  
-## Core Mechanics
+> The backend runs on a free Render instance and may take ~30 seconds to wake up on first load.
 
-Unlike traditional RPGs, progression here is strictly tied to real-world calisthenics performance. 
+---
 
-* **Rating:** Rating (Elo) will show user consistency while Level will show actual exercise difficulty. Base rating is 100 and can drop to 0. 
-* **Stats:** Stats are currently calculated based on the hardest skill achieved and the number of reps the user can perform. There is a cap of 12 reps, which signals it is time to move on to the next variation.
-* **Skill Trees:** Skill trees visually map the progression of exercises and skills (e.g., Australian Pull-ups unlock Jackknife Pull-ups and Isometric Hold Pull-ups).
-* **Progression:** Logging reps in advanced exercises cascades down the tree, automatically improving your proficiency score in the prerequisite, easier skills.
-* **Levels:** Levels are calculated based on total reps and exercise difficulty (balancing is currently in progress).
+## What makes it different
 
-## To-Do List
-- [ ] Finish the cleanup / redesign.
+Most fitness apps gamify the act of showing up. Log a workout, get points. Cali Ascension tries to gamify the actual difficulty of what you're doing.
 
-## Technologies used
+Stats are derived from your exercise history using tier weighting, rep counts, set volume, and recency decay. Grinding easy exercises indefinitely won't inflate your numbers — the system rewards moving up the skill tree.
 
-**Frontend**
-- React (vite)
-- Zustand
+There are no random quest popups or daily challenges nudging you to do things for the sake of engagement. The only progression that matters is the one you earn under the bar.
 
-**Backend**
-- Node.js & Express
-- Bcrypt
-- MongoDB
-- Mongoose
+---
 
+## Stats
 
-## Project Background 
+Six attributes, all calculated from real workout data:
 
-This is a personal project and serves as my introduction to React and React Flow. The development process is heavily "vibe-coded," as learning through building and iterating in this hands-on way saves a significant amount of time.
+| Stat | What it measures |
+|------|-----------------|
+| **STR** Strength | Peak difficulty × reps achieved. Tier matters most here. |
+| **HYP** Hypertrophy | Volume in the 6–12 rep range across all categories. |
+| **END** Endurance | High-rep and long-hold performance. Tier matters less. |
+| **POW** Power | Explosive movements primarily, with a bleed-in from heavy strength work. |
+| **BAL** Balance | How evenly your training is distributed across all movement categories. A pull-up specialist with zero leg work will see this reflect that. |
+| **AP** Adaptive Potential | Based on the Acute:Chronic Workload Ratio. Tells you if your current training load is in the range where the body adapts — or if you're spiking too hard and need a rest day. |
+
+Stats range from 10 to 1000 and decay gradually if you stop training. Old workouts still contribute, just at a lower weight.
+
+---
+
+## Exercise System
+
+**170+ exercises** across six categories: Push-ups, Pull-ups, Squats, Dips, Core, and Bridges.
+
+Each exercise has a tier (1–11) and belongs to a branch within its category — standard progressions, asymmetric work, power/explosive paths, isometric holds, planche lines, and more. Exercises unlock through a prerequisite skill tree: you need to demonstrate a baseline at each step before moving forward.
+
+Unlocking costs **Evolution Points (EP)**, earned by training. Harder sets earn more. There's diminishing return per set in a single session so you can't grind one exercise endlessly.
+
+---
+
+## Calibration
+
+New users go through an initial evaluation that finds your starting tier in each category, unlocks everything below it automatically, and awards bonus EP based on how close you are to the next progression. The harder you can go on day one, the more head start you get.
+
+---
+
+## Progression
+
+- **Level** reflects cumulative XP weighted by exercise difficulty
+- **Elo-style Rating** tracks workout consistency and challenge — beating a workout above your level pushes it up, skipping easy ones doesn't
+- **Prestige** resets XP at level 100 with a multiplier carried forward
+- **Proficiency** per exercise tracks long-term volume, separate from stats
+
+---
+
+## Tech Stack
+
+**Frontend** — React (Vite), Zustand, Tailwind CSS
+
+**Backend** — Node.js, Express, MongoDB, Mongoose, bcrypt
+
+---
+
+## Background
+
+Personal project, started as an introduction to React. The design philosophy is to build first and iterate — so the codebase reflects that. It works, it tracks real progress, and it's honest about what the numbers mean.
