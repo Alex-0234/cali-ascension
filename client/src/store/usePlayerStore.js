@@ -5,7 +5,7 @@ const INITIAL_PLAYER_STATE = {
     userId: "",
     username: "",
     email: "",
-    dateCreated: ''
+    dateCreated: '',
     // user specified
     userInfo: {
         visibleName: "",
