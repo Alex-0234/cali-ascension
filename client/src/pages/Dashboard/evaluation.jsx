@@ -117,13 +117,14 @@ export default function Evaluation() {
                 weight: Number(personalInfo.weight) || 0,
             };
     
-            const initialProgress = initialExerciseUnlock(newDraft);
+            const { progress: initialProgress, bonusEP } = initialExerciseUnlock(newDraft);
 
             const newUserData = {
                 ...userData,
                 userInfo: cleanInfo,
                 weightHistory: [{ weight: cleanInfo.weight, date: new Date() }],
                 exerciseProgress: initialProgress,
+                ep: (userData.ep || 0) + bonusEP,
                 isConfigured: true,
             };
     
