@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 
 app.post('/api/register', async (req, res) => {
     try {
+        const dateNow = new Date().toISOString().split('T')[0];
         const { username, email, password } = req.body;
         const usernameAlreadyExists = await User.findOne({ username: username });
         const emailAlreadyExists = await User.findOne({ email: email });
@@ -49,6 +50,7 @@ app.post('/api/register', async (req, res) => {
             username,
             email,
             password: hashedPassword, 
+            dateCreated: dateNow,
         });
 
         await newUser.save();
