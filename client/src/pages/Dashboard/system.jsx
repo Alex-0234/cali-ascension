@@ -7,6 +7,7 @@ import Register from "../Auth/Register";
 import Workout from "./workout";
 import Status from "./status";
 import ServerWakeup from "./serverWakeup";
+import SkillTree from "../../components/skilltree/SkillTree";
 
 const SECTIONS = [
     { id: 'status', label: 'Dashboard' },
@@ -86,13 +87,7 @@ const System = () => {
                     {!auth.isOpen && activeSection === 'status' && <Status />}
                     {!auth.isOpen && activeSection === 'workout' && <Workout />}
 
-                    {!auth.isOpen && (activeSection === 'skilltree') && (
-                        <div className="flex flex-col items-center justify-center gap-3 h-full text-center px-6">
-                            <span className="text-xl text-text-muted">◇</span>
-                            <p className="text-xs tracking-widest uppercase text-text-muted">Module Offline</p>
-                            <p className="text-xs text-text-muted max-w-xs">This section hasn't been built yet.</p>
-                        </div>
-                    )}
+                    {!auth.isOpen && activeSection === 'skilltree' && <SkillTree />}
                 </div>
 
             </div>

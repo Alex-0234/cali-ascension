@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import useUserStore from "../../store/usePlayerStore";
 import calculateLevel, { getLevelProgress, getXpNeededForLevel, canPrestige, prestigeUser } from "../../utils/levelUpSystem";
 import { calculateStreakFromObject } from "../../utils/calculateStreak";
@@ -191,9 +191,9 @@ export default function Profile() {
             </div>
             <div className="flex flex-col">
                 {Object.keys(stats).map(statKey => (
-                    <>
+                    <Fragment key={statKey}>
                     {statKey !== 'apState' && statKey !== 'AP' && (
-                        <div key={statKey} className="flex justify-between items-center gap-3.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
+                        <div className="flex justify-between items-center gap-3.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
                             <div className="relative group/stat shrink-0">
                                 <span className="font-mono text-xs tracking-wide uppercase text-text-main cursor-default">{getStatName(statKey)}</span>
                                 {STAT_TOOLTIPS[statKey] && (
@@ -209,7 +209,7 @@ export default function Profile() {
                         </div>
                     )}
                     {statKey === 'AP' && (
-                        <div key={statKey} className="flex flex-col gap-1.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
+                        <div className="flex flex-col gap-1.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
                             <div className="flex justify-between items-center gap-3.5">
                                 <div className="relative group/ap shrink-0">
                                     <span className="font-mono text-xs tracking-wide uppercase text-text-main cursor-default">{getStatName(statKey)}</span>
@@ -227,8 +227,7 @@ export default function Profile() {
                             <span className={`font-mono text-xs capitalize ${AP_STATE_STYLES[stats.apState]?.text ?? 'text-text-muted'}`}>{stats.apState}</span>
                         </div>
                     )}
-                     
-                    </>
+                    </Fragment>
                 ))}
             </div>
         </Card>
