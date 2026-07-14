@@ -10,14 +10,14 @@ const UserSchema = new mongoose.Schema({
     
     // user specified
     userInfo: {
-        visibleName: { type:String, default: "" },
-        age: { type: Number, default: 0},
-        gender: { type:String, default: "" },
-        weight: { type: Number, default: 0},
-        height: { type: Number, default: 0},
+        visibleName: { type: String, default: null },
+        age:         { type: Number, default: null },
+        gender:      { type: String, default: null },
+        weight:      { type: Number, default: null },
+        height:      { type: Number, default: null },
     },
-    title: { type:String, default: "" },
-    color: { type:String, default: 'lightblue'},
+    title: { type: String, default: null },
+    color: { type: String, default: 'lightblue' },
     bioStatus: String,
     streak: {
         current: { type: Number, default: 0},

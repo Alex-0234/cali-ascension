@@ -8,11 +8,11 @@ const INITIAL_PLAYER_STATE = {
     dateCreated: '',
     // user specified
     userInfo: {
-        visibleName: "",
-        age: 0,
-        gender: "",
-        height: 0,
-        weight: 0,
+        visibleName: null,
+        age: null,
+        gender: null,
+        height: null,
+        weight: null,
     },
     title: "Rookie",
     color: "lightblue",
@@ -24,7 +24,7 @@ const INITIAL_PLAYER_STATE = {
     },
 
     // default stats
-    rating: 100,
+    rating: 0,
     level: 1,
     prestige: 0,
     prestigeXPConsumed: 0,
