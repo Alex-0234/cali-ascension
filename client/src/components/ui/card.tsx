@@ -1,6 +1,14 @@
 
 
-export default function Card({children, name=null, bg = false, contTWCSS, TWCSS}) {
+interface CardProps {
+    children?: React.ReactNode;
+    name?: string | null;
+    bg?: boolean;
+    contTWCSS?: string;
+    TWCSS?: string;
+}
+
+export default function Card({ children, name = null, bg = false, contTWCSS, TWCSS }: CardProps) {
 
     return (
            <section className={`block ${contTWCSS || 'h-fit w-fit'}`}>

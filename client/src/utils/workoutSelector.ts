@@ -1,15 +1,22 @@
-import { ALL_EXERCISES, EXERCISE_DB } from "../data/exercise_db";
+import { ALL_EXERCISES, EXERCISE_DB, type Exercise } from "../data/exercise_db";
 
-export const getHighestUnlockedExercises = (userProgress) => {
+interface ExerciseProgressEntry {
+    totalReps: number;
+    personalBest: number;
+}
+
+export type PersonalBest = Exercise & ExerciseProgressEntry;
+
+export const getHighestUnlockedExercises = (userProgress: Record<string, ExerciseProgressEntry>): Record<string, PersonalBest> => {
     
     if (!userProgress) return {};
     
-    const highestExercises = {};
+    const highestExercises: Record<string, PersonalBest> = {};
 
     Object.keys(ALL_EXERCISES).forEach(category => {
         const categoryExerciseIDs = ALL_EXERCISES[category];
         
-        let topExercise = null;
+        let topExercise: PersonalBest | null = null;
         let highestTier = -1;
 
         categoryExerciseIDs.forEach(exerciseID => {
@@ -36,7 +43,7 @@ export const getHighestUnlockedExercises = (userProgress) => {
     return highestExercises;
 };
 
-export function getPrevNextExerciseID(category, exerciseID) {
+export function getPrevNextExerciseID(category: string, exerciseID: string) {
     const exercisesInTheCategory = ALL_EXERCISES[category]
     const index = exercisesInTheCategory.indexOf(exerciseID);
 

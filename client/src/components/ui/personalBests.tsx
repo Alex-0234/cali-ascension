@@ -6,8 +6,9 @@ export default function PersonalBests() {
     const { userData } = useUserStore();
     const personalBests = getHighestUnlockedExercises(userData?.exerciseProgress || {});
 
+
     return (
-        <Card name='personal_bests' bg={true} contTWCSS='w-full max-w-3xl' TWCSS='w-full min-w-fit h-fit relative'>
+        <Card name='personal_bests' bg={true} contTWCSS='w-full max-w-3xl' TWCSS='w-full min-w-fit h-fit relative p-4'>
             <h2 className="text-xs tracking-widest text-slate-400 uppercase mb-2">Personal Bests</h2>
             {Object.keys(personalBests).length > 0 ? (
                 <div className='flex flex-col gap-1'>
