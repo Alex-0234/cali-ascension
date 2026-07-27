@@ -6,7 +6,7 @@ import { EXERCISE_DB, ALL_EXERCISES } from '../../data/exercise_db';
 import useUserStore from '../../store/usePlayerStore';
 import { canUnlockExercise, unlockExercise } from '../../utils/Progression';
 import { getProficiency } from '../../utils/proficiencySystem';
-import { generateSkillTree } from '../../utils/skillTreeGenerator';
+import { generateSkillTree } from '../../utils/skillTreeGenerator.ts';
 import { mergeTheme } from './skillTreeTheme';
 import SkillNode from './SkillNode';
 
@@ -32,7 +32,7 @@ const SkillTree = ({ theme: themeOverrides }) => {
     const progress = useMemo(() => userData.exerciseProgress ?? {}, [userData.exerciseProgress]);
 
     const { nodes, edges } = useMemo(
-        () => generateSkillTree(EXERCISE_DB, ALL_EXERCISES[category] ?? [], progress, theme),
+        () => generateSkillTree(ALL_EXERCISES[category] ?? [], progress, theme),
         [category, progress, theme]
     );
 

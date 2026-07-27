@@ -108,7 +108,7 @@ export default function ServerWakeup({ onServerReady }) {
             {/* Terminal frame — inset-[1%] gives the 98% viewport feel at scale(1) */}
             <div
                 ref={frameRef}
-                className="absolute inset-[10%] flex flex-col bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden"
+                className="absolute inset-[5%] flex flex-col bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden"
             >
                 {/* Header bar */}
                 <div
