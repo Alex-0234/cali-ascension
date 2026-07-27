@@ -15,7 +15,6 @@ export default function ServerWakeup({ onServerReady }) {
     const [serverReady, setServerReady] = useState(false);
     const [status, setStatus] = useState('connecting');
 
-    // Intro: loader pulses → fades → frame draws in as a horizontal line then expands → content appears
     useGSAP(() => {
         const loaderSpin = gsap.to(loaderRef.current, {
             rotate: 360,
@@ -109,7 +108,7 @@ export default function ServerWakeup({ onServerReady }) {
             {/* Terminal frame — inset-[1%] gives the 98% viewport feel at scale(1) */}
             <div
                 ref={frameRef}
-                className="absolute inset-[1%] flex flex-col bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden"
+                className="absolute inset-[10%] flex flex-col bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden"
             >
                 {/* Header bar */}
                 <div

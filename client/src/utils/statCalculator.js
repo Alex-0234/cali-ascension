@@ -121,6 +121,23 @@ function collectDailyLoads(userData, bodyWeight, today) {
   return dailyLoads;
 }
 
+// ACWR is unreliable until there's enough history to average over — e.g. on someone's
+// first workout, the acute (7-day) vs chronic (28-day) windows both contain only that one
+// day, so the ratio is always ~4 (28/7) regardless of how mild the workout was. Suppress
+// overreaching/detraining state until at least this many sets have ever been logged.
+const AP_CALIBRATION_SETS = 10;
+
+function countLoggedSets(userData) {
+  let count = 0;
+  Object.values(userData.workoutHistory || {}).forEach((day) => {
+    if (day?.status !== "workout") return;
+    Object.values(day.exercises || {}).forEach((ex) => {
+      count += Array.isArray(ex.sets) ? ex.sets.length : 0;
+    });
+  });
+  return count;
+}
+
 // AP uses the Acute:Chronic Workload Ratio (ACWR) from exercise science.
 //   Acute  = avg daily load over last 7 days
 //   Chronic = avg daily load over last 28 days
@@ -159,6 +176,10 @@ function calculateAP(userData, bodyWeight, today) {
   let state = "adapting";
   if      (ACWR > 1.5)                              state = "overreaching";
   else if (chronicLoad < AP_REF_CHRONIC * 0.2)      state = "detraining";
+
+  if (state !== "adapting" && countLoggedSets(userData) < AP_CALIBRATION_SETS) {
+    state = "adapting";
+  }
 
   return { value, state };
 }
