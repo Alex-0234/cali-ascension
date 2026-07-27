@@ -20,7 +20,7 @@ interface stats {
   BAL: number
   AP: number
 }
-interface exerciseProgress {
+export interface exerciseProgress {
   totalReps: number
   personalBest: number
 }
