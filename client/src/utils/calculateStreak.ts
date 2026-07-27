@@ -1,13 +1,13 @@
+import { Workout } from "../store/usePlayerStore";
 
-
-export function calculateStreakFromObject(workoutHistory) {
+export function calculateStreakFromObject(workoutHistory: Record<string, Workout>) {
     
     const safeWorkoutHistory = Array.isArray(workoutHistory) ? {} : workoutHistory;
     if (!safeWorkoutHistory || Object.keys(safeWorkoutHistory).length === 0) {
         return { current: 0, highest: 0 };
     }
 
-    const sortedDates = Object.keys(safeWorkoutHistory).sort((a, b) => new Date(b) - new Date(a));
+    const sortedDates = Object.keys(safeWorkoutHistory).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
     let highestStreak = 0;
     let currentStreak = 0;
@@ -24,10 +24,6 @@ export function calculateStreakFromObject(workoutHistory) {
     for (let i = sortedDates.length - 1; i >= 0; i--) {
         const dateString = sortedDates[i];
         const log = safeWorkoutHistory[dateString];
-
-        if (!log.status && log.type) {
-            log.status = log.type;
-        }
 
         const isLegitWorkout = log.status === 'workout' && (log.totalVolume >= 12);
         const isRestDay = log.status === 'restday';

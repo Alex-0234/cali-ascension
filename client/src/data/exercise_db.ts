@@ -1,15 +1,17 @@
-// ==========================================
-// EXERCISE DATABASE
-// ==========================================
-// Schema:
-//   id                 - immutable slug, never changes once shipped
-//   branch             - single curated branch (replaces old free-form tags)
-//   tier               - hand-assigned difficulty rank, freely editable
-//   isExplosive        - native power-branch exercise, always feeds power stat
-//   supportedModifiers - keys from MODIFIERS the UI may offer for this exercise
-//
-// Modifiers live on logged sets, not in this DB:
-//   { exerciseId: "pushup_standard", reps: 12, modifiers: ["incline"] }
+
+interface Exercise {
+    id: string
+    name: string
+    unit: string
+    category: string
+    branch: string
+    tier: number
+    isExplosive: boolean 
+    supportedModifiers: string[]
+    prerequisites: string[]
+    animation: string
+}
+
 
 export const MODIFIERS = {
     incline:   { label: "Incline",       effect: "easier" },
@@ -18,7 +20,7 @@ export const MODIFIERS = {
     explosive: { label: "Explosive",     effect: "power"  },
 };
 
-export const EXERCISE_DB = {
+export const EXERCISE_DB: Record<string, Exercise> = {
 
     // |||||||   PUSHUPS   |||||||
     "pushup_knee":               { id: "pushup_knee",               name: "Knee Push-up",              unit: "reps",    category: "pushups", branch: "standard",   tier: 1,  isExplosive: false, supportedModifiers: ["incline", "explosive"],                    prerequisites: [],                                                   animation: "/videos/knee_pushup.mp4" },
@@ -175,7 +177,7 @@ export const EXERCISE_DB = {
     "bridge_nordic":             { id: "bridge_nordic",             name: "Nordic Hamstring Curl",     unit: "reps",    category: "bridges", branch: "posterior",  tier: 7,  isExplosive: false, supportedModifiers: ["band"],                                    prerequisites: [],                                                   animation: "/videos/nordic_hamstring_curl.mp4" },
 };
 
-export const ALL_EXERCISES = Object.values(EXERCISE_DB).reduce((acc, ex) => {
+export const ALL_EXERCISES = Object.values(EXERCISE_DB).reduce((acc, ex):Record<string, string[]> => {
     if (!acc[ex.category]) acc[ex.category] = [];
     acc[ex.category].push(ex.id);
     return acc;
