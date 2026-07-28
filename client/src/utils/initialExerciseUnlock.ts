@@ -15,8 +15,7 @@ const TIER_BASE = 1.35;
 const ESTIMATE_REP_CAP = 50;
 const PREREQ_MIN_REPS = 8;
 const PREREQ_MIN_SECONDS = 20;
-
-// TODO - This could be fine for proficiency after workout. Always cascading reps down. 
+ 
 export const evaluateRepsOnLowerTier = (maxReps: number, maxTier: number, currentTier: number) => {
   const scaled = Math.round(maxReps * Math.pow(TIER_BASE, maxTier - currentTier));
   return Math.min(scaled, ESTIMATE_REP_CAP);
