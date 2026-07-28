@@ -25,9 +25,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-      const userId = localStorage.getItem('userId');
-      if (isServerReady && userId && !userData.isLoggedIn) {
-        fetchUser(userId); 
+      if (isServerReady && !userData.isLoggedIn) {
+        fetchUser();
       }
   }, [fetchUser, userData.isLoggedIn, isServerReady]);
 

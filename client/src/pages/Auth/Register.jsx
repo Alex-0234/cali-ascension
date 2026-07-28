@@ -38,6 +38,7 @@ export default function Register({ onFinish, onRedirect }) {
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username: username.toLowerCase().trim(), email: email.trim(), password }),
             });

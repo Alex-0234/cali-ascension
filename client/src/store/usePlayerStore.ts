@@ -120,9 +120,9 @@ interface UserStoreState {
   userData: userData;
   hasFetchedInitialData: boolean;
   setUserData: (newData: Partial<userData>) => void;
-  fetchUser: (userId: string) => Promise<void>;
+  fetchUser: () => Promise<void>;
   syncUser: () => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const useUserStore = create<UserStoreState>()((set, get) => ({
@@ -135,13 +135,18 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
       userData: { ...state.userData, ...newData }
     })),
 
-  fetchUser: async (userId: string) => {
+  fetchUser: async () => {
       set((state) => ({
           userData: { ...state.userData, isLoading: true }
       }));
 
       try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/${userId}`);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
+              credentials: 'include',
+          });
+
+          if (!response.ok) throw new Error('Not authenticated');
+
           const data = await response.json();
 
           console.log('System: User Data Loaded', data);
@@ -188,8 +193,9 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
     }
     try {
       console.log('System: Syncing to Database...');
-      await fetch(`${import.meta.env.VITE_API_URL}/api/user/${userData.userId}`, {
-        method: 'POST', 
+      await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
+        method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
@@ -198,10 +204,16 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
       console.error('System Error: Sync Failed', error);
     }
   },
-  logout: () => {
-        localStorage.removeItem('userId');
-        set({  hasFetchedInitialData: false, userData: INITIAL_PLAYER_STATE });
-        
+  logout: async () => {
+        try {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+        } catch (error) {
+            console.error('System Error: Logout request failed', error);
+        }
+        set({ hasFetchedInitialData: false, userData: INITIAL_PLAYER_STATE });
   },
 
 }));
