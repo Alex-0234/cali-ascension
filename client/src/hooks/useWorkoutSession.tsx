@@ -1,19 +1,36 @@
 import { useState } from 'react';
+import { Workout } from '../store/usePlayerStore';
 
-export default function useWorkoutSession(dateNow) {
-    const [session, setSession] = useState({});
+interface setObject {
+    reps: number
+    extraWeight: number
+    modifiers: string[]
+}
+export interface exerciseObject {
+    totalReps: number
+    sets: setObject[]
+}
+interface sessionObject {
+    totalVolume: number
+    totalSets: number
+    duration: number
+    exercises: Record<string, exerciseObject>
+}
+
+export default function useWorkoutSession(dateNow: string) {
+    const [session, setSession] = useState<Record<string, sessionObject>>({});
     const today = session[dateNow];
 
-    const addExercise = (category, exerciseID, sets) => {
+    const addExercise = (exerciseID: string, sets: setObject[]) => {
         const validSets = sets.filter(s => Number(s.reps) > 0);
         const totalReps = validSets.reduce((sum, s) => sum + (Number(s.reps) || 0), 0);
         if (totalReps === 0) return false;
 
-        setSession(prev => {
-            const currentDay = prev[dateNow] || { status: 'workout', totalVolume: 0, totalSets: 0, duration: 0, exercises: {} };
+        setSession(previousSession => {
+            const currentDay = previousSession[dateNow] || { status: 'workout', totalVolume: 0, totalSets: 0, duration: 0, exercises: {} };
             const existing = currentDay.exercises[exerciseID];
             return {
-                ...prev,
+                ...previousSession,
                 [dateNow]: {
                     ...currentDay,
                     totalVolume: currentDay.totalVolume + totalReps,
@@ -31,7 +48,7 @@ export default function useWorkoutSession(dateNow) {
         return true;
     };
 
-    const removeExercise = (exerciseID) => {
+    const removeExercise = (exerciseID: string) => {
         setSession(prev => {
             const currentDay = prev[dateNow];
             if (!currentDay?.exercises[exerciseID]) return prev;
@@ -52,7 +69,7 @@ export default function useWorkoutSession(dateNow) {
         });
     };
 
-    const mergeIntoHistory = (existingHistoryDay, extraDuration = 0) => {
+    const mergeIntoHistory = (existingHistoryDay: Workout, extraDuration = 0) => {
         const todaySession = session[dateNow];
         if (!todaySession) return null;
 

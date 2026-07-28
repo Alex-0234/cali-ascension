@@ -51,7 +51,7 @@ function Workout() {
     }
 
     const handleLogExercise = (category, exerciseID) => {
-        const added = workoutSession.addExercise(category, exerciseID, exerciseSelection.workoutSets[category] || []);
+        const added = workoutSession.addExercise(exerciseID, exerciseSelection.workoutSets[category] || []);
         if (added) {
             exerciseSelection.resetSets(category);
             exerciseTimer.resetAll();

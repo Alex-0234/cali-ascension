@@ -1,6 +1,8 @@
 import { EXERCISE_DB } from "../data/exercise_db";
+import { exerciseObject } from "../hooks/useWorkoutSession";
+import { exerciseProgress } from "../store/usePlayerStore";
 
-export function applySessionToProgress(exerciseProgress, sessionExercises) {
+export function applySessionToProgress(exerciseProgress: Record<string, exerciseProgress>, sessionExercises: Record<string, exerciseObject>) {
   const next = { ...exerciseProgress };
 
   Object.entries(sessionExercises || {}).forEach(([exerciseId, ex]) => {
