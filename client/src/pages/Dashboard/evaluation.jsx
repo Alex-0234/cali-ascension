@@ -135,7 +135,7 @@ export default function Evaluation() {
         }
     };
 
-    const containerClasses = "relative min-w-full h-auto max-w-3xl mx-auto text-green-400 font-mono p-6 flex flex-col rounded-xl overflow-hidden";
+    const containerClasses = "relative w-full min-h-[28rem] text-green-400 font-mono p-6 flex flex-col rounded-xl overflow-hidden";
     const inputClasses = "w-full bg-slate-800 border border-slate-600 text-white p-3 rounded focus:outline-none focus:border-green-500 transition-colors mt-2";
     const buttonClasses = "w-full bg-green-700 hover:bg-green-600 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 px-4 rounded transition-colors mt-auto uppercase tracking-wide";
 
@@ -143,11 +143,16 @@ export default function Evaluation() {
     if (mode === 'quest') {
         return (
                 <div className={containerClasses}>
-                    <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
-                        <h1 className="text-2xl font-bold text-white uppercase">Initial Evaluation Required</h1>
-                        <p className="text-slate-400">Calibrate your system to begin.</p>
-                        <button 
-                            className={buttonClasses} 
+                    <div className="flex-1 flex flex-col items-center justify-center text-center gap-2 px-4">
+                        <svg className="w-12 h-12 text-green-500/70 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                            <circle cx="12" cy="12" r="9" strokeDasharray="3 3"></circle>
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"></circle>
+                        </svg>
+                        <h1 className="text-2xl font-bold text-white uppercase tracking-wide">Initial Evaluation Required</h1>
+                        <p className="text-slate-400 max-w-xs">Calibrate your system to begin.</p>
+                        <button
+                            className="mt-6 w-full max-w-xs bg-green-700 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition-colors uppercase tracking-wide"
                             onClick={() => setMode('personal')}
                         >
                             INITIATE_CALIBRATION

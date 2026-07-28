@@ -14,11 +14,11 @@ export default function Status() {
     return (
         <Column>
         {!isConfigured && isLoggedIn && (
-            <Card bg={true} contTWCSS="flex w-full h-fit" TWCSS='flex w-fit h-fit' >
+            <Card bg={true} contTWCSS="w-full xl:max-w-6xl xl:mx-auto mb-6" TWCSS='flex w-full h-full' >
                 <Evaluation />
             </Card>
         )}
-            <Card name='operator_profile' TWCSS='flex flex-col sm:flex-row gap-6'> 
+            <Card name='operator_profile' contTWCSS='w-full xl:max-w-6xl xl:mx-auto' TWCSS='flex flex-col md:flex-row gap-6'>
                     <Profile/>
             </Card>
             

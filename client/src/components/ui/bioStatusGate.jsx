@@ -34,10 +34,7 @@ export default function BioStatusGate({savedStatus}) {
 
     return (
         <>
-            <div className='flex flex-col m-4 w-auto'>
-                <div className="mb-4">
-                    <h2 className="text-xs tracking-widest text-slate-400 uppercase">Biometric.Status</h2>
-                </div>
+            <div className='flex flex-col w-full'>
                 <div className="flex gap-2 w-full">
                     {['optimal', 'restday', 'critical'].map(status => {
                         const isActive = bioStatus === status;

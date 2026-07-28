@@ -5,7 +5,6 @@ import { ALL_EXERCISES } from "../../data/exercise_db";
 import BioStatusGate from '../../components/ui/bioStatusGate';
 import PersonalBests from "./personalBests";
 import SystemButton from "./systemBtn";
-import Grid from "./grid";
 import Card from "./card";
 import BuildWorkout from "./buildWorkout";
 
@@ -23,27 +22,19 @@ export default function SetupWorkout({ onWorkoutStart }) {
     return (
         <div className="relative h-full w-full overflow-auto">
             {!create.open && (
-                
-                <Grid gridTWCSS="w-full grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-start">
-                      <Card name='Biometric_status' bg={true} contTWCSS='w-full max-w-3xl' TWCSS='w-full min-w-fit h-fit relative'>
-                        {!isLoggedIn && (
-                            <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
-                        )}
-                        <BioStatusGate savedStatus={userData.bioStatus} />
-                    </Card>
+                <div className="w-full xl:max-w-6xl xl:mx-auto p-2 sm:p-4 md:p-6 lg:p-8">
+                    <div className="flex flex-col md:flex-row gap-6 items-start">
 
-                    <Card name="workout_interface" bg={true} contTWCSS='max-w-3xl' TWCSS='w-full h-fit relative'>
+                    <Card name="workout_interface" bg={true} contTWCSS='w-full md:flex-1 min-w-0' TWCSS='w-full h-fit relative p-6'>
                         {!isLoggedIn && (
                             <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
                         )}
-                        <div className="flex flex-col m-4">
-                            <p className='text-xs max-w-[95%] tracking-widest text-text-bright uppercase'>
-                                Select a preset to start, or create a new custom routine.
-                            </p>
-                        </div>
+                        <p className='text-xs max-w-md tracking-widest text-text-bright uppercase mb-4'>
+                            Select a preset to start, or create a new custom routine.
+                        </p>
 
                         {!canStart && (
-                            <div className="mx-4 mb-4">
+                            <div className="mb-4">
                                 {userData.bioStatus === 'restday' && (
                                     <p className='text-xs tracking-widest text-slate-400 uppercase'>USER.BIOMETRIC_STATUS: RESTDAY</p>
                                 )}
@@ -53,7 +44,7 @@ export default function SetupWorkout({ onWorkoutStart }) {
                             </div>
                         )}
 
-                        <div className="flex flex-col gap-3 m-4">
+                        <div className="flex flex-col gap-3">
                             <div className="flex items-center gap-3 text-xs tracking-widest text-text-muted uppercase">
                                 <span>Presets</span>
                                 <span className="flex-1 h-px bg-border-subtle"></span>
@@ -71,8 +62,8 @@ export default function SetupWorkout({ onWorkoutStart }) {
                                         </div>
 
                                         <div className='flex gap-2'>
-                                            <SystemButton 
-                                                variant="secondary" 
+                                            <SystemButton
+                                                variant="secondary"
                                                 text='Edit'
                                                 disabled={!canStart}
                                                 onClick={() => {setCreate({open: true, is: workout})}}
@@ -89,20 +80,20 @@ export default function SetupWorkout({ onWorkoutStart }) {
                         </div>
                     </Card>
 
-                    <Card name='leaderbords' bg={true} contTWCSS='w-full max-w-3xl' TWCSS='w-full min-w-fit h-fit relative'>
-                        {!isLoggedIn && (
-                            <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
-                        )}
-                        <h2>Leaderboards</h2>
-                        <div className='bg-panel flex h-32 max-h-32 w-full rounded-md border-border-main border p-4'>
-                            <p>sssssss</p>
-                        </div>
-                    </Card>
+                    <div className="flex flex-col gap-6 w-full md:w-96 md:shrink-0">
+                        <Card name='Biometric_status' bg={true} contTWCSS='w-full' TWCSS='w-full h-fit relative p-6'>
+                            {!isLoggedIn && (
+                                <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
+                            )}
+                            <BioStatusGate savedStatus={userData.bioStatus} />
+                        </Card>
 
-                    <PersonalBests />
-                </Grid>
+                        <PersonalBests />
+                    </div>
+
+                    </div>
+                </div>
             )}
-          
 
             <BuildWorkout
                 key={create.open ? (create.is === 'empty' ? 'new' : create.is.name) : 'closed'}

@@ -7,8 +7,7 @@ export default function PersonalBests() {
     const personalBests = getHighestUnlockedExercises(userData?.exerciseProgress || {});
 
     return (
-        <Card name='personal_bests' bg={true} contTWCSS='w-full max-w-3xl' TWCSS='w-full min-w-fit h-fit relative'>
-            <h2 className="text-xs tracking-widest text-slate-400 uppercase mb-2">Personal Bests</h2>
+        <Card name='personal_bests' bg={true} contTWCSS='w-full' TWCSS='w-full h-fit relative p-6'>
             {Object.keys(personalBests).length > 0 ? (
                 <div className='flex flex-col gap-1'>
                     {Object.entries(personalBests).map(([category, exercise]) => (

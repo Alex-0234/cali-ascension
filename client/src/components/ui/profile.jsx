@@ -82,7 +82,7 @@ export default function Profile() {
 
     return (
       <>
-      <Card bg={true} contTWCSS="w-full h-auto min-w-0 lg:w-3/4 max-w-2xl" TWCSS={'p-6 relative h-full'}>
+      <Card bg={true} contTWCSS="w-full h-auto min-w-0 md:flex-[3]" TWCSS={'p-6 relative h-full'}>
             {!isLoggedIn && (
                 <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
             )}
@@ -99,9 +99,7 @@ export default function Profile() {
                 </button>
             </div>
 
-            <div className="flex flex-col gap-5 lg:flex-row lg:gap-10">
-
-                <div className="flex flex-col gap-4 lg:flex-[1.15] min-w-0">
+            <div className="flex flex-col gap-4 min-w-0">
 
                 <div className="flex flex-wrap items-start gap-3.5">
                     <div className="shrink-0 w-12 h-12 rounded-lg bg-panel border border-border-main flex items-center justify-center font-mono text-lg font-semibold text-accent">T</div>
@@ -133,9 +131,9 @@ export default function Profile() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="flex flex-col gap-3 lg:flex-row">
 
-                    <div className="flex-1 sm:flex-[1.3] bg-panel border border-border-subtle rounded-md p-4 flex flex-col gap-3.5">
+                    <div className="flex-1 md:flex-[1.3] bg-panel border border-border-subtle rounded-md p-4 flex flex-col gap-3.5">
                         <div className="flex items-end justify-between gap-3 flex-wrap">
                             <div className="flex items-baseline gap-2.5">
                                 <span className="font-mono text-xs tracking-[0.08em] uppercase text-text-muted">Level</span>
@@ -166,7 +164,7 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="flex-1 bg-panel border border-dashed border-border-main rounded-md p-4 flex flex-col gap-2.5">
+                    <div className="flex-1 min-h-40 bg-panel border border-dashed border-border-main rounded-md p-5 flex flex-col gap-2.5">
                         <div className="flex items-center justify-between gap-2">
                             <span className="font-mono text-xs tracking-[0.08em] uppercase text-text-muted">Effort Rating</span>
                             <svg className="w-4 h-4 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3"><circle cx="12" cy="12" r="9"></circle></svg>
@@ -175,26 +173,24 @@ export default function Profile() {
                         <p className="font-mono text-xs text-text-muted leading-relaxed">Elo-style rating. Beat workouts above your level to climb.</p>
                     </div>
                 </div>
-                </div>
-
             </div>
+
         </Card>
-        <Card contTWCSS="w-full sm:w-60 lg:w-1/4 shrink-0 rounded-md" TWCSS={'p-6 h-full relative'} bg={true} >
+        <Card contTWCSS="w-full md:flex-[2] md:min-w-72 rounded-md" TWCSS={'p-6 h-full relative'} bg={true} >
         {!isLoggedIn && (
                 <div className='absolute top-0 left-0 h-full w-full bg-dark/50'></div>
             )}
-            <div className="flex flex-col gap-3">
+            <div className="w-full max-w-xs md:max-w-sm mx-auto flex flex-col gap-3">
                 <div className="flex items-center gap-2.5">
                     <span className="font-mono text-xs tracking-[0.08em] uppercase text-text-muted whitespace-nowrap">Attributes</span>
                     <span className="h-px flex-1 bg-border-subtle"></span>
                 </div>
-            </div>
-            <div className="flex flex-col">
+                <div className="flex flex-col">
                 {Object.keys(stats).map(statKey => (
                     <Fragment key={statKey}>
                     {statKey !== 'apState' && statKey !== 'AP' && (
-                        <div className="flex justify-between items-center gap-3.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
-                            <div className="relative group/stat shrink-0">
+                        <div className="flex justify-between items-center gap-3.5 md:gap-4 py-2.5 md:py-3 border-b border-border-subtle last:border-b-0">
+                            <div className="relative group/stat w-20">
                                 <span className="font-mono text-xs tracking-wide uppercase text-text-main cursor-default">{getStatName(statKey)}</span>
                                 {STAT_TOOLTIPS[statKey] && (
                                     <div className="absolute bottom-full left-0 mb-2 hidden group-hover/stat:block w-48 bg-panel border border-border-subtle rounded-md p-2.5 z-10 pointer-events-none shadow-lg">
@@ -202,14 +198,14 @@ export default function Profile() {
                                     </div>
                                 )}
                             </div>
-                            <div className="flex-1 h-1 rounded-full bg-panel overflow-hidden min-w-4">
+                            <div className="flex-1 h-1 rounded-full bg-panel overflow-hidden min-w-4 ">
                                 <div className="fill-bar h-full rounded-full bg-accent-glow transition-[width] duration-1000 ease-out" style={{width: `${(stats[statKey] / 1000) * 100}%`}}></div>
                             </div>
                             <span className="font-mono font-semibold text-sm text-text-bright text-right tabular-nums shrink-0">{stats[statKey]}</span>
                         </div>
                     )}
                     {statKey === 'AP' && (
-                        <div className="flex flex-col gap-1.5 py-2.5 border-b border-border-subtle last:border-b-0 min-w-0">
+                        <div className="flex flex-col gap-1.5 py-2.5 md:py-3 border-b border-border-subtle last:border-b-0">
                             <div className="flex justify-between items-center gap-3.5">
                                 <div className="relative group/ap shrink-0">
                                     <span className="font-mono text-xs tracking-wide uppercase text-text-main cursor-default">{getStatName(statKey)}</span>
@@ -229,6 +225,7 @@ export default function Profile() {
                     )}
                     </Fragment>
                 ))}
+            </div>
             </div>
         </Card>
     </>
