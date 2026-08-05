@@ -25,7 +25,7 @@ export function calculateStreakFromObject(workoutHistory: Record<string, Workout
         const dateString = sortedDates[i];
         const log = safeWorkoutHistory[dateString];
 
-        const isLegitWorkout = log.status === 'workout' && (log.totalVolume >= 12);
+        const isLegitWorkout = log.status === 'workout' && ((log.totalVolume ?? 0) >= 12);
         const isRestDay = log.status === 'restday';
 
         if (isLegitWorkout || isRestDay) {

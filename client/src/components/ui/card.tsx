@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 
 
-export default function Card({children, name=null, bg = false, contTWCSS, TWCSS}) {
+export default function Card({children, name=null, bg = false, contTWCSS, TWCSS}: {children?: ReactNode, name?: string | null, bg?: boolean, contTWCSS?: string, TWCSS?: string}) {
 
     return (
            <section className={`block ${contTWCSS || 'h-fit w-fit'}`}>

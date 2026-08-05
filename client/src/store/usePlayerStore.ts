@@ -24,14 +24,24 @@ export interface exerciseProgress {
   totalReps: number
   personalBest: number
 }
+interface set {
+  reps: number 
+  extraWeight: number
+  modifiers: string[]
+}
+export interface workoutPerExercise {
+  sets: set[]
+  totalReps: number
+}
+
 export interface Workout {
   status: string
-  duration: number
-  exercises: any
-  leveledUp: number
-  notes: string
-  totalSets: number
-  totalVolume: number
+  duration?: number
+  exercises?: Record<string, workoutPerExercise>
+  leveledUp?: number
+  notes?: string
+  totalSets?: number
+  totalVolume?: number
 }
 
 interface userData {
