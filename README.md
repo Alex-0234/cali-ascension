@@ -1,6 +1,6 @@
 # Cali Ascension
 
-A calisthenics progression tracker built around one idea: your in-game stats should actually mean something. Level up, unlock exercises, and watch your numbers climb — but only because you got stronger in real life.
+A gamified calisthenics progression tracker built around one idea: your in-game stats should actually mean something. Level up, unlock exercises, and watch your numbers climb — but only because you got stronger in real life.
 
 ## Live Demo
 
