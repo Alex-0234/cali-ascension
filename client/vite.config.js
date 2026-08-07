@@ -4,8 +4,19 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // The API is served from the same origin as the app (see vercel.json rewrites)
+  // so the auth cookie stays first-party. Mirror that locally.
+  server: {
+    proxy: {
+      '/api': 'http://localhost:5000',
+    },
+  },
   plugins: [react(), tailwindcss(), VitePWA({
     registerType: 'autoUpdate',
+    workbox: {
+      // Never let the SPA navigation fallback swallow API requests.
+      navigateFallbackDenylist: [/^\/api/],
+    },
     manifest: {
       name: 'Calistenics Ascension',
       short_name: 'Cali Ascension',

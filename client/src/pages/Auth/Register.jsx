@@ -36,7 +36,7 @@ export default function Register({ onFinish, onRedirect }) {
         setNotification({ message: "", error: false });
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+            const response = await fetch(`/api/register`, {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },

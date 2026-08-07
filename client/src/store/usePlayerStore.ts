@@ -151,7 +151,7 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
       }));
 
       try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
+          const response = await fetch(`/api/user/me`, {
               credentials: 'include',
           });
 
@@ -203,7 +203,7 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
     }
     try {
       console.log('System: Syncing to Database...');
-      await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
+      await fetch(`/api/user/me`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -216,7 +216,7 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
   },
   logout: async () => {
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
+            await fetch(`/api/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
