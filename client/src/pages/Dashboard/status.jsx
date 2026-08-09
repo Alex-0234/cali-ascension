@@ -5,6 +5,7 @@ import Card from "../../components/ui/card";
 import Profile from "../../components/ui/profile";
 import Evaluation from "./evaluation";
 import History from "../../components/ui/history";
+import Trackers from "../../components/ui/tracker/trackersCard";
 
 
 
@@ -25,6 +26,7 @@ export default function Status() {
             <Card name='operator_history' contTWCSS='w-full xl:max-w-6xl xl:mx-auto' TWCSS='flex flex-col md:flex-row gap-6 p-8' bg={true}>
                 <History />
             </Card>
+            <Trackers />
             
             
         </Column>
