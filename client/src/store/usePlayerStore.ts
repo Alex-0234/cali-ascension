@@ -55,6 +55,23 @@ export type AnyTracker = Tracker<number> | Tracker<string> | Tracker<boolean>
 
 export const MAX_CUSTOM_TRACKERS = 5
 
+export const WEIGHT_TRACKER_NAME = 'Weight'
+
+export function createWeightTracker(startingWeight: number): Tracker<number> {
+  return {
+    createdAt: new Date(),
+    name: WEIGHT_TRACKER_NAME,
+    tracking: startingWeight,
+    history: [],
+  };
+}
+
+function withWeightTracker(trackers: AnyTracker[] | undefined, weight: number | null | undefined): AnyTracker[] {
+  const list = trackers ?? [];
+  if (list.some(tracker => tracker.name === WEIGHT_TRACKER_NAME)) return list;
+  return [createWeightTracker(weight ?? 0), ...list].slice(0, MAX_CUSTOM_TRACKERS);
+}
+
 interface userData {
   userId: string
   username: string
@@ -81,7 +98,6 @@ interface userData {
 
   exerciseProgress: Record<string, exerciseProgress>
   customTrackers: AnyTracker[]
-  weightHistory: number[]
   customWorkouts: object
   workoutHistory: Record<string, Workout>
 }
@@ -131,8 +147,7 @@ const INITIAL_PLAYER_STATE: userData = {
     isConfigured: false,
 
     exerciseProgress: {},
-    customTrackers: [],
-    weightHistory: [],
+    customTrackers: [createWeightTracker(0)],
     customWorkouts: [],
     workoutHistory: {}, 
 
@@ -200,6 +215,7 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
               userData: {
                   ...state.userData,
                   ...data,
+                  customTrackers: withWeightTracker(data.customTrackers, data.userInfo?.weight),
                   isLoggedIn: true,
                   isLoading: false,
               }

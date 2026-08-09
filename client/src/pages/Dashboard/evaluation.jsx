@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useUserStore from "../../store/usePlayerStore";
+import useUserStore, { WEIGHT_TRACKER_NAME, createWeightTracker } from "../../store/usePlayerStore";
 import { EXERCISE_DB, EVALUATION_EXERCISES } from "../../data/exercise_db";
 import { initialExerciseUnlock } from "../../utils/initialExerciseUnlock";
 import { calculatePlayerStats } from "../../utils/statCalculator";
@@ -122,7 +122,10 @@ export default function Evaluation() {
             const newUserData = {
                 ...userData,
                 userInfo: cleanInfo,
-                weightHistory: [{ weight: cleanInfo.weight, date: new Date() }],
+                customTrackers: [
+                    createWeightTracker(cleanInfo.weight),
+                    ...(userData.customTrackers || []).filter(t => t.name !== WEIGHT_TRACKER_NAME),
+                ],
                 exerciseProgress: initialProgress,
                 ep: (userData.ep || 0) + bonusEP,
                 isConfigured: true,

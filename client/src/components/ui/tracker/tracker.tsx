@@ -12,7 +12,15 @@ function formatDate(date: Date | string) {
     return parsed.toLocaleDateString(undefined, { day: '2-digit', month: 'short' }).toUpperCase();
 }
 
-export default function Tracker({ tracker, onRemove }: { tracker: AnyTracker; onRemove: () => void }) {
+export default function Tracker({
+    tracker,
+    onRemove,
+    removable = true,
+}: {
+    tracker: AnyTracker;
+    onRemove: () => void;
+    removable?: boolean;
+}) {
     const { name, tracking, history, createdAt } = tracker;
 
     const previous = history.length > 0 ? history[history.length - 1] : null;
@@ -39,14 +47,20 @@ export default function Tracker({ tracker, onRemove }: { tracker: AnyTracker; on
 
             <span className="font-robotomono shrink-0 text-sm text-accent-light">{formatValue(tracking)}</span>
 
-            <button
-                type="button"
-                onClick={onRemove}
-                aria-label={`Remove ${name}`}
-                className="shrink-0 cursor-pointer rounded-xs border border-transparent px-1.5 py-0.5 text-xs leading-none text-text-muted opacity-0 transition-[opacity,color,border-color] hover:border-danger/40 hover:text-danger focus-visible:opacity-100 group-hover:opacity-100"
-            >
-                ✕
-            </button>
+            {removable ? (
+                <button
+                    type="button"
+                    onClick={onRemove}
+                    aria-label={`Remove ${name}`}
+                    className="shrink-0 cursor-pointer rounded-xs border border-transparent px-1.5 py-0.5 text-xs leading-none text-text-muted opacity-0 transition-[opacity,color,border-color] hover:border-danger/40 hover:text-danger focus-visible:opacity-100 group-hover:opacity-100"
+                >
+                    ✕
+                </button>
+            ) : (
+                <span className="shrink-0 px-1.5 py-0.5 text-[9px] tracking-wider text-text-muted/60 uppercase">
+                    default
+                </span>
+            )}
         </li>
     );
 }

@@ -45,11 +45,6 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         default: {}
     },
-     weightHistory: [{
-        id: { type: Number, default: Date.now },
-        date: { type: Date, default: Date.now },
-        weight: Number 
-    }],
     customTrackers: {
         type: mongoose.Schema.Types.Mixed,
         default: []

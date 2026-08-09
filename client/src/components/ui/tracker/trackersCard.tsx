@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Card from "../card";
-import useUserStore, { MAX_CUSTOM_TRACKERS } from "../../../store/usePlayerStore";
+import useUserStore, { MAX_CUSTOM_TRACKERS, WEIGHT_TRACKER_NAME } from "../../../store/usePlayerStore";
 import Tracker from "./tracker";
 import NewTrackerModal from "./newTrackerModal";
 
@@ -30,6 +30,7 @@ export default function Trackers() {
                         <Tracker
                             key={`${tracker.name}-${index}`}
                             tracker={tracker}
+                            removable={tracker.name !== WEIGHT_TRACKER_NAME}
                             onRemove={() => removeCustomTracker(index)}
                         />
                     ))}
