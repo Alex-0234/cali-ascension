@@ -27,7 +27,7 @@ const System = () => {
 
     return (
         <section className="flex justify-center items-center h-screen w-full bg-dark font-robotomono">
-            <div className="flex flex-col h-[98%] w-[98%] sm:w-[90%] sm:h-[90%] bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden">
+            <div className="flex flex-col h-full w-full bg-panel/60 border border-accent/20 rounded-[6px] overflow-hidden">
 
                 <div className="flex items-center justify-between px-6 py-4 border-b border-accent/20 bg-panel/40">
                     <div className="flex items-center gap-2.5">
