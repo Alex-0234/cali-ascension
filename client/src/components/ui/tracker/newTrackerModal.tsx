@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { AnyTracker } from "../../../store/usePlayerStore";
+import { createTracker, type AnyTracker } from "../../../store/usePlayerStore";
 
 const TYPES = [
     { id: 'number', label: 'Number' },
@@ -7,14 +7,20 @@ const TYPES = [
     { id: 'toggle', label: 'Toggle' },
 ] as const;
 
+const NOTE_PLACEHOLDER = 'e.g. Weighed in at 7:00, empty stomach';
+
 type TrackerType = typeof TYPES[number]['id'];
 
-function buildTracker(name: string, type: TrackerType, value: string): AnyTracker {
-    const createdAt = new Date();
+function buildTracker(name: string, type: TrackerType, value: string, note: string): AnyTracker {
+    const parsed = type === 'number' ? Number(value)
+        : type === 'toggle' ? value === 'true'
+        : value.trim();
 
-    if (type === 'number') return { createdAt, name, tracking: Number(value), history: [] as number[] };
-    if (type === 'toggle') return { createdAt, name, tracking: value === 'true', history: [] as boolean[] };
-    return { createdAt, name, tracking: value.trim(), history: [] as string[] };
+    const tracker = createTracker(name, parsed);
+    const trimmedNote = note.trim();
+    if (trimmedNote) tracker.history[0].note = trimmedNote;
+
+    return tracker;
 }
 
 export default function NewTrackerModal({
@@ -29,6 +35,7 @@ export default function NewTrackerModal({
     const [name, setName] = useState("");
     const [type, setType] = useState<TrackerType>('number');
     const [value, setValue] = useState("0");
+    const [note, setNote] = useState("");
     const [error, setError] = useState("");
 
     useEffect(() => {
@@ -57,7 +64,7 @@ export default function NewTrackerModal({
             return setError("Starting value must be a number");
         }
 
-        onCreate(buildTracker(trimmed, type, value));
+        onCreate(buildTracker(trimmed, type, value, note));
         onClose();
     }
 
@@ -129,8 +136,8 @@ export default function NewTrackerModal({
                                 onChange={e => setValue(e.target.value)}
                                 className="cursor-pointer rounded-sm border border-border-main bg-card px-3 py-2 text-sm text-text-bright focus:border-accent focus:outline-none"
                             >
-                                <option value="false">Idle</option>
-                                <option value="true">Active</option>
+                                <option value="false">False</option>
+                                <option value="true">True</option>
                             </select>
                         ) : (
                             <input
@@ -144,6 +151,21 @@ export default function NewTrackerModal({
                                 className="rounded-sm border border-border-main bg-card px-3 py-2 font-robotomono text-sm text-text-bright focus:border-accent focus:outline-none"
                             />
                         )}
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                        <label htmlFor="tracker-note" className="text-[10px] tracking-widest text-text-muted uppercase">
+                            Note <span className="normal-case opacity-60">— optional</span>
+                        </label>
+                        <input
+                            id="tracker-note"
+                            type="text"
+                            maxLength={80}
+                            placeholder={NOTE_PLACEHOLDER}
+                            value={note}
+                            onChange={e => setNote(e.target.value)}
+                            className="rounded-sm border border-border-main bg-card px-3 py-2 text-sm text-text-bright placeholder:text-text-muted/50 focus:border-accent focus:outline-none"
+                        />
                     </div>
 
                     {error && <p className="text-[11px] text-danger">{error}</p>}

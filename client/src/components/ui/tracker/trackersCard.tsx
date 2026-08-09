@@ -1,17 +1,25 @@
 import { useState } from "react";
 import Card from "../card";
-import useUserStore, { MAX_CUSTOM_TRACKERS, WEIGHT_TRACKER_NAME } from "../../../store/usePlayerStore";
+import useUserStore, { isLoggedToday, MAX_CUSTOM_TRACKERS, WEIGHT_TRACKER_NAME } from "../../../store/usePlayerStore";
 import Tracker from "./tracker";
 import NewTrackerModal from "./newTrackerModal";
+import LogTrackerModal from "./logTrackerModal";
+import useDayRollover from "../../../hooks/useDayRollover";
 
 export default function Trackers() {
+    useDayRollover(); // re-renders at midnight so trackers reopen for logging on their own
+
     const customTrackers = useUserStore(state => state.userData.customTrackers);
     const setCustomTracker = useUserStore(state => state.setCustomTracker);
+    const logCustomTracker = useUserStore(state => state.logCustomTracker);
     const removeCustomTracker = useUserStore(state => state.removeCustomTracker);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loggingIndex, setLoggingIndex] = useState<number | null>(null);
 
     const atLimit = customTrackers.length >= MAX_CUSTOM_TRACKERS;
+    const loggedToday = customTrackers.filter(isLoggedToday).length;
+    const loggingTracker = loggingIndex !== null ? customTrackers[loggingIndex] : undefined;
 
     return (
         <Card bg={true} name='operator_trackers' contTWCSS='w-full xl:max-w-6xl xl:mx-auto' TWCSS='flex flex-col gap-3 p-4'>
@@ -31,6 +39,7 @@ export default function Trackers() {
                             key={`${tracker.name}-${index}`}
                             tracker={tracker}
                             removable={tracker.name !== WEIGHT_TRACKER_NAME}
+                            onLog={() => setLoggingIndex(index)}
                             onRemove={() => removeCustomTracker(index)}
                         />
                     ))}
@@ -48,11 +57,25 @@ export default function Trackers() {
                 {atLimit ? `Limit reached · ${MAX_CUSTOM_TRACKERS} max` : '+ Create new tracker'}
             </button>
 
+            {customTrackers.length > 0 && (
+                <p className="font-robotomono px-3 text-[10px] tracking-wider text-text-muted">
+                    // {loggedToday}/{customTrackers.length} logged today · resets at midnight
+                </p>
+            )}
+
             {isModalOpen && (
                 <NewTrackerModal
                     onClose={() => setIsModalOpen(false)}
                     onCreate={setCustomTracker}
                     existingNames={customTrackers.map(t => t.name)}
+                />
+            )}
+
+            {loggingTracker && (
+                <LogTrackerModal
+                    tracker={loggingTracker}
+                    onClose={() => setLoggingIndex(null)}
+                    onLog={(value, note) => logCustomTracker(loggingIndex as number, value, note)}
                 />
             )}
         </Card>

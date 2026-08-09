@@ -44,30 +44,91 @@ export interface Workout {
   totalVolume?: number
 }
 
+export type TrackerValue = number | string | boolean
+
+export interface TrackerEntry<T> {
+  value: T
+  loggedAt: string
+  note?: string
+}
+
 export interface Tracker<T> {
   createdAt: Date
   name: string
   tracking: T
-  history: T[]
+  history: TrackerEntry<T>[]
 }
 
 export type AnyTracker = Tracker<number> | Tracker<string> | Tracker<boolean>
 
 export const MAX_CUSTOM_TRACKERS = 5
 
+/** Entries older than this fall off the log, so the stored blob stays bounded. */
+const MAX_TRACKER_HISTORY = 365
+
 export const WEIGHT_TRACKER_NAME = 'Weight'
 
-export function createWeightTracker(startingWeight: number): Tracker<number> {
+/** Local calendar day of a date — the unit a tracker can be logged once per. */
+export function dayKey(date: Date | string): string {
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) return '';
+  const month = String(parsed.getMonth() + 1).padStart(2, '0');
+  const day = String(parsed.getDate()).padStart(2, '0');
+  return `${parsed.getFullYear()}-${month}-${day}`;
+}
+
+export function latestEntry(tracker: AnyTracker): TrackerEntry<TrackerValue> | null {
+  return tracker.history.length > 0 ? tracker.history[tracker.history.length - 1] : null;
+}
+
+/** True once today's value is in — resets on its own at local midnight. */
+export function isLoggedToday(tracker: AnyTracker): boolean {
+  const latest = latestEntry(tracker);
+  return latest !== null && dayKey(latest.loggedAt) === dayKey(new Date());
+}
+
+export function createTracker(name: string, value: TrackerValue): AnyTracker {
+  const createdAt = new Date();
   return {
-    createdAt: new Date(),
-    name: WEIGHT_TRACKER_NAME,
-    tracking: startingWeight,
-    history: [],
-  };
+    createdAt,
+    name,
+    tracking: value,
+    history: [{ value, loggedAt: createdAt.toISOString() }],
+  } as AnyTracker;
+}
+
+export function createWeightTracker(startingWeight: number): Tracker<number> {
+  return createTracker(WEIGHT_TRACKER_NAME, startingWeight) as Tracker<number>;
+}
+
+/** Brings trackers saved before history held dated entries onto the current shape. */
+function normalizeTracker(tracker: AnyTracker): AnyTracker {
+  const createdAt = tracker.createdAt ? new Date(tracker.createdAt) : new Date();
+  const raw: unknown[] = Array.isArray(tracker.history) ? tracker.history : [];
+  const isEntry = (item: unknown): item is TrackerEntry<TrackerValue> =>
+    item !== null && typeof item === 'object' && 'value' in item;
+
+  const history: TrackerEntry<TrackerValue>[] = raw.map(item =>
+    isEntry(item)
+      ? { ...item, loggedAt: item.loggedAt ?? createdAt.toISOString() }
+      : { value: item as TrackerValue, loggedAt: createdAt.toISOString() }
+  );
+
+  // Legacy trackers kept the live value outside history — fold it back in.
+  if (raw.length === 0 || raw.some(item => !isEntry(item))) {
+    history.push({ value: tracker.tracking, loggedAt: createdAt.toISOString() });
+  }
+
+  return {
+    createdAt,
+    name: tracker.name,
+    tracking: history[history.length - 1].value,
+    history: history.slice(-MAX_TRACKER_HISTORY),
+  } as AnyTracker;
 }
 
 function withWeightTracker(trackers: AnyTracker[] | undefined, weight: number | null | undefined): AnyTracker[] {
-  const list = trackers ?? [];
+  const list = (trackers ?? []).map(normalizeTracker);
   if (list.some(tracker => tracker.name === WEIGHT_TRACKER_NAME)) return list;
   return [createWeightTracker(weight ?? 0), ...list].slice(0, MAX_CUSTOM_TRACKERS);
 }
@@ -158,6 +219,7 @@ interface UserStoreState {
   userData: userData;
   hasFetchedInitialData: boolean;
   setCustomTracker: (newTracker: AnyTracker) => void
+  logCustomTracker: (index: number, value: TrackerValue, note?: string) => void
   removeCustomTracker: (index: number) => void
   setUserData: (newData: Partial<userData>) => void;
   fetchUser: () => Promise<void>;
@@ -177,6 +239,41 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
         userData: {
           ...state.userData,
           customTrackers: [...state.userData.customTrackers, newTracker]
+        }
+      };
+    }),
+
+  logCustomTracker: (index: number, value: TrackerValue, note?: string) =>
+    set((state) => {
+      const tracker = state.userData.customTrackers[index];
+      if (!tracker) return state;
+
+      const now = new Date();
+      const trimmedNote = note?.trim();
+      const entry: TrackerEntry<TrackerValue> = {
+        value,
+        loggedAt: now.toISOString(),
+        ...(trimmedNote ? { note: trimmedNote } : {}),
+      };
+
+      // One entry per calendar day: re-logging before midnight corrects today's.
+      const history = [...tracker.history];
+      if (isLoggedToday(tracker)) history[history.length - 1] = entry;
+      else history.push(entry);
+
+      const updated = {
+        ...tracker,
+        tracking: value,
+        history: history.slice(-MAX_TRACKER_HISTORY),
+      } as AnyTracker;
+
+      return {
+        userData: {
+          ...state.userData,
+          customTrackers: state.userData.customTrackers.map((t, i) => (i === index ? updated : t)),
+          userInfo: tracker.name === WEIGHT_TRACKER_NAME && typeof value === 'number'
+            ? { ...state.userData.userInfo, weight: value }
+            : state.userData.userInfo,
         }
       };
     }),
