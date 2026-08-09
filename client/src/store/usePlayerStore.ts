@@ -44,6 +44,17 @@ export interface Workout {
   totalVolume?: number
 }
 
+export interface Tracker<T> {
+  createdAt: Date
+  name: string
+  tracking: T
+  history: T[]
+}
+
+export type AnyTracker = Tracker<number> | Tracker<string> | Tracker<boolean>
+
+export const MAX_CUSTOM_TRACKERS = 5
+
 interface userData {
   userId: string
   username: string
@@ -69,6 +80,7 @@ interface userData {
   isConfigured: boolean
 
   exerciseProgress: Record<string, exerciseProgress>
+  customTrackers: AnyTracker[]
   weightHistory: number[]
   customWorkouts: object
   workoutHistory: Record<string, Workout>
@@ -119,6 +131,7 @@ const INITIAL_PLAYER_STATE: userData = {
     isConfigured: false,
 
     exerciseProgress: {},
+    customTrackers: [],
     weightHistory: [],
     customWorkouts: [],
     workoutHistory: {}, 
@@ -129,6 +142,8 @@ const INITIAL_PLAYER_STATE: userData = {
 interface UserStoreState {
   userData: userData;
   hasFetchedInitialData: boolean;
+  setCustomTracker: (newTracker: AnyTracker) => void
+  removeCustomTracker: (index: number) => void
   setUserData: (newData: Partial<userData>) => void;
   fetchUser: () => Promise<void>;
   syncUser: () => Promise<void>;
@@ -140,7 +155,26 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
 
   hasFetchedInitialData: false,
 
-  setUserData: (newData: Partial<userData>) =>
+  setCustomTracker: (newTracker: AnyTracker) =>
+    set((state) => {
+      if (state.userData.customTrackers.length >= MAX_CUSTOM_TRACKERS) return state;
+      return {
+        userData: {
+          ...state.userData,
+          customTrackers: [...state.userData.customTrackers, newTracker]
+        }
+      };
+    }),
+
+  removeCustomTracker: (index: number) =>
+    set((state) => ({
+      userData: {
+        ...state.userData,
+        customTrackers: state.userData.customTrackers.filter((_, i) => i !== index)
+      }
+    })),
+
+  setUserData: (newData: Partial<userData>) => 
     set((state) => ({
       userData: { ...state.userData, ...newData }
     })),

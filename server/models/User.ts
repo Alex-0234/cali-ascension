@@ -37,9 +37,8 @@ const UserSchema = new mongoose.Schema({
         HYP: { type: Number, default: 10 }, // REP RANGE: 5-12
         END: { type: Number, default: 10 }, // REP RANGE: 12-25+
         POW: { type: Number, default: 10 }, // EXPLOSIVE REPS
-        // MAYBE DELETE
-        MOB: { type: Number, default: 10 }, // STRETCHING ??
-        TEC: { type: Number, default: 10 }, // INCREASE WITH PROFICIENCY ??
+        BAL: { type: Number, default: 10 }, 
+        AP: { type: Number, default: 10 }, 
     },
 
     exerciseProgress: {
@@ -51,6 +50,10 @@ const UserSchema = new mongoose.Schema({
         date: { type: Date, default: Date.now },
         weight: Number 
     }],
+    customTrackers: {
+        type: mongoose.Schema.Types.Mixed,
+        default: []
+    },
     customWorkouts: [],
     workoutHistory: {},
 
