@@ -105,9 +105,17 @@ function AccountMenu() {
     );
 }
 
+// Every item in the right-hand cluster is this tall, so they share one optical
+// baseline instead of each sizing itself from its own padding.
+const CHIP = 'h-8 items-center rounded-md border border-border-subtle bg-panel px-2.5';
+
+// Visible on phones (where the nav is a bottom bar), hidden once the nav moves
+// into the header, back at xl where both sides still fit inside their half.
+const CHIP_VISIBILITY = 'hidden sm:flex md:hidden xl:flex';
+
 function StatChip({ icon, value, label, tone = 'text-text-bright' }) {
     return (
-        <div className="hidden items-center gap-2 rounded-md border border-border-subtle bg-panel px-2.5 py-1.5 sm:flex">
+        <div className={`${CHIP_VISIBILITY} ${CHIP} gap-2`}>
             {icon}
             <span className={`font-robotomono text-xs tabular-nums ${tone}`}>{value}</span>
             <span className="font-robotomono text-[10px] tracking-wider text-text-muted uppercase">{label}</span>
@@ -115,11 +123,6 @@ function StatChip({ icon, value, label, tone = 'text-text-bright' }) {
     );
 }
 
-/**
- * The chrome every signed-in page sits inside: identity + vitals up top, primary
- * navigation as tabs on desktop and a thumb-reachable bar on mobile. Page content
- * scrolls with the document so the browser can restore position on back/forward.
- */
 export default function AppShell() {
     const userData = useUserStore((state) => state.userData);
 
@@ -128,25 +131,31 @@ export default function AppShell() {
 
     return (
         <div className="flex min-h-dvh flex-col bg-dark font-robotomono">
-
             <header className="sticky top-0 z-40 border-b border-accent/20 bg-panel/80 backdrop-blur-md">
-                <div className="mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
-                    <Link to="/" className="flex shrink-0 items-center gap-2.5">
+                {/* h-14 fixes the bar at 56px: the in-page sticky bars offset against
+                    it with top-14, and the skill tree sizes its canvas from it. Padding
+                    matches the pages below so the logo and avatar line up with content. */}
+                <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-4 sm:px-6">
+                    {/* This and the cluster below are both flex-1, so they take equal
+                        width and the nav between them lands dead centre. That only holds
+                        while each side's content fits inside its half — hence the tagline
+                        and the stat chips waiting for xl before they appear. */}
+                    <Link to="/" className="flex flex-1 items-center gap-2.5">
                         <span className="h-2 w-2 rotate-45 bg-accent-glow shadow-[0_0_8px_#22d3ee99]" />
                         <span className="text-sm tracking-widest text-text-bright uppercase">System</span>
-                        <span className="hidden text-xs tracking-widest text-text-muted uppercase lg:inline">
+                        <span className="hidden text-xs tracking-widest text-text-muted uppercase xl:inline">
                             // Calisthenics Protocol
                         </span>
                     </Link>
 
-                    <nav className="ml-auto hidden items-center gap-1 md:flex">
+                    <nav className="hidden items-center gap-1 md:flex">
                         {NAV_ITEMS.map(({ to, label, end }) => (
                             <NavLink
                                 key={to}
                                 to={to}
                                 end={end}
                                 className={({ isActive }) =>
-                                    `rounded-sm px-3 py-2 text-xs tracking-wider uppercase transition-colors ${
+                                    `rounded-sm px-3 py-2 text-xs tracking-wider whitespace-nowrap uppercase transition-colors ${
                                         isActive
                                             ? 'bg-accent/10 text-accent-light'
                                             : 'text-text-muted hover:text-text-main'
@@ -158,7 +167,7 @@ export default function AppShell() {
                         ))}
                     </nav>
 
-                    <div className="ml-auto flex items-center gap-2 md:ml-4">
+                    <div className="flex flex-1 items-center justify-end gap-2">
                         <StatChip
                             icon={<FlameIcon className="h-3.5 w-3.5 text-accent" />}
                             value={streak}
@@ -170,7 +179,7 @@ export default function AppShell() {
                             label="ep"
                             tone="text-accent-light"
                         />
-                        <span className="font-robotomono text-xs text-text-muted">
+                        <span className={`flex ${CHIP} gap-1.5 font-robotomono text-xs text-text-muted`}>
                             LV <b className="text-text-bright tabular-nums">{level}</b>
                         </span>
                         <AccountMenu />

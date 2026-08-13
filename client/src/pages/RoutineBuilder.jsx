@@ -7,8 +7,6 @@ import useUserStore from '../store/usePlayerStore';
 import Panel, { PanelHeading } from '../components/ui/panel';
 import Field from '../components/ui/field';
 
-// Covers every category in the database — the old builder silently omitted
-// bridges, so those exercises could never make it into a custom routine.
 const GROUPS = {
     PUSH: ['pushups', 'dips'],
     PULL: ['pullups'],
@@ -43,7 +41,6 @@ export default function RoutineBuilder() {
     const [group, setGroup] = useState('PUSH');
     const [error, setError] = useState('');
 
-    // One section per category so a whole category can be taken in a single click.
     const sections = useMemo(
         () => GROUPS[group]
             .map((category) => ({
@@ -59,7 +56,6 @@ export default function RoutineBuilder() {
 
     const selectedCount = Object.values(draft.exercises).reduce((sum, list) => sum + (list?.length || 0), 0);
 
-    // Editing a routine that no longer exists (stale link, deleted elsewhere).
     if (editingName && !source) return <Navigate to="/workout" replace />;
 
     const toggleExercise = (exercise) => {
@@ -72,7 +68,6 @@ export default function RoutineBuilder() {
         });
     };
 
-    // A section lists every exercise its category has, so "all" can be written wholesale.
     const toggleCategory = ({ category, exercises }) => {
         setDraft((prev) => {
             const selected = prev.exercises[category] || [];
@@ -96,7 +91,6 @@ export default function RoutineBuilder() {
             return setError('A routine with that name already exists.');
         }
 
-        // Drop categories the user emptied out, so the session doesn't render blanks.
         const exercises = Object.fromEntries(
             Object.entries(draft.exercises).filter(([, list]) => list?.length > 0)
         );

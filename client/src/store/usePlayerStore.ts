@@ -156,6 +156,8 @@ interface userData {
   isLoading: boolean   //Deprecated?
   isLoggedIn: boolean
   isConfigured: boolean
+  /** Server-computed: the shared demo account resets instead of being deleted. */
+  isDemo: boolean
 
   exerciseProgress: Record<string, exerciseProgress>
   customTrackers: AnyTracker[]
@@ -206,6 +208,7 @@ const INITIAL_PLAYER_STATE: userData = {
     isLoading: false,
     isLoggedIn: false,
     isConfigured: false,
+    isDemo: false,
 
     exerciseProgress: {},
     customTrackers: [createWeightTracker(0)],
@@ -233,7 +236,7 @@ interface UserStoreState {
   fetchUser: () => Promise<void>;
   syncUser: () => Promise<void>;
   logout: () => Promise<void>;
-  deleteAccount: () => Promise<boolean>;
+  deleteAccount: () => Promise<{ ok: boolean; reset: boolean }>;
 }
 
 let pendingSync: ReturnType<typeof setTimeout> | null = null;
@@ -430,8 +433,8 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
   },
 
   deleteAccount: async () => {
-    // Drop any queued sync first: it would re-create nothing, but a save racing
-    // the delete just wastes a request against a record that's about to be gone.
+    // Drop any queued sync first — it would only write into a record that is
+    // about to be erased, or undo the reset that is about to happen.
     cancelPendingSync();
 
     try {
@@ -441,16 +444,26 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
       });
       if (!response.ok) throw new Error('Delete failed');
 
+      const { reset } = await response.json().catch(() => ({ reset: false }));
+
+      if (reset) {
+        // The demo account was wiped, not removed: the session is still valid,
+        // so pull the blank record rather than dropping the user at /login.
+        set({ isDirty: false });
+        await get().fetchUser();
+        return { ok: true, reset: true };
+      }
+
       set({
         hasFetchedInitialData: false,
         authStatus: 'guest',
         isDirty: false,
         userData: INITIAL_PLAYER_STATE,
       });
-      return true;
+      return { ok: true, reset: false };
     } catch (error) {
       console.error('System Error: Account deletion failed', error);
-      return false;
+      return { ok: false, reset: false };
     }
   },
 

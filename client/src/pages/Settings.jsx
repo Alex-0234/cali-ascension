@@ -34,6 +34,9 @@ export default function Settings() {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [dataError, setDataError] = useState('');
 
+    // The server decides this and enforces it; the UI only has to say the right thing.
+    const isDemo = Boolean(userData.isDemo);
+
     const update = (key) => (event) => {
         setForm((prev) => ({ ...prev, [key]: event.target.value }));
         setSaved(false);
@@ -88,8 +91,15 @@ export default function Settings() {
         setConfirmDelete(false);
         setDataError('');
 
-        if (await deleteAccount()) navigate('/login', { replace: true });
-        else setDataError('Could not delete the account. Try again in a moment.');
+        const { ok, reset } = await deleteAccount();
+
+        if (!ok) {
+            setDataError(`Could not ${isDemo ? 'reset' : 'delete'} the account. Try again in a moment.`);
+            return;
+        }
+        // A reset keeps the session alive, so go back into the app — the guard
+        // will route to calibration, since the wiped account is unconfigured.
+        navigate(reset ? '/' : '/login', { replace: true });
     };
 
     const joined = userData.dateCreated
@@ -217,10 +227,13 @@ export default function Settings() {
 
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-5">
                         <div className="min-w-0">
-                            <p className="text-sm text-danger">Delete account</p>
+                            <p className="text-sm text-danger">
+                                {isDemo ? 'Reset demo account' : 'Delete account'}
+                            </p>
                             <p className="text-[11px] leading-relaxed text-text-muted">
-                                Permanently erases your account and every workout, tracker and unlock
-                                on it. This cannot be undone.
+                                {isDemo
+                                    ? 'This is the shared demo account, so it can’t be deleted. Wipes every workout, tracker and unlock and returns it to a fresh state for the next visitor.'
+                                    : 'Permanently erases your account and every workout, tracker and unlock on it. This cannot be undone.'}
                             </p>
                         </div>
                         <button
@@ -228,7 +241,7 @@ export default function Settings() {
                             onClick={() => setConfirmDelete(true)}
                             className="shrink-0 cursor-pointer rounded-sm border border-danger/50 bg-danger/10 px-4 py-2.5 text-xs tracking-wider text-danger uppercase transition-colors hover:bg-danger/20"
                         >
-                            Delete
+                            {isDemo ? 'Reset' : 'Delete'}
                         </button>
                     </div>
 
@@ -248,10 +261,12 @@ export default function Settings() {
 
             <ConfirmDialog
                 open={confirmDelete}
-                title="Delete account permanently"
-                body="Your account and every workout, tracker and unlock on it will be erased the moment you confirm. There is no recovery window. Export a copy first if you want to keep it."
-                phrase={`delete user ${userData.username}`}
-                confirmLabel="Delete this account"
+                title={isDemo ? 'Reset demo account' : 'Delete account permanently'}
+                body={isDemo
+                    ? 'Every workout, tracker and unlock on the demo account will be wiped the moment you confirm, and it will start again from calibration. The account itself stays, so the next visitor can still sign in.'
+                    : 'Your account and every workout, tracker and unlock on it will be erased the moment you confirm. There is no recovery window. Export a copy first if you want to keep it.'}
+                phrase={`${isDemo ? 'reset' : 'delete'} user ${userData.username}`}
+                confirmLabel={isDemo ? 'Reset this account' : 'Delete this account'}
                 tone="danger"
                 onConfirm={handleDelete}
                 onCancel={() => setConfirmDelete(false)}
