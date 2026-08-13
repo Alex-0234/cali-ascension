@@ -1,4 +1,9 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:100,200,300,regular,500,600,700,100italic,200italic,300italic,italic,500italic,600italic,700italic);
+/* Self-hosted: loading this from fonts.googleapis.com handed every visitor's IP
+   to Google before they'd agreed to anything, and cost a third-party round trip
+   on first paint. Only the weights the UI actually uses are bundled. */
+@import '@fontsource/roboto-mono/400.css';
+@import '@fontsource/roboto-mono/600.css';
+@import '@fontsource/roboto-mono/700.css';
 @import 'tailwindcss';
 
 @theme {

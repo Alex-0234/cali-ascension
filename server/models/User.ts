@@ -5,7 +5,10 @@ const UserSchema = new mongoose.Schema({
     userId: { type: String, unique: true }, 
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    // select:false keeps the hash out of every query result by default, so it can
+    // never be sent to the client by accident. The login check opts back in with
+    // .select('+password').
+    password: { type: String, required: true, select: false },
     dateCreated: { type: Date, required: true },
     
     // user specified

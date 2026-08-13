@@ -233,6 +233,7 @@ interface UserStoreState {
   fetchUser: () => Promise<void>;
   syncUser: () => Promise<void>;
   logout: () => Promise<void>;
+  deleteAccount: () => Promise<boolean>;
 }
 
 let pendingSync: ReturnType<typeof setTimeout> | null = null;
@@ -343,8 +344,6 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
 
           const data = await response.json();
 
-          console.log('System: User Data Loaded', data);
-
           cancelPendingSync();
 
           set((state) => ({
@@ -428,6 +427,31 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
           isDirty: false,
           userData: INITIAL_PLAYER_STATE,
         });
+  },
+
+  deleteAccount: async () => {
+    // Drop any queued sync first: it would re-create nothing, but a save racing
+    // the delete just wastes a request against a record that's about to be gone.
+    cancelPendingSync();
+
+    try {
+      const response = await fetch(`/api/user/me`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Delete failed');
+
+      set({
+        hasFetchedInitialData: false,
+        authStatus: 'guest',
+        isDirty: false,
+        userData: INITIAL_PLAYER_STATE,
+      });
+      return true;
+    } catch (error) {
+      console.error('System Error: Account deletion failed', error);
+      return false;
+    }
   },
 
 }));

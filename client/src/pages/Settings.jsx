@@ -20,7 +20,7 @@ function ReadOnlyRow({ label, value }) {
 
 export default function Settings() {
     const navigate = useNavigate();
-    const { userData, setUserData, syncUser, logout } = useUserStore();
+    const { userData, setUserData, syncUser, logout, deleteAccount } = useUserStore();
 
     const [form, setForm] = useState(() => ({
         visibleName: userData.userInfo?.visibleName ?? '',
@@ -31,6 +31,8 @@ export default function Settings() {
     const [color, setColor] = useState(userData.color || COLORS[0]);
     const [saved, setSaved] = useState(false);
     const [confirmLogout, setConfirmLogout] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [dataError, setDataError] = useState('');
 
     const update = (key) => (event) => {
         setForm((prev) => ({ ...prev, [key]: event.target.value }));
@@ -57,6 +59,37 @@ export default function Settings() {
         if (useUserStore.getState().isDirty) await syncUser();
         await logout();
         navigate('/login', { replace: true });
+    };
+
+    // Exported straight from the server rather than the store, so the file is
+    // everything actually held on the account, not just what this tab has loaded.
+    const handleExport = async () => {
+        setDataError('');
+        try {
+            if (useUserStore.getState().isDirty) await syncUser();
+
+            const response = await fetch('/api/user/me', { credentials: 'include' });
+            if (!response.ok) throw new Error('Export failed');
+
+            const url = URL.createObjectURL(
+                new Blob([JSON.stringify(await response.json(), null, 2)], { type: 'application/json' })
+            );
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cali-ascension-${userData.username || 'account'}-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        } catch {
+            setDataError('Could not export your data. Try again in a moment.');
+        }
+    };
+
+    const handleDelete = async () => {
+        setConfirmDelete(false);
+        setDataError('');
+
+        if (await deleteAccount()) navigate('/login', { replace: true });
+        else setDataError('Could not delete the account. Try again in a moment.');
     };
 
     const joined = userData.dateCreated
@@ -163,6 +196,46 @@ export default function Settings() {
                 </button>
             </Panel>
 
+            <Panel label="your_data">
+                <div className="flex flex-col gap-5">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="min-w-0">
+                            <p className="text-sm text-text-bright">Export your data</p>
+                            <p className="text-[11px] leading-relaxed text-text-muted">
+                                Downloads everything held on your account as JSON — profile, trackers,
+                                unlocks and full workout history.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleExport}
+                            className="shrink-0 cursor-pointer rounded-sm border border-border-main px-4 py-2.5 text-xs tracking-wider text-text-main uppercase transition-colors hover:border-accent/50 hover:text-accent-light"
+                        >
+                            Download
+                        </button>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border-subtle pt-5">
+                        <div className="min-w-0">
+                            <p className="text-sm text-danger">Delete account</p>
+                            <p className="text-[11px] leading-relaxed text-text-muted">
+                                Permanently erases your account and every workout, tracker and unlock
+                                on it. This cannot be undone.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setConfirmDelete(true)}
+                            className="shrink-0 cursor-pointer rounded-sm border border-danger/50 bg-danger/10 px-4 py-2.5 text-xs tracking-wider text-danger uppercase transition-colors hover:bg-danger/20"
+                        >
+                            Delete
+                        </button>
+                    </div>
+
+                    {dataError && <p className="text-xs text-danger" role="alert">{dataError}</p>}
+                </div>
+            </Panel>
+
             <ConfirmDialog
                 open={confirmLogout}
                 title="Sign out"
@@ -171,6 +244,17 @@ export default function Settings() {
                 tone="danger"
                 onConfirm={handleLogout}
                 onCancel={() => setConfirmLogout(false)}
+            />
+
+            <ConfirmDialog
+                open={confirmDelete}
+                title="Delete account permanently"
+                body="Your account and every workout, tracker and unlock on it will be erased the moment you confirm. There is no recovery window. Export a copy first if you want to keep it."
+                phrase={`delete user ${userData.username}`}
+                confirmLabel="Delete this account"
+                tone="danger"
+                onConfirm={handleDelete}
+                onCancel={() => setConfirmDelete(false)}
             />
         </div>
     );
