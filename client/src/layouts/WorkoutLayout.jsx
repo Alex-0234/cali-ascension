@@ -17,12 +17,6 @@ import LevelUpModal from '../components/ui/levelUpModal';
 
 const today = () => new Date().toISOString().split('T')[0];
 
-/**
- * Owns the training session so it can outlive the route that started it: /workout
- * picks a routine, /workout/session logs against it, and neither one holds the
- * state. A session in progress is mirrored to sessionStorage on every change, so a
- * reload lands back in the same workout rather than throwing the sets away.
- */
 export default function WorkoutLayout() {
     const navigate = useNavigate();
     const dateNow = today();
@@ -44,9 +38,6 @@ export default function WorkoutLayout() {
 
     const isActive = routine !== null;
 
-    // The navigation blocker is consulted in the same tick that endWorkout navigates,
-    // before the `routine` state update has been applied — so it reads this ref instead.
-    // start/endWorkout set it directly; this only covers a draft restored on mount.
     const activeRef = useRef(isActive);
     useEffect(() => { activeRef.current = isActive; }, [isActive]);
 
@@ -59,7 +50,6 @@ export default function WorkoutLayout() {
         });
     }, [isActive, routine, workoutSession.session, mainTimer.snapshot]);
 
-    // A refresh or tab close mid-workout is nearly always an accident.
     useEffect(() => {
         if (!isActive) return;
         const warn = (event) => { event.preventDefault(); event.returnValue = ''; };

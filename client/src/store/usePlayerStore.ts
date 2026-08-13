@@ -215,14 +215,11 @@ const INITIAL_PLAYER_STATE: userData = {
 }
 
 
-/**
- * Whether we know who the user is yet. Route guards need the three-state answer:
- * redirecting on `unknown` would bounce a signed-in user to /login on every refresh.
- */
 export type AuthStatus = 'unknown' | 'authenticated' | 'guest'
 
-/** How long edits sit before they're pushed, so a burst of changes costs one request. */
 const SYNC_DEBOUNCE_MS = 1500
+
+const KEEPALIVE_BODY_LIMIT = 60_000
 
 interface UserStoreState {
   userData: userData;
@@ -247,11 +244,6 @@ function cancelPendingSync() {
   }
 }
 
-/**
- * Every local mutation goes through here. Nothing is pushed until the edits stop,
- * and only a mutation can mark the state dirty — so freshly fetched data is never
- * echoed straight back to the server.
- */
 function queueSync() {
   cancelPendingSync();
   pendingSync = setTimeout(() => {
@@ -293,7 +285,6 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
         ...(trimmedNote ? { note: trimmedNote } : {}),
       };
 
-      // One entry per calendar day: re-logging before midnight corrects today's.
       const history = [...tracker.history];
       if (isLoggedToday(tracker)) history[history.length - 1] = entry;
       else history.push(entry);
@@ -354,7 +345,6 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
 
           console.log('System: User Data Loaded', data);
 
-          // Server state wins on load — drop anything queued from a previous session.
           cancelPendingSync();
 
           set((state) => ({
@@ -405,13 +395,17 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
     }
     try {
       set({ isDirty: false });
+      const body = JSON.stringify(userData);
+
       await fetch(`/api/user/me`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
-        // Lets an in-flight save survive the tab being closed or backgrounded.
-        keepalive: true,
+        body,
+        // keepalive lets a save outlive the tab closing, but fetch caps such
+        // requests at 64KB and rejects anything bigger. A long workout history
+        // passes that, so only opt in while the payload is safely under it.
+        keepalive: body.length < KEEPALIVE_BODY_LIMIT,
       });
     } catch (error) {
       console.error('System Error: Sync Failed', error);

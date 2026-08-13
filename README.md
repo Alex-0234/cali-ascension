@@ -66,7 +66,7 @@ New users go through an initial evaluation that finds your starting tier in each
 
 ## Tech Stack
 
-**Frontend** — React (Vite), Zustand, Tailwind CSS
+**Frontend** — React (Vite), React Router, Zustand, Tailwind CSS
 
 **Backend** — Node.js, Express, MongoDB, Mongoose, bcrypt
 
