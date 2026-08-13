@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Card from "../card";
+import Panel from "../panel";
 import useUserStore, { isLoggedToday, MAX_CUSTOM_TRACKERS, WEIGHT_TRACKER_NAME } from "../../../store/usePlayerStore";
 import Tracker from "./tracker";
 import NewTrackerModal from "./newTrackerModal";
@@ -22,15 +22,16 @@ export default function Trackers() {
     const loggingTracker = loggingIndex !== null ? customTrackers[loggingIndex] : undefined;
 
     return (
-        <Card bg={true} name='operator_trackers' contTWCSS='w-full xl:max-w-6xl xl:mx-auto' TWCSS='flex flex-col gap-3 p-4'>
-
-            <div className="flex items-center gap-3 px-3">
-                <span className="text-[10px] tracking-widest text-text-muted uppercase">Active Metrics</span>
-                <span className="h-px flex-1 bg-border-subtle" />
+        <Panel
+            label="operator_trackers"
+            className="min-w-0"
+            bodyClassName="flex flex-col gap-3"
+            action={
                 <span className="font-robotomono text-[10px] text-text-muted">
                     {customTrackers.length}/{MAX_CUSTOM_TRACKERS}
                 </span>
-            </div>
+            }
+        >
 
             {customTrackers.length > 0 ? (
                 <ul className="flex flex-col">
@@ -78,6 +79,6 @@ export default function Trackers() {
                     onLog={(value, note) => logCustomTracker(loggingIndex as number, value, note)}
                 />
             )}
-        </Card>
+        </Panel>
     );
 }

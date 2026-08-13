@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { EXERCISE_DB, MODIFIERS } from "../../data/exercise_db";
 import { Workout, workoutPerExercise } from "../../store/usePlayerStore";
+import { formatDuration } from "../../hooks/useTimer";
 
 const COLLAPSED_H = 'h-[11rem]';
 const EXPANDED_H = 'h-[26rem]';
@@ -107,7 +108,8 @@ export default function HistoryCard({ date, workout }: { date: string; workout: 
             </header>
 
             <div className="grid shrink-0 grid-cols-4 gap-x-2">
-                <Stat label="time" value={`${workout?.duration ?? 0}m`} />
+                {/* `duration` is stored in seconds — it used to render with an "m" suffix. */}
+                <Stat label="time" value={formatDuration(workout?.duration ?? 0)} />
                 <Stat label="sets" value={workout?.totalSets ?? 0} />
                 <Stat label="volume" value={workout?.totalVolume ?? 0} accent />
                 <Stat label="levels" value={leveledUp > 0 ? `+${leveledUp}` : '—'} accent={leveledUp > 0} />

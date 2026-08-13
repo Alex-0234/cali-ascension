@@ -1,138 +1,144 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import useUserStore from '../../store/usePlayerStore'
+import useUserStore from '../../store/usePlayerStore';
+import Field from '../../components/ui/field';
 
-export default function Login({ onFinish, onRedirect }) {
-    const { fetchUser } = useUserStore();
+const DEMO = { identifier: 'test', password: 'test' };
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [mode, setMode] = useState('Username');
+export default function Login() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const fetchUser = useUserStore((state) => state.fetchUser);
+
+    // One field for both credentials — an '@' is all we need to tell them apart,
+    // which is simpler than making the user pick a mode first.
+    const [identifier, setIdentifier] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const [isProcessing, setIsProcessing] = useState(false);
-    const [notification, setNotification] = useState({ message: "", error: false });
+    const [error, setError] = useState('');
 
-    async function handleLogin(e) {
-        if (e) e.preventDefault();
+    const redirectTo = location.state?.from || '/';
 
-        if ((!username && !email) || !password) {
-            setNotification({ message: "Please fill in all required fields", error: true });
+    async function submitCredentials({ identifier: id, password: secret }) {
+        const isEmail = id.includes('@');
+
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                isEmail
+                    ? { username: null, email: id.trim(), password: secret }
+                    : { username: id.toLowerCase().trim(), email: null, password: secret }
+            ),
+        });
+
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.message || 'Invalid credentials');
+        }
+
+        await fetchUser();
+        navigate(redirectTo, { replace: true });
+    }
+
+    async function handleSubmit(event, credentials = { identifier, password }) {
+        event?.preventDefault();
+
+        if (!credentials.identifier || !credentials.password) {
+            setError('Enter your credentials to continue.');
             return;
         }
 
         setIsProcessing(true);
-        setNotification({ message: "", error: false });
+        setError('');
 
         try {
-            const response = await fetch(`/api/login`, {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(
-                    mode === 'Username'
-                        ? { username: username.toLowerCase().trim(), email: null, password }
-                        : { username: null, email: email.trim(), password }
-                ),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                await fetchUser();
-                onFinish();
-            } else {
-                setNotification({ message: data.message || "Invalid credentials", error: true });
-            }
-
-        } catch (error) {
-            console.error("Login error:", error);
-            setNotification({ message: "Cannot connect to server.", error: true });
+            await submitCredentials(credentials);
+        } catch (submitError) {
+            setError(
+                submitError instanceof TypeError
+                    ? 'Cannot reach the server.'
+                    : submitError.message
+            );
         } finally {
             setIsProcessing(false);
         }
     }
 
+    const handleDemo = (event) => {
+        setIdentifier(DEMO.identifier);
+        setPassword(DEMO.password);
+        handleSubmit(event, DEMO);
+    };
+
     return (
-        <div className="w-full h-full flex items-center justify-center bg-slate-950 px-4">
-            <div className="w-full max-w-md flex flex-col gap-6">
-
-                <div className="border border-cyan-500/20 bg-slate-900/60 rounded-sm p-6 flex flex-col gap-5">
-                    <div className="flex flex-col gap-1">
-                        <h2 className="text-xs tracking-widest text-cyan-300 uppercase">[ System.Auth ]</h2>
-                        <p className="text-xs text-slate-500">Verify your credentials to continue</p>
-                    </div>
-
-                    <div className="flex border border-slate-700 rounded-sm overflow-hidden">
-                        <button
-                            type="button"
-                            onClick={() => setMode('Username')}
-                            className={`flex-1 py-2 text-xs tracking-wider uppercase transition-colors ${mode === 'Username' ? 'bg-cyan-500/10 text-cyan-300' : 'text-slate-500 hover:text-slate-300'}`}
-                        >
-                            Username
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setMode('E-mail')}
-                            className={`flex-1 py-2 text-xs tracking-wider uppercase border-l border-slate-700 transition-colors ${mode === 'E-mail' ? 'bg-cyan-500/10 text-cyan-300' : 'text-slate-500 hover:text-slate-300'}`}
-                        >
-                            E-mail
-                        </button>
-                    </div>
-
-                    <form onSubmit={handleLogin} className="flex flex-col gap-4">
-                        {mode === 'Username' ? (
-                            <div className="flex flex-col gap-1.5">
-                                <label className="text-[10px] tracking-widest uppercase text-slate-500">Username</label>
-                                <input
-                                    autoComplete='username' type="text"
-                                    placeholder="Enter your username"
-                                    value={username} onChange={(e) => setUsername(e.target.value)}
-                                    className="bg-slate-950 border border-slate-700 text-slate-100 text-sm px-3 py-2 rounded-sm focus:border-cyan-400 focus:outline-none"
-                                />
-                            </div>
-                        ) : (
-                            <div className="flex flex-col gap-1.5">
-                                <label className="text-[10px] tracking-widest uppercase text-slate-500">E-mail</label>
-                                <input
-                                    autoComplete='email' type="email"
-                                    placeholder="Enter your e-mail"
-                                    value={email} onChange={(e) => setEmail(e.target.value)}
-                                    className="bg-slate-950 border border-slate-700 text-slate-100 text-sm px-3 py-2 rounded-sm focus:border-cyan-400 focus:outline-none"
-                                />
-                            </div>
-                        )}
-
-                        <div className="flex flex-col gap-1.5">
-                            <label className="text-[10px] tracking-widest uppercase text-slate-500">Password</label>
-                            <input
-                                autoComplete="current-password" type="password"
-                                placeholder="••••••••"
-                                value={password} onChange={(e) => setPassword(e.target.value)}
-                                className="bg-slate-950 border border-slate-700 text-slate-100 text-sm px-3 py-2 rounded-sm focus:border-cyan-400 focus:outline-none"
-                            />
-                        </div>
-
-                        {notification.message && (
-                            <p className={`text-xs ${notification.error ? 'text-red-400' : 'text-emerald-400'}`}>
-                                {notification.message}
-                            </p>
-                        )}
-
-                        <button
-                            type="submit"
-                            disabled={isProcessing}
-                            className="mt-1 py-2.5 text-xs tracking-widest uppercase border border-cyan-400/50 bg-cyan-500/10 text-cyan-300 rounded-sm hover:bg-cyan-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isProcessing ? 'Verifying...' : 'Initialize'}
-                        </button>
-                    </form>
-
-                    <p className="text-center text-xs text-slate-500">
-                        Don't have an account? <span onClick={onRedirect} className="text-cyan-300 cursor-pointer hover:underline">Register</span>
-                    </p>
+        <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5 rounded-sm border border-accent/20 bg-panel/60 p-6">
+                <div className="flex flex-col gap-1">
+                    <h1 className="text-xs tracking-widest text-accent-light uppercase">[ System.Auth ]</h1>
+                    <p className="text-xs text-text-muted">Verify your credentials to continue</p>
                 </div>
+
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <Field
+                        label="Username or e-mail"
+                        type="text"
+                        autoComplete="username"
+                        placeholder="operator"
+                        value={identifier}
+                        onChange={(event) => setIdentifier(event.target.value)}
+                        autoFocus
+                    />
+
+                    <div className="flex flex-col gap-1.5">
+                        <Field
+                            label="Password"
+                            type={showPassword ? 'text' : 'password'}
+                            autoComplete="current-password"
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((value) => !value)}
+                            className="self-end cursor-pointer text-[10px] tracking-wider text-text-muted uppercase transition-colors hover:text-accent-light"
+                        >
+                            {showPassword ? 'Hide' : 'Show'} password
+                        </button>
+                    </div>
+
+                    <p className="min-h-4 text-xs text-danger" role="alert">{error}</p>
+
+                    <button
+                        type="submit"
+                        disabled={isProcessing}
+                        className="cursor-pointer rounded-sm border border-accent/50 bg-accent/10 py-2.5 text-xs tracking-widest text-accent-light uppercase transition-colors hover:bg-accent/20 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        {isProcessing ? 'Verifying...' : 'Initialize'}
+                    </button>
+                </form>
+
+                <p className="text-center text-xs text-text-muted">
+                    Don&apos;t have an account?{' '}
+                    <Link to="/register" state={location.state} className="text-accent-light hover:underline">
+                        Register
+                    </Link>
+                </p>
             </div>
+
+            <button
+                type="button"
+                onClick={handleDemo}
+                disabled={isProcessing}
+                className="cursor-pointer rounded-sm border border-dashed border-border-main py-2.5 text-[10px] tracking-widest text-text-muted uppercase transition-colors hover:border-accent/50 hover:text-accent-light disabled:cursor-not-allowed disabled:opacity-50"
+            >
+                Try the demo account
+            </button>
         </div>
     );
 }

@@ -17,8 +17,9 @@ interface sessionObject {
     exercises: Record<string, exerciseObject>
 }
 
-export default function useWorkoutSession(dateNow: string) {
-    const [session, setSession] = useState<Record<string, sessionObject>>({});
+/** `initialSession` lets an interrupted workout be handed back its logged sets on reload. */
+export default function useWorkoutSession(dateNow: string, initialSession: Record<string, sessionObject> = {}) {
+    const [session, setSession] = useState<Record<string, sessionObject>>(initialSession);
     const today = session[dateNow];
 
     const addExercise = (exerciseID: string, sets: setObject[]) => {

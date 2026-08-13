@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { ReactFlow, Background, BackgroundVariant, Controls, MiniMap } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
@@ -18,15 +19,15 @@ const BG_VARIANTS = {
     cross: BackgroundVariant.Cross,
 };
 
-const CATEGORIES = Object.keys(ALL_EXERCISES);
-
 // Optional `theme` prop deep-merges over SKILL_TREE_THEME — override any
 // background / edge / node / layout value without touching the defaults.
-const SkillTree = ({ theme: themeOverrides }) => {
+const SkillTree = ({ categories, category, selectedId, onSelect, theme: themeOverrides }) => {
     const { userData, setUserData, syncUser } = useUserStore();
-    const [category, setCategory] = useState(CATEGORIES[0]);
-    const [selectedId, setSelectedId] = useState(null);
-    const [videoOk, setVideoOk] = useState(true);
+
+    // Remember which clip failed rather than resetting a boolean on every
+    // selection change — the flag then follows the node with no effect involved.
+    const [failedVideoId, setFailedVideoId] = useState(null);
+    const videoOk = failedVideoId !== selectedId;
 
     const theme = useMemo(() => mergeTheme(themeOverrides), [themeOverrides]);
     const progress = useMemo(() => userData.exerciseProgress ?? {}, [userData.exerciseProgress]);
@@ -36,8 +37,11 @@ const SkillTree = ({ theme: themeOverrides }) => {
         [category, progress, theme]
     );
 
-    const selected = selectedId ? EXERCISE_DB[selectedId] : null;
-    const selectedState = selected ? nodes.find(n => n.id === selectedId)?.data.state : null;
+    // A ?node= from another category has no node here — ignore it rather than
+    // rendering a detail panel with no state.
+    const selectedNode = selectedId ? nodes.find(n => n.id === selectedId) : null;
+    const selected = selectedNode ? EXERCISE_DB[selectedId] : null;
+    const selectedState = selectedNode?.data.state ?? null;
     const selectedCheck = selected ? canUnlockExercise(selectedId, progress) : null;
 
     const handleUnlock = () => {
@@ -53,22 +57,26 @@ const SkillTree = ({ theme: themeOverrides }) => {
         : null;
 
     return (
-        <div className="flex flex-col h-full w-full font-robotomono">
+        // The canvas needs a real height: viewport minus the app header, and minus
+        // the mobile tab bar the shell reserves space for below.
+        <div className="flex flex-col w-full font-robotomono h-[calc(100dvh-8.5rem)] md:h-[calc(100dvh-3.5rem)]">
 
             <div className="flex items-center justify-between gap-4 px-4 sm:px-6 border-b border-accent/20 bg-panel/20">
                 <div className="flex gap-1 overflow-x-auto">
-                    {CATEGORIES.map((id) => (
-                        <button
+                    {categories.map((id) => (
+                        <NavLink
                             key={id}
-                            onClick={() => { setCategory(id); setSelectedId(null); }}
-                            className={`px-3 py-2.5 text-xs tracking-wider uppercase whitespace-nowrap border-b-2 transition-colors cursor-pointer ${
-                                category === id
-                                    ? 'text-accent-light border-accent-glow'
-                                    : 'text-text-muted border-transparent hover:text-text-main'
-                            }`}
+                            to={`/skills/${id}`}
+                            className={({ isActive }) =>
+                                `px-3 py-2.5 text-xs tracking-wider uppercase whitespace-nowrap border-b-2 transition-colors ${
+                                    isActive
+                                        ? 'text-accent-light border-accent-glow'
+                                        : 'text-text-muted border-transparent hover:text-text-main'
+                                }`
+                            }
                         >
                             {id}
-                        </button>
+                        </NavLink>
                     ))}
                 </div>
                 <span className="hidden sm:inline text-xs text-text-muted whitespace-nowrap">
@@ -90,8 +98,8 @@ const SkillTree = ({ theme: themeOverrides }) => {
                     nodesDraggable={false}
                     nodesConnectable={false}
                     zoomOnDoubleClick={false}
-                    onNodeClick={(_, node) => { setSelectedId(node.id); setVideoOk(true); }}
-                    onPaneClick={() => setSelectedId(null)}
+                    onNodeClick={(_, node) => onSelect(node.id)}
+                    onPaneClick={() => onSelect(null)}
                     style={{ background: theme.background.color }}
                 >
                     {theme.background.variant && (
@@ -126,7 +134,7 @@ const SkillTree = ({ theme: themeOverrides }) => {
                                 <p className="text-sm uppercase tracking-wider text-text-bright">{selected.name}</p>
                             </div>
                             <button
-                                onClick={() => setSelectedId(null)}
+                                onClick={() => onSelect(null)}
                                 className="text-text-muted hover:text-text-bright text-xs cursor-pointer"
                             >
                                 ✕
@@ -141,7 +149,7 @@ const SkillTree = ({ theme: themeOverrides }) => {
                                 loop
                                 muted
                                 playsInline
-                                onError={() => setVideoOk(false)}
+                                onError={() => setFailedVideoId(selectedId)}
                                 className="w-full h-32 object-cover rounded-sm border border-border-subtle mb-3"
                                 style={selectedState === 'locked' ? { filter: 'grayscale(1) brightness(0.5)' } : undefined}
                             />

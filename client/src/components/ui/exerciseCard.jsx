@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { MODIFIERS } from "../../data/exercise_db";
 
 const inputClass = "bg-slate-950 border border-slate-700 text-slate-100 text-sm px-2 py-1.5 rounded-sm w-20 focus:border-cyan-400 focus:outline-none";
@@ -41,13 +42,16 @@ export default function ExerciseCard({
     onAddSet,
     onRemoveSet,
     onLog,
-    onForceUnlock,
+    unlockHref,
 }) {
-    const [activeMods, setActiveMods] = useState([]);
-    const prevSetCount = useRef(sets.length);
+    // Toggles persist across sets and belong to one exercise: tagging them with the
+    // exercise id makes them fall away on their own when the card switches, with no
+    // effect needed to clear them.
+    const [mods, setMods] = useState({ exerciseId: exerciseData?.id, active: [] });
+    const activeMods = mods.exerciseId === exerciseData?.id ? mods.active : [];
+    const setActiveMods = (next) => setMods({ exerciseId: exerciseData?.id, active: next });
 
-    // Toggles persist across sets, only reset when the exercise changes
-    useEffect(() => setActiveMods([]), [exerciseData?.id]);
+    const prevSetCount = useRef(sets.length);
 
     // A newly added set inherits the current toggles; earlier sets keep
     // whatever was saved on them
@@ -196,8 +200,15 @@ export default function ExerciseCard({
                 <div className="flex flex-col items-center gap-2 text-center py-3">
                     <span className="text-xl text-amber-400">🔒</span>
                     <h4 className="text-sm text-slate-200">Module Encrypted</h4>
-                    <p className="text-xs text-slate-500">Access denied. Required skill node not activated.</p>
-                    <button className="mt-1 text-xs tracking-wider uppercase px-3 py-1.5 border border-amber-400/40 text-amber-300 rounded-sm hover:bg-amber-500/10 transition-colors" onClick={onForceUnlock}>Bypass Encryption (Unlock)</button>
+                    <p className="text-xs text-slate-500">Required skill node not activated. Unlock it with EP to log sets here.</p>
+                    {unlockHref && (
+                        <Link
+                            to={unlockHref}
+                            className="mt-1 text-xs tracking-wider uppercase px-3 py-1.5 border border-amber-400/40 text-amber-300 rounded-sm hover:bg-amber-500/10 transition-colors"
+                        >
+                            Open in skill tree
+                        </Link>
+                    )}
                 </div>
             )}
         </div>

@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import Card from './card';
-import SystemButton from '../../components/ui/systemBtn';
 import useUserStore from '../../store/usePlayerStore';
 
 const STATUS_STYLES = {

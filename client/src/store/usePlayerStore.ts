@@ -215,9 +215,20 @@ const INITIAL_PLAYER_STATE: userData = {
 }
 
 
+/**
+ * Whether we know who the user is yet. Route guards need the three-state answer:
+ * redirecting on `unknown` would bounce a signed-in user to /login on every refresh.
+ */
+export type AuthStatus = 'unknown' | 'authenticated' | 'guest'
+
+/** How long edits sit before they're pushed, so a burst of changes costs one request. */
+const SYNC_DEBOUNCE_MS = 1500
+
 interface UserStoreState {
   userData: userData;
   hasFetchedInitialData: boolean;
+  authStatus: AuthStatus;
+  isDirty: boolean;
   setCustomTracker: (newTracker: AnyTracker) => void
   logCustomTracker: (index: number, value: TrackerValue, note?: string) => void
   removeCustomTracker: (index: number) => void
@@ -227,15 +238,41 @@ interface UserStoreState {
   logout: () => Promise<void>;
 }
 
+let pendingSync: ReturnType<typeof setTimeout> | null = null;
+
+function cancelPendingSync() {
+  if (pendingSync !== null) {
+    clearTimeout(pendingSync);
+    pendingSync = null;
+  }
+}
+
+/**
+ * Every local mutation goes through here. Nothing is pushed until the edits stop,
+ * and only a mutation can mark the state dirty — so freshly fetched data is never
+ * echoed straight back to the server.
+ */
+function queueSync() {
+  cancelPendingSync();
+  pendingSync = setTimeout(() => {
+    pendingSync = null;
+    void useUserStore.getState().syncUser();
+  }, SYNC_DEBOUNCE_MS);
+}
+
 const useUserStore = create<UserStoreState>()((set, get) => ({
   userData: INITIAL_PLAYER_STATE,
 
   hasFetchedInitialData: false,
+  authStatus: 'unknown',
+  isDirty: false,
 
   setCustomTracker: (newTracker: AnyTracker) =>
     set((state) => {
       if (state.userData.customTrackers.length >= MAX_CUSTOM_TRACKERS) return state;
+      queueSync();
       return {
+        isDirty: true,
         userData: {
           ...state.userData,
           customTrackers: [...state.userData.customTrackers, newTracker]
@@ -267,7 +304,9 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
         history: history.slice(-MAX_TRACKER_HISTORY),
       } as AnyTracker;
 
+      queueSync();
       return {
+        isDirty: true,
         userData: {
           ...state.userData,
           customTrackers: state.userData.customTrackers.map((t, i) => (i === index ? updated : t)),
@@ -279,17 +318,25 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
     }),
 
   removeCustomTracker: (index: number) =>
-    set((state) => ({
-      userData: {
-        ...state.userData,
-        customTrackers: state.userData.customTrackers.filter((_, i) => i !== index)
-      }
-    })),
+    set((state) => {
+      queueSync();
+      return {
+        isDirty: true,
+        userData: {
+          ...state.userData,
+          customTrackers: state.userData.customTrackers.filter((_, i) => i !== index)
+        }
+      };
+    }),
 
-  setUserData: (newData: Partial<userData>) => 
-    set((state) => ({
-      userData: { ...state.userData, ...newData }
-    })),
+  setUserData: (newData: Partial<userData>) =>
+    set((state) => {
+      queueSync();
+      return {
+        isDirty: true,
+        userData: { ...state.userData, ...newData }
+      };
+    }),
 
   fetchUser: async () => {
       set((state) => ({
@@ -307,8 +354,13 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
 
           console.log('System: User Data Loaded', data);
 
+          // Server state wins on load — drop anything queued from a previous session.
+          cancelPendingSync();
+
           set((state) => ({
               hasFetchedInitialData: true,
+              authStatus: 'authenticated',
+              isDirty: false,
               userData: {
                   ...state.userData,
                   ...data,
@@ -323,6 +375,7 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
 
           set((state) => ({
               hasFetchedInitialData: true,
+              authStatus: 'guest',
               userData: {
                 ...state.userData,
                 isLoading: false,
@@ -332,6 +385,8 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
   },
 
   syncUser: async () => {
+    cancelPendingSync();
+
     const state = get();
     const { userData } = state;
     if (!userData.userId) return;
@@ -349,19 +404,22 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
         return;
     }
     try {
-      console.log('System: Syncing to Database...');
+      set({ isDirty: false });
       await fetch(`/api/user/me`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
+        // Lets an in-flight save survive the tab being closed or backgrounded.
+        keepalive: true,
       });
-      console.log('Done');
     } catch (error) {
       console.error('System Error: Sync Failed', error);
+      set({ isDirty: true });
     }
   },
   logout: async () => {
+        cancelPendingSync();
         try {
             await fetch(`/api/logout`, {
                 method: 'POST',
@@ -370,7 +428,12 @@ const useUserStore = create<UserStoreState>()((set, get) => ({
         } catch (error) {
             console.error('System Error: Logout request failed', error);
         }
-        set({ hasFetchedInitialData: false, userData: INITIAL_PLAYER_STATE });
+        set({
+          hasFetchedInitialData: false,
+          authStatus: 'guest',
+          isDirty: false,
+          userData: INITIAL_PLAYER_STATE,
+        });
   },
 
 }));

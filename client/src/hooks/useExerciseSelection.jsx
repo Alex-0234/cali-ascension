@@ -1,44 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { ALL_EXERCISES } from '../data/exercise_db';
 import { getHighestUnlockedExercises, getPrevNextExerciseID } from '../utils/workoutSelector';
 
 const emptySet = () => ({ reps: 0, extraWeight: 0 });
 
+// Shared starting value so a category the user hasn't touched keeps a stable
+// identity across renders instead of handing children a fresh array every time.
+const INITIAL_SETS = Object.freeze([Object.freeze(emptySet())]);
+
+/**
+ * Which exercise each category is showing, and the sets being filled in for it.
+ *
+ * Both are derived rather than synced: the default is the highest unlocked
+ * variation, and state only holds what the user has actually changed. That keeps
+ * a newly unlocked exercise from needing an effect to appear, while a manual
+ * switch still wins over the default.
+ */
 export default function useExerciseSelection(categories, currentProgress) {
-    const [activeExercises, setActiveExercises] = useState({});
-    const [workoutSets, setWorkoutSets] = useState({});
+    const [chosen, setChosen] = useState({});
+    const [sets, setSets] = useState({});
 
-    useEffect(() => {
+    const defaults = useMemo(() => {
         const highestUnlocked = getHighestUnlockedExercises(currentProgress);
-
-        setActiveExercises(prev => {
-            let changed = false;
-            const next = { ...prev };
-            categories.forEach(cat => {
-                if (!next[cat]) {
-                    next[cat] = highestUnlocked[cat]?.id || ALL_EXERCISES[cat]?.[0] || 'unknown_exercise';
-                    changed = true;
-                }
-            });
-            return changed ? next : prev;
-        });
-
-        setWorkoutSets(prev => {
-            let changed = false;
-            const next = { ...prev };
-            categories.forEach(cat => {
-                if (!next[cat]) {
-                    next[cat] = [emptySet()];
-                    changed = true;
-                }
-            });
-            return changed ? next : prev;
-        });
+        return Object.fromEntries(categories.map(category => [
+            category,
+            highestUnlocked[category]?.id || ALL_EXERCISES[category]?.[0] || 'unknown_exercise',
+        ]));
     }, [categories, currentProgress]);
 
+    const activeExercises = useMemo(() => ({ ...defaults, ...chosen }), [defaults, chosen]);
+
+    const workoutSets = useMemo(
+        () => Object.fromEntries(categories.map(category => [category, sets[category] ?? INITIAL_SETS])),
+        [categories, sets]
+    );
+
     const setExercise = (category, exerciseId) => {
-        setActiveExercises(prev => ({ ...prev, [category]: exerciseId }));
-        setWorkoutSets(prev => ({ ...prev, [category]: [emptySet()] }));
+        setChosen(prev => ({ ...prev, [category]: exerciseId }));
+        setSets(prev => ({ ...prev, [category]: [emptySet()] }));
     };
 
     const switchExercise = (category, direction) => {
@@ -48,8 +47,8 @@ export default function useExerciseSelection(categories, currentProgress) {
     };
 
     const updateSet = (category, index, field, value) => {
-        setWorkoutSets(prev => {
-            const updated = [...prev[category]];
+        setSets(prev => {
+            const updated = [...(prev[category] ?? INITIAL_SETS)];
             const numeric = field === 'reps' || field === 'extraWeight';
             updated[index] = { ...updated[index], [field]: numeric ? Number(value) : value };
             return { ...prev, [category]: updated };
@@ -57,15 +56,18 @@ export default function useExerciseSelection(categories, currentProgress) {
     };
 
     const addSet = (category) => {
-        setWorkoutSets(prev => ({ ...prev, [category]: [...(prev[category] || []), emptySet()] }));
+        setSets(prev => ({ ...prev, [category]: [...(prev[category] ?? INITIAL_SETS), emptySet()] }));
     };
 
     const removeSet = (category, index) => {
-        setWorkoutSets(prev => ({ ...prev, [category]: prev[category].filter((_, i) => i !== index) }));
+        setSets(prev => ({
+            ...prev,
+            [category]: (prev[category] ?? INITIAL_SETS).filter((_, i) => i !== index),
+        }));
     };
 
     const resetSets = (category) => {
-        setWorkoutSets(prev => ({ ...prev, [category]: [emptySet()] }));
+        setSets(prev => ({ ...prev, [category]: [emptySet()] }));
     };
 
     return { activeExercises, workoutSets, setExercise, switchExercise, updateSet, addSet, removeSet, resetSets };
