@@ -16,6 +16,15 @@ const GROUPS = {
     CORE: ['core'],
 };
 
+const CATEGORY_LABELS = {
+    pushups: 'Push-ups',
+    pullups: 'Pull-ups',
+    squats: 'Squats',
+    dips: 'Dips',
+    core: 'Core',
+    bridges: 'Bridges',
+};
+
 export default function RoutineBuilder() {
     const navigate = useNavigate();
     const { name: routeName } = useParams();
@@ -34,13 +43,19 @@ export default function RoutineBuilder() {
     const [group, setGroup] = useState('PUSH');
     const [error, setError] = useState('');
 
-    const groupExercises = useMemo(() => {
-        const ids = GROUPS[group].flatMap((key) => ALL_EXERCISES[key] || []);
-        return ids
-            .map((id) => EXERCISE_DB[id])
-            .filter(Boolean)
-            .sort((a, b) => a.tier - b.tier);
-    }, [group]);
+    // One section per category so a whole category can be taken in a single click.
+    const sections = useMemo(
+        () => GROUPS[group]
+            .map((category) => ({
+                category,
+                exercises: (ALL_EXERCISES[category] || [])
+                    .map((id) => EXERCISE_DB[id])
+                    .filter(Boolean)
+                    .sort((a, b) => a.tier - b.tier),
+            }))
+            .filter((section) => section.exercises.length > 0),
+        [group]
+    );
 
     const selectedCount = Object.values(draft.exercises).reduce((sum, list) => sum + (list?.length || 0), 0);
 
@@ -54,6 +69,21 @@ export default function RoutineBuilder() {
                 ? current.filter((id) => id !== exercise.id)
                 : [...current, exercise.id];
             return { ...prev, exercises: { ...prev.exercises, [exercise.category]: next } };
+        });
+    };
+
+    // A section lists every exercise its category has, so "all" can be written wholesale.
+    const toggleCategory = ({ category, exercises }) => {
+        setDraft((prev) => {
+            const selected = prev.exercises[category] || [];
+            const allSelected = exercises.every((exercise) => selected.includes(exercise.id));
+            return {
+                ...prev,
+                exercises: {
+                    ...prev.exercises,
+                    [category]: allSelected ? [] : exercises.map((exercise) => exercise.id),
+                },
+            };
         });
     };
 
@@ -147,27 +177,62 @@ export default function RoutineBuilder() {
                     ))}
                 </div>
 
-                <ul className="flex max-h-96 flex-col overflow-y-auto pr-1">
-                    {groupExercises.map((exercise) => {
-                        const checked = (draft.exercises[exercise.category] || []).includes(exercise.id);
+                <div className="flex max-h-96 flex-col gap-4 overflow-y-auto pr-1">
+                    {sections.map((section) => {
+                        const selected = draft.exercises[section.category] || [];
+                        const inSection = section.exercises.filter((exercise) => selected.includes(exercise.id)).length;
+                        const allSelected = inSection === section.exercises.length;
+
                         return (
-                            <li key={exercise.id}>
-                                <label className="flex cursor-pointer items-center gap-3 border-t border-border-subtle/60 py-2.5 first:border-t-0 hover:bg-accent/5">
+                            <div key={section.category}>
+                                <button
+                                    type="button"
+                                    onClick={() => toggleCategory(section)}
+                                    aria-pressed={allSelected}
+                                    className="group sticky top-0 z-10 flex w-full cursor-pointer items-center gap-3 bg-panel/95 py-2 backdrop-blur-sm"
+                                >
                                     <input
                                         type="checkbox"
-                                        checked={checked}
-                                        onChange={() => toggleExercise(exercise)}
-                                        className="h-4 w-4 cursor-pointer accent-cyan-400"
+                                        readOnly
+                                        tabIndex={-1}
+                                        checked={allSelected}
+                                        ref={(el) => { if (el) el.indeterminate = inSection > 0 && !allSelected; }}
+                                        className="pointer-events-none h-4 w-4 accent-cyan-400"
                                     />
-                                    <span className="min-w-0 flex-1 truncate text-sm text-text-bright">{exercise.name}</span>
-                                    <span className="shrink-0 font-robotomono text-[10px] tracking-wider text-text-muted uppercase">
-                                        Tier {exercise.tier}
+                                    <span className="text-xs tracking-widest text-text-bright uppercase">
+                                        {CATEGORY_LABELS[section.category] ?? section.category}
                                     </span>
-                                </label>
-                            </li>
+                                    <span className="h-px flex-1 bg-border-subtle" />
+                                    <span className="font-robotomono text-[10px] text-text-muted">
+                                        {inSection}/{section.exercises.length}
+                                    </span>
+                                    <span className="font-robotomono text-[10px] tracking-wider text-text-muted uppercase transition-colors group-hover:text-accent-light">
+                                        {allSelected ? 'Clear' : 'Select all'}
+                                    </span>
+                                </button>
+
+                                <ul className="flex flex-col">
+                                    {section.exercises.map((exercise) => (
+                                        <li key={exercise.id}>
+                                            <label className="flex cursor-pointer items-center gap-3 border-t border-border-subtle/60 py-2.5 first:border-t-0 hover:bg-accent/5">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selected.includes(exercise.id)}
+                                                    onChange={() => toggleExercise(exercise)}
+                                                    className="h-4 w-4 cursor-pointer accent-cyan-400"
+                                                />
+                                                <span className="min-w-0 flex-1 truncate text-sm text-text-bright">{exercise.name}</span>
+                                                <span className="shrink-0 font-robotomono text-[10px] tracking-wider text-text-muted uppercase">
+                                                    Tier {exercise.tier}
+                                                </span>
+                                            </label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         );
                     })}
-                </ul>
+                </div>
             </Panel>
 
             {error && <p className="text-xs text-danger" role="alert">{error}</p>}
