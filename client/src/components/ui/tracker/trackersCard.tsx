@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Panel from "../panel";
-import useUserStore, { isLoggedToday, MAX_CUSTOM_TRACKERS, WEIGHT_TRACKER_NAME } from "../../../store/usePlayerStore";
+import useUserStore, { isTrackedToday, MAX_CUSTOM_TRACKERS, WEIGHT_TRACKER_NAME } from "../../../store/usePlayerStore";
 import Tracker from "./tracker";
 import NewTrackerModal from "./newTrackerModal";
 import LogTrackerModal from "./logTrackerModal";
@@ -18,7 +18,7 @@ export default function Trackers() {
     const [loggingIndex, setLoggingIndex] = useState<number | null>(null);
 
     const atLimit = customTrackers.length >= MAX_CUSTOM_TRACKERS;
-    const loggedToday = customTrackers.filter(isLoggedToday).length;
+    const loggedToday = customTrackers.filter(isTrackedToday).length;
     const loggingTracker = loggingIndex !== null ? customTrackers[loggingIndex] : undefined;
 
     return (
@@ -41,6 +41,7 @@ export default function Trackers() {
                             tracker={tracker}
                             removable={tracker.name !== WEIGHT_TRACKER_NAME}
                             onLog={() => setLoggingIndex(index)}
+                            onToggle={(next) => logCustomTracker(index, next)}
                             onRemove={() => removeCustomTracker(index)}
                         />
                     ))}

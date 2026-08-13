@@ -87,6 +87,28 @@ export function isLoggedToday(tracker: AnyTracker): boolean {
   return latest !== null && dayKey(latest.loggedAt) === dayKey(new Date());
 }
 
+export function isToggleTracker(tracker: AnyTracker): boolean {
+  return typeof tracker.tracking === 'boolean';
+}
+
+/**
+ * What the tracker reads as today.
+ *
+ * A toggle answers "did I do it today", so an untouched day is false — reading
+ * `tracking` directly would carry yesterday's tick forward and the habit would
+ * look done forever after one use. Numbers and text do carry forward, because
+ * your weight didn't reset at midnight.
+ */
+export function currentValue(tracker: AnyTracker): TrackerValue {
+  if (!isToggleTracker(tracker)) return tracker.tracking;
+  return isLoggedToday(tracker) ? latestEntry(tracker)?.value === true : false;
+}
+
+/** Whether today's box is ticked, or today's reading is in for a non-toggle. */
+export function isTrackedToday(tracker: AnyTracker): boolean {
+  return isToggleTracker(tracker) ? currentValue(tracker) === true : isLoggedToday(tracker);
+}
+
 export function createTracker(name: string, value: TrackerValue): AnyTracker {
   const createdAt = new Date();
   return {

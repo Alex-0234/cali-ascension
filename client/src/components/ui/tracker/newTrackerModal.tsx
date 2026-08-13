@@ -125,21 +125,17 @@ export default function NewTrackerModal({
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-1.5">
-                        <label htmlFor="tracker-value" className="text-[10px] tracking-widest text-text-muted uppercase">
-                            Starting value
-                        </label>
-                        {type === 'toggle' ? (
-                            <select
-                                id="tracker-value"
-                                value={value}
-                                onChange={e => setValue(e.target.value)}
-                                className="cursor-pointer rounded-sm border border-border-main bg-card px-3 py-2 text-sm text-text-bright focus:border-accent focus:outline-none"
-                            >
-                                <option value="false">False</option>
-                                <option value="true">True</option>
-                            </select>
-                        ) : (
+                    {/* A toggle is a daily habit: it always starts unticked and clears
+                        again at midnight, so there is no starting value to pick. */}
+                    {type === 'toggle' ? (
+                        <p className="rounded-sm border border-dashed border-border-main px-3 py-2.5 text-[11px] leading-relaxed text-text-muted">
+                            Starts unticked and resets every day, so each day records whether you did it.
+                        </p>
+                    ) : (
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="tracker-value" className="text-[10px] tracking-widest text-text-muted uppercase">
+                                Starting value
+                            </label>
                             <input
                                 id="tracker-value"
                                 type={type === 'number' ? 'number' : 'text'}
@@ -150,8 +146,8 @@ export default function NewTrackerModal({
                                 onChange={e => { setValue(e.target.value); setError(""); }}
                                 className="rounded-sm border border-border-main bg-card px-3 py-2 font-robotomono text-sm text-text-bright focus:border-accent focus:outline-none"
                             />
-                        )}
-                    </div>
+                        </div>
+                    )}
 
                     <div className="flex flex-col gap-1.5">
                         <label htmlFor="tracker-note" className="text-[10px] tracking-widest text-text-muted uppercase">
